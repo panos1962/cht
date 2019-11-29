@@ -1,0 +1,259 @@
+#!/usr/bin/env bash
+
+pd_tmpmax="1"
+. "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
+
+pd_seterrcode \
+	"govhuberr" \
+	"tokenerr" \
+	"paramerr" \
+	"autoerr" \
+	"othererr" \
+	""
+
+tmp1="${pd_tmpname[1]}"
+pd_sigtrap
+
+json_parser="jq --monochrome-output --raw-output"
+
+govhubcf="${CHT_BASEDIR:=/var/opt/cht}/private/govHUB.cf"
+client_id=
+client_secret=
+token=
+token_file=
+user_id=
+user_ip=
+protocol_number=
+protocol_date=
+auto=
+
+eval set -- "$(getopt -n "${pd_progname}" \
+--options "G:c:s:t:f:u:i:p:d:a" \
+--long "govHUB-conf:,client_id:,client_secret:,token:,token_file:,\
+user_id:,user_ip:,protocol_number:,protocol_date:,\
+auto" -- "$@")" ||
+pd_usage
+
+for arg in "$@"
+do
+	case "${arg}" in
+
+	-F|--govHUB-conf)
+		govhubcf="${2}"
+		shift 2
+		;;
+
+	-c|--client_id)
+		client_id="${2}"
+		shift 2
+		;;
+
+	-s|--client_secret)
+		client_secret="${2}"
+		shift 2
+		;;
+
+	-t|--token)
+		connect_token="${2}"
+		shift 2
+		;;
+
+	-f|--token_file)
+		token_file="${2}"
+		shift 2
+		;;
+
+	-u|--user_id)
+		user_id="${2}"
+		shift 2
+		;;
+
+	-i|--user_ip)
+		user_ip="${2}"
+		shift 2
+		;;
+
+	-p|--protocol_number)
+		protocol_number="${2}"
+		shift 2
+		;;
+
+	-d|--protocol_date)
+		protocol_date="${2}"
+		shift 2
+		;;
+
+	-a|--auto)
+		auto="yes"
+		shift 1
+		;;
+
+	--)
+		shift 1
+		;;
+	esac
+done
+unset arg
+
+. "${govhubcf}" ||
+pd_exit "govhuberr"
+
+token_set() {
+	[ -n "${token}" ] &&
+	return 0
+
+	if [ -n "${token_file}" ]; then
+		token="$(cat "${token_file}" 2>/dev/null)" &&
+		return 0
+
+		pd_errmsg "${token_file}: cannot read file" &&
+		pd_exit "tokenerr"
+	fi
+
+	[ -z "${GH_oxima_tokenget_client_id}" ] &&
+	pd_errmsg "get-token: unspecified client_id" &&
+	error="yes"
+
+	[ -z "${GH_oxima_tokenget_client_secret}" ] &&
+	pd_errmsg "get-token: unspecified client_secret" &&
+	error="yes"
+
+	[ -n "${error}" ] &&
+	return 1
+
+	[ -z "${GH_oxima_tokenget_url}" ] &&
+	GH_oxima_tokenget_url="https://auth.govhub.gr/connect/token"
+
+	curl \
+	--silent \
+	--request "POST" \
+	--url "https://auth.govhub.gr/connect/token" \
+	--header "content-type: application/x-www-form-urlencoded" \
+	--data "grant_type=client_credentials" \
+	--data "client_id=${GH_oxima_tokenget_client_id}" \
+	--data "client_secret=${GH_oxima_tokenget_client_secret}" \
+	--data "response_type=code token" \
+	--data "scope=GovHub.GsisVehicle.Basic" >"${tmp1}"
+
+	[ $? -ne 0 ] &&
+	pd_errmsg "failed to get token" &&
+	pd_exit "tokenerr"
+
+	token="$(${json_parser} ".access_token" "${tmp1}")" &&
+	return 0
+
+	pd_errmsg "${json_parser}: failed to parse token json"
+	return 1
+}
+
+user_set() {
+	local fake_ip="10.65.15.45"
+
+	[ -z "${user_id}" ] &&
+	user_id="dorak"
+
+	[ -z "${user_ip}" ] &&
+	user_ip="$(hostname -I)"
+
+	[ -z "${user_ip}" ] &&
+	pd_errmsg "warning: failed to get local IP address set to ${fake_ip}" &&
+	user_ip="${fake_ip}"
+
+	return 0
+}
+
+error=
+
+token_set || error="yes"
+user_set || error="yes"
+
+[ -n "${error}" ] &&
+pd_exit "othererr"
+
+if [ -n "${auto}" ]; then
+	for i in "$@"
+	do
+		echo "${i}"
+	done >"${tmp1}"
+
+	unset i
+	set "${tmp1}"
+fi
+
+awk \
+-v today="$(date +"%Y-%m-%d")" \
+-v protocol_date="${protocol_date}" \
+-v protocol_number="${protocol_number}" \
+-v token="${token}" \
+-v user_id="${user_id}" \
+-v user_ip="${user_ip}" \
+-i "${PANDORA_BASEDIR}/lib/pandora.awk" \
+'BEGIN {
+	FS = ":"
+
+	if (!protocol_date)
+	protocol_date = today
+
+	if (!protocol_number)
+	protocol_number = 1
+}
+
+syntax_error() {
+	pd_errmsg($0 ": syntax error")
+	next
+}
+
+data_error() {
+	pd_errmsg($0 ": invalid data")
+	next
+}
+
+{
+	cmd = "curl"
+	cmd = cmd " --request POST"
+
+	cmd = cmd " --url \"https://gsisvehicleinfo-api.govhub.gr"
+	cmd = cmd "/api/v1.0/VehicleInfo\""
+
+	cmd = cmd " --header \"Accept: text/plain\""
+	cmd = cmd " --header \"Authorization: Bearer " token "\""
+	cmd = cmd " --header \"Content-Type: application/json\""
+
+	cmd = cmd " --data "
+
+	cmd = cmd "'\''{"
+	cmd = cmd "auditRecord:{"
+	cmd = cmd "auditTransactionId:1,"
+	cmd = cmd "auditProtocolNumber:" protocol_number++ ","
+	cmd = cmd "auditProtocolDate:\"" protocol_date "\","
+	cmd = cmd "auditUserId:\"" user_id "\","
+	cmd = cmd "auditUserIp:\"" user_ip "\""
+	cmd = cmd "},"
+
+	cmd = cmd "getVehicleInformationInputRecord:{"
+	cmd = cmd "arithmosKykloforias:\"" auto "\","
+	cmd = cmd "requestDate:\"" date "\""
+	cmd = cmd "}"
+	cmd = cmd "}'\''"
+
+	system(cmd)
+	fflush()
+}
+
+function syntax_error() {
+	if (NF < 1)
+	return 1
+
+	if (NF > 2)
+	return 1
+
+	return 0
+}
+
+function data_error() {
+	auto = $1
+	date = (NF == 2 ? $2 : today)
+
+	return 0
+}' "$@" ||
+pd_exit "autoerr"

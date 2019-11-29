@@ -181,79 +181,15 @@ if [ -n "${auto}" ]; then
 fi
 
 awk \
--v today="$(date +"%Y-%m-%d")" \
+-v simera="$(date +"%Y-%m-%d")" \
 -v protocol_date="${protocol_date}" \
 -v protocol_number="${protocol_number}" \
+-v url="${GH_oxima_dataget_url}" \
 -v token="${token}" \
--v user_id="${user_id}" \
--v user_ip="${user_ip}" \
+-v user_id="${GH_oxima_dataget_user_id[0]}" \
+-v user_ip="${GH_oxima_dataget_user_ip[0]}" \
 -i "${PANDORA_BASEDIR}/lib/pandora.awk" \
-'BEGIN {
-	FS = ":"
+-f "${CHT_BASEDIR}/lib/govHUB/ghoxima.awk" "$@" &&
+pd_exit 0
 
-	if (!protocol_date)
-	protocol_date = today
-
-	if (!protocol_number)
-	protocol_number = 1
-}
-
-syntax_error() {
-	pd_errmsg($0 ": syntax error")
-	next
-}
-
-data_error() {
-	pd_errmsg($0 ": invalid data")
-	next
-}
-
-{
-	cmd = "curl"
-	cmd = cmd " --request POST"
-
-	cmd = cmd " --url \"https://gsisvehicleinfo-api.govhub.gr"
-	cmd = cmd "/api/v1.0/VehicleInfo\""
-
-	cmd = cmd " --header \"Accept: text/plain\""
-	cmd = cmd " --header \"Authorization: Bearer " token "\""
-	cmd = cmd " --header \"Content-Type: application/json\""
-
-	cmd = cmd " --data "
-
-	cmd = cmd "'\''{"
-	cmd = cmd "auditRecord:{"
-	cmd = cmd "auditTransactionId:1,"
-	cmd = cmd "auditProtocolNumber:" protocol_number++ ","
-	cmd = cmd "auditProtocolDate:\"" protocol_date "\","
-	cmd = cmd "auditUserId:\"" user_id "\","
-	cmd = cmd "auditUserIp:\"" user_ip "\""
-	cmd = cmd "},"
-
-	cmd = cmd "getVehicleInformationInputRecord:{"
-	cmd = cmd "arithmosKykloforias:\"" auto "\","
-	cmd = cmd "requestDate:\"" date "\""
-	cmd = cmd "}"
-	cmd = cmd "}'\''"
-
-	system(cmd)
-	fflush()
-}
-
-function syntax_error() {
-	if (NF < 1)
-	return 1
-
-	if (NF > 2)
-	return 1
-
-	return 0
-}
-
-function data_error() {
-	auto = $1
-	date = (NF == 2 ? $2 : today)
-
-	return 0
-}' "$@" ||
 pd_exit "autoerr"

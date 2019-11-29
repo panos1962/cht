@@ -1,4 +1,4 @@
-!panos*
-!*.swp
-!*.min.js
-!private/*
+**/panos*
+**/*.swp
+**/*.min.js
+private/*

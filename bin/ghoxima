@@ -25,13 +25,18 @@ user_id=
 user_ip=
 protocol_number=
 protocol_date=
-auto=
+sep=
+ofs=
+id_col=
+license_col=
+date_col=
 
 eval set -- "$(getopt -n "${pd_progname}" \
---options "G:c:s:t:f:u:i:p:d:a" \
+--options "G:c:s:t:f:u:i:p:d:" \
 --long "govHUB-conf:,client_id:,client_secret:,token:,token_file:,\
 user_id:,user_ip:,protocol_number:,protocol_date:,\
-auto" -- "$@")" ||
+fs:,sep:,separator:,ofs:,
+id-col:,license-column:,date-column:" -- "$@")" ||
 pd_usage
 
 for arg in "$@"
@@ -83,9 +88,29 @@ do
 		shift 2
 		;;
 
-	-a|--auto)
-		auto="yes"
-		shift 1
+	--fs|--sep|--separator)
+		sep="${2}"
+		shift 2
+		;;
+
+	--ofs)
+		ofs="${2}"
+		shift 2
+		;;
+
+	--id-column)
+		id_col="${2}"
+		shift 2
+		;;
+
+	--license-column)
+		license_col="${2}"
+		shift 2
+		;;
+
+	--date-column)
+		date_col="${2}"
+		shift 2
 		;;
 
 	--)
@@ -170,17 +195,12 @@ user_set || error="yes"
 [ -n "${error}" ] &&
 pd_exit "othererr"
 
-if [ -n "${auto}" ]; then
-	for i in "$@"
-	do
-		echo "${i}"
-	done >"${tmp1}"
-
-	unset i
-	set "${tmp1}"
-fi
-
 awk \
+-v sep="${fs}" \
+-v ofs="${ofs}" \
+-v id_col="${id_col}" \
+-v license_col="${license_col}" \
+-v date_col="${date_col}" \
 -v simera="$(date +"%Y-%m-%d")" \
 -v protocol_date="${protocol_date}" \
 -v protocol_number="${protocol_number}" \

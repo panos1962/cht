@@ -1,47 +1,58 @@
 #!/usr/bin/env gawk
 
 BEGIN {
-	FS = ":"
-	curl_build()
-
-	if (!protocol_date)
-	protocol_date = simera
-
-	if (!protocol_number)
-	protocol_number = 1
+	init()
 }
 
 NF < 1 {
 	next
 }
 
-NF > 2 {
+NF < min_cols {
 	pd_errmsg($0 ": syntax error")
 	next
 }
 
 {
-	curl_exec($1, $2)
+	curl_exec($(id_col), $(license_col), $(date_col))
 }
 
-function curl_exec(oxima, imerominia,		cmd) {
-	if (!imerominia)
-	imerominia = simera
+END {
+	if (row_sep)
+	print "\n]"
+}
+
+function curl_exec(id, license, date,		cmd) {
+	if (!date)
+	date = simera
 
 	cmd = curlcmd \
 	"auditProtocolNumber:" (protocol_number++) "," \
 	"auditProtocolDate:\"" protocol_date "\"" \
 	"},getVehicleInformationInputRecord:{" \
-	"arithmosKykloforias:\"" oxima "\"," \
-	"requestDate:\"" imerominia "\"}}'"
+	"arithmosKykloforias:\"" license "\"," \
+	"requestDate:\"" date "\"}}'"
 
-	if (system(cmd))
-	pd_errmsg($0 ": request failed")
+	if (!row_sep)
+	row_sep = "[\n"
 
+	printf row_sep "{" \
+		"\"id\":\"" $(id_col) "\"," \
+		"\"date\":\"" date "\"," \
+		"\"vehicle\":"
+
+	if (system(cmd)) {
+		pd_errmsg($0 ": request failed")
+		printf "{}"
+	}
+
+	printf "}"
 	fflush()
+
+	row_sep = ",\n"
 }
 
-function curl_build(		errs) {
+function init(			errs) {
 	if (!url)
 	errs += pd_errmsg("missing url")
 
@@ -51,7 +62,41 @@ function curl_build(		errs) {
 	if (errs)
 	exit(1)
 
-	curlcmd = "curl --request POST --url " url \
+	if (!sep)
+	FS = "\t"
+
+	if (ofs)
+	OFS = ofs
+
+	else
+	OFS = FS
+
+	if (!id_col)
+	id_col = 1
+
+	if (!license_col)
+	license_col = id_col + 1
+
+	if (!date_col)
+	date_col = license_col + 1
+
+	min_cols = id_col
+
+	if (license_col > min_cols)
+	min_cols = license_col
+
+	if (date_col > min_cols)
+	min_cols = date_col
+
+	simera = strftime("%Y-%m-%d")
+
+	if (!protocol_date)
+	protocol_date = simera
+
+	if (!protocol_number)
+	protocol_number = 1
+
+	curlcmd = "curl --silent --request POST --url " url \
 	" --header \"Accept: text/plain\"" \
 	" --header \"Authorization: Bearer " token "\"" \
 	" --header \"Content-Type: application/json\"" \
@@ -59,7 +104,7 @@ function curl_build(		errs) {
 	"auditRecord:{" \
 	"auditUserId:\"" user_id "\"," \
 	"auditUserIp:\"" user_ip "\"," \
-	"auditTransactionId:1," \
+	"auditTransactionId:1,"
 }
 
 function syntax_error() {

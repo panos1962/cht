@@ -22,7 +22,7 @@ END {
 	print "\n]"
 }
 
-function curl_exec(id, license, date,		cmd) {
+function curl_exec(id, license, date,		cmd, data, x) {
 	if (!date)
 	date = simera
 
@@ -33,18 +33,23 @@ function curl_exec(id, license, date,		cmd) {
 	"arithmosKykloforias:\"" license "\"," \
 	"requestDate:\"" date "\"}}'"
 
+	data = ""
+
+	while ((cmd | getline x) > 0)
+	data = data x
+
+	close(cmd)
+
+	if (!data)
+	return pd_errmsg($0 ": request failed")
+
 	if (!row_sep)
 	row_sep = "[\n"
 
 	printf row_sep "{" \
 		"\"id\":\"" $(id_col) "\"," \
 		"\"date\":\"" date "\"," \
-		"\"vehicle\":"
-
-	if (system(cmd)) {
-		pd_errmsg($0 ": request failed")
-		printf "{}"
-	}
+		"\"vehicle\":" data
 
 	printf "}"
 	fflush()

@@ -1,0 +1,51 @@
+#!/usr/bin/env bash
+
+pd_tmpmax="1"
+. "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
+
+pd_seterrcode \
+	"govhuberr" \
+	"tokenerr" \
+	"paramerr" \
+	"autoerr" \
+	"othererr" \
+	""
+
+tmp1="${pd_tmpname[1]}"
+pd_sigtrap
+
+eval set -- "$(getopt -n "${pd_progname}" \
+--options "" \
+--long "" \
+-- "$@")" ||
+pd_usage
+
+for arg in "$@"
+do
+	case "${arg}" in
+	--)
+		shift 1
+		;;
+	esac
+done
+unset arg
+
+parser="jq"
+parser="${parser} --raw-output"
+parser="${parser} --monochrome-output"
+
+${parser} '.[] | .id,(.vehicle.getVehicleInformationOutputRecord.katoxoiList|length)' "$@" |
+awk -i "${PANDORA_BASEDIR}/lib/pandora.awk" 'NR % 2 {
+	id = $0
+	next
+}
+
+$0 < 1 {
+	pd_errmsg(id ": δεν υπάρχουν κάτοχοι")
+	next
+}
+
+$0 > 1 {
+	pd_errmsg(id ": περισσότεροι κάτοχοι (" $0 ")")
+	next
+}'

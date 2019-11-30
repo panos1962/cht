@@ -14,8 +14,6 @@ pd_seterrcode \
 tmp1="${pd_tmpname[1]}"
 pd_sigtrap
 
-json_parser="jq --monochrome-output --raw-output"
-
 govhubcf="${CHT_BASEDIR:=/var/opt/cht}/private/govHUB.cf"
 client_id=
 client_secret=
@@ -164,10 +162,10 @@ token_set() {
 	pd_errmsg "failed to get token" &&
 	pd_exit "tokenerr"
 
-	token="$(${json_parser} ".access_token" "${tmp1}")" &&
+	token="$(jq --monochrome-output --raw-output '.access_token' "${tmp1}")" &&
 	return 0
 
-	pd_errmsg "${json_parser}: failed to parse token json"
+	pd_errmsg "failed to parse token json"
 	return 1
 }
 
@@ -195,6 +193,16 @@ user_set || error="yes"
 [ -n "${error}" ] &&
 pd_exit "othererr"
 
+# Το προσωρινό αρχείο "tmp1" θα χρησιμοποιηθεί κατά τη διαδικασία της
+# αναζήτησης στοιχείων οχημάτων/κατόχων, καθώς δεν έχουμε κανέναν έλεγχο
+# στο πρόγραμμα αναζήτησης και στο τι αυτό επιστρέφει σε περίπτωση που τα
+# παράγματα δεν πάνε καλά. Ενώ υπάρχουν πεδία στο επιστρεφόμενο JSON object
+# τα οποία αφορούν σε σφάλματα που ενδεχομένως προέκυψαν κατά τη διαδικασία
+# της αναζήτησης, κάποιες φορές απλώς το πρόγραμμα δεν επιστρέφει απολύτως
+# τίποτα, όπως συμβαίνει π.χ. αν χρησιμοποιήσουμε «ληγμένο» connect token.
+
+rm -f "${tmp1}"
+
 awk \
 -v sep="${fs}" \
 -v ofs="${ofs}" \
@@ -209,7 +217,7 @@ awk \
 -v user_id="${GH_oxima_dataget_user_id[0]}" \
 -v user_ip="${GH_oxima_dataget_user_ip[0]}" \
 -i "${PANDORA_BASEDIR}/lib/pandora.awk" \
--f "${CHT_BASEDIR}/lib/govHUB/ghoxima.awk" "$@" &&
+-f "${CHT_BASEDIR}/lib/govHUB/carget.awk" "$@" &&
 pd_exit 0
 
 pd_exit "autoerr"

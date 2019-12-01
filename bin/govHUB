@@ -2,48 +2,39 @@
 
 . "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
 
-pd_seterrcode \
-	""
+usage_list="${pd_progname} carget [ OPTIONS ] [ ARGS ]
+${pd_progname} carparse [ OPTIONS ] [ ARGS ]"
 
 pd_usagemsg="[ --help ]
 
 Or try one of the following:
 
-${pd_progname} carget [ OPTIONS ] [ ARGS ]
-${pd_progname} carparse [ OPTIONS ] [ ARGS ]"
+${usage_list}"
 
 [ -z "${CHT_BASEDIR}" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
-eval set -- "$(getopt -n "${pd_progname}" \
---options "h" --long "help" -- "$@")" ||
-pd_usage
-
-for arg in "$@"
-do
-	case "${arg}" in
-
-	-h|--help)
-		echo "usage: ${pd_progname} ${pd_usagemsg}"
-		exit 0
-		;;
-
-	--)
-		shift 1
-		;;
-	esac
-done
-unset arg
-
 [ $# -lt 1 ] &&
-pd_usage
+set -- "--help"
+
+case "${1}" in
+-h|--help)
+	echo "${usage_list}"
+	exit 0
+	;;
+-*)
+	pd_usage
+	;;
+esac
 
 component="${1}"
 shift
 
 program="${CHT_BASEDIR}/lib/govHUB/${component}"
 
-[ -x "${program}" ] ||
-pd_usage
+pd_errlevel=0
+[ ! -x "${program}" ] &&
+echo "${pd_progname}: ${component}: unknown program" >&2 &&
+exit 1
 
 exec "${program}" "$@"

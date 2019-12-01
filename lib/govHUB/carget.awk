@@ -14,47 +14,57 @@ NF < min_cols {
 }
 
 {
-	curl_exec($(id_col), $(license_col), $(date_col))
+	carget()
 }
 
 END {
-	if (row_sep)
-	print "\n]"
+exit(0)
 }
 
-function curl_exec(id, license, date,		cmd, data, x) {
-	if (!date)
-	date = simera
+function carget(	pinakida, imerominia, kodikos, cmd, data, s) {
+	pinakida = $(pinakida_col)
+
+	if (imerominia_col)
+	imerominia = $(imerominia_col)
+
+	else
+	imerominia = simera
+
+	if (kodikos_col)
+	kodikos = $(kodikos_col)
 
 	cmd = curlcmd \
 	"auditProtocolNumber:" (protocol_number++) "," \
 	"auditProtocolDate:\"" protocol_date "\"" \
 	"},getVehicleInformationInputRecord:{" \
-	"arithmosKykloforias:\"" license "\"," \
-	"requestDate:\"" date "\"}}'"
+	"arithmosKykloforias:\"" pinakida "\"," \
+	"requestDate:\"" imerominia "\"}}'"
 
 	data = ""
 
-	while ((cmd | getline x) > 0)
-	data = data x
+	while ((cmd | getline s) > 0)
+	data = data s
 
 	close(cmd)
 
+	# Αν δεν επεστράφησαν καθόλου δεδομένα, τότε σημαίνει ότι κάτι δεν
+	# πήγε καλά και ως εκ τούτου εκτυπώνουμε την τρέχουσα input line
+	# στο standar error.
+
 	if (!data)
-	return pd_errmsg($0 ": request failed")
+	return pd_errmsg($0 ": request failed (no data returned)")
 
-	if (!row_sep)
-	row_sep = "[\n"
+	printf "{"
 
-	printf row_sep "{" \
-		"\"id\":\"" $(id_col) "\"," \
-		"\"date\":\"" date "\"," \
+	if (kodikos_col)
+	printf "\"id\":\"" $(kodikos_col) "\","
+
+	printf \
+		"\"date\":\"" imerominia "\"," \
 		"\"vehicle\":" data
 
-	printf "}"
+	print "}"
 	fflush()
-
-	row_sep = ",\n"
 }
 
 function init(			errs) {
@@ -76,22 +86,22 @@ function init(			errs) {
 	else
 	OFS = FS
 
-	if (!id_col)
-	id_col = 1
+	if (kodikos_col == "")
+	kodikos_col = 1
 
-	if (!license_col)
-	license_col = id_col + 1
+	if (!pinakida_col)
+	pinakida_col = kodikos_col + 1
 
-	if (!date_col)
-	date_col = license_col + 1
+	if (imerominia_col == "")
+	imerominia_col = pinakida_col + 1
 
-	min_cols = id_col
+	min_cols = kodikos_col
 
-	if (license_col > min_cols)
-	min_cols = license_col
+	if (pinakida_col > min_cols)
+	min_cols = pinakida_col
 
-	if (date_col > min_cols)
-	min_cols = date_col
+	if (imerominia_col > min_cols)
+	min_cols = imerominia_col
 
 	simera = strftime("%Y-%m-%d")
 
@@ -110,14 +120,4 @@ function init(			errs) {
 	"auditUserId:\"" user_id "\"," \
 	"auditUserIp:\"" user_ip "\"," \
 	"auditTransactionId:1,"
-}
-
-function syntax_error() {
-	if (NF < 1)
-	return 1
-
-	if (NF > 2)
-	return 1
-
-	return 0
 }

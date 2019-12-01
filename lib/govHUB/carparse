@@ -1,18 +1,5 @@
 #!/usr/bin/env bash
-
-pd_tmpmax="1"
 . "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
-
-pd_seterrcode \
-	"govhuberr" \
-	"tokenerr" \
-	"paramerr" \
-	"autoerr" \
-	"othererr" \
-	""
-
-tmp1="${pd_tmpname[1]}"
-pd_sigtrap
 
 eval set -- "$(getopt -n "${pd_progname}" \
 --options "" \
@@ -33,19 +20,29 @@ unset arg
 parser="jq"
 parser="${parser} --raw-output"
 parser="${parser} --monochrome-output"
+parser="${parser} --stream"
 
-${parser} '.[] | .id,(.vehicle.getVehicleInformationOutputRecord.katoxoiList|length)' "$@" |
-awk -i "${PANDORA_BASEDIR}/lib/pandora.awk" 'NR % 2 {
-	id = $0
-	next
-}
-
-$0 < 1 {
-	pd_errmsg(id ": δεν υπάρχουν κάτοχοι")
-	next
-}
-
-$0 > 1 {
-	pd_errmsg(id ": περισσότεροι κάτοχοι (" $0 ")")
-	next
-}'
+${parser} '
+("ΚΩΔΙΚΟΣ " + (select(.[0][0] == "id")|.[1])),
+("ΗΜΕΡΟΜΗΝΙΑ " + (select(.[0][0] == "date")|.[1])),
+("ΠΙΝΑΚΙΔΑ " + (select((.[0][0] == "vehicle") and
+	(.[0][1] == "getVehicleInformationOutputRecord") and
+	(.[0][2] == "arithmosKykloforias"))|.[1])),
+(select((.[0][0] == "vehicle") and
+	(.[0][1] == "getVehicleInformationOutputRecord") and
+	(.[0][2] == "katoxoiList"))|
+	("ΑΦΜ " + (select(.[0][4] == "afm")|.[1])),
+	("ΠΟΣΟΣΤΟ " + (select(.[0][4] == "percent")|.[1])),
+	("ΔΟΥ " + (select(.[0][4] == "doy")|.[1])),
+	("ΠΕΡΙΓΡΑΦΗ ΔΟΥ " + (select(.[0][4] == "doyDesc")|.[1])),
+	("ΕΠΩΝΥΜΟ1 " + (select(.[0][4] == "surname")|.[1])),
+	("ΕΠΩΝΥΜΟ2 " + (select(.[0][4] == "secondSurname")|.[1])),
+	("ΟΝΟΜΑ " + (select(.[0][4] == "firstName")|.[1])),
+	("ΠΑΤΡΩΝΥΜΟ " + (select(.[0][4] == "fathersName")|.[1])),
+	("ΜΗΤΡΩΝΥΜΟ " + (select(.[0][4] == "mothersName")|.[1])),
+	("ΟΔΟΣ " + (select(.[0][4] == "address")|.[1])),
+	("ΑΡΙΘΜΟΣ " + (select(.[0][4] == "addressNo")|.[1])),
+	("ΤΚ " + (select(.[0][4] == "parZipCode")|.[1])),
+	("ΠΕΡΙΟΧΗ " + (select(.[0][4] == "parDescription")|.[1]))
+)
+' "$@"

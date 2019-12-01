@@ -17,3 +17,7 @@ commit:
 .PHONY: push
 push:
 	@git push
+
+.PHONY: test
+test:
+	./lib/govHUB/carparse local/panos2.json | more

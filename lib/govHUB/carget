@@ -1,5 +1,31 @@
 #!/usr/bin/env bash
 
+# Το παρόν πρόγραμμα είθισται να καλείται εμμέσως, μέσω του προγράμματος
+# "govHUB" ως εξής:
+#
+#	govHUB carget [OPTIONS] [ARGUMENTS]
+#
+# Αν έχετε δημιουργήσει link "GH" για το πρόγραμμα "govHUB" μπορείτε να
+# καλέσετε το παρόν και με την εντολή:
+#
+#	GH carget [OPTIONS] [ARGUMENTS]
+#
+# Το πρόγραμμα σκοπό έχει να ζητήσει από την πλατφόρμα "govHUB" δεδομένα που
+# αφορούν σε οχήματα καταγεγραμμένα στις βάσεις δεδομένων του Υπουργείου
+# Οικονομικών. Τα στοιχεία που απαιτούνται προκειμένου να αναζητηθούν και
+# επιστραφούν δεδομένα για κάποιο όχημα είναι ο αριθμός κυκλοφορίας τού
+# οχήματος και μια ημερομηνία για την οποία αιτούμαστε δεδομένα οχήματος.
+# Αν δεν καθορίσουμε ημερομηνία, τότε επιστρέφονται δεδομένα για την τρέχουσα
+# ημερομηνία.
+#
+# Το πρόγραμμα χρησιμοποιείται κυρίως για την εξακρίβωση των στοιχείων κατόχων
+# των οχημάτων, προκειμένου να βεβαιωθούν στα αντίστοιχα ΑΦΜ πρόστιμα από
+# παραβάσεις ΚΟΚ στις οποίες έχουν υποπέσει τα συγκεκριμένα οχήματα. Επειδή
+# οι παραβάσεις χαρακτηρίζονται μονοσήμαντα από κάποιου είδους κωδικό (id,
+# primary key κλπ), το πρόγραμμα μπορεί να δέχεται τον κωδικό της παράβασης
+# προκειμένου στο output να εκτυπώνεται και ο εν λόγω κωδικός παράβασης, μαζί
+# με τα στοιχεία κατόχου.
+
 pd_tmpmax="1"
 . "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
 
@@ -25,16 +51,16 @@ protocol_number=
 protocol_date=
 sep=
 ofs=
-id_col=
-license_col=
-date_col=
+kodikos_col=
+pinakida_col=
+imerominia_col=
 
 eval set -- "$(getopt -n "${pd_progname}" \
 --options "G:c:s:t:f:u:i:p:d:" \
 --long "govHUB-conf:,client_id:,client_secret:,token:,token_file:,\
 user_id:,user_ip:,protocol_number:,protocol_date:,\
 fs:,sep:,separator:,ofs:,
-id-col:,license-column:,date-column:" -- "$@")" ||
+id-column:,license-column:,date-column:" -- "$@")" ||
 pd_usage
 
 for arg in "$@"
@@ -97,17 +123,17 @@ do
 		;;
 
 	--id-column)
-		id_col="${2}"
+		kodikos_col="${2}"
 		shift 2
 		;;
 
 	--license-column)
-		license_col="${2}"
+		pinakida_col="${2}"
 		shift 2
 		;;
 
 	--date-column)
-		date_col="${2}"
+		imerominia_col="${2}"
 		shift 2
 		;;
 
@@ -206,9 +232,9 @@ rm -f "${tmp1}"
 awk \
 -v sep="${fs}" \
 -v ofs="${ofs}" \
--v id_col="${id_col}" \
--v license_col="${license_col}" \
--v date_col="${date_col}" \
+-v kodikos_col="${kodikos_col}" \
+-v pinakida_col="${pinakida_col}" \
+-v imerominia_col="${imerominia_col}" \
 -v simera="$(date +"%Y-%m-%d")" \
 -v protocol_date="${protocol_date}" \
 -v protocol_number="${protocol_number}" \

@@ -1,6 +1,6 @@
 .PHONY: status
 status:
-	@git status
+	@git status .
 
 .PHONY: show
 show:
@@ -12,11 +12,15 @@ add:
 
 .PHONY: commit
 commit:
-	@git commit --message "modifications"
+	@git commit --message "modifications" .
 
 .PHONY: push
 push:
 	@git push
+
+.PHONY: pull
+pull:
+	@git pull
 
 .PHONY: test
 test:

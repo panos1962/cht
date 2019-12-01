@@ -55,13 +55,15 @@ kodikos_col=
 pinakida_col=
 imerominia_col=
 
-eval set -- "$(getopt -n "${pd_progname}" \
---options "G:c:s:t:f:u:i:p:d:" \
---long "govHUB-conf:,client_id:,client_secret:,token:,token_file:,\
-user_id:,user_ip:,protocol_number:,protocol_date:,\
+
+eval set -- "$(pd_parseopts \
+"G:c:s:t:f:u:i:p:d:" \
+"govHUB-conf:,client-id:,client-secret:,token:,token-file:,\
+user-id:,user-ip:,protocol-number:,protocol-date:,\
 fs:,sep:,separator:,ofs:,
-id-column:,license-column:,date-column:" -- "$@")" ||
-pd_usage
+id-column:,license-column:,date-column:" "$@")"
+[ $1 -ne 0 ] && pd_usage
+shift
 
 for arg in "$@"
 do
@@ -72,12 +74,12 @@ do
 		shift 2
 		;;
 
-	-c|--client_id)
+	-c|--client-id)
 		client_id="${2}"
 		shift 2
 		;;
 
-	-s|--client_secret)
+	-s|--client-secret)
 		client_secret="${2}"
 		shift 2
 		;;
@@ -87,27 +89,27 @@ do
 		shift 2
 		;;
 
-	-f|--token_file)
+	-f|--token-file)
 		token_file="${2}"
 		shift 2
 		;;
 
-	-u|--user_id)
+	-u|--user-id)
 		user_id="${2}"
 		shift 2
 		;;
 
-	-i|--user_ip)
+	-i|--user-ip)
 		user_ip="${2}"
 		shift 2
 		;;
 
-	-p|--protocol_number)
+	-p|--protocol-number)
 		protocol_number="${2}"
 		shift 2
 		;;
 
-	-d|--protocol_date)
+	-d|--protocol-date)
 		protocol_date="${2}"
 		shift 2
 		;;
@@ -196,7 +198,7 @@ token_set() {
 }
 
 user_set() {
-	local fake_ip="10.65.15.45"
+	local fake_ip="10.65.15.46"
 
 	[ -z "${user_id}" ] &&
 	user_id="dorak"

@@ -48,7 +48,7 @@ protocol_date=
 sep=
 ofs=
 kodikos_col=
-pinakida_col=
+vehicle_col=
 imerominia_col=
 
 
@@ -57,7 +57,7 @@ eval set -- "$(pd_parseopts \
 "govHUB-conf:,client-id:,client-secret:,token:,token-file:,\
 user-id:,user-ip:,protocol-number:,protocol-date:,\
 fs:,sep:,separator:,ofs:,
-id-column:,license-column:,date-column:" "$@")"
+id-column:,vehicle-column:,date-column:" "$@")"
 [ $1 -ne 0 ] && pd_usage
 shift
 
@@ -125,8 +125,8 @@ do
 		shift 2
 		;;
 
-	--license-column)
-		pinakida_col="${2}"
+	--vehicle-column)
+		vehicle_col="${2}"
 		shift 2
 		;;
 
@@ -268,7 +268,7 @@ awk \
 -v sep="${fs}" \
 -v ofs="${ofs}" \
 -v kodikos_col="${kodikos_col}" \
--v pinakida_col="${pinakida_col}" \
+-v vehicle_col="${vehicle_col}" \
 -v imerominia_col="${imerominia_col}" \
 -v protocol_date="${protocol_date}" \
 -v protocol_number="${protocol_number}" \

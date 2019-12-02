@@ -1,69 +1,105 @@
 #!/usr/bin/env bash
 
+# Το πρόγραμμα διαβάζει δεδομένα οχημάτων/κατόχων που έχουν παραληφθεί από την
+# πλατφόρμα "govHUB" μέσω του προγράμματος "GH/carget" και επιτελεί κάποιου
+# είδους επιπεδοποίηση των δεδομένων αυτών. Πράγματι, τα δεδομένα οχημάτων που
+# επιστρέφει η πλατφόρμα "govHUB" είναι JSON objects και ως εκ τούτου είναι
+# μάλλον δύσκολο να τα διαχειριστούμε εκτός javascript προγραμμάτων.
+#
+# Επιστρατεύουμε λοιπόν το φανταστικό εργαλείο "jq" το οποίο είναι ακριβώς ένας
+# πολύ χρήσιμος JSON parser, προκειμένου να εκτυπώσουμε τα στοιχεία που θέλουμε
+# σε γραμμική μορφή και πιο συγκεκριμένα key/value pairs χωρισμένα μεταξύ τους
+# με tabs.
+#
+# Το πρόγραμμα δέχεται ως παράμετρο το όνομα του επιμέρους φίλτρου που θα
+# διαχειριστεί τα επιπεδοποιημένα δεδομένα. Τα συνήθη φίλτρα είναι τα εξής:
+#
+# normal
+# ------
+# Το φίλτρο "normal" εκτυπώνει τα δεδομένα σε κανονικοποιημένη μορφή, πράγμα
+# που σημαίνει ότι σε περίπτωση που υπάρχουν περισσότεροι από έναν κάτοχοι, θα
+# εκτυπωθεί μια γραμμή για κάθε κάτοχο. Ωστόσο, by default το εν λόγω φίλτρο
+# εκτυπώνει μόνο μια γραμμή για κάθε όχημα που διαβάζει και μάλιστα μόνο στην
+# περίπτωση που το όχημα έχει ακριβώς έναν ιδιοκτήτη. Ακριβώς για τους λόγους
+# αυτούς το φίλτρο δέχεται τις παρακάτω options:
+#
+#	--none	Αν δοθεί η option "none" τότε το πρόγραμμα θα εκτυπώσει
+#		δεδομένα οχήματος με κενά στοιχεία κατόχου και μηδενικό
+#		ποσοστό ιδιοκτησίας.
+#
+#	--multi	Αν δοθεί η option "multi" το πρόγραμμα θα εκτυπώσει από μια
+#		γραμμή για κάθε κάτοχο, επαναλαμβάνοντας τα δεδομένα οχήματος
+#		σε κάθε γραμμή.
+#
+# dump
+# ----
+# Το φίλτρο "dump" απλώς μεταφέρει το input στο output χωρίς να προβεί σε
+# καμία περαιτέρω επξεργασία. Συνήθως χρησιμοποιείται κατά το debuging και
+# γενικότερα για λόγους εξέτασης και μελέτης των δεδομένων.
+
 . "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
+pd_errlevel=
 libdir="${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB"
 
-eval set -- "$(pd_parseopts \
-"d" \
-"dump" \
-"$@")"
-[ $1 -ne 0 ] && pd_usage
-shift
+pd_usagemsg="filter [OPTIONS] [FILES]
 
-post="default"
+Filters:
+normal [-n] [-m] [--none] [--multi]
+dump"
 
-for arg in "$@"
-do
-	case "${arg}" in
-	-d|--dump)
-		post="dump"
-		shift
-		;;
+if [ $# -lt 1 ]; then
+	filtro="dump"
+else
+	filtro="${1}"
+	shift
+fi
 
-	--)
-		shift 1
-		;;
-	esac
-done
-unset arg
+parser() {
+	jq --raw-output --monochrome-output --stream \
+		--from-file "${libdir}/carparse.jq" "$@"
+}
 
-parser="jq"
-parser="${parser} --raw-output"
-parser="${parser} --monochrome-output"
-parser="${parser} --stream"
+unset awk_opts
+awk_opts="${awk_opts} -i ${PANDORA_BASEDIR}/lib/pandora.awk"
+awk_opts="${awk_opts} -i ${libdir}/carparse_ante.awk"
 
-${parser} '
-("ΚΩΔΙΚΟΣ\t" + (select(.[0][0] == "id")|.[1])),
-("ΗΜΕΡΟΜΗΝΙΑ\t" + (select(.[0][0] == "date")|.[1])),
-("ΠΙΝΑΚΙΔΑ\t" + (select((.[0][0] == "vehicle") and
-	(.[0][1] == "getVehicleInformationOutputRecord") and
-	(.[0][2] == "arithmosKykloforias"))|.[1])),
-(select((.[0][0] == "vehicle") and
-	(.[0][1] == "getVehicleInformationOutputRecord") and
-	(.[0][2] == "katoxoiList"))|
-	("ΑΦΜ\t" + ((select(.[0][4] == "afm")|.[1])|tostring)),
-	("ΠΟΣΟΣΤΟ\t" + ((select(.[0][4] == "percent")|.[1])|tostring)),
-	("ΔΟΥ\t" + (select(.[0][4] == "doy")|.[1])),
-	("ΠΕΡΙΓΡΑΦΗ ΔΟΥ\t" + (select(.[0][4] == "doyDesc")|.[1])),
-	("ΕΠΩΝΥΜΙΑ\t" + (select(.[0][4] == "appelation")|.[1])),
-	("ΜΟΡΦΗ\t" + (select(.[0][4] == "legalStatusDesc")|.[1])),
-	("ΕΠΩΝΥΜΟ\t" + (select(.[0][4] == "surname")|.[1])),
-	("ΕΠΩΝΥΜΟ2\t" + (select(.[0][4] == "secondSurname")|.[1])),
-	("ΟΝΟΜΑ\t" + (select(.[0][4] == "firstName")|.[1])),
-	("ΠΑΤΡΩΝΥΜΟ\t" + (select(.[0][4] == "fathersFirstName")|.[1])),
-	("ΜΗΤΡΩΝΥΜΟ\t" + (select(.[0][4] == "mothersFirstName")|.[1])),
-	("ΟΔΟΣ\t" + (select(.[0][4] == "address")|.[1])),
-	("ΑΡΙΘΜΟΣ\t" + (select(.[0][4] == "addressNo")|.[1])),
-	("ΤΚ\t" + (select(.[0][4] == "parZipCode")|.[1])),
-	("ΠΕΡΙΟΧΗ\t" + (select(.[0][4] == "parDescription")|.[1]))
-),
-("ERRCODE\t" + (select((.[0][0] == "vehicle") and
-	(.[0][1] == "errorRecord") and
-	(.[0][2] == "errorCode") and (.[1]))|.[1])),
-("ERROR\t" + (select((.[0][0] == "vehicle") and
-	(.[0][1] == "errorRecord") and
-	(.[0][2] == "errorDescr") and (.[1]))|.[1]))
-' "$@" | awk \
--i "${PANDORA_BASEDIR}/lib/pandora.awk" \
--i "${libdir}/carparse0.awk"  \
--f "${libdir}/carparse_${post}.awk"
+case "${filtro}" in
+
+normal)
+	eval set -- "$(pd_parseopts "nm" "none,multi" "$@")"
+	[ $1 -ne 0 ] && pd_usage
+	shift
+
+	for arg in "$@"
+	do
+		case "${arg}" in
+		-n|--none)
+			awk_opts="${awk_opts} -v none=yes"
+			shift
+			;;
+
+		-m|--multi)
+			awk_opts="${awk_opts} -v multi=yes"
+			shift
+			;;
+
+		--)
+			shift
+			;;
+		esac
+	done
+	unset arg
+
+	parser "$@" | awk ${awk_opts} -f "${libdir}/carparse_normal.awk"
+	;;
+
+dump)
+	parser "$@" | awk ${awk_opts} '{ print }'
+	;;
+
+*)
+	pd_error "${pd_progname}: ${filtro}: invalid filter name"
+	pd_usage
+	;;
+
+esac

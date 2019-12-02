@@ -29,8 +29,8 @@ NF < min_cols {
 # Η function "carget" επιτελεί την αναζήτηση στοιχείων οχημάτων/κατόχων
 # αποστέλλοντας τον αρ. κυκλοφορίας, την ημερομηνία παράβασης κλπ.
 
-function carget(	pinakida, imerominia, kodikos, cmd, rsp, s) {
-	pinakida = $(pinakida_col)
+function carget(	vehicle, imerominia, kodikos, cmd, rsp, s) {
+	vehicle = $(vehicle_col)
 
 	if (imerominia_col)
 	imerominia = $(imerominia_col)
@@ -49,7 +49,7 @@ function carget(	pinakida, imerominia, kodikos, cmd, rsp, s) {
 	"auditProtocolNumber:" (protocol_number++) "," \
 	"auditProtocolDate:\"" protocol_date "\"" \
 	"},getVehicleInformationInputRecord:{" \
-	"arithmosKykloforias:\"" pinakida "\"," \
+	"arithmosKykloforias:\"" vehicle "\"," \
 	"requestDate:\"" imerominia "\"}}'"
 
 	# Τα δεδομένα θα παραληφθούν γραμμή-γραμμή και θα αποθηκευτούν σε
@@ -79,12 +79,12 @@ function carget(	pinakida, imerominia, kodikos, cmd, rsp, s) {
 
 	printf "{"
 
-	if (kodikos_col)
-	printf "\"id\":\"" $(kodikos_col) "\","
-
 	printf \
-		"\"date\":\"" imerominia "\"," \
-		"\"vehicle\":" rsp
+	"\"vehicle\":" rsp "," \
+	"\"date\":\"" imerominia "\","
+
+	if (kodikos_col)
+	printf "\"id\":\"" $(kodikos_col) "\""
 
 	print "}"
 
@@ -110,14 +110,14 @@ function init(			errs) {
 	else
 	OFS = FS
 
-	if (!pinakida_col)
-	pinakida_col = 1
+	if (!vehicle_col)
+	vehicle_col = 1
 
 	# Η παράμετρος "min_cols" είναι το ελάχιστο πλήθος στηλών που πρέπει
 	# να υπάρχουν στο input, σύμφωνα με τις στήλες που έχουμε καθορίσει
 	# για τον αρ. κυκλοφορίας, την ημερομηνία, και τον κωδικός παράβασης.
 
-	min_cols = pinakida_cols
+	min_cols = vehicle_cols
 
 	if (!imerominia_col)
 	imerominia_col = 0

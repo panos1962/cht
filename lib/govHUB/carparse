@@ -5,7 +5,7 @@ libdir="${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB"
 
 eval set -- "$(pd_parseopts \
 "d" \
-"--dump" \
+"dump" \
 "$@")"
 [ $1 -ne 0 ] && pd_usage
 shift
@@ -45,6 +45,8 @@ ${parser} '
 	("ΠΟΣΟΣΤΟ\t" + ((select(.[0][4] == "percent")|.[1])|tostring)),
 	("ΔΟΥ\t" + (select(.[0][4] == "doy")|.[1])),
 	("ΠΕΡΙΓΡΑΦΗ ΔΟΥ\t" + (select(.[0][4] == "doyDesc")|.[1])),
+	("ΕΠΩΝΥΜΙΑ\t" + (select(.[0][4] == "appelation")|.[1])),
+	("ΜΟΡΦΗ\t" + (select(.[0][4] == "legalStatusDesc")|.[1])),
 	("ΕΠΩΝΥΜΟ\t" + (select(.[0][4] == "surname")|.[1])),
 	("ΕΠΩΝΥΜΟ2\t" + (select(.[0][4] == "secondSurname")|.[1])),
 	("ΟΝΟΜΑ\t" + (select(.[0][4] == "firstName")|.[1])),
@@ -54,7 +56,13 @@ ${parser} '
 	("ΑΡΙΘΜΟΣ\t" + (select(.[0][4] == "addressNo")|.[1])),
 	("ΤΚ\t" + (select(.[0][4] == "parZipCode")|.[1])),
 	("ΠΕΡΙΟΧΗ\t" + (select(.[0][4] == "parDescription")|.[1]))
-)
+),
+("ERRCODE\t" + (select((.[0][0] == "vehicle") and
+	(.[0][1] == "errorRecord") and
+	(.[0][2] == "errorCode") and (.[1]))|.[1])),
+("ERROR\t" + (select((.[0][0] == "vehicle") and
+	(.[0][1] == "errorRecord") and
+	(.[0][2] == "errorDescr") and (.[1]))|.[1]))
 ' "$@" | awk \
 -i "${PANDORA_BASEDIR}/lib/pandora.awk" \
 -i "${libdir}/carparse0.awk"  \

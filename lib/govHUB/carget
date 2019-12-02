@@ -5,18 +5,16 @@
 #
 #	govHUB carget [OPTIONS] [ARGUMENTS]
 #
-# Αν έχετε δημιουργήσει link "GH" για το πρόγραμμα "govHUB" μπορείτε να
-# καλέσετε το παρόν και με την εντολή:
+# ή 
 #
 #	GH carget [OPTIONS] [ARGUMENTS]
 #
 # Το πρόγραμμα σκοπό έχει να ζητήσει από την πλατφόρμα "govHUB" δεδομένα που
 # αφορούν σε οχήματα καταγεγραμμένα στις βάσεις δεδομένων του Υπουργείου
-# Οικονομικών. Τα στοιχεία που απαιτούνται προκειμένου να αναζητηθούν και
+# Οικονομικών. Τα στοιχεία που απαιτούνται προκειμένου να αναζητηθούν και να
 # επιστραφούν δεδομένα για κάποιο όχημα είναι ο αριθμός κυκλοφορίας τού
-# οχήματος και μια ημερομηνία για την οποία αιτούμαστε δεδομένα οχήματος.
-# Αν δεν καθορίσουμε ημερομηνία, τότε επιστρέφονται δεδομένα για την τρέχουσα
-# ημερομηνία.
+# οχήματος και μια ημερομηνία για την οποία αιτούμαστε δεδομένα οχήματος και
+# κατόχων.
 #
 # Το πρόγραμμα χρησιμοποιείται κυρίως για την εξακρίβωση των στοιχείων κατόχων
 # των οχημάτων, προκειμένου να βεβαιωθούν στα αντίστοιχα ΑΦΜ πρόστιμα από
@@ -32,9 +30,7 @@ pd_tmpmax="1"
 pd_seterrcode \
 	"govhuberr" \
 	"tokenerr" \
-	"paramerr" \
 	"autoerr" \
-	"othererr" \
 	""
 
 tmp1="${pd_tmpname[1]}"
@@ -149,9 +145,36 @@ unset arg
 . "${govhubcf}" ||
 pd_exit "govhuberr"
 
+# Για να ζητήσουμε δεδομένα οχημάτων από την πλατφόρμα govHUB πρέπει πρώτα να
+# εξασφαλίσουμε ένα "access token". Πρόκειται για ένα αρκετά μεγάλο string το
+# οποίο μας το παρέχει η ίδια η πλατφόρμα μέσω κλήσης σε συγκεκριμένο URL στο
+# οποίο γνωστοποιούμε credentials που έχουν δοθεί στο Δήμο Θεσσαλονίκης γι
+# αυτό το σκοπό (client-id και client-secret).
+
+# TODO
+# Αυτό το κομμάτι του προγράμματος μέσω του οποίου ζητάμε access token από την
+# πλατφόρμα, είναι μάλλον ανεξάρτητο από τη συγκεκριμένη διαδικασία αναζήτησης
+# στοιχείων οχημάτων, τουτέστιν μπορεί να φανεί χρήσιμο και σε άλλου είδους
+# αιτήματα προς την πλατφόρμα "govHUB", επομένως ίσως είναι καλύτερα να γίνει
+# extract σε ξεχωριστό πρόγραμμα, ή έστω να γραφεί ως function βιβλιοθήκης.
+#
+# ΣΗΜΑΝΤΙΚΟ!!!
+# ************
+# Πιθανόν να χρειάζεται και το "scope" το οποίο για τη συγκεκριμένη αναζήτηση
+# έχει την τιμή "GovHub.GsisVehicle.Basic".
+# XXX
+
 token_set() {
+	local err=
+
+	# Υπάρχει περίπτωση να έχει καθοριστεί token από το command line
+	# μέσω της σχετικής option.
+	
 	[ -n "${token}" ] &&
 	return 0
+
+	# Υπάρχει περίπτωση να έχουμε καθορίσει κάποιο αρχείο στο οποίο
+	# έχει καταγραφεί το token.
 
 	if [ -n "${token_file}" ]; then
 		token="$(cat "${token_file}" 2>/dev/null)" &&
@@ -161,16 +184,25 @@ token_set() {
 		pd_exit "tokenerr"
 	fi
 
+	# Δεν έχει καθοριστεί token για την αναζήτηση στην οποία προτιθέμεθα
+	# να προβούμε, επομένως θα πρέπει να ζητήσουμε token μέσω της σχετικής
+	# υπηρεσίας. Ως εκ τούτου είναι απαραίτητο να γνωρίζουμε τα σχετικά
+	# credentials (client-id και client-secret).
+
 	[ -z "${GH_oxima_tokenget_client_id}" ] &&
 	pd_errmsg "get-token: unspecified client_id" &&
-	error="yes"
+	err="yes"
 
 	[ -z "${GH_oxima_tokenget_client_secret}" ] &&
 	pd_errmsg "get-token: unspecified client_secret" &&
-	error="yes"
+	err="yes"
 
-	[ -n "${error}" ] &&
-	return 1
+	[ -n "${err}" ] &&
+	pd_exit "tokenerr"
+
+	# Ελέγχουμε το URL της σχετικής υπηρεσίας. Αν δεν έχει καθοριστεί
+	# στο command line ή με κάποιον άλλον τρόπο, χρησιμοποιούμε το URL
+	# που γνωρίζουμε.
 
 	[ -z "${GH_oxima_tokenget_url}" ] &&
 	GH_oxima_tokenget_url="https://auth.govhub.gr/connect/token"
@@ -181,24 +213,31 @@ token_set() {
 	--url "https://auth.govhub.gr/connect/token" \
 	--header "content-type: application/x-www-form-urlencoded" \
 	--data "grant_type=client_credentials" \
+	--data "response_type=code token" \
 	--data "client_id=${GH_oxima_tokenget_client_id}" \
 	--data "client_secret=${GH_oxima_tokenget_client_secret}" \
-	--data "response_type=code token" \
 	--data "scope=GovHub.GsisVehicle.Basic" >"${tmp1}"
 
 	[ $? -ne 0 ] &&
-	pd_errmsg "failed to get token" &&
+	pd_errmsg "failed to get connect-token" &&
 	pd_exit "tokenerr"
 
-	token="$(jq --monochrome-output --raw-output '.access_token' "${tmp1}")" &&
-	return 0
+	# Αποσπούμε το ζητούμενο token από την property "access_token" του
+	# JSON object που μας έχει επιστραφεί.
 
-	pd_errmsg "failed to parse token json"
-	return 1
+	token="$(jq --monochrome-output --raw-output '.access_token' "${tmp1}")"
+
+	[ $? -ne 0 ] &&
+	pd_errmsg "failed to parse connect-token JSON object" &&
+	pd_exit "tokenerr"
 }
 
+# Κατά την αναζήτηση στοιχείων οχημάτων πρέπει να καθορίσουμε και διάφορα άλλα
+# στοιχεία που αφορούν τον client που διενεργεί την αναζήτηση. Μεταξύ αυτών
+# συγκαταλέγονται το όνομα του χρήστη και το IP του client machine.
+
 user_set() {
-	local fake_ip="10.65.15.46"
+	local default_ip="10.65.15.46"
 
 	[ -z "${user_id}" ] &&
 	user_id="dorak"
@@ -207,27 +246,21 @@ user_set() {
 	user_ip="$(hostname -I)"
 
 	[ -z "${user_ip}" ] &&
-	pd_errmsg "warning: failed to get local IP address set to ${fake_ip}" &&
-	user_ip="${fake_ip}"
-
-	return 0
+	pd_errmsg "warning: local IP address set to ${default_ip}" &&
+	user_ip="${default_ip}"
 }
 
-error=
-
-token_set || error="yes"
-user_set || error="yes"
-
-[ -n "${error}" ] &&
-pd_exit "othererr"
+token_set
+user_set
 
 # Το προσωρινό αρχείο "tmp1" θα χρησιμοποιηθεί κατά τη διαδικασία της
 # αναζήτησης στοιχείων οχημάτων/κατόχων, καθώς δεν έχουμε κανέναν έλεγχο
 # στο πρόγραμμα αναζήτησης και στο τι αυτό επιστρέφει σε περίπτωση που τα
-# παράγματα δεν πάνε καλά. Ενώ υπάρχουν πεδία στο επιστρεφόμενο JSON object
-# τα οποία αφορούν σε σφάλματα που ενδεχομένως προέκυψαν κατά τη διαδικασία
-# της αναζήτησης, κάποιες φορές απλώς το πρόγραμμα δεν επιστρέφει απολύτως
-# τίποτα, όπως συμβαίνει π.χ. αν χρησιμοποιήσουμε «ληγμένο» connect token.
+# παράγματα δεν πάνε καλά, π.χ. firewall-ban κλπ. Ενώ υπάρχουν πεδία στο
+# επιστρεφόμενο JSON object τα οποία αφορούν σε σφάλματα που ενδεχομένως
+# προέκυψαν κατά τη διαδικασία της αναζήτησης, κάποιες φορές το πρόγραμμα
+# απλώς δεν επιστρέφει απολύτως τίποτα, όπως συμβαίνει π.χ. στην περίπτωση
+# «ληγμένου» connect-token κλπ.
 
 rm -f "${tmp1}"
 
@@ -237,7 +270,6 @@ awk \
 -v kodikos_col="${kodikos_col}" \
 -v pinakida_col="${pinakida_col}" \
 -v imerominia_col="${imerominia_col}" \
--v simera="$(date +"%Y-%m-%d")" \
 -v protocol_date="${protocol_date}" \
 -v protocol_number="${protocol_number}" \
 -v url="${GH_oxima_dataget_url}" \

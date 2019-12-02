@@ -4,24 +4,32 @@ BEGIN {
 	init()
 }
 
+# Το πρόγραμμα μπορεί να δέχεται κενές γραμμές τις οποίες απλώς αγνοεί.
+
 NF < 1 {
 	next
 }
+
+# Ελέγχουμε αν υπάρχουν οι απαραίτητες στήλες στην είσοδο. Οι στήλες αυτές
+# αναφέρονται σε στοιχεία που είναι χρήσιμα στην αναζήτηση. Ως υποχρεωτικό
+# στοιχείο λογίζεται μόνο ο αριθμός κυκλοφορίας οχήματος.
 
 NF < min_cols {
 	pd_errmsg($0 ": syntax error")
 	next
 }
 
+# Το input έχει ελεγχθεί κατά το δυνατόν, οπότε μπορούμε να προχωρήσουμε
+# στην αναζήτηση των στοιχείων του οχήματος.
+
 {
 	carget()
 }
 
-END {
-exit(0)
-}
+# Η function "carget" επιτελεί την αναζήτηση στοιχείων οχημάτων/κατόχων
+# αποστέλλοντας τον αρ. κυκλοφορίας, την ημερομηνία παράβασης κλπ.
 
-function carget(	pinakida, imerominia, kodikos, cmd, data, s) {
+function carget(	pinakida, imerominia, kodikos, cmd, rsp, s) {
 	pinakida = $(pinakida_col)
 
 	if (imerominia_col)
@@ -33,6 +41,10 @@ function carget(	pinakida, imerominia, kodikos, cmd, data, s) {
 	if (kodikos_col)
 	kodikos = $(kodikos_col)
 
+	# Το πρόγραμμα ζητά, εκτός των άλλων στοιχείων, έναν αριθμό
+	# πρωτοκόλλου αιτήματος και την ημερομηνία της αίτησης. Αυτά
+	# τα στοιχεία είναι τα "protocol_number" και "protocol_date".
+
 	cmd = curlcmd \
 	"auditProtocolNumber:" (protocol_number++) "," \
 	"auditProtocolDate:\"" protocol_date "\"" \
@@ -40,10 +52,17 @@ function carget(	pinakida, imerominia, kodikos, cmd, data, s) {
 	"arithmosKykloforias:\"" pinakida "\"," \
 	"requestDate:\"" imerominia "\"}}'"
 
-	data = ""
+	# Τα δεδομένα θα παραληφθούν γραμμή-γραμμή και θα αποθηκευτούν σε
+	# ένα ενιαίο string.
 
-	while ((cmd | getline s) > 0)
-	data = data s
+	rsp = ""
+
+	while ((cmd | getline s) > 0) {
+		if (rsp)
+		rsp = rsp "\n"
+
+		rsp = rsp s
+	}
 
 	close(cmd)
 
@@ -51,8 +70,12 @@ function carget(	pinakida, imerominia, kodikos, cmd, data, s) {
 	# πήγε καλά και ως εκ τούτου εκτυπώνουμε την τρέχουσα input line
 	# στο standar error.
 
-	if (!data)
+	if (!rsp)
 	return pd_errmsg($0 ": request failed (no data returned)")
+
+	# Εγκιβωτίζουμε το επιστραφέν JSON object σε άλλο μεγαλύτερο, στο
+	# οποίο προσθέτουμε ως properties τον κωδικό παράβασης ("id"), και
+	# την ημερομηνία παράβασης ("date").
 
 	printf "{"
 
@@ -61,9 +84,10 @@ function carget(	pinakida, imerominia, kodikos, cmd, data, s) {
 
 	printf \
 		"\"date\":\"" imerominia "\"," \
-		"\"vehicle\":" data
+		"\"vehicle\":" rsp
 
 	print "}"
+
 	fflush()
 }
 
@@ -86,22 +110,26 @@ function init(			errs) {
 	else
 	OFS = FS
 
-	if (kodikos_col == "")
-	kodikos_col = 1
-
 	if (!pinakida_col)
-	pinakida_col = kodikos_col + 1
+	pinakida_col = 1
 
-	if (imerominia_col == "")
-	imerominia_col = pinakida_col + 1
+	# Η παράμετρος "min_cols" είναι το ελάχιστο πλήθος στηλών που πρέπει
+	# να υπάρχουν στο input, σύμφωνα με τις στήλες που έχουμε καθορίσει
+	# για τον αρ. κυκλοφορίας, την ημερομηνία, και τον κωδικός παράβασης.
 
-	min_cols = kodikos_col
+	min_cols = pinakida_cols
 
-	if (pinakida_col > min_cols)
-	min_cols = pinakida_col
+	if (!imerominia_col)
+	imerominia_col = 0
 
-	if (imerominia_col > min_cols)
+	else if (imerominia_col > min_cols)
 	min_cols = imerominia_col
+
+	if (!kodikos_col)
+	kodikos_col = 0
+
+	else if (kodikos_col > min_cols)
+	min_cols = kodikos_col
 
 	simera = strftime("%Y-%m-%d")
 
@@ -111,7 +139,14 @@ function init(			errs) {
 	if (!protocol_number)
 	protocol_number = 1
 
-	curlcmd = "curl --silent --request POST --url " url \
+	# Το πρώτο κομμάτι της εντολής "curl" μέσω της οποίας θα ζητηθούν τα
+	# στοιχεία οχήματος/κατόχων, είναι κοινό για όλα τα αιτήματα που θα
+	# υποβάλουμε.
+
+	curlcmd = "curl" \
+	" --silent" \
+	" --request POST" \
+	" --url " url \
 	" --header \"Accept: text/plain\"" \
 	" --header \"Authorization: Bearer " token "\"" \
 	" --header \"Content-Type: application/json\"" \

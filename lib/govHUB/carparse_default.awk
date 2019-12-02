@@ -6,10 +6,13 @@ BEGIN {
 	kodikos_tag = "ΚΩΔΙΚΟΣ"
 	pososto_tag = "ΠΟΣΟΣΤΟ"
 	afm_tag = "ΑΦΜ"
+	eponimia_tag = "ΕΠΩΝΥΜΙΑ"
+	morfi_tag = "ΜΟΡΦΗ"
 	eponimo_tag = "ΕΠΩΝΥΜΟ"
 	eponimo2_tag = "ΕΠΩΝΥΜΟ2"
 	odos_tag = "ΟΔΟΣ"
 	arithmos_tag = "ΑΡΙΘΜΟΣ"
+	errcode_tag = "ERRCODE"
 	error_tag = "ERROR"
 }
 
@@ -22,18 +25,14 @@ $1 == kodikos_tag {
 	reset_klisi()
 }
 
-is_error() {
-	next
-}
-
 $1 == pososto_tag {
 	if ($2 != 100) {
-		error_set("διαπιστώθηκε συνιδιοκτησία")
+		error_set("Διαπιστώθηκε συνιδιοκτησία")
 		next
 	}
 }
 
-{
+!($1 in klisi) {
 	klisi[$1] = $2
 }
 
@@ -46,7 +45,7 @@ function print_klisi() {
 	return
 
 	if (is_error())
-	return pd_errmsg(klisi[kodikos_tag] ": " klisi[error_tag])
+	return
 
 	if (oxi_katoxos())
 	return pd_errmsg(klisi[kodikos_tag] ": δεν βρέθηκαν στοιχεία κατόχου")
@@ -55,6 +54,8 @@ function print_klisi() {
 	klisi[kodikos_tag], \
 	klisi["ΠΙΝΑΚΙΔΑ"], \
 	klisi[afm_tag], \
+	klisi[eponimia_tag], \
+	klisi[morfi_tag], \
 	klisi[eponimo_tag], \
 	klisi[onoma_tag], \
 	klisi["ΠΑΤΡΩΝΥΜΟ"], \
@@ -72,15 +73,29 @@ function error_set(error) {
 	klisi[error_tag] = error
 }
 
-function is_error() {
-	return (error_tag in klisi)
+function is_error(		ante, msg) {
+	ante = klisi[kodikos_tag] ": "
+
+	if (klisi[error_tag]) {
+		msg = ante klisi[error_tag]
+		ante = " "
+	}
+
+	if (klisi[errcode_tag])
+	msg = msg ante "(" klisi[errcode_tag] ")"
+		
+	if (!msg)
+	return 0
+
+	pd_errmsg(msg)
+	return 1
 }
 
 function oxi_kodikos() {
 	return !(kodikos_tag in klisi)
 }
 
-function oxi_katoxos(		eponimo) {
+function oxi_katoxos(		katoxos) {
 	if (!(pososto_tag in klisi))
 	return 1
 
@@ -88,7 +103,15 @@ function oxi_katoxos(		eponimo) {
 	return 1
 
 	klisi[eponimo_tag] = onoma_push(klisi[eponimo_tag], klisi[eponimo2_tag])
-	return !(klisi[eponimo_tag])
+	delete klisi[eponimo2_tag]
+
+	if (klisi[eponimia_tag])
+	return 0
+
+	if (klisi[eponimo_tag])
+	return 0
+
+	return 1
 }
 
 function odos_fix() {

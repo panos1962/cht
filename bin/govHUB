@@ -1,11 +1,24 @@
 #!/usr/bin/env bash
 
+# Το πρόγραμμα "govHUB" ή "GH" αποτελεί το σημείο εκκίνησης πολλών επιμέρους
+# προγραμμάτων που σχετίζονται με τον έναν ή τον άλλο τρόπο με την πλατφόρμα
+# "govHUB.gr" που δημιούργησε το 2017 η ΚΕΔΕ σε συνεργασία με το ΥΠΕΣ και την
+# ΠΕΤΑ Α.Ε. και αφορά στην υλοποίηση του έργου «Διαλειτουργικότητα Ηλεκτρονικών
+# Υπηρεσιών Δήμων Ελλάδας» το οποίο επιτρέπει:
+#
+#	Την άμεση και ασφαλή πρόσβαση στελεχών των Δήμων σε ηλεκτρονικές
+#	υπηρεσίες που προσφέρουν δεδομένα από άλλους φορείς μέσω του κόμβου
+#	govHUB στους Δήμους.
+#
+#	Την άμεση και ασφαλή πρόσβαση άλλων φορέων της δημόσιας διοίκησης σε
+#	δεδομένα που προσφέρονται μέσω του κόμβου "govHUB" από τους Δήμους.
+
 . "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
 
 usage_list="${pd_progname} carget [ OPTIONS ] [ ARGS ]
 ${pd_progname} carparse [ OPTIONS ] [ ARGS ]"
 
-pd_usagemsg="[ --help ]
+pd_usagemsg="[--help]
 
 Or try one of the following:
 
@@ -22,19 +35,23 @@ case "${1}" in
 	echo "${usage_list}"
 	exit 0
 	;;
+
 -*)
 	pd_usage
 	;;
 esac
 
-component="${1}"
+# Το πρώτο argument στο command line είναι το όνομα του (υπο)προγράμματος που
+# επιθυμούμε να τρέξουμε. Τυχόν επόμενα arguments θα περάσουν ως arguments στο
+# συγκεκριμένο πρόγραμμα.
+
+tag="${1}"
 shift
 
-program="${CHT_BASEDIR}/lib/govHUB/${component}"
+program="${CHT_BASEDIR}/lib/govHUB/${tag}"
 
-pd_errlevel=0
 [ ! -x "${program}" ] &&
-echo "${pd_progname}: ${component}: unknown program" >&2 &&
+echo "${pd_progname}: ${tag}: unknown program" >&2 &&
 exit 1
 
 exec "${program}" "$@"

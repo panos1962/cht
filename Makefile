@@ -31,5 +31,5 @@ pull:
 
 .PHONY: test
 test:
-	@./lib/govHUB/carparse normal --none --multi local/KOK/kata_mina_20191201/2017/201701.json
+	@./lib/govHUB/carparse normal --none --multi local/govHUB/KOK/kata_mina_20191201/2017/201701.json
 	@#./lib/govHUB/carparse dump local/KOK/kata_mina_20191201/2017/201701.json

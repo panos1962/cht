@@ -5,6 +5,7 @@ BEGIN {
 
 	vehicle_tag = "VEHICLE"
 	id_tag = "ID"
+	date_tag = "DATE"
 	errcode_tag = "ERRCODE"
 	error_tag = "ERROR"
 
@@ -70,6 +71,7 @@ function print_oxima(		i) {
 	print \
 	oxima[vehicle_tag], \
 	oxima[id_tag], \
+	oxima[date_tag], \
 	katoxos[i][afm_tag], \
 	katoxos[i][pososto_tag], \
 	katoxos[i][eponimia_tag], \

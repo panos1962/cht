@@ -4,7 +4,7 @@
 	(.[0][1] == "getVehicleInformationOutputRecord") and
 	(.[0][2] == "arithmosKykloforias"))|.[1])),
 ("ID\t" + (select(.[0][0] == "id")|.[1])),
-("ΗΜΕΡΟΜΗΝΙΑ\t" + (select(.[0][0] == "date")|.[1])),
+("DATE\t" + (select(.[0][0] == "date")|.[1])),
 (select((.[0][0] == "vehicle") and
 	(.[0][1] == "getVehicleInformationOutputRecord") and
 	(.[0][2] == "katoxoiList"))|

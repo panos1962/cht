@@ -96,10 +96,10 @@ function carget(	vehicle, imerominia, kodikos, cmd, rsp, s) {
 
 	printf \
 	"\"vehicle\":" rsp "," \
-	"\"date\":\"" imerominia "\","
+	"\"date\":\"" imerominia "\""
 
 	if (kodikos_col)
-	printf "\"id\":\"" $(kodikos_col) "\""
+	printf ",\"id\":\"" $(kodikos_col) "\""
 
 	print "}"
 

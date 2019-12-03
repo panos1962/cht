@@ -2,6 +2,10 @@
 status:
 	@git status .
 
+.PHONY: diff
+diff:
+	@git diff .
+
 .PHONY: show
 show:
 	@git add --dry-run .
@@ -24,4 +28,5 @@ pull:
 
 .PHONY: test
 test:
-	@./lib/govHUB/carparse normal local/KOK/kata_mina_20191201/2017/201701.json
+	@./lib/govHUB/carparse normal --none --multi local/KOK/kata_mina_20191201/2017/201701.json
+	@#./lib/govHUB/carparse dump local/KOK/kata_mina_20191201/2017/201701.json

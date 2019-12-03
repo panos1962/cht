@@ -15,13 +15,27 @@ BEGIN {
 	katoxos_tag[morfi_tag = "ΜΟΡΦΗ"]
 	katoxos_tag[eponimo_tag = "ΕΠΩΝΥΜΟ"]
 	katoxos_tag[eponimo2_tag = "ΕΠΩΝΥΜΟ2"]
+	katoxos_tag[onoma_tag = "ΟΝΟΜΑ"]
+	katoxos_tag[patronimo_tag = "ΠΑΤΡΩΝΥΜΟ"]
+	katoxos_tag[mitronimo_tag = "ΜΗΤΡΩΝΥΜΟ"]
 	katoxos_tag[odos_tag = "ΟΔΟΣ"]
 	katoxos_tag[arithmos_tag = "ΑΡΙΘΜΟΣ"]
 	katoxos_tag[tk_tag = "ΤΚ"]
 	katoxos_tag[perioxi_tag = "ΠΕΡΙΟΧΗ"]
 }
 
-$1 == vehicle_tag {
+# Η πρώτη γραμμή που διαβάζουμε καθορίζει και το tag αλλαγής οχήματος. Πιο
+# συγκεκριμένα, το tag της πρώτης γραμμής θα χρησιμοποιηθεί ως tag αλλαγής
+# οχήματος. Συνήθως πρόκειται για τον αρ. κυκλοφορίας ή για τον κωδικό
+# παράβασης.
+
+NR == 1 {
+	tag_alagis = $1
+	oxima[$1] = $2
+	next
+}
+
+$1 == tag_alagis {
 	print_oxima()
 	reset_oxima()
 }
@@ -37,13 +51,13 @@ $1 == afm_tag {
 # τρέχοντος κατόχου.
 
 $1 in katoxos_tag {
-	katoxos[katoxos_count][$1] = $2
+	katoxos[katoxos_count ":" $1] = $2
 	next
 }
 
 # Τα πεδία του οχήματος πρέπει να εμφανίζονται στο input μια μόνο φορά. Επειδή
 # το πεδίο "ERROR" -για λόγους που δεν έχω αποσαφηνίσει ακόμη- εμφανίζεται και
-# δεύτερη φορά, καλού κακού κρατώ μόνο την πρώτη τιμή που εμφανίζεται για κάθε
+# δεύτερη φορά, καλού-κακού κρατώ μόνο την πρώτη τιμή που εμφανίζεται για κάθε
 # πεδίο του οχήματος.
 
 !($1 in oxima) {
@@ -72,18 +86,18 @@ function print_oxima(		i) {
 	oxima[vehicle_tag], \
 	oxima[id_tag], \
 	oxima[date_tag], \
-	katoxos[i][afm_tag], \
-	katoxos[i][pososto_tag], \
-	katoxos[i][eponimia_tag], \
-	katoxos[i][morfi_tag], \
-	katoxos[i][eponimo_tag], \
-	katoxos[i][onoma_tag], \
-	katoxos[i][patronimo_tag], \
-	katoxos[i][mitronimo_tag], \
-	katoxos[i][odos_tag], \
-	katoxos[i][arithmos_tag], \
-	katoxos[i][tk_tag], \
-	katoxos[i][perioxi_tag]
+	katoxos[i ":" afm_tag], \
+	katoxos[i ":" pososto_tag], \
+	katoxos[i ":" eponimia_tag], \
+	katoxos[i ":" morfi_tag], \
+	katoxos[i ":" eponimo_tag], \
+	katoxos[i ":" onoma_tag], \
+	katoxos[i ":" patronimo_tag], \
+	katoxos[i ":" mitronimo_tag], \
+	katoxos[i ":" odos_tag], \
+	katoxos[i ":" arithmos_tag], \
+	katoxos[i ":" tk_tag], \
+	katoxos[i ":" perioxi_tag]
 }
 
 function reset_oxima() {
@@ -117,11 +131,16 @@ function no_katoxos(		i) {
 	if (katoxos_count)
 	return 0
 
+	# Αν δεν έχει δοθεί η option "--none", τότε σημαίνει ότι τα οχήματα
+	# για τα οποία δεν βρέθηκαν στοιχεία κατόχου, δεν θα εκτυπωθούν.
+
 	if (!none)
 	return 1
 
-	for (i in katoxos_tag)
-	katoxos[1][i] = ""
+	# Αν έχει δοθεί η option "--none" τότε θα εκτυπωθούν στοιχεία οχήματος
+	# και για τα οχήματα που δεν έχουν στοιχεία κατόχων.
+
+	katoxos_count = 1
 
 	if (oxima[errcode_tag] == "VH_WITHOUT_OWNER") {
 		oxima[errcode_tag] = ""

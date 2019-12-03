@@ -55,8 +55,13 @@ else
 fi
 
 parser() {
-	jq --raw-output --monochrome-output --stream \
-		--from-file "${libdir}/carparse.jq" "$@"
+	jq \
+	--stream \
+	--from-file "${libdir}/carparse.jq" \
+	--monochrome-output \
+	--raw-output \
+	--compact-output \
+	"$@"
 }
 
 unset awk_opts

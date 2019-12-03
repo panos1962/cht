@@ -1,7 +1,32 @@
 #!/usr/bin/env awk
 
+###############################################################################@
+#
+# Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+#
+###############################################################################@
+#
+# Το παρόν φίλτρο εκτυπώνει κανονικοποιημένα στοιχεία οχημάτων/κατόχων. Ο όρος
+# «κανονικοποιημένα» σημαίνει ότι αν κάποιο όχημα βρεθεί να έχει περισσότερους
+# από έναν κατόχους, τότε θα εκτυπωθούν τόσες γραμμές όσες και οι κάτοχοι, με
+# τα στοιχεία του οχήματος να επαναλαμβάνονται σε κάθε γραμμή. Αντίθετα, αν
+# κάποιο όχημα δεν διαθέτει κατόχους, τότε θα εκτυπωθεί μια γραμμή με τα
+# στοιχεία του οχήματος και κενά στοιχεία κατόχου.
+#
+# Ωστόσο, το πρόγραμμα by default εκτυπώνει δεδομένα μόνο για τα οχήματα τα
+# οποία διαθέτουν ακριβώς έναν ιδιοκτήτη. Για να εκτυπώσουμε (κανονικοποιημένα)
+# δεδομένα για οχήματα που διαθέτους περισσότερους από έναν κατόχους, θα πρέπει
+# η παράμετρος "multi" να είναι true, ενώ για να εκτυπώσουμε δεδομένα για
+# οχήματα που δεν διαθέτουν κατόχους, θα πρέπει η παράμετρος "none" να είναι
+# true.
+#
+###############################################################################@
+
 BEGIN {
 	OFS = "\t"
+
+	# Το πρόγραμμα διαβάζει key/value pairs. Τα keys είναι συγκεκριμένα
+	# και τα αντιστοιχίζουμε σε (global) μεταβλητές.
 
 	vehicle_tag = "VEHICLE"
 	id_tag = "ID"
@@ -9,12 +34,14 @@ BEGIN {
 	errcode_tag = "ERRCODE"
 	error_tag = "ERROR"
 
+	# Το array "katoxos_tag" δεικτοδοτείται με τα keys που αφορούν στα
+	# στοιχεία κατόχου. π.χ. ΑΦΜ, επώνυμο, όνομα, διεύθυνση κλπ.
+
 	katoxos_tag[afm_tag = "ΑΦΜ"]
 	katoxos_tag[pososto_tag = "ΠΟΣΟΣΤΟ"]
 	katoxos_tag[eponimia_tag = "ΕΠΩΝΥΜΙΑ"]
 	katoxos_tag[morfi_tag = "ΜΟΡΦΗ"]
 	katoxos_tag[eponimo_tag = "ΕΠΩΝΥΜΟ"]
-	katoxos_tag[eponimo2_tag = "ΕΠΩΝΥΜΟ2"]
 	katoxos_tag[onoma_tag = "ΟΝΟΜΑ"]
 	katoxos_tag[patronimo_tag = "ΠΑΤΡΩΝΥΜΟ"]
 	katoxos_tag[mitronimo_tag = "ΜΗΤΡΩΝΥΜΟ"]
@@ -51,7 +78,7 @@ $1 == afm_tag {
 # τρέχοντος κατόχου.
 
 $1 in katoxos_tag {
-	katoxos[katoxos_count ":" $1] = $2
+	katoxos[katoxos_count][$1] = $2
 	next
 }
 
@@ -81,23 +108,49 @@ function print_oxima(		i) {
 	if (is_error())
 	return
 
-	for (i = 1; i <= katoxos_count; i++)
+	for (i = 1; i <= katoxos_count; i++) {
+		eponimo_fix(i)
+		arithmos_fix(i)
+		katoxos_print(i)
+	}
+}
+
+function eponimo_fix(i,		eponimo2, eponimo) {
+	eponimo2 = katoxos[i][eponimo2_tag]
+	if (!eponimo2)
+	return
+
+	eponimo = katoxos[i][eponimo_tag]
+
+	if (eponimo)
+	katoxos[i][eponimo_tag] = eponimo "-" eponimo2
+
+	else
+	katoxos[i][eponimo_tag] = eponimo2
+}
+
+function arithmos_fix(i) {
+	if (!katoxos[i][arithmos_tag])
+	delete katoxos[i][arithmos_tag]
+}
+
+function katoxos_print(i) {
 	print \
 	oxima[vehicle_tag], \
 	oxima[id_tag], \
 	oxima[date_tag], \
-	katoxos[i ":" afm_tag], \
-	katoxos[i ":" pososto_tag], \
-	katoxos[i ":" eponimia_tag], \
-	katoxos[i ":" morfi_tag], \
-	katoxos[i ":" eponimo_tag], \
-	katoxos[i ":" onoma_tag], \
-	katoxos[i ":" patronimo_tag], \
-	katoxos[i ":" mitronimo_tag], \
-	katoxos[i ":" odos_tag], \
-	katoxos[i ":" arithmos_tag], \
-	katoxos[i ":" tk_tag], \
-	katoxos[i ":" perioxi_tag]
+	katoxos[i][afm_tag], \
+	katoxos[i][pososto_tag], \
+	katoxos[i][eponimia_tag], \
+	katoxos[i][morfi_tag], \
+	katoxos[i][eponimo_tag], \
+	katoxos[i][onoma_tag], \
+	katoxos[i][patronimo_tag], \
+	katoxos[i][mitronimo_tag], \
+	katoxos[i][odos_tag], \
+	katoxos[i][arithmos_tag], \
+	katoxos[i][tk_tag], \
+	katoxos[i][perioxi_tag]
 }
 
 function reset_oxima() {

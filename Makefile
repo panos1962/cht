@@ -1,3 +1,6 @@
+#!/usr/bin/env make -f
+# Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+
 .PHONY: status
 status:
 	@git status .

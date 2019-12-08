@@ -33,4 +33,4 @@ pull:
 test:
 	@#./lib/govHUB/carparse normal --none --multi local/govHUB/KOK/kata_mina_20191201/2017/201701.json
 	@#./lib/govHUB/carparse dump local/KOK/kata_mina_20191201/2017/201701.json
-	@node ./lib/govHUB/carget.js
+	@node ./bin/carget.js

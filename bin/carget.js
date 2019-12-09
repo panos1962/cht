@@ -15,7 +15,7 @@ const govHUB = require(pd.env('CHT_BASEDIR', '/var/opt/cht') + '/lib/govHUB/api.
 
 function errorPrint(msg) {
 	pd.errmsg(msg);
-	process.stdout.write("ERROR\n");
+	console.log("__ERR__\n");
 }
 
 govHUB.confRead(`${process.env.CHT_BASEDIR}/private/govHUB.cf`, (cfs) => {
@@ -34,9 +34,9 @@ govHUB.confRead(`${process.env.CHT_BASEDIR}/private/govHUB.cf`, (cfs) => {
 			if (!data.hasOwnProperty('oxima'))
 			return errorPrint(line + ': missing "oxima" property');
 
-
 			govHUB.carGet(data, conf, (oxima) => {
 				console.log(JSON.stringify(oxima));
+				console.log("__END__");
 			});
 		});
 	});

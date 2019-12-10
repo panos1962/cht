@@ -32,7 +32,7 @@ process.env.PANDORA_BASEDIR = '/var/opt/pandora';
 
 const readline = require('readline');
 const pd = require(`${process.env.PANDORA_BASEDIR}/lib/pandora.js`);
-const govHUB = require(pd.env('CHT_BASEDIR', '/var/opt/cht') + '/lib/govHUB/api.js');
+const gh = require(pd.env('CHT_BASEDIR', '/var/opt/cht') + '/lib/govHUB/api.js');
 
 const carget = {};
 
@@ -63,11 +63,11 @@ carget.error = (data, msg) => {
 // οποίο υπάρχουν τα στοιχεία επικοινωνίας μας με την πλατφόρμα "govHUB" σε
 // μορφή JSON.
 
-govHUB.confRead(`${process.env.CHT_BASEDIR}/private/govHUB.cf`, (conf) => {
+gh.confRead(`${process.env.CHT_BASEDIR}/private/govHUB.cf`, (conf) => {
 	// Αφού διαβάσουμε επιτυχώς το configuration JSON object από το
 	// configuration file, αιτούμαστε access token από την πλατφόρμα.
 	
-	govHUB.tokenGet(conf, (conf) => {
+	gh.tokenGet(conf, (conf) => {
 		// Μετά την επιτυχή επιστροφή του configuration object
 		// εμπλουτισμένου με το πολυπόθητο access toekn, προχωρούμε
 		// στο διάβασμα των αριθμών κυκλοφορίας των οχημάτων για τα
@@ -117,7 +117,7 @@ govHUB.confRead(`${process.env.CHT_BASEDIR}/private/govHUB.cf`, (conf) => {
 			// παραμέτρους ένα JSON object, το configuration object
 			// και μια callback function.
 
-			govHUB.carGet(data, conf, (oxima) => {
+			gh.carGet(data, conf, (oxima) => {
 				if (oxima === undefined)
 				return carget.markError();
 

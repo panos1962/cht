@@ -34,4 +34,5 @@ test:
 	@#./lib/govHUB/carparse normal --none --multi local/govHUB/KOK/kata_mina_20191201/2017/201701.json
 	@#./lib/govHUB/carparse dump local/KOK/kata_mina_20191201/2017/201701.json
 	@#echo '{"oxima":"ΝΒΝ9596"}' | node ./lib/govHUB/carget.js
-	( cd tutorial/govHUB/carget && bash carget.sh test?.data )
+	@#( cd tutorial/govHUB/carget && bash carget.sh test?.data )
+	@node ./lib/govHUB/carget.js

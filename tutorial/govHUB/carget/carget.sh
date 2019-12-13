@@ -18,7 +18,7 @@
 
 
 echo "Synchronous:"
-awk -f sync.awk test[12].data
+#awk -f sync.awk test[12].data
 
 echo "Asynchronous:"
-#node "${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB/carget.js" < <(cat test[12].data)
+node "${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB/carget.js" < <(cat test[12].data)

@@ -36,113 +36,27 @@ pd_tmpmax="1"
 . "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
 
 pd_seterrcode \
-	"govhuberr" \
-	"tokenerr" \
-	"autoerr" \
+	"fserr" \
 	""
 
 tmp1="${pd_tmpname[1]}"
 pd_sigtrap
 
-govhubcf="${CHT_BASEDIR:=/var/opt/cht}/private/govHUB.cf"
-client_id=
-client_secret=
-token=
-token_file=
-user_id=
-user_ip=
-protocol_number=
-protocol_date=
-sep=
-ofs=
-kodikos_col=
-vehicle_col=
-imerominia_col=
-
-
-eval set -- "$(pd_parseopts \
-"G:c:s:t:f:u:i:p:d:" \
-"govHUB-conf:,client-id:,client-secret:,token:,token-file:,\
-user-id:,user-ip:,protocol-number:,protocol-date:,\
-fs:,sep:,separator:,ofs:,
-id-column:,vehicle-column:,date-column:" "$@")"
+eval set -- "$(pd_parseopts "s:" "script:" "$@")"
 [ $1 -ne 0 ] && pd_usage
 shift
+
+cat "${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB/carget.js" >"${tmp1}"
+
+error=
 
 for arg in "$@"
 do
 	case "${arg}" in
-
-	-F|--govHUB-conf)
-		govhubcf="${2}"
+	-s|--script)
+		cat "${2}" >>"${tmp1}" || error="yes"
 		shift 2
 		;;
-
-	-c|--client-id)
-		client_id="${2}"
-		shift 2
-		;;
-
-	-s|--client-secret)
-		client_secret="${2}"
-		shift 2
-		;;
-
-	-t|--token)
-		connect_token="${2}"
-		shift 2
-		;;
-
-	-f|--token-file)
-		token_file="${2}"
-		shift 2
-		;;
-
-	-u|--user-id)
-		user_id="${2}"
-		shift 2
-		;;
-
-	-i|--user-ip)
-		user_ip="${2}"
-		shift 2
-		;;
-
-	-p|--protocol-number)
-		protocol_number="${2}"
-		shift 2
-		;;
-
-	-d|--protocol-date)
-		protocol_date="${2}"
-		shift 2
-		;;
-
-	--fs|--sep|--separator)
-		sep="${2}"
-		shift 2
-		;;
-
-	--ofs)
-		ofs="${2}"
-		shift 2
-		;;
-
-	--id-column)
-		kodikos_col="${2}"
-		shift 2
-		;;
-
-	--vehicle-column)
-		vehicle_col="${2}"
-		shift 2
-		;;
-
-	--date-column)
-		imerominia_col="${2}"
-		shift 2
-		;;
-
 	--)
 		shift 1
 		;;
@@ -150,142 +64,8 @@ do
 done
 unset arg
 
-. "${govhubcf}" ||
-pd_exit "govhuberr"
+[ -n "${error}" ] &&
+pd_exit "fserr"
 
-# Για να ζητήσουμε δεδομένα οχημάτων από την πλατφόρμα govHUB πρέπει πρώτα να
-# εξασφαλίσουμε ένα "access token". Πρόκειται για ένα αρκετά μεγάλο string το
-# οποίο μας το παρέχει η ίδια η πλατφόρμα μέσω κλήσης σε συγκεκριμένο URL στο
-# οποίο γνωστοποιούμε credentials που έχουν δοθεί στο Δήμο Θεσσαλονίκης γι
-# αυτό το σκοπό (client-id και client-secret).
-
-# TODO
-# Αυτό το κομμάτι του προγράμματος μέσω του οποίου ζητάμε access token από την
-# πλατφόρμα, είναι μάλλον ανεξάρτητο από τη συγκεκριμένη διαδικασία αναζήτησης
-# στοιχείων οχημάτων, τουτέστιν μπορεί να φανεί χρήσιμο και σε άλλου είδους
-# αιτήματα προς την πλατφόρμα "govHUB", επομένως ίσως είναι καλύτερα να γίνει
-# extract σε ξεχωριστό πρόγραμμα, ή έστω να γραφεί ως function βιβλιοθήκης.
-#
-# ΣΗΜΑΝΤΙΚΟ!!!
-# ************
-# Πιθανόν να χρειάζεται και το "scope" το οποίο για τη συγκεκριμένη αναζήτηση
-# έχει την τιμή "GovHub.GsisVehicle.Basic".
-# XXX
-
-token_set() {
-	local err=
-
-	# Υπάρχει περίπτωση να έχει καθοριστεί token από το command line
-	# μέσω της σχετικής option.
-	
-	[ -n "${token}" ] &&
-	return 0
-
-	# Υπάρχει περίπτωση να έχουμε καθορίσει κάποιο αρχείο στο οποίο
-	# έχει καταγραφεί το token.
-
-	if [ -n "${token_file}" ]; then
-		token="$(cat "${token_file}" 2>/dev/null)" &&
-		return 0
-
-		pd_errmsg "${token_file}: cannot read file" &&
-		pd_exit "tokenerr"
-	fi
-
-	# Δεν έχει καθοριστεί token για την αναζήτηση στην οποία προτιθέμεθα
-	# να προβούμε, επομένως θα πρέπει να ζητήσουμε token μέσω της σχετικής
-	# υπηρεσίας. Ως εκ τούτου είναι απαραίτητο να γνωρίζουμε τα σχετικά
-	# credentials (client-id και client-secret).
-
-	[ -z "${GH_oxima_tokenget_client_id}" ] &&
-	pd_errmsg "get-token: unspecified client_id" &&
-	err="yes"
-
-	[ -z "${GH_oxima_tokenget_client_secret}" ] &&
-	pd_errmsg "get-token: unspecified client_secret" &&
-	err="yes"
-
-	[ -n "${err}" ] &&
-	pd_exit "tokenerr"
-
-	# Ελέγχουμε το URL της σχετικής υπηρεσίας. Αν δεν έχει καθοριστεί
-	# στο command line ή με κάποιον άλλον τρόπο, χρησιμοποιούμε το URL
-	# που γνωρίζουμε.
-
-	[ -z "${GH_oxima_tokenget_url}" ] &&
-	GH_oxima_tokenget_url="https://auth.govhub.gr/connect/token"
-
-	curl \
-	--silent \
-	--request "POST" \
-	--url "https://auth.govhub.gr/connect/token" \
-	--header "content-type: application/x-www-form-urlencoded" \
-	--data "grant_type=client_credentials" \
-	--data "response_type=code token" \
-	--data "client_id=${GH_oxima_tokenget_client_id}" \
-	--data "client_secret=${GH_oxima_tokenget_client_secret}" \
-	--data "scope=GovHub.GsisVehicle.Basic" >"${tmp1}"
-
-	[ $? -ne 0 ] &&
-	pd_errmsg "failed to get connect-token" &&
-	pd_exit "tokenerr"
-
-	# Αποσπούμε το ζητούμενο token από την property "access_token" του
-	# JSON object που μας έχει επιστραφεί.
-
-	token="$(jq --monochrome-output --raw-output '.access_token' "${tmp1}")"
-
-	[ $? -ne 0 ] &&
-	pd_errmsg "failed to parse connect-token JSON object" &&
-	pd_exit "tokenerr"
-}
-
-# Κατά την αναζήτηση στοιχείων οχημάτων πρέπει να καθορίσουμε και διάφορα άλλα
-# στοιχεία που αφορούν τον client που διενεργεί την αναζήτηση. Μεταξύ αυτών
-# συγκαταλέγονται το όνομα του χρήστη και το IP του client machine.
-
-user_set() {
-	local default_ip="10.65.15.46"
-
-	[ -z "${user_id}" ] &&
-	user_id="dorak"
-
-	[ -z "${user_ip}" ] &&
-	user_ip="$(hostname -I)"
-
-	[ -z "${user_ip}" ] &&
-	pd_errmsg "warning: local IP address set to ${default_ip}" &&
-	user_ip="${default_ip}"
-}
-
-token_set
-user_set
-
-# Το προσωρινό αρχείο "tmp1" θα χρησιμοποιηθεί κατά τη διαδικασία της
-# αναζήτησης στοιχείων οχημάτων/κατόχων, καθώς δεν έχουμε κανέναν έλεγχο
-# στο πρόγραμμα αναζήτησης και στο τι αυτό επιστρέφει σε περίπτωση που τα
-# παράγματα δεν πάνε καλά, π.χ. firewall-ban κλπ. Ενώ υπάρχουν πεδία στο
-# επιστρεφόμενο JSON object τα οποία αφορούν σε σφάλματα που ενδεχομένως
-# προέκυψαν κατά τη διαδικασία της αναζήτησης, κάποιες φορές το πρόγραμμα
-# απλώς δεν επιστρέφει απολύτως τίποτα, όπως συμβαίνει π.χ. στην περίπτωση
-# «ληγμένου» connect-token κλπ.
-
-rm -f "${tmp1}"
-
-awk \
--v sep="${fs}" \
--v ofs="${ofs}" \
--v kodikos_col="${kodikos_col}" \
--v vehicle_col="${vehicle_col}" \
--v imerominia_col="${imerominia_col}" \
--v protocol_date="${protocol_date}" \
--v protocol_number="${protocol_number}" \
--v url="${GH_oxima_dataget_url}" \
--v token="${token}" \
--v user_id="${GH_oxima_dataget_user_id[0]}" \
--v user_ip="${GH_oxima_dataget_user_ip[0]}" \
--i "${PANDORA_BASEDIR}/lib/pandora.awk" \
--f "${CHT_BASEDIR}/lib/govHUB/carget.awk" "$@" &&
-pd_exit 0
-
-pd_exit "autoerr"
+echo "carget.init();" >>"${tmp1}"
+awk -v script="${tmp1}" -f "${CHT_BASEDIR}/lib/govHUB/carget.awk" "$@"

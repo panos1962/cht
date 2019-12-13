@@ -10,15 +10,17 @@
 # "govHUB" μέσω του προγράμματος "carget.js" με σύγχρονο και ασύγχρονο τρόπο.
 #
 # Στο παρόν script παρουσιάζουμε τον τρόπο χρήσης του προγράμματος "carget.js"
-# με το οοποίο αναζητούμε στοιχεία οχημάτων/κατόχων από την πλατφόρμα "govHUB".
-# Το πρόγραμμα δέχεται JSON objects στα οποία (πρέπει) να περιέχεται property
-# "oxima" με τιμή τον αριθμό κυκλοφορίας οχήματος. 
+# με το οποίο αναζητούμε στοιχεία οχημάτων/κατόχων από την πλατφόρμα "govHUB".
+# Το πρόγραμμα, by default, δέχεται JSON objects στα οποία πρέπει να περιέχεται
+# property "oxima" με τιμή τον αριθμό κυκλοφορίας οχήματος. 
 #
 ###############################################################################@
 
+[ -x "${CHT_BASEDIR}" ] &&
+CHT_BASEDIR="/var/opt/cht"
 
-echo "Synchronous:"
-#awk -f sync.awk test[12].data
+echo "Default:"
+#"${CHT_BASEDIR}/bin/GH" carget default[12].data
 
-echo "Asynchronous:"
-node "${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB/carget.js" < <(cat test[12].data)
+echo "Custom:"
+"${CHT_BASEDIR}/bin/GH" carget -s test1.js test1[12].data

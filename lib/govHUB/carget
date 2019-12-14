@@ -68,4 +68,6 @@ unset arg
 pd_exit "fserr"
 
 echo "carget.init();" >>"${tmp1}"
-awk -v script="${tmp1}" -f "${CHT_BASEDIR}/lib/govHUB/carget.awk" "$@"
+cat "$@" | node "${tmp1}"
+
+pd_exit

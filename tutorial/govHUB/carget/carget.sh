@@ -20,7 +20,7 @@
 CHT_BASEDIR="/var/opt/cht"
 
 echo "Default:"
-#"${CHT_BASEDIR}/bin/GH" carget default[12].data
+"${CHT_BASEDIR}/bin/GH" carget default[12].data
 
 echo "Custom:"
 "${CHT_BASEDIR}/bin/GH" carget -s test1.js test1[12].data

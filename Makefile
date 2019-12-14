@@ -32,4 +32,4 @@ pull:
 .PHONY: test
 test:
 	@#echo '{"oxima":"ΝΒΝ9596"}' | node ./lib/govHUB/carget.js
-	@( cd tutorial/govHUB/carget && bash carget.sh )
+	@( cd tutorial/govHUB/carget && bash test.sh )

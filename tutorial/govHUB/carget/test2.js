@@ -1,4 +1,5 @@
-gh.debugSet();
+//gh.debugSet();
+pd.ttyMute();
 
 carget.processInput = (x, callback) => {
 	var a = x.rawData.split('\t');
@@ -20,7 +21,23 @@ carget.processOutput = (x) => {
 	if (x.hasOwnProperty('error'))
 	return console.error(x.rawData + ': ' + x.error);
 
-	process.stdout.write(x.rawData);
-	process.stdout.write('\t');
-	console.log(x.oxima.katoxos[0].eponimo);
+	let katoxos = x.oxima.katoxos;
+
+	if (katoxos.length <= 0)
+	return console.error(x.rawData + ': δεν υπάρχει κάτοχος');
+
+	let print = function(x) {
+		process.stdout.write(x.toString());
+	};
+
+	for (let i = 0; i < katoxos.length; i++) {
+		print(x.rawData);
+		print('\t');
+		print(katoxos[i].pososto);
+		print('\t');
+		print(katoxos[i].afm);
+		print('\t');
+		print(katoxos[i].onomasiaGet());
+		print('\n');
+	}
 };

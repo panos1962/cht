@@ -1,12 +1,12 @@
 carget.processInput = (x, callback) => {
 	var a = x.rawData.split('\t');
 
-	x.reqData.oxima = a[0];
+	x.keyData.oxima = a[0];
 
 	if (a.length > 1)
-	x.reqData.date = a[1];
+	x.keyData.date = a[1];
 
-	gh.carGet(x, (x) => {
+	gh.oximaGet(x, (x) => {
 		callback(x);
 	});
 };

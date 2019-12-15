@@ -1,5 +1,5 @@
 //gh.debugSet();
-pd.ttyMute();
+//pd.ttyMute();
 
 carget.processInput = (x, callback) => {
 	var a = x.rawData.split('\t');
@@ -7,12 +7,12 @@ carget.processInput = (x, callback) => {
 	if (a > 0)
 	return;
 
-	x.reqData.oxima = a[1];
+	x.keyData.oxima = a[1];
 
 	if (a.length > 2)
-	x.reqData.date = a[2];
+	x.keyData.date = a[2];
 
-	gh.carGet(x, (x) => {
+	gh.oximaGet(x, (x) => {
 		callback(x);
 	});
 };

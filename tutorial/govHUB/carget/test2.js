@@ -1,4 +1,5 @@
-gh.opts.debug = true;
+gh.debugSet();
+
 carget.processInput = (x, callback) => {
 	var a = x.rawData.split('\t');
 

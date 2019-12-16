@@ -42,17 +42,22 @@ pd_seterrcode \
 tmp1="${pd_tmpname[1]}"
 pd_sigtrap
 
-eval set -- "$(pd_parseopts "s:" "script:" "$@")"
+eval set -- "$(pd_parseopts "s:v" "script:,verbose" "$@")"
 [ $1 -ne 0 ] && pd_usage
 shift
 
 cat "${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB/carget.js" >"${tmp1}"
 
 error=
+verbose=
 
 for arg in "$@"
 do
 	case "${arg}" in
+	-v|--verbose)
+		verbose="yes"
+		shift 1
+		;;
 	-s|--script)
 		cat "${2}" >>"${tmp1}" || error="yes"
 		shift 2
@@ -63,6 +68,9 @@ do
 	esac
 done
 unset arg
+
+[ -z "${verbose}" ] &&
+echo "pd.ttyMute();" >>"${tmp1}"
 
 [ -n "${error}" ] &&
 pd_exit "fserr"

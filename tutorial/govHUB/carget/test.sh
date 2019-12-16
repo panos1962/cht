@@ -19,9 +19,9 @@
 [ -x "${CHT_BASEDIR}" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
-echo "Default:"
+echo "Default:" >/dev/tty
 #"${CHT_BASEDIR}/bin/GH" carget default[12].data
 
-echo "Custom:"
+echo "Custom:" >/dev/tty
 #"${CHT_BASEDIR}/bin/GH" carget -s test1.js test1[12].data
-"${CHT_BASEDIR}/bin/GH" carget -s test2.js test2[2].data
+"${CHT_BASEDIR}/bin/GH" carget -v -s test2.js test2[2].data

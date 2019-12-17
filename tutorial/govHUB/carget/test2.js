@@ -1,5 +1,5 @@
-//gh.debugSet();
-//pd.ttyMute();
+gh.debugSet(false);
+pd.ttyMute(true);
 
 carget.processInput = (x, callback) => {
 	var a = x.rawData.split('\t');
@@ -39,11 +39,11 @@ carget.processOutput = (x) => {
 		print('\t');
 		print(katoxos[i].onomasiaGet());
 		print('\t');
-		print('>>' + katoxos[i].diefGet() + '<<');
+		print(katoxos[i].dief);
 		print('\t');
 		print(katoxos[i].tk);
 		print('\t');
-		print('>>' + katoxos[i].perioxi + '<<');
+		print(katoxos[i].perioxi);
 		print('\n');
 	}
 };

@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+###############################################################################@
+#
+# Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+#
+# Updated: 2019-12-17
+#
+###############################################################################@
+#
+# Το παρόν πρόγραμμα είθισται να καλείται εμμέσως, μέσω του προγράμματος
+# "govHUB" ως εξής:
+#
+#	govHUB afmget [OPTIONS] [ARGUMENTS]
+#
+# ή 
+#
+#	GH afmget [OPTIONS] [ARGUMENTS]
+#
+# Το πρόγραμμα σκοπό έχει να ζητήσει από την ΓΓΠΣ δεδομένα που αφορούν σε
+# φυσικά ή νομικά πρόσωπα με βάση το ΑΦΜ.
+#
+###############################################################################@
+
+pd_tmpmax="1"
+. "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
+
+pd_seterrcode \
+	"fserr" \
+	""
+
+tmp1="${pd_tmpname[1]}"
+pd_sigtrap
+
+eval set -- "$(pd_parseopts "s:v" "script:,verbose" "$@")"
+[ $1 -ne 0 ] && pd_usage
+shift
+
+cat "${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB/afmget.js" >"${tmp1}"
+
+error=
+verbose=
+
+for arg in "$@"
+do
+	case "${arg}" in
+	-v|--verbose)
+		verbose="yes"
+		shift 1
+		;;
+	-s|--script)
+		cat "${2}" >>"${tmp1}" || error="yes"
+		shift 2
+		;;
+	--)
+		shift 1
+		;;
+	esac
+done
+unset arg
+
+[ -z "${verbose}" ] &&
+echo "pd.ttyMute();" >>"${tmp1}"
+
+[ -n "${error}" ] &&
+pd_exit "fserr"
+
+echo "afmget.init();" >>"${tmp1}"
+cat "$@" | node "${tmp1}"
+
+pd_exit

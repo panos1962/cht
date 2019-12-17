@@ -38,6 +38,12 @@ carget.processOutput = (x) => {
 		print(katoxos[i].afm);
 		print('\t');
 		print(katoxos[i].onomasiaGet());
+		print('\t');
+		print('>>' + katoxos[i].diefGet() + '<<');
+		print('\t');
+		print(katoxos[i].tk);
+		print('\t');
+		print('>>' + katoxos[i].perioxi + '<<');
 		print('\n');
 	}
 };

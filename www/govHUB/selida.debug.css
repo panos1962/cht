@@ -1,0 +1,19 @@
+.pedio {
+	background-color: yellow;
+}
+
+.panel {
+	background-color: olive;
+}
+
+form label.prompt {
+	background-color: crimson;
+}
+
+#inputRegion {
+	background-color: coral;
+}
+
+#resultsRegion {
+	background-color: cyan;
+}

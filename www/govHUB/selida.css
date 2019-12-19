@@ -1,0 +1,52 @@
+body {
+	font-size: 20px;
+}
+
+form {
+	display: inline-block;
+	padding: 8px;
+	background-color: #eeeeee;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #bbbbbb;
+	border-radius: 6px;
+}
+
+input {
+	font-size: 18px;
+	padding: 2px 4px;
+}
+
+.prompt {
+	font-style: italic;
+}
+
+.pedio {
+	display: inline-block;
+	padding: 4px;
+}
+
+.panel {
+	display: block;
+	text-align: center;
+}
+
+.panel input {
+	margin: 4px;
+	font-size: 80%;
+}
+
+form label.prompt {
+	display: inline-block;
+	white-space: nowrap;
+	width: 16ch;
+	text-align: right;
+}
+
+#inputRegion {
+	padding: 12px;
+}
+
+#resultsRegion {
+	padding: 12px;
+}

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+###############################################################################@
+#
+# Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+#
+# Updated: 2019-12-20
+#
+###############################################################################@
+
+exec node -e "const srv3w = require('${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB/srv3w.js');
+srv3w.init();"

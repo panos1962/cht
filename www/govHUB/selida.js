@@ -1,29 +1,40 @@
-const gh3w = {};
+const w3gh = {};
+w3gh.opts = {};
+w3gh.opts.portNumber = 11123;
 
 $(document).ready(() => {
-	gh3w.bodyDOM = $(document.body);
-	gh3w.ipovoliDOM = $('#ipovoli');
-	gh3w.katharismosDOM = $('#katharismos');
-	gh3w.akiroDOM = $('#akiro');
+	w3gh.bodyDOM = $(document.body);
+	w3gh.ipovoliDOM = $('#ipovoli');
+	w3gh.katharismosDOM = $('#katharismos');
+	w3gh.akiroDOM = $('#akiro');
 
-	gh3w.buttonSetup();
+	w3gh.buttonSetup();
 });
 
-gh3w.buttonSetup = () => {
-	gh3w.ipovoliDOM.
+w3gh.buttonSetup = () => {
+	w3gh.ipovoliDOM.
 	on('click', (e) => {
 		e.stopPropagation();
-		$.post(Globals.server + ':11123', {
+		$.post({
+			'url': Globals.server + ':' + w3gh.opts.portNumber,
 			'header': {
-				'Header set Access-Control-Allow-Origin': '*',
+				'Access-Control-Allow-Origin': '*',
 			},
+			'dataType': 'json',
 			'data': {
 				x: 1,
 				y: 'panos',
 			},
+			'success': (data) => {
+				console.log(data);
+			},
+			'error': (err) => {
+				console.error(err);
+			},
 		});
+
 		return false;
 	});
 
-	return gh3w;
+	return w3gh;
 };

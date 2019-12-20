@@ -8,5 +8,5 @@
 #
 ###############################################################################@
 
-exec node -e "const srv3w = require('${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB/srv3w.js');
-srv3w.init();"
+exec node -e "const w3srv = require('${CHT_BASEDIR:=/var/opt/cht}/lib/govHUB/w3srv.js');
+w3srv.init();"

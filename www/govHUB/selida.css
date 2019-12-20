@@ -1,11 +1,11 @@
 body {
-	font-size: 20px;
+	font-size: 18px;
 }
 
 form {
 	display: inline-block;
 	padding: 8px;
-	background-color: #eeeeee;
+	background-color: #f9ffe0;
 	border-style: solid;
 	border-width: 1px;
 	border-color: #bbbbbb;
@@ -13,7 +13,7 @@ form {
 }
 
 input {
-	font-size: 18px;
+	font-size: 80%;
 	padding: 2px 4px;
 }
 

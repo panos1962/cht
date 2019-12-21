@@ -53,9 +53,7 @@ w3gh.anazitisi = (data) => {
 	return w3gh;
 
 	let x = data.shift();
-	let dom = $('<p>').
-		appendTo(w3gh.resultsDOM).
-		html(JSON.stringify(x));
+	let resDOM = w3gh.resultCreate(x);
 
 	$.post({
 		'url': Globals.server + ':' + w3gh.opts.portNumber,
@@ -65,14 +63,60 @@ w3gh.anazitisi = (data) => {
 		'dataType': 'json',
 		'data': x,
 		'success': (x) => {
-			dom.empty().text(JSON.stringify(x));
+			resDOM.
+			removeClass('resreq').
+			text(JSON.stringify(x));
 			w3gh.anazitisi(data);
 		},
 		'error': (err) => {
-			dom.remove();
+			w3gh.resultErrmsg(resDOM, 'σφάλμα αναζήτησης');
+			w3gh.anazitisi(data);
 			console.error(err);
 		},
 	});
+
+	return w3gh;
+};
+
+w3gh.resultCreate = (data) => {
+	var dom;
+
+	dom = $('<p>').
+	addClass('result resreq').
+	appendTo(w3gh.resultsDOM);
+
+	switch (data.idos) {
+	case 'oxima':
+		if (data.hasOwnProperty('oxima'))
+		dom.append($('<div>').
+		addClass('resreqKeydata').
+		text(data.oxima));
+
+		dom.append($('<div>').
+		addClass('resreqMessage resreqMessageWorking').
+		text('αναζήτηση οχήματος/κατόχων…'));
+		break;
+	case 'prosopo':
+		if (data.hasOwnProperty('afm'))
+		dom.append($('<div>').
+		addClass('resreqKeydata').
+		text(data.afm));
+
+		dom.append($('<div>').
+		addClass('resreqMessage resreqMessageWorking').
+		text('αναζήτηση στοιχείων με βάση το ΑΦΜ…'));
+		break;
+	}
+
+	return dom;
+};
+
+w3gh.resultErrmsg = (dom, msg) => {
+	dom.
+	children('.resreqMessage').
+	removeClass('resreqMessageWorking').
+	addClass('reserr').
+	text(msg);
 
 	return w3gh;
 };

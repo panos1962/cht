@@ -50,3 +50,32 @@ form label.prompt {
 #resultsRegion {
 	padding: 12px;
 }
+
+.result {
+	margin: 4px;
+	padding: 2px 4px;
+	background-color: #daefff;
+}
+
+.resreq {
+	color: #17066f;
+	background-color: rgba(255, 127, 80, 0.5);
+}
+
+.resreqKeyData {
+	display: inline-block;
+	font-weight: bold;
+}
+
+.resreqMessage {
+	display: inline-block;
+	margin-left: 4px;
+}
+
+.resreqMessageWorking {
+	font-style: italic;
+}
+
+.reserr {
+	color: #ab0000;
+}

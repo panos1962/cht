@@ -5,7 +5,7 @@ $server = $_SERVER["HTTP_HOST"];
 <html>
 
 <head>
-
+<link rel="icon" type="image/png" href="../images/favicon-96x96.png">
 <link rel="stylesheet" type="text/css" href="selida.css">
 <?php if ($debug) { ?>
 <link rel="stylesheet" type="text/css" href="selida.debug.css">

@@ -80,43 +80,42 @@ w3gh.anazitisi = (data) => {
 
 w3gh.resultCreate = (data) => {
 	var dom;
-
-	dom = $('<p>').
-	addClass('result resreq').
-	appendTo(w3gh.resultsDOM);
+	var msg;
 
 	switch (data.idos) {
 	case 'oxima':
-		if (data.hasOwnProperty('oxima'))
-		dom.append($('<div>').
-		addClass('resreqKeydata').
-		text(data.oxima));
+		msg = 'Αναζήτηση οχήματος/κατόχων';
 
-		dom.append($('<div>').
-		addClass('resreqMessage resreqMessageWorking').
-		text('αναζήτηση οχήματος/κατόχων…'));
+		if (data.hasOwnProperty('oxima'))
+		msg += ' <b>' + data.oxima + '</b>';
+
+		if (data.hasOwnProperty('imerominia'))
+		msg += ' <b>(' + data.imerominia + '</b>)';
+
 		break;
 	case 'prosopo':
-		if (data.hasOwnProperty('afm'))
-		dom.append($('<div>').
-		addClass('resreqKeydata').
-		text(data.afm));
+		msg = 'Αναζήτηση προσώπου με βάση το ΑΦΜ';
 
-		dom.append($('<div>').
-		addClass('resreqMessage resreqMessageWorking').
-		text('αναζήτηση στοιχείων με βάση το ΑΦΜ…'));
+		if (data.hasOwnProperty('afm'))
+		msg += ' <b>' + data.afm + '</b>';
+
+		break;
+	default:
+		msg = 'Ακαθόριστη αναζήτηση!';
 		break;
 	}
 
-	return dom;
+	return $('<div>').
+	addClass('result resreq').
+	html(msg).
+	prependTo(w3gh.resultsDOM);
 };
 
 w3gh.resultErrmsg = (dom, msg) => {
 	dom.
-	children('.resreqMessage').
-	removeClass('resreqMessageWorking').
+	removeClass('resreq').
 	addClass('reserr').
-	text(msg);
+	html(msg);
 
 	return w3gh;
 };

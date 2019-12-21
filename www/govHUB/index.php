@@ -41,7 +41,6 @@ Globals.server = 'http://<?php print $server; ?>';
 </div>
 
 <div id="resultsRegion">
-Results
 </div>
 
 </body>

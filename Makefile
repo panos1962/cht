@@ -8,7 +8,6 @@
 #
 ###############################################################################@
 
-TEST = echo '{"oxima":"ΝΒΝ9596"}' | node ./lib/govHUB/carget.js
 TEST = ( cd tutorial/govHUB/carget && bash test.sh )
 TEST = ( cd tutorial/govHUB/afmget && bash test.sh )
 

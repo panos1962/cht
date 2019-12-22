@@ -2,6 +2,8 @@ const w3gh = {};
 w3gh.opts = {};
 w3gh.opts.portNumber = 11123;
 
+gh = require('../../lib/govHUB/api.js');
+
 $(document).ready(() => {
 	w3gh.bodyDOM = $(document.body);
 	w3gh.resultsDOM = $('#resultsRegion');
@@ -84,7 +86,7 @@ w3gh.resultCreate = (data) => {
 
 	switch (data.idos) {
 	case 'oxima':
-		msg = 'Αναζήτηση οχήματος/κατόχων';
+		msg = 'Αναζήτηση οχήματος με αρ. κυκλοφορίας:';
 
 		if (data.hasOwnProperty('oxima'))
 		msg += ' <b>' + data.oxima + '</b>';
@@ -94,7 +96,7 @@ w3gh.resultCreate = (data) => {
 
 		break;
 	case 'prosopo':
-		msg = 'Αναζήτηση προσώπου με βάση το ΑΦΜ';
+		msg = 'Αναζήτηση προσώπου με ΑΦΜ:';
 
 		if (data.hasOwnProperty('afm'))
 		msg += ' <b>' + data.afm + '</b>';
@@ -105,6 +107,8 @@ w3gh.resultCreate = (data) => {
 		break;
 	}
 
+	msg += '<div class="resreqWorking">' +
+		'<img class="resreqWorkingImage" src="../images/bares.gif"></div>';
 	return $('<div>').
 	addClass('result resreq').
 	html(msg).
@@ -113,9 +117,13 @@ w3gh.resultCreate = (data) => {
 
 w3gh.resultErrmsg = (dom, msg) => {
 	dom.
+	children('.resreqWorking').
+	remove();
+
+	dom.
 	removeClass('resreq').
 	addClass('reserr').
-	html(msg);
+	append(': ' + msg);
 
 	return w3gh;
 };

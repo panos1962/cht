@@ -1,12 +1,9 @@
 carget.processInput = (x, callback) => {
 	var a = x.rawData.split('\t');
 
-	x.keyData.oxima = a[0];
+	x.keyData.afm = a[0];
 
-	if (a.length > 1)
-	x.keyData.date = a[1];
-
-	gh.oximaGet(x, (x) => {
+	gh.afmGet(x, (x) => {
 		callback(x);
 	});
 };
@@ -17,5 +14,5 @@ carget.processOutput = (x) => {
 
 	process.stdout.write(x.rawData);
 	process.stdout.write('\t');
-	console.log(x.oxima.katoxos[0].eponimo);
+	console.log(x.prosopo.eponimo);
 };

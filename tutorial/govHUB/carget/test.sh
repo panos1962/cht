@@ -20,10 +20,10 @@
 CHT_BASEDIR="/var/opt/cht"
 
 echo "Default:" >/dev/tty
-"${CHT_BASEDIR}/bin/GH" carget -v default[12].data
+#"${CHT_BASEDIR}/bin/GH" carget -v default[12].data
 
-#echo "Custom (test1):" >/dev/tty
-#"${CHT_BASEDIR}/bin/GH" carget -v -s test1.js test1[12].data
+echo "Custom (test1):" >/dev/tty
+"${CHT_BASEDIR}/bin/GH" carget -v -s test1.js test1[12].data
 
 echo "Custom (test2):" >/dev/tty
-#"${CHT_BASEDIR}/bin/GH" carget -v -s test2.js test2[2].data
+"${CHT_BASEDIR}/bin/GH" carget -v -s test2.js test2[2].data

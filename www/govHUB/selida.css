@@ -58,7 +58,20 @@ form label.prompt {
 }
 
 .resreq {
-	background-color: #ffe1c8;
+	background-color: #dae7ff;
+}
+
+.resreqWorking {
+	position: relative;
+	display: inline-block;
+	width: 60px;
+}
+
+.resreqWorkingImage {
+	position: absolute;
+	bottom: 2px;
+	left: 10px;
+	width: 80px;
 }
 
 .reserr {

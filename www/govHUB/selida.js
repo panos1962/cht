@@ -1,8 +1,9 @@
+import { pandora as pd } from 'http://localhost/pandora/lib/pandora.js';
+import { gh } from '../lib/govHUBCore.js';
+
 const w3gh = {};
 w3gh.opts = {};
 w3gh.opts.portNumber = 11123;
-
-gh = require('../../lib/govHUB/api.js');
 
 $(document).ready(() => {
 	w3gh.bodyDOM = $(document.body);
@@ -16,6 +17,9 @@ $(document).ready(() => {
 	w3gh.akiroDOM = $('#akiro');
 
 	w3gh.buttonSetup();
+pd.testBrowser('Hi there!');
+var x = new gh.oxima();
+console.log(x);
 
 });
 

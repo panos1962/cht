@@ -15,11 +15,7 @@ $server = $_SERVER["HTTP_HOST"];
 Globals = {};
 Globals.server = 'http://<?php print $server; ?>';
 </script>
-<script type="module">
-import pandora from 'http://localhost/pandora/lib/pandora.js';
-pandora.testBrowser('Hi there!');
-</script>
-<script src="bundle.js"></script>
+<script type="module" src="selida.js"></script>
 
 </head>
 <body>

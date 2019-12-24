@@ -1,4 +1,4 @@
-carget.processInput = (x, callback) => {
+afmget.processInput = (x, callback) => {
 	var a = x.rawData.split('\t');
 
 	x.keyData.afm = a[0];
@@ -8,7 +8,7 @@ carget.processInput = (x, callback) => {
 	});
 };
 
-carget.processOutput = (x) => {
+afmget.processOutput = (x) => {
 	if (x.hasOwnProperty('error'))
 	return console.error(x.rawData + ': ' + x.error);
 

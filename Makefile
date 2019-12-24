@@ -8,8 +8,8 @@
 #
 ###############################################################################@
 
-TEST = ( cd tutorial/govHUB/carget && bash test.sh )
 TEST = ( cd tutorial/govHUB/afmget && bash test.sh )
+TEST = ( cd tutorial/govHUB/carget && bash test.sh )
 
 .PHONY: status
 status:
@@ -41,4 +41,5 @@ pull:
 
 .PHONY: test
 test:
+	(cd www && make)
 	$(TEST)

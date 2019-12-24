@@ -25,4 +25,4 @@ echo "Default:" >/dev/tty
 "${CHT_BASEDIR}/bin/GH" afmget -v default[1].data
 
 echo "Custom (test1):" >/dev/tty
-"${CHT_BASEDIR}/bin/GH" carget -v -s test1.js test1[12].data
+"${CHT_BASEDIR}/bin/GH" afmget -v -s test1.js test1[12].data

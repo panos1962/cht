@@ -15,7 +15,7 @@ $server = $_SERVER["HTTP_HOST"];
 Globals = {};
 Globals.server = 'http://<?php print $server; ?>';
 </script>
-<script type="module" src="selida.js"></script>
+<script src="bundle.js"></script>
 
 </head>
 <body>

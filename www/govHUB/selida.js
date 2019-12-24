@@ -1,5 +1,6 @@
-import { pandora as pd } from 'http://localhost/pandora/lib/pandora.js';
-import { gh } from '../lib/govHUBCore.js';
+"use strict";
+
+gh = require('../../lib/govHUB/apiClient.js');
 
 const w3gh = {};
 w3gh.opts = {};

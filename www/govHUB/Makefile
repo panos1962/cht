@@ -1,6 +1,11 @@
 all: bundle.js
-TINYIFY =
 TINYIFY = -p /usr/local/lib/node_modules/tinyify
+TINYIFY =
 
-bundle.js: selida.js ../../lib/govHUB/apiClient.js ../../lib/govHUB/apiCore.js
+all:
+	rm -f bundle.js
+	make bundle.js
+
+bundle.js: \
+	selida.js
 	browserify $(TINYIFY) -o $@ $^

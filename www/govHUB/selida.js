@@ -1,6 +1,7 @@
 "use strict";
 
-gh = require('../../lib/govHUB/apiClient.js');
+const gh = require('/var/opt/cht/lib/govHUB/apiClient.js');
+const pd = require('/var/opt/pandora/lib/pandoraClient.js');
 
 const w3gh = {};
 w3gh.opts = {};
@@ -18,10 +19,10 @@ $(document).ready(() => {
 	w3gh.akiroDOM = $('#akiro');
 
 	w3gh.buttonSetup();
-pd.testBrowser('Hi there!');
-var x = new gh.oxima();
-console.log(x);
 
+	pd.testClient();
+	var x = new gh.oxima();
+	console.log(x);
 });
 
 w3gh.buttonSetup = () => {

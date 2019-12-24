@@ -1,1 +1,957 @@
-!function(){gh={};const t={opts:{}};t.opts.portNumber=11123,$(document).ready(()=>{t.bodyDOM=$(document.body),t.resultsDOM=$("#resultsRegion"),t.pinakidaDOM=$("#pinakida").val("\u039d\u0392\u039d9596"),t.afmDOM=$("#afm").val("032792320"),t.ipovoliDOM=$("#ipovoli"),t.katharismosDOM=$("#katharismos"),t.akiroDOM=$("#akiro"),t.buttonSetup(),pd.testBrowser("Hi there!");var o=new gh.oxima;console.log(o)}),t.buttonSetup=(()=>(t.ipovoliDOM.on("click",o=>{o.stopPropagation();let e,r=[];return(e=t.pinakidaDOM.val())&&r.push({idos:"oxima",oxima:e}),(e=t.afmDOM.val())&&r.push({idos:"prosopo",afm:e}),t.anazitisi(r),!1}),t)),t.anazitisi=(o=>{if(o.length<=0)return t;let e=o.shift(),r=t.resultCreate(e);return $.post({url:Globals.server+":"+t.opts.portNumber,header:{"Access-Control-Allow-Origin":"*"},dataType:"json",data:e,success:e=>{r.removeClass("resreq").text(JSON.stringify(e)),t.anazitisi(o)},error:e=>{t.resultErrmsg(r,"\u03c3\u03c6\u03ac\u03bb\u03bc\u03b1 \u03b1\u03bd\u03b1\u03b6\u03ae\u03c4\u03b7\u03c3\u03b7\u03c2"),t.anazitisi(o),console.error(e)}}),t}),t.resultCreate=(o=>{var e;switch(o.idos){case"oxima":e="\u0391\u03bd\u03b1\u03b6\u03ae\u03c4\u03b7\u03c3\u03b7 \u03bf\u03c7\u03ae\u03bc\u03b1\u03c4\u03bf\u03c2 \u03bc\u03b5 \u03b1\u03c1. \u03ba\u03c5\u03ba\u03bb\u03bf\u03c6\u03bf\u03c1\u03af\u03b1\u03c2:",o.hasOwnProperty("oxima")&&(e+=" <b>"+o.oxima+"</b>"),o.hasOwnProperty("imerominia")&&(e+=" <b>("+o.imerominia+"</b>)");break;case"prosopo":e="\u0391\u03bd\u03b1\u03b6\u03ae\u03c4\u03b7\u03c3\u03b7 \u03c0\u03c1\u03bf\u03c3\u03ce\u03c0\u03bf\u03c5 \u03bc\u03b5 \u0391\u03a6\u039c:",o.hasOwnProperty("afm")&&(e+=" <b>"+o.afm+"</b>");break;default:e="\u0391\u03ba\u03b1\u03b8\u03cc\u03c1\u03b9\u03c3\u03c4\u03b7 \u03b1\u03bd\u03b1\u03b6\u03ae\u03c4\u03b7\u03c3\u03b7!"}return e+='<div class="resreqWorking"><img class="resreqWorkingImage" src="../images/bares.gif"></div>',$("<div>").addClass("result resreq").html(e).prependTo(t.resultsDOM)}),t.resultErrmsg=((o,e)=>(o.children(".resreqWorking").remove(),o.removeClass("resreq").addClass("reserr").append(": "+e),t));var o,e,r,i=o={};function n(){throw new Error("setTimeout has not been defined")}function s(){throw new Error("clearTimeout has not been defined")}function a(t){if(e===setTimeout)return setTimeout(t,0);if((e===n||!e)&&setTimeout)return e=setTimeout,setTimeout(t,0);try{return e(t,0)}catch(o){try{return e.call(null,t,0)}catch(o){return e.call(this,t,0)}}}!function(){try{e="function"==typeof setTimeout?setTimeout:n}catch(t){e=n}try{r="function"==typeof clearTimeout?clearTimeout:s}catch(t){r=s}}();var c,u=[],l=!1,p=-1;function h(){l&&c&&(l=!1,c.length?u=c.concat(u):p=-1,u.length&&m())}function m(){if(!l){var t=a(h);l=!0;for(var o=u.length;o;){for(c=u,u=[];++p<o;)c&&c[p].run();p=-1,o=u.length}c=null,l=!1,function(t){if(r===clearTimeout)return clearTimeout(t);if((r===s||!r)&&clearTimeout)return r=clearTimeout,clearTimeout(t);try{r(t)}catch(o){try{return r.call(null,t)}catch(o){return r.call(this,t)}}}(t)}}function f(t,o){this.fun=t,this.array=o}function d(){}i.nextTick=function(t){var o=new Array(arguments.length-1);if(arguments.length>1)for(var e=1;e<arguments.length;e++)o[e-1]=arguments[e];u.push(new f(t,o)),1!==u.length||l||a(m)},f.prototype.run=function(){this.fun.apply(null,this.array)},i.title="browser",i.browser=!0,i.env={},i.argv=[],i.version="",i.versions={},i.on=d,i.addListener=d,i.once=d,i.off=d,i.removeListener=d,i.removeAllListeners=d,i.emit=d,i.prependListener=d,i.prependOnceListener=d,i.listeners=function(t){return[]},i.binding=function(t){throw new Error("process.binding is not supported")},i.cwd=function(){return"/"},i.chdir=function(t){throw new Error("process.chdir is not supported")},i.umask=function(){return 0};var v={};(function(t){"use strict";const o={};v=o,o.testCore=(t=>{void 0===t&&(t="Hi there!"),console.log("pandora: [testCore]: "+t)}),o.noop=(()=>o),o.objectInit=function(t,e,r){var i,n;if(void 0===e)return t;for(i in \u03b4,r||(r={functions:!1,recursive:!0}),e)n=r.hasOwnProperty("colmap")&&r.colmap.hasOwnProperty(i)?r.colmap[i]:i,void 0!==e[i]?null!==e[i]?"function"!=typeof e[i]?"object"==typeof e[i]&&r.recursive?e[i].constructor&&typeof e[i].constructor===Function?t[n]=o.objectInit(new e.constructor,e[i],r):t[n]=o.objectInit(new Object,e[i],r):t[n]=e[i]:r.functions&&(t[n]=e[i]):t[n]=null:t[n]=void 0;return t},o.dateTime=((t,o)=>{void 0===t&&(t=new Date),void 0===o&&(o="%Y-%M-%D %h:%m:%s");var e=t.getFullYear(),r=t.getMonth()+1;r<10&&(r="0"+r);var i=t.getDate();i<10&&(i="0"+i);var n=t.getHours();n<10&&(n="0"+n);var s=t.getMinutes();s<10&&(s="0"+s);var a=t.getSeconds();return a<10&&(a="0"+a),o.replace(/%%/g,"\x16").replace(/%Y/g,e).replace(/%M/g,r).replace(/%D/g,i).replace(/%h/g,n).replace(/%m/g,s).replace(/%s/g,a).replace(/\x16/g,"%")}),o.date=(t=>o.dateTime(t,"%Y-%M-%D")),o.time=(t=>o.dateTime(t,"%h-%m-%s")),o.debug=((e,r)=>{let i=t.stderr;return void 0===r&&(r={}),r.hasOwnProperty("stream")&&(i=r.stream,delete r.stream),r.hasOwnProperty("depth")||(r.depth=1/0),r.hasOwnProperty("compact")||(r.compact=!1),r.hasOwnProperty("colors")||(r.colors=i.isTTY),i.write(o.dateTime()),e?(i.write(" >>"),i.write("string"==typeof e?e:util.inspect(e,r)),i.write("<<\n"),o):o}),o.random=((t,o)=>(void 0===t&&(t=Number.MAX_SAFE_INTEGER),void 0===o&&(o=0),Math.floor(Math.random()*(t-o))+o)),o.randar=(t=>t[o.random(t.length)]),o.colvalSet=function(t,o){return delete this[t],void 0===o?this:null===o?this:(this[t]=o,this)},o.colvalGet=function(t){return this.hasOwnProperty(t)?void 0===this[t]?"":null===this[t]?"":this[t]:""}}).call(this,o);const g={};g.prosopo=function(t){v.objectInit(this,t)},g.prosopo.prototype.diefSet=function(t){var o=v.colvalGet.call(this,"perioxi");return this.dief=t===o?"":t,this},g.katoxos=function(t){v.objectInit(this,t)},g.katoxos.prototype.diefSet=function(t){var o=v.colvalGet.call(this,"perioxi");return this.dief=t===o?"":t,this},g.katoxos.prototype.isNomikoProsopo=function(){return this.morfi},g.katoxos.prototype.isFisikoProsopo=function(){if(this.isNomikoProsopo())return!1},g.katoxos.prototype.onomasiaGet=function(){var t="",o=this.isNomikoProsopo()?["eponimia","morfi"]:["eponimo","onoma",{k:"patronimo",l:3,a:"(",p:")"}];for(let e=0;e<o.length;e++){let r,i=1/0,n=void 0,s=void 0;"string"==typeof o[e]?r=o[e]:(r=o[e].k,o[e].hasOwnProperty("l")&&(i=o[e].l),o[e].hasOwnProperty("a")&&(n=o[e].a),o[e].hasOwnProperty("p")&&(s=o[e].p)),this.hasOwnProperty(r)&&""!==this[r]&&(t&&(t+=" "),n&&(t+=n),t+=this[r].substr(0,i),s&&(t+=s))}return t},g.oxima=function(t){v.objectInit(this,t)},g.oxima.prototype.isKatoxos=function(){return!!this.hasOwnProperty("katoxos")&&this.katoxos.length},g.oxima.prototype.noKatoxos=function(){return!this.isKatoxos()},g.oxima.prototype.katoxosWalk=function(t){let o=this.isKatoxos();if(!o)return this;for(let e=0;e<o;e++)t(this.katoxos[e],e);return this},g.oxima.prototype.totalPososto=function(){let t=0;return this.katoxosWalk(o=>{t+=o.pososto}),t}}();
+(function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
+///////////////////////////////////////////////////////////////////////////////@
+//
+// Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+//
+// Updated: 2019-12-24
+// Updated: 2019-12-21
+//
+///////////////////////////////////////////////////////////////////////////////@
+
+"use strict";
+
+const gh = require('/var/opt/cht/lib/govHUB/apiCore.js');
+module.exports = gh;
+
+///////////////////////////////////////////////////////////////////////////////@
+
+const pd = require('/var/opt/pandora/lib/pandoraClient.js');
+
+///////////////////////////////////////////////////////////////////////////////@
+
+// Ακολουθεί ο ορισμός της κλάσης "prosopo" που απεικονίζει φυσικά ή νομικά
+// πρόσωπα. Τα πεδία κάθε προσώπου είναι εν πολλοίς αυτά που παραλαμβάνουμε
+// από την ΓΓΠΣ, πλην όμως με διαφορετικές ονομασίες, ενώ μπορούμε να έχουμε
+// και άλλα πεδία όπως πεδία από τα τοπικά πληροφοριακά συστήματα, παράγωγα
+// πεδία κοκ.
+
+gh.prosopo = function(x) {
+	pd.objectInit(this, x);
+};
+
+gh.prosopo.prototype.diefSet = function(dief) {
+	var perioxi = pd.colvalGet.call(this, 'perioxi');
+
+	this.dief = (dief === perioxi ? '' : dief);
+	return this;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+// Ακολουθεί ο ορισμός της κλάσης "katoxos" που απεικονίζει κατόχους οχημάτων.
+// Τα πεδία κάθε κατόχου οχήματος είναι εν πολλοίς αυτά που παραλαμβάνουμε από
+// την πλατφόρμα πλην όμως με διαφορετικές ονομασίες, ενώ μπορούμε να έχουμε
+// και άλλα πεδία, όπως πεδία από τα τοπικά πληροφοριακά συστήματα, παράγωγα
+// πεδία κοκ.
+
+gh.katoxos = function(x) {
+	pd.objectInit(this, x);
+};
+
+gh.katoxos.prototype.diefSet = function(dief) {
+	var perioxi = pd.colvalGet.call(this, 'perioxi');
+
+	this.dief = (dief === perioxi ? '' : dief);
+	return this;
+};
+
+gh.katoxos.prototype.isNomikoProsopo = function() {
+	return this.morfi;
+};
+
+gh.katoxos.prototype.isFisikoProsopo = function() {
+	if (this.isNomikoProsopo())
+	return false;
+};
+
+gh.katoxos.prototype.onomasiaGet = function() {
+	var s = '';
+	var l = this.isNomikoProsopo() ?
+		[ 'eponimia', 'morfi' ] :
+		[ 'eponimo', 'onoma', { k: 'patronimo', l: 3, a: '(', p: ')' } ];
+
+	for (let i = 0; i < l.length; i++) {
+		let prop;
+		let size = Infinity;
+		let ante = undefined;
+		let post = undefined;
+
+		if (typeof(l[i]) === 'string') {
+			prop = l[i];
+		}
+
+		else {
+			prop = l[i].k;
+
+			if (l[i].hasOwnProperty('l'))
+			size = l[i].l;
+
+			if (l[i].hasOwnProperty('a'))
+			ante = l[i].a;
+
+			if (l[i].hasOwnProperty('p'))
+			post = l[i].p;
+		}
+
+		if (!this.hasOwnProperty(prop))
+		continue;
+
+		if (this[prop] === '')
+		continue;
+
+		if (s) s += ' ';
+		if (ante) s += ante;
+		s += (this[prop]).substr(0, size);
+		if (post) s += post;
+	}
+
+	return s;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+// Ακολουθεί ο ορισμός της κλάσης "oxima" που απεικονίζει οχήματα. Τα πεδία
+// ενός οχήματος είναι εν πολλοίς αυτά που παραλαμβάνουμε από την πλατφόρμα
+// πλην όμως με διαφορετικές ονομασίες, ενώ μπορούμε να έχουμε και άλλα πεδία,
+// όπως πεδία από τα τοπικά πληροφοριακά συστήματα, παράγωγα πεδία κλπ.
+
+gh.oxima = function(x) {
+	pd.objectInit(this, x);
+};
+
+gh.oxima.prototype.isKatoxos = function() {
+	if (this.hasOwnProperty('katoxos'))
+	return this.katoxos.length;
+
+	return false;
+};
+
+gh.oxima.prototype.noKatoxos = function() {
+	return !this.isKatoxos();
+};
+
+gh.oxima.prototype.katoxosWalk = function(callback) {
+	let n = this.isKatoxos();
+
+	if (!n)
+	return this;
+
+	for (let i = 0; i < n; i++)
+	callback(this.katoxos[i], i);
+
+	return this;
+};
+
+gh.oxima.prototype.totalPososto = function() {
+	let tot = 0;
+
+	this.katoxosWalk((katoxos) => {
+		tot += katoxos.pososto;
+	});
+
+	return tot;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+},{"/var/opt/cht/lib/govHUB/apiCore.js":2,"/var/opt/pandora/lib/pandoraClient.js":5}],2:[function(require,module,exports){
+///////////////////////////////////////////////////////////////////////////////@
+//
+// Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+//
+// goveHUB/apiCore.js -- JavaScript module το οποίο περιλαμβάνει τις βασικές
+// δομές που αποτελούν το interface προς την εξωτερική πλατφόρμα "govHUB".
+// Με το όρο «βασικές δομές» εννοούμε εκείνα τα στοιχεία της γλώσσας που
+// είναι απαραίτητα τόσο στον server (node programs), όσο και στον client
+// (browser applications).
+//
+// Updated: 2019-12-24
+// Updated: 2019-12-21
+//
+///////////////////////////////////////////////////////////////////////////////@
+
+"use strict";
+
+const gh = {};
+module.exports = gh;
+
+///////////////////////////////////////////////////////////////////////////////@
+
+const pd = require('/var/opt/pandora/lib/pandoraCore.js');
+
+///////////////////////////////////////////////////////////////////////////////@
+
+// Ακολουθεί ο ορισμός της κλάσης "prosopo" που απεικονίζει φυσικά ή νομικά
+// πρόσωπα. Τα πεδία κάθε προσώπου είναι εν πολλοίς αυτά που παραλαμβάνουμε
+// από την ΓΓΠΣ, πλην όμως με διαφορετικές ονομασίες, ενώ μπορούμε να έχουμε
+// και άλλα πεδία όπως πεδία από τα τοπικά πληροφοριακά συστήματα, παράγωγα
+// πεδία κοκ.
+
+gh.prosopo = function(x) {
+	pd.objectInit(this, x);
+};
+
+gh.prosopo.prototype.diefSet = function(dief) {
+	var perioxi = pd.colvalGet.call(this, 'perioxi');
+
+	this.dief = (dief === perioxi ? '' : dief);
+	return this;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+// Ακολουθεί ο ορισμός της κλάσης "katoxos" που απεικονίζει κατόχους οχημάτων.
+// Τα πεδία κάθε κατόχου οχήματος είναι εν πολλοίς αυτά που παραλαμβάνουμε από
+// την πλατφόρμα πλην όμως με διαφορετικές ονομασίες, ενώ μπορούμε να έχουμε
+// και άλλα πεδία, όπως πεδία από τα τοπικά πληροφοριακά συστήματα, παράγωγα
+// πεδία κοκ.
+
+gh.katoxos = function(x) {
+	pd.objectInit(this, x);
+};
+
+gh.katoxos.prototype.diefSet = function(dief) {
+	var perioxi = pd.colvalGet.call(this, 'perioxi');
+
+	this.dief = (dief === perioxi ? '' : dief);
+	return this;
+};
+
+gh.katoxos.prototype.isNomikoProsopo = function() {
+	return this.morfi;
+};
+
+gh.katoxos.prototype.isFisikoProsopo = function() {
+	if (this.isNomikoProsopo())
+	return false;
+};
+
+gh.katoxos.prototype.onomasiaGet = function() {
+	var s = '';
+	var l = this.isNomikoProsopo() ?
+		[ 'eponimia', 'morfi' ] :
+		[ 'eponimo', 'onoma', { k: 'patronimo', l: 3, a: '(', p: ')' } ];
+
+	for (let i = 0; i < l.length; i++) {
+		let prop;
+		let size = Infinity;
+		let ante = undefined;
+		let post = undefined;
+
+		if (typeof(l[i]) === 'string') {
+			prop = l[i];
+		}
+
+		else {
+			prop = l[i].k;
+
+			if (l[i].hasOwnProperty('l'))
+			size = l[i].l;
+
+			if (l[i].hasOwnProperty('a'))
+			ante = l[i].a;
+
+			if (l[i].hasOwnProperty('p'))
+			post = l[i].p;
+		}
+
+		if (!this.hasOwnProperty(prop))
+		continue;
+
+		if (this[prop] === '')
+		continue;
+
+		if (s) s += ' ';
+		if (ante) s += ante;
+		s += (this[prop]).substr(0, size);
+		if (post) s += post;
+	}
+
+	return s;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+// Ακολουθεί ο ορισμός της κλάσης "oxima" που απεικονίζει οχήματα. Τα πεδία
+// ενός οχήματος είναι εν πολλοίς αυτά που παραλαμβάνουμε από την πλατφόρμα
+// πλην όμως με διαφορετικές ονομασίες, ενώ μπορούμε να έχουμε και άλλα πεδία,
+// όπως πεδία από τα τοπικά πληροφοριακά συστήματα, παράγωγα πεδία κλπ.
+
+gh.oxima = function(x) {
+	pd.objectInit(this, x);
+};
+
+gh.oxima.prototype.isKatoxos = function() {
+	if (this.hasOwnProperty('katoxos'))
+	return this.katoxos.length;
+
+	return false;
+};
+
+gh.oxima.prototype.noKatoxos = function() {
+	return !this.isKatoxos();
+};
+
+gh.oxima.prototype.katoxosWalk = function(callback) {
+	let n = this.isKatoxos();
+
+	if (!n)
+	return this;
+
+	for (let i = 0; i < n; i++)
+	callback(this.katoxos[i], i);
+
+	return this;
+};
+
+gh.oxima.prototype.totalPososto = function() {
+	let tot = 0;
+
+	this.katoxosWalk((katoxos) => {
+		tot += katoxos.pososto;
+	});
+
+	return tot;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+},{"/var/opt/pandora/lib/pandoraCore.js":6}],3:[function(require,module,exports){
+"use strict";
+
+const gh = require('/var/opt/cht/lib/govHUB/apiClient.js');
+const pd = require('/var/opt/pandora/lib/pandoraClient.js');
+
+const w3gh = {};
+w3gh.opts = {};
+w3gh.opts.portNumber = 11123;
+
+$(document).ready(() => {
+	w3gh.bodyDOM = $(document.body);
+	w3gh.resultsDOM = $('#resultsRegion');
+	w3gh.pinakidaDOM = $('#pinakida').
+	val('ΝΒΝ9596');
+	w3gh.afmDOM = $('#afm').
+	val('032792320');
+	w3gh.ipovoliDOM = $('#ipovoli');
+	w3gh.katharismosDOM = $('#katharismos');
+	w3gh.akiroDOM = $('#akiro');
+
+	w3gh.buttonSetup();
+
+	pd.testClient();
+	var x = new gh.oxima();
+	console.log(x);
+});
+
+w3gh.buttonSetup = () => {
+	w3gh.ipovoliDOM.
+	on('click', (e) => {
+		e.stopPropagation();
+
+		let data = [];
+		let x;
+
+		x = w3gh.pinakidaDOM.val();
+
+		if (x)
+		data.push({
+			'idos': 'oxima',
+			'oxima': x,
+		});
+
+		x = w3gh.afmDOM.val();
+
+		if (x)
+		data.push({
+			'idos': 'prosopo',
+			'afm': x,
+		});
+
+		w3gh.anazitisi(data);
+		return false;
+	});
+
+	return w3gh;
+};
+
+w3gh.anazitisi = (data) => {
+	if (data.length <= 0)
+	return w3gh;
+
+	let x = data.shift();
+	let resDOM = w3gh.resultCreate(x);
+
+	$.post({
+		'url': Globals.server + ':' + w3gh.opts.portNumber,
+		'header': {
+			'Access-Control-Allow-Origin': '*',
+		},
+		'dataType': 'json',
+		'data': x,
+		'success': (x) => {
+			resDOM.
+			removeClass('resreq').
+			text(JSON.stringify(x));
+			w3gh.anazitisi(data);
+		},
+		'error': (err) => {
+			w3gh.resultErrmsg(resDOM, 'σφάλμα αναζήτησης');
+			w3gh.anazitisi(data);
+			console.error(err);
+		},
+	});
+
+	return w3gh;
+};
+
+w3gh.resultCreate = (data) => {
+	var dom;
+	var msg;
+
+	switch (data.idos) {
+	case 'oxima':
+		msg = 'Αναζήτηση οχήματος με αρ. κυκλοφορίας:';
+
+		if (data.hasOwnProperty('oxima'))
+		msg += ' <b>' + data.oxima + '</b>';
+
+		if (data.hasOwnProperty('imerominia'))
+		msg += ' <b>(' + data.imerominia + '</b>)';
+
+		break;
+	case 'prosopo':
+		msg = 'Αναζήτηση προσώπου με ΑΦΜ:';
+
+		if (data.hasOwnProperty('afm'))
+		msg += ' <b>' + data.afm + '</b>';
+
+		break;
+	default:
+		msg = 'Ακαθόριστη αναζήτηση!';
+		break;
+	}
+
+	msg += '<div class="resreqWorking">' +
+		'<img class="resreqWorkingImage" src="../images/bares.gif"></div>';
+	return $('<div>').
+	addClass('result resreq').
+	html(msg).
+	prependTo(w3gh.resultsDOM);
+};
+
+w3gh.resultErrmsg = (dom, msg) => {
+	dom.
+	children('.resreqWorking').
+	remove();
+
+	dom.
+	removeClass('resreq').
+	addClass('reserr').
+	append(': ' + msg);
+
+	return w3gh;
+};
+
+},{"/var/opt/cht/lib/govHUB/apiClient.js":1,"/var/opt/pandora/lib/pandoraClient.js":5}],4:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],5:[function(require,module,exports){
+(function (process){
+"use strict";
+
+if (process.env.PANDORA_BASEDIR === undefined)
+process.env.PANDORA_BASEDIR = '/var/opt/pandora';
+
+const pd = require(process.env.PANDORA_BASEDIR + '/lib/pandoraCore.js');
+module.exports = pd;
+
+pd.testClient = (msg) => {
+	pd.testCore('Greetings from client!');
+
+	if (msg === undefined)
+	msg = 'Hi there!';
+
+	console.log('pandora: [testClient]: ' + msg);
+};
+
+}).call(this,require('_process'))
+},{"_process":4}],6:[function(require,module,exports){
+(function (process){
+///////////////////////////////////////////////////////////////////////////////@
+//
+// Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+//
+// pandoraCore.js -- JavaScript core module για χρήση τόσο στον server
+// (node), όσο και στον client (browser).
+//
+// Updated: 2019-12-25
+// Updated: 2019-12-24
+// Updated: 2019-12-21
+// Updated: 2019-12-20
+//
+///////////////////////////////////////////////////////////////////////////////@
+
+"use strict";
+
+const pd = {};
+module.exports = pd;
+
+///////////////////////////////////////////////////////////////////////////////@
+
+// Η function "testCore" χρησιμοποιείται κυρίως για να διαπιστώσουμε την
+// επιτυχή συμπερίληψη του ανά χείρας module. Πιο συγκεκριμένα, επειδή το
+// core module είναι κοινό τόσο στον server όσο και στον client, μπορούμε
+// να καλέσουμε την "testCore" προκειμένου να δούμε αν έχει φορτωθεί σωστά
+// το pandora core mudule.
+//
+// Server side:
+//
+//	...
+//	if (!process.env.PANDORA_BASEDIR)
+//	process.env.PANDORA_BASEDIR = '/var/opt/pd';
+//
+//	const pandora = require(`${process.env.PANDORA_BASEDIR}/lib/pandoraServer.js`);
+//	pandora.testServer();
+//	...
+//
+// Client side:
+//
+//	selida.js:
+//		...
+//		const pandora = require('../../lib/pandoraClient.js');
+//
+//		pandora.testClient();
+//		...
+//
+//	Makefile:
+//		...
+//		PANDORA_BASEDIR = /var/opt/pandora
+//		PANDORA_CORE = $(PANDORA_BASEDIR)/lib/pandoraCore.js
+//		PANDORA_CLIENT = $(PANDORA_BASEDIR)/lib/pandoraClient.js
+//		BUNDLE = bundle.js
+//		BUNDLE_MODULES = selida.js $(PANDORA_CLIENT) $(PANDORA_CORET)
+//
+//		.PHONY: all
+//		all: $(BUNDLE)
+//
+//		$(BUNDLE): $(BUNDLE_MODULES)
+//			browserify -p tinyify -o $@ $^
+//		...
+//
+//	index.html
+//		...
+//		<html>
+//			<head>
+//				...
+//				<script src="bundle.js"></script>
+//				...
+//			</head>
+//			<body>
+//				...
+//			</body>
+//		</html>
+
+pd.testCore = (msg) => {
+	if (msg === undefined)
+	msg = 'Hi there!';
+
+	console.log('pandora: [testCore]: ' + msg);
+};
+
+// Η function "noop" είναι dummy και δεν κάνει απολύτως τίποτα. Η χρήση της
+// αφορά κυρίως στην «ακύρωση» άλλων functions και μεθόδων.
+
+pd.noop = () => {
+	return pd;
+};
+
+// Η function "objectInit" δέχεται ως πρώτη παράμετρο ένα αντικείμενο (target),
+// ως δεύτερη παράμετρο ένα άλλο αντικείμενο (source), ενώ ως τρίτη παράμετρο
+// δέχεται ένα τρίτο αντικείμενο στο οποίο καθορίζονται παράμετροι (options)
+// που διαφοροποιούν τη λειτουργία τής function όσον αφορά επιμέρους θέματα.
+//
+// Σκοπός τής function είναι να αρχικοποιήσει το target object, με οδηγό το
+// source object. Πιο συγκεκριμένα, η συνήθης χρήση της function είναι να
+// καλείται σε νεόκοπα objects με σκοπό να πάρουν αρχικές τιμές οι properties
+// του αντικειμένου με βάση τις properties του source object.
+
+pd.objectInit = function(target, source, opts) {
+	var i;
+	var j;
+
+	if (source === undefined)
+	return target;δ
+
+	if (!opts)
+	opts = {
+		'functions': false,
+		'recursive': true,
+	};
+
+	for (i in source) {
+		j = ((opts.hasOwnProperty('colmap') &&
+			opts.colmap.hasOwnProperty(i)) ? opts.colmap[i] : i);
+
+		if (source[i] === undefined) {
+			target[j] = undefined;
+			continue;
+		}
+
+		if (source[i] === null) {
+			target[j] = null;
+			continue;
+		}
+
+		if (typeof(source[i]) === 'function') {
+			if (opts.functions)
+			target[j] = source[i];
+
+			continue;
+		}
+
+		if (typeof(source[i]) !== 'object') {
+			target[j] = source[i];
+			continue;
+		}
+
+		if (!opts.recursive) {
+			target[j] = source[i];
+			continue;
+		}
+
+		if ((source[i].constructor) &&
+			(typeof(source[i].constructor) === Function)) {
+			target[j] = pd.objectInit(new source.constructor(), source[i], opts);
+			continue;
+		}
+
+		target[j] = pd.objectInit(new Object(), source[i], opts);
+	}
+
+	return target;
+};
+
+// Η function "dateTime" επιστρέφει ημερομηνίες ως strings. Η μορφή τής
+// ημερομηνίας που θα επιστραφεί καθορίζεται από το format sting που περνάμε
+// ως δεύτερη παράμετρο και το οποίο μπορεί να περιέχει κωδικές περιγραφές για
+// το έτος ("%Y"), τον μήνα ("%M"), την ημέρα ("%D"), την ώρα ("%h"), το λεπτό
+// ("%m") και το δευτερόλεπτο ("%s"). Οι υπόλοιποι χαρακτήρες τού format string
+// επιστρέφονται αυτούσιοι, ενώ το σύμβολο "%" είναι καλό να δίνεται ως "%%",
+// προκειμένου να μην εκληφθεί ως προδιαγραφή κάποιου χρονικού στοιχείου. Αν
+// δεν καθορίσουμε format string, τότε υποτίθεται το "%Y-%M-%D %h:%m:%s". Αν
+// δεν καθορστεί παράμετρος ημερομηνίας, υποτίθεται η τρέχουσα ημερομηνία και
+// ώρα.
+
+pd.dateTime = (date, format) => {
+	if (date === undefined)
+	date = new Date();
+
+	if (format === undefined)
+	format = '%Y-%M-%D %h:%m:%s';
+
+	var year = date.getFullYear();
+
+	var month = date.getMonth() + 1;
+	if (month < 10) month = '0' + month;
+
+	var day = date.getDate();
+	if (day < 10) day = '0' + day;
+
+	var hour = date.getHours();
+	if (hour < 10) hour = '0' + hour;
+
+	var minute = date.getMinutes();
+	if (minute < 10) minute = '0' + minute;
+
+	var second = date.getSeconds();
+	if (second < 10) second = '0' + second;
+
+	return format.
+	replace(/%%/g, '').
+	replace(/%Y/g, year).
+	replace(/%M/g, month).
+	replace(/%D/g, day).
+	replace(/%h/g, hour).
+	replace(/%m/g, minute).
+	replace(/%s/g, second).
+	replace(//g, '%')
+};
+
+pd.date = (date) => {
+	return pd.dateTime(date, '%Y-%M-%D');
+};
+
+pd.time = (time) => {
+	return pd.dateTime(time, '%h-%m-%s');
+};
+
+pd.debug = (msg, opts) => {
+	let stream = process.stderr;
+
+	if (opts === undefined)
+	opts = {};
+
+	if (opts.hasOwnProperty('stream')) {
+		stream = opts.stream;
+		delete opts.stream;
+	}
+
+	if (!opts.hasOwnProperty('depth'))
+	opts.depth = Infinity;
+
+	if (!opts.hasOwnProperty('compact'))
+	opts.compact = false;
+
+	if (!opts.hasOwnProperty('colors'))
+	opts.colors = stream.isTTY;
+
+	stream.write(pd.dateTime());
+
+	if (!msg)
+	return pd;
+
+	stream.write(' >>');
+	stream.write(typeof(msg) === 'string' ? msg : util.inspect(msg, opts));
+	stream.write('<<\n');
+
+	return pd;
+};
+
+pd.random = (max, min) => {
+	if (max === undefined)
+	max = Number.MAX_SAFE_INTEGER;
+
+	if (min === undefined)
+	min = 0;
+
+	return Math.floor(Math.random() * (max - min)) + min;
+};
+
+pd.randar = (a) => {
+	return a[pd.random(a.length)];
+};
+
+// Η function "colvaSet" καλείται ως μέθοδος μέσω της "call" και θέτει την
+// τιμή ("val") μιας property ("col") εφόσον η τιμή αυτή είναι ορισμένη.
+
+pd.colvalSet = function(col, val) {
+	delete this[col];
+
+	if (val === undefined)
+	return this;
+
+	if (val === null)
+	return this;
+
+	this[col] = val;
+
+	return this;
+};
+
+// Η function "colvaGet" καλείται ως μέθοδος μέσω της "call" και επιστρέφει
+// την τιμή μιας property ("col") εφόσον η τιμή αυτή είναι ορισμένη, αλλιώς
+// επιστρέφει ένα κενό string.
+
+pd.colvalGet = function(col) {
+	const noval = '';
+
+	if (!this.hasOwnProperty(col))
+	return noval;
+
+	if (this[col] === undefined)
+	return noval;
+
+	if (this[col] === null)
+	return noval;
+
+	return this[col];
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+}).call(this,require('_process'))
+},{"_process":4}]},{},[3]);

@@ -4,7 +4,8 @@
 #
 # Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
 #
-# Last updated: 2019-12-16
+# Updated: 2019-12-25
+# Updated: 2019-12-16
 #
 ###############################################################################@
 
@@ -13,7 +14,7 @@ TEST = ( cd tutorial/govHUB/carget && bash test.sh )
 
 .PHONY: test
 test:
-	( cd www && make )
+	(cd www && make)
 	#$(TEST)
 
 .PHONY: status
@@ -42,4 +43,9 @@ push:
 
 .PHONY: pull
 pull:
+	@git pull
+
+.PHONY: cleanup
+cleanup:
+	(cd www && make cleanup)
 	@git pull

@@ -1,7 +1,14 @@
 "use strict";
 
-const gh = require('/var/opt/cht/lib/govHUB/apiClient.js');
-const pd = require('/var/opt/pandora/lib/pandoraClient.js');
+if (!process.env.PANDORA_BASEDIR)
+process.env.PANDORA_BASEDIR = '/var/opt/pandora';
+
+const pd = require(`${process.env.PANDORA_BASEDIR}/lib/pandoraClient.js`);
+
+if (!process.env.CHT_BASEDIR)
+process.env.CHT_BASEDIR = '/var/opt/cht';
+
+const gh = require(`${process.env.CHT_BASEDIR}/lib/govHUB/apiClient.js`);
 
 const w3gh = {};
 w3gh.opts = {};

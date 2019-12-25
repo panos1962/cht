@@ -1,11 +1,12 @@
-all: bundle.js
-TINYIFY = -p /usr/local/lib/node_modules/tinyify
-TINYIFY =
+BUNDLEJS = bundle.js
+BROWSERIFY_OPTS = -t envify -p tinyify
 
 all:
-	rm -f bundle.js
-	make bundle.js
+	make cleanup
+	make $(BUNDLEJS)
 
-bundle.js: \
-	selida.js
-	browserify $(TINYIFY) -o $@ $^
+$(BUNDLEJS): selida.js
+	browserify $(BROWSERIFY_OPTS) -o $@ $^
+
+cleanup:
+	rm -f $(BUNDLEJS)

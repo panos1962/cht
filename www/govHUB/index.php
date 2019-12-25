@@ -11,12 +11,11 @@ $debug = @$_GET["debug"];
 <?php } ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script>
-php = {};
+const php = {};
 php.server = {
 "HTTP_HOST": "<?php print addslashes($_SERVER["HTTP_HOST"]); ?>",
 "HTTP_REFERER": "<?php print addslashes($_SERVER["HTTP_REFERER"]); ?>",
 };
-console.log(php.server);
 </script>
 <script src="bundle.js"></script>
 </head>

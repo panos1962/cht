@@ -9,10 +9,15 @@
 #
 ###############################################################################@
 
+.PHONY: all
+all:
+	@(cd www && make)
+
 .PHONY: test
 test:
-	(cd www && make)
-	(cd test && make test)
+	@make all
+	#@(cd test && make test)
+	@(cd www/govHUB && make test)
 
 .PHONY: status
 status:

@@ -15,22 +15,26 @@ w3gh.opts = {};
 w3gh.opts.portNumber = 11123;
 
 $(document).ready(() => {
+pd.testClient();
+	w3gh.
+	formSetup().
+	buttonSetup();
+});
+
+w3gh.formSetup = () => {
 	w3gh.bodyDOM = $(document.body);
 	w3gh.resultsDOM = $('#resultsRegion');
 	w3gh.pinakidaDOM = $('#pinakida').
-	val('ΝΒΝ9596');
+	val('ΝΒΝ9596').
+	focus();
 	w3gh.afmDOM = $('#afm').
 	val('032792320');
 	w3gh.ipovoliDOM = $('#ipovoli');
 	w3gh.katharismosDOM = $('#katharismos');
 	w3gh.akiroDOM = $('#akiro');
 
-	w3gh.buttonSetup();
-
-	pd.testClient();
-	var x = new gh.oxima();
-	console.log(x);
-});
+	return w3gh;
+};
 
 w3gh.buttonSetup = () => {
 	w3gh.ipovoliDOM.
@@ -78,9 +82,24 @@ w3gh.anazitisi = (data) => {
 		'dataType': 'json',
 		'data': x,
 		'success': (x) => {
+			let html;
+
+			switch (x.idos) {
+			case 'oxima':
+				html = (new gh.oxima(x.data)).html();
+				break;
+			case 'prosopo':
+				html = (new gh.prosopo(x.data)).html();
+				break;
+			default:
+				html = 'xxx';
+				break;
+			}
+				
 			resDOM.
 			removeClass('resreq').
-			text(JSON.stringify(x));
+			empty().
+			append($('<div>').text('xxx'));
 			w3gh.anazitisi(data);
 		},
 		'error': (err) => {

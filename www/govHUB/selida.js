@@ -71,7 +71,7 @@ w3gh.anazitisi = (data) => {
 	let resDOM = w3gh.resultCreate(x);
 
 	$.post({
-		'url': Globals.server + ':' + w3gh.opts.portNumber,
+		'url': 'http://' + php.server['HTTP_HOST'] + ':' + w3gh.opts.portNumber,
 		'header': {
 			'Access-Control-Allow-Origin': '*',
 		},

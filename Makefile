@@ -9,13 +9,10 @@
 #
 ###############################################################################@
 
-TEST = ( cd tutorial/govHUB/afmget && bash test.sh )
-TEST = ( cd tutorial/govHUB/carget && bash test.sh )
-
 .PHONY: test
 test:
 	(cd www && make)
-	#$(TEST)
+	(cd test && make test)
 
 .PHONY: status
 status:

@@ -1,0 +1,4 @@
+(
+	cd tutorial/govHUB/afmget
+	bash test.sh
+)

@@ -4,7 +4,8 @@
 #
 # Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
 #
-# Last update: 2019-12-17
+# Updated: 2019-12-25
+# Updated: 2019-12-17
 #
 ###############################################################################@
 #
@@ -18,11 +19,16 @@
 #
 ###############################################################################@
 
-[ -x "${CHT_BASEDIR}" ] &&
+[ -z "${PANDORA_BASEDIR}" ] &&
+PANDORA_BASEDIR="/var/opt/pandora"
+
+. "${PANDORA_BASEDIR}/lib/pandora.sh"
+
+[ -z "${CHT_BASEDIR}" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
-echo "Default:" >/dev/tty
+pd_ttymsg "Default:"
 "${CHT_BASEDIR}/bin/GH" afmget -v default[1].data
 
-echo "Custom (test1):" >/dev/tty
+pd_ttymsg "Custom (test1):"
 "${CHT_BASEDIR}/bin/GH" afmget -v -s test1.js test1[12].data

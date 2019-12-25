@@ -1,5 +1,6 @@
 **/panos*
 **/*.swp
 **/*.min.js
+**/bundle.js
 private/*
 local/*

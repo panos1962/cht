@@ -16,7 +16,6 @@ w3gh.opts.portNumber = 11123;
 w3gh.anazitisiCount = 0;
 
 $(document).ready(() => {
-pd.testClient();
 	w3gh.
 	formSetup().
 	buttonSetup();
@@ -96,6 +95,17 @@ w3gh.anazitisi = (data) => {
 				addClass('resbingo resbingo' + (resDOM.data('aa') % 2)).
 				empty().
 				append(html);
+
+				let bc = resDOM.css('background-color');
+
+				resDOM.
+				css('background-color', '#ffcc00');
+
+				resDOM.
+				finish().
+				animate({
+					'background-color': bc,
+				}, 3000, 'easeOutQuint');
 			}
 
 			catch (e) {

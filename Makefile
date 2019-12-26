@@ -50,4 +50,3 @@ pull:
 .PHONY: cleanup
 cleanup:
 	(cd www && make cleanup)
-	@git pull

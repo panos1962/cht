@@ -1,5 +1,6 @@
 body {
 	font-size: 18px;
+	font-family: Georgia, serif;
 }
 
 form {
@@ -55,7 +56,6 @@ form label.prompt {
 	margin-top: 2px;
 	padding: 4px 4px;
 	background-color: #fff8ab;
-	border-radius: 5px;
 }
 
 .resreq {
@@ -80,8 +80,8 @@ form label.prompt {
 }
 
 .resbingo {
-	padding-left: 0px;
-	border-radius: 0px 10px 10px 0px;
+	margin-top: 4px;
+	padding: 0px;
 }
 
 .resbingo0 {
@@ -93,17 +93,15 @@ form label.prompt {
 }
 
 .resultBox {
-	display: inline-block;
-	vertical-align: middle;
+	display: inline-table;
 	background-color: #fff8ed;
 	border-style: double;
 	border-width: 3px;
 	border-color: #bdbdbd;
-	border-radius: 5px;
 }
 
 .resultProsopo {
-	background-color: #eeffff;
+	background-color: #fff6ee;
 }
 
 .resultOxima {
@@ -111,15 +109,15 @@ form label.prompt {
 }
 
 .resultKatoxos {
-	vertical-align: middle;
 	margin-left: 4px;
+	padding: 2px;
 	background-color: #fffedf;
 	border-style: solid;
 	border-width: 1px;
-	border-radius: 0px 10px 10px 0px;
 }
 
 .column {
+	vertical-align: top;
 	text-align: right;
 	color: #444444;
 }
@@ -129,5 +127,15 @@ form label.prompt {
 }
 
 .value {
+	vertical-align: top;
 	font-weight: bold;
+	padding-left: 2px;
+	background-color: #fdfdfd;
+	border-style: none none solid solid;
+	border-width: 0.5px;
+	border-color: #e4e4e4;
+}
+
+.colinval {
+	font-weight: normal;
 }

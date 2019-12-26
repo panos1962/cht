@@ -52,9 +52,10 @@ form label.prompt {
 }
 
 .result {
-	margin: 4px 0px;
-	padding: 2px 4px;
+	margin-top: 2px;
+	padding: 4px 4px;
 	background-color: #fff8ab;
+	border-radius: 5px;
 }
 
 .resreq {
@@ -79,21 +80,48 @@ form label.prompt {
 }
 
 .resbingo {
-	padding: 0px;
-	background-color: transparent;
+	padding-left: 0px;
+	border-radius: 0px 10px 10px 0px;
+}
+
+.resbingo0 {
+	background-color: #e8e8e8
+}
+
+.resbingo1 {
+	background-color: #f0f0f0;
 }
 
 .resultBox {
 	display: inline-block;
+	vertical-align: middle;
 	background-color: #fff8ed;
+	border-style: double;
+	border-width: 3px;
+	border-color: #bdbdbd;
+	border-radius: 5px;
+}
+
+.resultProsopo {
+	background-color: #eeffff;
+}
+
+.resultOxima {
+	background-color: #ffffe3;
+}
+
+.resultKatoxos {
+	vertical-align: middle;
+	margin-left: 4px;
+	background-color: #fffedf;
 	border-style: solid;
 	border-width: 1px;
-	border-color: #000000;
-	border-radius: 5px;
+	border-radius: 0px 10px 10px 0px;
 }
 
 .column {
 	text-align: right;
+	color: #444444;
 }
 
 .column:after {

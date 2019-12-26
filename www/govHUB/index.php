@@ -1,4 +1,22 @@
 <?php
+///////////////////////////////////////////////////////////////////////////////@
+//
+// Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+//
+// Η ανά χείρας σελίδα παρέχει στον χρήστη τη δυνατότητα αναζήτησης στοιχείων
+// μέσω της πλατφόρμας "govHUB" για:
+//
+//	Οχήματα και κατόχους οχημάτων με βάση τον αριθμό κυκλοφορίας οχήματος.
+//
+//	Φυσικά και νομικά πρόσωπα με βάση το ΑΦΜ.
+//
+// Η σελίδα είναι λειτουργική μόνον εφόσον υπάρχει ενεργός node server που να
+// δέχεται κλήσεις σε συγκεκριμένο port (11123).
+//
+// Updated: 2019-12-26
+//
+///////////////////////////////////////////////////////////////////////////////@
+
 $debug = @$_GET["debug"];
 ?>
 <html>
@@ -6,17 +24,15 @@ $debug = @$_GET["debug"];
 <head>
 <link rel="icon" type="image/png" href="../images/favicon-96x96.png">
 <link rel="stylesheet" type="text/css" href="selida.css">
-<?php if ($debug) { ?>
+<?php
+if ($debug) {
+?>
 <link rel="stylesheet" type="text/css" href="selida.debug.css">
-<?php } ?>
+<?php
+}
+?>
+<?php require("../lib/standard.php"); ?>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script>
-const php = {};
-php.server = {
-"HTTP_HOST": "<?php print addslashes($_SERVER["HTTP_HOST"]); ?>",
-"HTTP_REFERER": "<?php print addslashes($_SERVER["HTTP_REFERER"]); ?>",
-};
-</script>
 <script src="bundle.js"></script>
 </head>
 <body>

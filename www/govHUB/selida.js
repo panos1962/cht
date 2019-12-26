@@ -13,6 +13,7 @@ const gh = require(`${process.env.CHT_BASEDIR}/lib/govHUB/apiClient.js`);
 const w3gh = {};
 w3gh.opts = {};
 w3gh.opts.portNumber = 11123;
+w3gh.anazitisiCount = 0;
 
 $(document).ready(() => {
 pd.testClient();
@@ -82,25 +83,25 @@ w3gh.anazitisi = (data) => {
 		'dataType': 'json',
 		'data': x,
 		'success': (x) => {
-			let html;
+			try {
+				let t = new gh[x.idos](x.data);
 
-			switch (x.idos) {
-			case 'oxima':
-				html = (new gh.oxima(x.data)).html();
-				break;
-			case 'prosopo':
-				html = (new gh.prosopo(x.data)).html();
-				break;
-			default:
-				html = 'xxx';
-				break;
+				if (t.fixChildren && (typeof(t.fixChildren) === 'function'))
+				t.fixChildren();
+
+				let html = t.html();
+
+				resDOM.
+				removeClass('resreq').
+				addClass('resbingo resbingo' + (resDOM.data('aa') % 2)).
+				empty().
+				append(html);
 			}
-				
-			resDOM.
-			removeClass('resreq').
-			addClass('resbingo').
-			empty().
-			append(html);
+
+			catch (e) {
+				w3gh.resultErrmsg(resDOM, 'σφάλμα επιστροφής');
+			}
+
 			w3gh.anazitisi(data);
 		},
 		'error': (err) => {
@@ -136,7 +137,11 @@ w3gh.resultCreate = (data) => {
 
 		break;
 	default:
-		msg = 'Ακαθόριστη αναζήτηση!';
+		msg = 'Ακαθόριστo είδος αναζήτησης';
+
+		if (typeof(data.idos) === 'string')
+		msg += ':' + data.idos + ':';
+
 		break;
 	}
 
@@ -144,6 +149,8 @@ w3gh.resultCreate = (data) => {
 		'<img class="resreqWorkingImage" src="../images/bares.gif"></div>';
 	return $('<div>').
 	addClass('result resreq').
+	data('message', msg).
+	data('aa', w3gh.anazitisiCount++).
 	html(msg).
 	prependTo(w3gh.resultsDOM);
 };

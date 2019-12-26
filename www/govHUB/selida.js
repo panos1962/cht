@@ -98,8 +98,9 @@ w3gh.anazitisi = (data) => {
 				
 			resDOM.
 			removeClass('resreq').
+			addClass('resbingo').
 			empty().
-			append($('<div>').text('xxx'));
+			append(html);
 			w3gh.anazitisi(data);
 		},
 		'error': (err) => {

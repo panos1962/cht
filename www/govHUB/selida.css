@@ -52,7 +52,7 @@ form label.prompt {
 }
 
 .result {
-	margin: 4px;
+	margin: 4px 0px;
 	padding: 2px 4px;
 	background-color: #fff8ab;
 }
@@ -76,4 +76,30 @@ form label.prompt {
 
 .reserr {
 	background-color: #ffcccc;
+}
+
+.resbingo {
+	padding: 0px;
+	background-color: transparent;
+}
+
+.resultBox {
+	display: inline-block;
+	background-color: #fff8ed;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+	border-radius: 5px;
+}
+
+.column {
+	text-align: right;
+}
+
+.column:after {
+	content: ':';
+}
+
+.value {
+	font-weight: bold;
 }

@@ -82,6 +82,12 @@ w3gh.anazitisi = (data) => {
 		'dataType': 'json',
 		'data': x,
 		'success': (x) => {
+			if (x.hasOwnProperty('error')) {
+				w3gh.resultErrmsg(resDOM, x.error);
+				w3gh.anazitisi(data);
+				return;
+			}
+				
 			try {
 				let t = new gh[x.idos](x.data);
 
@@ -117,7 +123,6 @@ w3gh.anazitisi = (data) => {
 		'error': (err) => {
 			w3gh.resultErrmsg(resDOM, 'σφάλμα αναζήτησης');
 			w3gh.anazitisi(data);
-			console.error(err);
 		},
 	});
 

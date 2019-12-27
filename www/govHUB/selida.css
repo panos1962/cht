@@ -122,10 +122,6 @@ form label.prompt {
 	color: #444444;
 }
 
-.column:after {
-	content: ':';
-}
-
 .value {
 	vertical-align: top;
 	font-weight: bold;

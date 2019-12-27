@@ -47,6 +47,11 @@ if ($debug) {
 </div>
 <br>
 <div class="pedio">
+<label class="prompt" for="imerominia">Ημερομηνία</label>
+<input id="imerominia" type="text" name="imerominia">
+</div>
+<br>
+<div class="pedio">
 <label class="prompt" for="afm">ΑΦΜ</label>
 <input id="afm" type="text" name="afm">
 </div>

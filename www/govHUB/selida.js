@@ -22,13 +22,25 @@ $(document).ready(() => {
 });
 
 w3gh.formSetup = () => {
+let pinakida;
+let afm;
+
+pinakida = 'ΝΒΝ9596';
+pinakida = ''
+
+afm = '';
+afm = '043514613'; // ΑΝΕΝΕΡΓΟΣ
+afm = '032792320';
+afm = '095675861'; // ΝΟΜΙΚΟ ΠΡΟΣΩΠΟ
+
 	w3gh.bodyDOM = $(document.body);
 	w3gh.resultsDOM = $('#resultsRegion');
-	w3gh.pinakidaDOM = $('#pinakida').
-	val('ΝΒΝ9596').
-	focus();
+	w3gh.pinakidaDOM = $('#pinakida').focus().
+	val(pinakida);
+	w3gh.imerominiaDOM = $('#imerominia').datepicker().
+	val(pd.dateTime(new Date(), '%D-%M-%Y'));
 	w3gh.afmDOM = $('#afm').
-	val('032792320');
+	val(afm);
 	w3gh.ipovoliDOM = $('#ipovoli');
 	w3gh.katharismosDOM = $('#katharismos');
 	w3gh.akiroDOM = $('#akiro');
@@ -46,11 +58,22 @@ w3gh.buttonSetup = () => {
 
 		x = w3gh.pinakidaDOM.val();
 
-		if (x)
-		data.push({
-			'idos': 'oxima',
-			'oxima': x,
-		});
+		if (x) {
+			let t = {
+				'idos': 'oxima',
+				'oxima': x,
+			};
+
+			let d = w3gh.imerominiaDOM.val();
+
+			if (d)
+			d = pd.date2date(d, 'DMY', '%Y-%M-%D');
+
+			if (d)
+			t.imerominia = d;
+
+			data.push(t);
+		};
 
 		x = w3gh.afmDOM.val();
 
@@ -115,12 +138,14 @@ w3gh.anazitisi = (data) => {
 			}
 
 			catch (e) {
+				console.error(e);
 				w3gh.resultErrmsg(resDOM, 'σφάλμα επιστροφής');
 			}
 
 			w3gh.anazitisi(data);
 		},
 		'error': (err) => {
+			console.error(err);
 			w3gh.resultErrmsg(resDOM, 'σφάλμα αναζήτησης');
 			w3gh.anazitisi(data);
 		},

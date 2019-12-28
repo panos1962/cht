@@ -25,13 +25,13 @@ w3gh.formSetup = () => {
 let pinakida;
 let afm;
 
-pinakida = 'ΝΒΝ9596';
 pinakida = ''
+pinakida = 'ΝΒΝ9596';
 
 afm = '';
 afm = '043514613'; // ΑΝΕΝΕΡΓΟΣ
-afm = '032792320';
 afm = '095675861'; // ΝΟΜΙΚΟ ΠΡΟΣΩΠΟ
+afm = '032792320';
 
 	w3gh.bodyDOM = $(document.body);
 	w3gh.resultsDOM = $('#resultsRegion');
@@ -114,16 +114,14 @@ w3gh.anazitisi = (data) => {
 			try {
 				let t = new gh[x.idos](x.data);
 
-				if (t.fixChildren && (typeof(t.fixChildren) === 'function'))
+				if (typeof(t.fixChildren) === 'function')
 				t.fixChildren();
-
-				let html = t.html();
 
 				resDOM.
 				removeClass('resreq').
 				addClass('resbingo resbingo' + (resDOM.data('aa') % 2)).
 				empty().
-				append(html);
+				append(t.kartaDOM());
 
 				let bc = resDOM.css('background-color');
 
@@ -132,6 +130,7 @@ w3gh.anazitisi = (data) => {
 
 				resDOM.
 				finish().
+				delay(500).
 				animate({
 					'background-color': bc,
 				}, 3000, 'easeOutQuint');

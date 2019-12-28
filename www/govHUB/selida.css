@@ -92,46 +92,6 @@ form label.prompt {
 	background-color: #f0f0f0;
 }
 
-.resultBox {
-	display: inline-table;
-	background-color: #fff8ed;
-	border-style: double;
-	border-width: 3px;
-	border-color: #bdbdbd;
-}
-
-.resultProsopo {
-	background-color: #fff6ee;
-}
-
-.resultOxima {
-	background-color: #ffffe3;
-}
-
-.resultKatoxos {
-	margin-left: 4px;
-	padding: 2px;
-	background-color: #fffedf;
-	border-style: solid;
-	border-width: 1px;
-}
-
-.column {
-	vertical-align: top;
-	text-align: right;
-	color: #444444;
-}
-
-.value {
-	vertical-align: top;
-	font-weight: bold;
-	padding-left: 2px;
-	background-color: #fdfdfd;
-	border-style: none none solid solid;
-	border-width: 0.5px;
-	border-color: #e4e4e4;
-}
-
 .colinval {
 	font-weight: normal;
 }

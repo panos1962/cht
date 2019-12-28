@@ -18,11 +18,15 @@
 ///////////////////////////////////////////////////////////////////////////////@
 
 $debug = @$_GET["debug"];
+$pandora = "http://" . $_SERVER["HTTP_HOST"] . "/pandora";
 ?>
 <html>
 
 <head>
 <link rel="icon" type="image/png" href="../images/favicon-96x96.png">
+<link rel="stylesheet" type="text/css" href="<?php
+	print $pandora;
+?>/lib/pandora.css">
 <link rel="stylesheet" type="text/css" href="selida.css">
 <?php
 if ($debug) {

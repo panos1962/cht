@@ -18,29 +18,37 @@ w3gh.anazitisiCount = 0;
 $(document).ready(() => {
 	w3gh.
 	formSetup().
-	buttonSetup();
+	buttonSetup().
+	exec();
 });
 
+w3gh.exec = () => {
+	let pinakida;
+	let afm;
+
+	pinakida = 'ΝΒΝ9596';	// NISSAN
+	pinakida = ''
+	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
+
+	afm = '';
+	afm = '043514613';	// ανενεργό ΑΦΜ
+	afm = '095675861';	// νομικό πρόσωπο
+	afm = '032792320';	// εγώ
+
+	w3gh.pinakidaDOM.val(pinakida);
+	w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
+	w3gh.afmDOM.val(afm);
+	w3gh.ipovoliDOM.trigger('click');
+
+	return w3gh;
+};
+
 w3gh.formSetup = () => {
-let pinakida;
-let afm;
-
-pinakida = 'ΝΒΝ9596';
-pinakida = ''
-
-afm = '';
-afm = '043514613'; // ΑΝΕΝΕΡΓΟΣ
-afm = '095675861'; // ΝΟΜΙΚΟ ΠΡΟΣΩΠΟ
-afm = '032792320';
-
 	w3gh.bodyDOM = $(document.body);
 	w3gh.resultsDOM = $('#resultsRegion');
-	w3gh.pinakidaDOM = $('#pinakida').focus().
-	val(pinakida);
-	w3gh.imerominiaDOM = $('#imerominia').datepicker().
-	val(pd.dateTime(new Date(), '%D-%M-%Y'));
-	w3gh.afmDOM = $('#afm').
-	val(afm);
+	w3gh.pinakidaDOM = $('#pinakida').focus();
+	w3gh.imerominiaDOM = $('#imerominia').datepicker();
+	w3gh.afmDOM = $('#afm');
 	w3gh.ipovoliDOM = $('#ipovoli');
 	w3gh.katharismosDOM = $('#katharismos');
 	w3gh.akiroDOM = $('#akiro');
@@ -117,11 +125,21 @@ w3gh.anazitisi = (data) => {
 				if (typeof(t.fixChildren) === 'function')
 				t.fixChildren();
 
+				let dom;
+
+				try {
+					dom = t.kartaDOM();
+				}
+
+				catch (e) {
+					dom = pd.kartaDOM.call(t);
+				}
+
 				resDOM.
 				removeClass('resreq').
 				addClass('resbingo resbingo' + (resDOM.data('aa') % 2)).
 				empty().
-				append(t.kartaDOM());
+				append(dom);
 
 				let bc = resDOM.css('background-color');
 

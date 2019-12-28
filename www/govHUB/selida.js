@@ -26,8 +26,8 @@ w3gh.exec = () => {
 	let pinakida;
 	let afm;
 
-	pinakida = 'ΝΒΝ9596';	// NISSAN
 	pinakida = ''
+	pinakida = 'ΝΒΝ9596';	// NISSAN
 	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
 
 	afm = '';

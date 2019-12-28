@@ -25,8 +25,8 @@ w3gh.formSetup = () => {
 let pinakida;
 let afm;
 
-pinakida = ''
 pinakida = 'ΝΒΝ9596';
+pinakida = ''
 
 afm = '';
 afm = '043514613'; // ΑΝΕΝΕΡΓΟΣ

@@ -26,8 +26,8 @@ w3gh.exec = () => {
 	let pinakida;
 	let afm;
 
-	pinakida = ''
 	pinakida = 'ΝΒΝ9596';	// NISSAN
+	pinakida = ''
 	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
 
 	afm = '';
@@ -132,7 +132,7 @@ w3gh.anazitisi = (data) => {
 				}
 
 				catch (e) {
-					dom = pd.kartaDOM.call(t);
+					dom = pd.kartaDOM(t);
 				}
 
 				resDOM.

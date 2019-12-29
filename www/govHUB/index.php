@@ -45,6 +45,9 @@ if ($debug) {
 
 <div id="inputRegion">
 <form>
+<table>
+<tr>
+<td>
 <div class="pedio">
 <label class="prompt" for="pinakida">Αρ. Κυκλοφορίας</label>
 <input id="pinakida" type="text" name="pinakida">
@@ -64,6 +67,14 @@ if ($debug) {
 <input id="ipovoli" type="submit" value="Υποβολή">
 <input id="katharismos" type="reset" value="Καθαρισμός">
 <input id="akiro" type="button" value="Άκυρο">
+</td>
+<td>
+<div class="pedio">
+<textarea id="mazika" name="mazika">
+</textarea>
+</div>
+</td>
+</table>
 </div>
 </form>
 </div>

@@ -27,28 +27,33 @@ w3gh.exec = () => {
 	let afm;
 
 	pinakida = 'ΝΒΝ9596';	// NISSAN
-	pinakida = ''
 	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
+	pinakida = ''
 
-	afm = '';
 	afm = '043514613';	// ανενεργό ΑΦΜ
-	afm = '095675861';	// νομικό πρόσωπο
 	afm = '032792320';	// εγώ
+	afm = '095675861';	// νομικό πρόσωπο
+	afm = '';
+
+	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
 
 	w3gh.pinakidaDOM.val(pinakida);
 	w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
 	w3gh.afmDOM.val(afm);
+	w3gh.mazikaDOM.val(mazika);
 	w3gh.ipovoliDOM.trigger('click');
 
 	return w3gh;
 };
 
 w3gh.formSetup = () => {
+	$('form > table td').css('vertical-align', 'top');
 	w3gh.bodyDOM = $(document.body);
 	w3gh.resultsDOM = $('#resultsRegion');
 	w3gh.pinakidaDOM = $('#pinakida').focus();
 	w3gh.imerominiaDOM = $('#imerominia').datepicker();
 	w3gh.afmDOM = $('#afm');
+	w3gh.mazikaDOM = $('#mazika');
 	w3gh.ipovoliDOM = $('#ipovoli');
 	w3gh.katharismosDOM = $('#katharismos');
 	w3gh.akiroDOM = $('#akiro');
@@ -91,21 +96,65 @@ w3gh.buttonSetup = () => {
 			'afm': x,
 		});
 
+		x = w3gh.mazikaDOM.val();
+
+		let a = x.split(/\s/);
+		pd.arrWalk(a, (v) => {
+			if (v.match(/^[0-9]+$/))
+			return data.push({
+				'idos': 'prosopo',
+				'afm': v,
+			});
+
+			let a = v.split(/:/);
+
+			if (a.length < 1)
+			return;
+
+			if (!a[0])
+			return;
+
+			return data.push({
+				'idos': 'oxima',
+				'oxima': v,
+			});
+
+		});
+
 		w3gh.anazitisi(data);
 		return false;
+	});
+
+	w3gh.akiroDOM.
+	on('click', (e) => {
+		e.stopPropagation();
+		$('.resreq').each(function() {
+			let xhr = $(this).data('xhr');
+
+			if (!xhr)
+			return true;
+
+			$(this).removeData('xhr');
+			xhr.abort();
+			return true;
+		});
 	});
 
 	return w3gh;
 };
 
 w3gh.anazitisi = (data) => {
-	if (data.length <= 0)
+	if (!data.length)
 	return w3gh;
 
 	let x = data.shift();
 	let resDOM = w3gh.resultCreate(x);
 
-	$.post({
+	// Κρατάμε την τρέχουσα αναζήτηση σε μεταβλητή "xhr" του reuqest/result
+	// dom element ώστε να μπορούμε να ακυρώσουμε την αναζήτηση σε περίπτωση
+	// που το θελήσουμε.
+
+	resDOM.data('xhr', $.post({
 		'url': 'http://' + php.server['HTTP_HOST'] + ':' + w3gh.opts.portNumber,
 		'header': {
 			'Access-Control-Allow-Origin': '*',
@@ -113,6 +162,8 @@ w3gh.anazitisi = (data) => {
 		'dataType': 'json',
 		'data': x,
 		'success': (x) => {
+			resDOM.removeData('xhr');
+
 			if (x.hasOwnProperty('error')) {
 				w3gh.resultErrmsg(resDOM, x.error);
 				w3gh.anazitisi(data);
@@ -162,11 +213,20 @@ w3gh.anazitisi = (data) => {
 			w3gh.anazitisi(data);
 		},
 		'error': (err) => {
+			let xhr = resDOM.data('xhr');
+
+			if (!xhr)
+			return resDOM.remove();
+
 			console.error(err);
+			if (!$('.resreq').length)
+			return;
+
+			resDOM.removeClass('resreq');
 			w3gh.resultErrmsg(resDOM, 'σφάλμα αναζήτησης');
 			w3gh.anazitisi(data);
 		},
-	});
+	}));
 
 	return w3gh;
 };

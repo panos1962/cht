@@ -105,3 +105,9 @@ form label.prompt {
 	color: yellow;
 	background-color: #00456d;
 }
+
+#mazika {
+	width: 500px;
+	height: 85px;
+	overflow-y: auto;
+}

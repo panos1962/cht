@@ -67,6 +67,7 @@ if ($debug) {
 <input id="ipovoli" type="submit" value="Υποβολή">
 <input id="katharismos" type="reset" value="Καθαρισμός">
 <input id="akiro" type="button" value="Άκυρο">
+<input id="pause" type="button" value="Pause">
 </td>
 <td>
 <div class="pedio">

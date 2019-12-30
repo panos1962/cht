@@ -18,6 +18,14 @@ input {
 	padding: 2px 4px;
 }
 
+form .panel input {
+	cursor: pointer;
+}
+
+#pause {
+	display: none;
+}
+
 .prompt {
 	font-style: italic;
 }
@@ -29,7 +37,6 @@ input {
 
 .panel {
 	display: block;
-	text-align: center;
 }
 
 .panel input {

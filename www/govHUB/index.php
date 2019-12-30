@@ -62,12 +62,6 @@ if ($debug) {
 <label class="prompt" for="afm">ΑΦΜ</label>
 <input id="afm" type="text" name="afm">
 </div>
-<br>
-<div class="panel">
-<input id="ipovoli" type="submit" value="Υποβολή">
-<input id="katharismos" type="reset" value="Καθαρισμός">
-<input id="akiro" type="button" value="Άκυρο">
-<input id="pause" type="button" value="Pause">
 </td>
 <td>
 <div class="pedio">
@@ -76,6 +70,16 @@ if ($debug) {
 </div>
 </td>
 </table>
+<div style="position:relative;">
+<div id="panelLeft" class="panel">
+<input id="ipovoli" type="submit" value="Υποβολή">
+<input id="akiro" type="button" value="Άκυρο">
+<input id="pause" type="button" value="Pause">
+</div>
+<div id="panelRight" class="panel">
+<input id="clrForm" type="reset" value="Καθαρισμός φόρμας">
+<input id="clrRslt" type="button" value="Καθαρισμός αποτελεσμάτων">
+</div>
 </div>
 </form>
 </div>

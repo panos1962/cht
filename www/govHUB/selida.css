@@ -13,6 +13,18 @@ form {
 	border-radius: 6px;
 }
 
+#panelLeft {
+	display: inline-block;
+	position: relative;
+	left: 0;
+}
+
+#panelRight {
+	display: inline-block;
+	position: absolute;
+	right: 0;
+}
+
 input {
 	font-size: 80%;
 	padding: 2px 4px;
@@ -114,7 +126,7 @@ form label.prompt {
 }
 
 #mazika {
-	width: 500px;
+	width: 300px;
 	height: 85px;
 	overflow-y: auto;
 }

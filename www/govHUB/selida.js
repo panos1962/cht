@@ -60,9 +60,10 @@ w3gh.formSetup = () => {
 	w3gh.afmDOM = $('#afm');
 	w3gh.mazikaDOM = $('#mazika');
 	w3gh.ipovoliDOM = $('#ipovoli');
-	w3gh.katharismosDOM = $('#katharismos');
+	w3gh.clrFormDOM = $('#clrForm');
 	w3gh.akiroDOM = $('#akiro');
 	w3gh.pauseDOM = $('#pause');
+	w3gh.clrRsltDOM = $('#clrRslt');
 	w3gh.pauseReset();
 
 	return w3gh;
@@ -150,6 +151,27 @@ w3gh.buttonSetup = () => {
 
 		else
 		w3gh.pause();
+	});
+
+	w3gh.clrRsltDOM.
+	on('click', (e) => {
+		e.stopPropagation();
+
+		w3gh.resultsDOM.empty();
+		w3gh.anastoliAnazitisis();
+
+		let data = w3gh.pauseDOM.data('ipolipa');
+
+		if (!data)
+		return;
+
+		if (!data.length)
+		return;
+
+		if (w3gh.isPause())
+		return;
+
+		w3gh.anazitisi(data);
 	});
 
 	return w3gh;

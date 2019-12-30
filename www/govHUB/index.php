@@ -6,36 +6,32 @@
 // Η ανά χείρας σελίδα παρέχει στον χρήστη τη δυνατότητα αναζήτησης στοιχείων
 // μέσω της πλατφόρμας "govHUB" για:
 //
-//	Οχήματα και κατόχους οχημάτων με βάση τον αριθμό κυκλοφορίας οχήματος.
+//	- Οχήματα και κατόχους με βάση τον αριθμό κυκλοφορίας οχήματος.
 //
-//	Φυσικά και νομικά πρόσωπα με βάση το ΑΦΜ.
+//	- Φυσικά και νομικά πρόσωπα με βάση το ΑΦΜ.
 //
 // Η σελίδα είναι λειτουργική μόνον εφόσον υπάρχει ενεργός node server που να
-// δέχεται κλήσεις σε συγκεκριμένο port (11123).
+// δέχεται κλήσεις σε συγκεκριμένο port (default 11123).
+// 
+// Options
+// ‾‾‾‾‾‾‾
+// Το network port στο οποίο «ακούει» ο server μπορεί να καθοριστεί στο URL
+// μέσω της παραμέτρου "port".
 //
 // Updated: 2019-12-26
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
+define("PANDORA", "http://" . $_SERVER["HTTP_HOST"] . "/pandora");
 $debug = @$_GET["debug"];
-$pandora = "http://" . $_SERVER["HTTP_HOST"] . "/pandora";
 ?>
 <html>
 
 <head>
 <link rel="icon" type="image/png" href="../images/favicon-96x96.png">
-<link rel="stylesheet" type="text/css" href="<?php
-	print $pandora;
-?>/lib/pandora.css">
+<link rel="stylesheet" type="text/css" href="<?php print PANDORA; ?>/lib/pandora.css">
 <link rel="stylesheet" type="text/css" href="selida.css">
-<?php
-if ($debug) {
-?>
-<link rel="stylesheet" type="text/css" href="selida.debug.css">
-<?php
-}
-?>
-<?php require("../lib/standard.php"); ?>
+<script src="<?php print PANDORA; ?>/lib/pandora.php"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
@@ -73,11 +69,11 @@ if ($debug) {
 <div style="position:relative;">
 <div id="panelLeft" class="panel">
 <input id="ipovoli" type="submit" value="Υποβολή">
-<input id="akiro" type="button" value="Άκυρο">
-<input id="pause" type="button" value="Pause">
+<input id="akirosi" type="button" value="Ακύρωση">
+<input id="pafsi" type="button" value="">
 </div>
 <div id="panelRight" class="panel">
-<input id="clrForm" type="reset" value="Καθαρισμός φόρμας">
+<input id="clrForm" type="reset" value="Καθαρισμός κριτηρίων">
 <input id="clrRslt" type="button" value="Καθαρισμός αποτελεσμάτων">
 </div>
 </div>

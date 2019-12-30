@@ -12,10 +12,10 @@ const gh = require(`${process.env.CHT_BASEDIR}/lib/govHUB/apiClient.js`);
 
 const w3gh = {};
 w3gh.opts = {};
-w3gh.opts.portNumber = 11123;
+w3gh.opts.portNumber = php.requestGet('port', 11123);
 w3gh.opts.kimeno = {
-	'pause': 'Pause',
-	'resume': 'Resume',
+	'pafsi': 'Παύση',
+	'epanekinisi': 'Συνέχιση',
 };
 
 w3gh.anazitisiCount = 0;
@@ -30,6 +30,7 @@ $(document).ready(() => {
 w3gh.exec = () => {
 	let pinakida;
 	let afm;
+	let mazika;
 
 	pinakida = 'ΝΒΝ9596';	// NISSAN
 	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
@@ -40,6 +41,7 @@ w3gh.exec = () => {
 	afm = '095675861';	// νομικό πρόσωπο
 	afm = '';
 
+	mazika = '';
 	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
 
 	w3gh.pinakidaDOM.val(pinakida);
@@ -61,10 +63,10 @@ w3gh.formSetup = () => {
 	w3gh.mazikaDOM = $('#mazika');
 	w3gh.ipovoliDOM = $('#ipovoli');
 	w3gh.clrFormDOM = $('#clrForm');
-	w3gh.akiroDOM = $('#akiro');
-	w3gh.pauseDOM = $('#pause');
+	w3gh.akirosiDOM = $('#akirosi');
+	w3gh.pafsiDOM = $('#pafsi');
 	w3gh.clrRsltDOM = $('#clrRslt');
-	w3gh.pauseReset();
+	w3gh.pafsiReset();
 
 	return w3gh;
 };
@@ -73,7 +75,7 @@ w3gh.buttonSetup = () => {
 	w3gh.ipovoliDOM.
 	on('click', (e) => {
 		e.stopPropagation();
-		w3gh.pauseReset();
+		w3gh.pafsiReset();
 
 		let data = [];
 		let x;
@@ -134,23 +136,23 @@ w3gh.buttonSetup = () => {
 		return false;
 	});
 
-	w3gh.akiroDOM.
+	w3gh.akirosiDOM.
 	on('click', (e) => {
 		e.stopPropagation();
 		w3gh.
 		anastoliAnazitisis().
-		pauseReset();
+		pafsiReset();
 	});
 
-	w3gh.pauseDOM.
+	w3gh.pafsiDOM.
 	on('click', (e) => {
 		e.stopPropagation();
 
 		if (w3gh.isPause())
-		w3gh.resume();
+		w3gh.epanekinisi();
 
 		else
-		w3gh.pause();
+		w3gh.pafsi();
 	});
 
 	w3gh.clrRsltDOM.
@@ -160,7 +162,7 @@ w3gh.buttonSetup = () => {
 		w3gh.resultsDOM.empty();
 		w3gh.anastoliAnazitisis();
 
-		let data = w3gh.pauseDOM.data('ipolipa');
+		let data = w3gh.pafsiDOM.data('ipolipa');
 
 		if (!data)
 		return;
@@ -180,7 +182,7 @@ w3gh.buttonSetup = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 w3gh.anazitisi = (data) => {
-	w3gh.pauseUpdate(data);
+	w3gh.pafsiUpdate(data);
 
 	if (w3gh.isPause())
 	return w3gh;
@@ -196,7 +198,7 @@ w3gh.anazitisi = (data) => {
 	// που το θελήσουμε.
 
 	resDOM.data('xhr', $.post({
-		'url': 'http://' + php.server['HTTP_HOST'] + ':' + w3gh.opts.portNumber,
+		'url': 'http://' + php.serverGet('HTTP_HOST') + ':' + w3gh.opts.portNumber,
 		'header': {
 			'Access-Control-Allow-Origin': '*',
 		},
@@ -345,9 +347,9 @@ w3gh.resultErrmsg = (dom, msg) => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-// Η function "pause" αναστέλλει την τρέχουσα αναζήτηση.
+// Η function "pafsi" αναστέλλει την τρέχουσα αναζήτηση.
 
-w3gh.pause = () => {
+w3gh.pafsi = () => {
 	// Αν βρισκόμαστε ήδη σε κατάσταση αναστολής τρέχουσας αναζήτησης
 	// τότε δεν χρειάζεται να προβούμε σε περαιτέρω ενέργειες.
 
@@ -358,57 +360,69 @@ w3gh.pause = () => {
 
 	w3gh.anastoliAnazitisis();
 
-	let data = w3gh.pauseDOM.data('ipolipa');
+	let data = w3gh.pafsiDOM.data('ipolipa');
 
 	if (!data)
-	return w3gh.pauseReset();
+	return w3gh.pafsiReset();
 
 	if (!data.length)
-	return w3gh.pauseReset();
+	return w3gh.pafsiReset();
 
-	w3gh.pauseDOM.
+	w3gh.akirosiDOM.
+	css('display', 'inline-block');
+
+	w3gh.pafsiDOM.
 	css('display', 'inline-block').
-	val(w3gh.opts.kimeno.resume);
+	val(w3gh.opts.kimeno.epanekinisi);
 
 	return w3gh;
 };
 
-w3gh.resume = () => {
+w3gh.epanekinisi = () => {
 	if (w3gh.noPause())
 	return w3gh;
 
-	let data = w3gh.pauseDOM.data('ipolipa');
+	let data = w3gh.pafsiDOM.data('ipolipa');
 
 	if (!data)
-	return w3gh.pauseReset();
+	return w3gh.pafsiReset();
 
 	if (!data.length)
-	return w3gh.pauseReset();
+	return w3gh.pafsiReset();
 
-	$(this).
+	w3gh.akirosiDOM.
+	css('display', 'inline-block');
+
+	w3gh.pafsiDOM.
 	css('display', 'inline-block').
-	val(w3gh.opts.kimeno.pause);
+	val(w3gh.opts.kimeno.pafsi);
 
 	w3gh.anazitisi(data);
 	return w3gh;
 };
 
-w3gh.pauseReset = () => {
-	w3gh.pauseDOM.
+w3gh.pafsiReset = () => {
+	w3gh.akirosiDOM.
+	css('display', 'none');
+
+	w3gh.pafsiDOM.
 	removeData('ipolipa').
-	val(w3gh.opts.kimeno.pause).
+	val(w3gh.opts.kimeno.pafsi).
 	css('display', 'none');
 
 	return w3gh;
 };
 
-w3gh.pauseUpdate = (data) => {
+w3gh.pafsiUpdate = (data) => {
 	if (!data.length)
-	return w3gh.pauseReset();
+	return w3gh.pafsiReset();
 
-	w3gh.pauseDOM.
+	w3gh.akirosiDOM.
+	css('display', 'inline-block');
+
+	w3gh.pafsiDOM.
 	data('ipolipa', data).
-	val(w3gh.opts.kimeno.pause).
+	val(w3gh.opts.kimeno.pafsi).
 	css('display', 'inline-block');
 
 	return w3gh;
@@ -419,16 +433,16 @@ w3gh.pauseUpdate = (data) => {
 
 w3gh.isPause = () => {
 	// Πρώτα ελέγχουμε την ετικέτα του πλήκτρου η οποία πρέπει να
-	// είναι "Resume".
+	// είναι "Επανεκκίνηση".
 
-	if (w3gh.pauseDOM.val() !== w3gh.opts.kimeno.resume)
+	if (w3gh.pafsiDOM.val() !== w3gh.opts.kimeno.epanekinisi)
 	return false;
 
 	// Κατόπιν ελέγχουμε τα δεδομένα αναζήτησης που υπήρχαν όταν
 	// έγινε η αναστολή· αν δεν έχουμε τέτοια δεδομένα θεωρούμε
 	// ότι δεν βρισκόμαστε σε κατάσταση αναστολής αναζήτησης.
 
-	let data = w3gh.pauseDOM.data('ipolipa');
+	let data = w3gh.pafsiDOM.data('ipolipa');
 	return (data && data.length);
 };
 

@@ -143,3 +143,10 @@ form label.prompt {
 #format {
 	width: 12ch;
 }
+
+#trexon {
+	display: inline-block;
+	width: 553px;
+	font-style: italic;
+	color: coral;
+}

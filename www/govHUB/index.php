@@ -77,6 +77,13 @@ Pandora::import_php([
 </textarea>
 </div>
 </td>
+<tr>
+<td colspan="2">
+<div class="pedio">
+<label class="prompt" for="trexon">Τρέχον</label>
+<div id="trexon"></div>
+</div>
+</td>
 </table>
 <div style="position:relative;">
 <div id="panelLeft" class="panel">

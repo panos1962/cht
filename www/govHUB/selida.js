@@ -77,6 +77,7 @@ w3gh.formSetup = () => {
 	w3gh.imerominiaDOM = $('#imerominia').datepicker();
 	w3gh.afmDOM = $('#afm');
 	w3gh.mazikaDOM = $('#mazika');
+	w3gh.trexonDOM = $('#trexon');
 
 	w3gh.ipovoliDOM = $('#ipovoli');
 	w3gh.clrFormDOM = $('#clrForm');
@@ -200,6 +201,14 @@ w3gh.buttonSetup = () => {
 		else
 		w3gh.pafsi();
 	});
+
+	w3gh.clrFormDOM.
+	on('click', (e) => {
+		e.stopPropagation();
+		w3gh.trexonDOM.empty();
+		return true;
+	});
+
 
 	w3gh.clrRsltDOM.
 	on('click', (e) => {
@@ -370,8 +379,10 @@ w3gh.resultCreate = (data) => {
 		break;
 	}
 
+	w3gh.trexonDOM.html(msg);
 	msg += '<div class="resreqWorking">' +
 		'<img class="resreqWorkingImage" src="../images/bares.gif"></div>';
+
 	return $('<div>').
 	addClass('result resreq').
 	data('message', msg).

@@ -26,7 +26,7 @@ w3gh.opts = {};
 w3gh.opts.portNumber = php.requestGet('port', 11123);
 w3gh.opts.kimeno = {
 	'pafsi': 'Παύση',
-	'epanekinisi': 'Συνέχιση',
+	'sinexisi': 'Συνέχιση',
 };
 
 w3gh.anazitisiCount = 0;
@@ -195,7 +195,7 @@ w3gh.buttonSetup = () => {
 		e.stopPropagation();
 
 		if (w3gh.isPause())
-		w3gh.epanekinisi();
+		w3gh.sinexisi();
 
 		else
 		w3gh.pafsi();
@@ -303,7 +303,9 @@ w3gh.anazitisi = (data) => {
 			w3gh.anazitisi(data);
 		},
 		'error': (err) => {
+			if (err.statusText !== 'abort')
 			console.error(err);
+
 			let xhr = resDOM.data('xhr');
 
 			if (!xhr)
@@ -419,12 +421,12 @@ w3gh.pafsi = () => {
 
 	w3gh.pafsiDOM.
 	css('display', 'inline-block').
-	val(w3gh.opts.kimeno.epanekinisi);
+	val(w3gh.opts.kimeno.sinexisi);
 
 	return w3gh;
 };
 
-w3gh.epanekinisi = () => {
+w3gh.sinexisi = () => {
 	if (w3gh.noPause())
 	return w3gh;
 
@@ -481,7 +483,7 @@ w3gh.isPause = () => {
 	// Πρώτα ελέγχουμε την ετικέτα του πλήκτρου η οποία πρέπει να
 	// είναι "Επανεκκίνηση".
 
-	if (w3gh.pafsiDOM.val() !== w3gh.opts.kimeno.epanekinisi)
+	if (w3gh.pafsiDOM.val() !== w3gh.opts.kimeno.sinexisi)
 	return false;
 
 	// Κατόπιν ελέγχουμε τα δεδομένα αναζήτησης που υπήρχαν όταν

@@ -61,6 +61,12 @@ $debug = @$_GET["debug"];
 </td>
 <td>
 <div class="pedio">
+<label id="formatLabel" class="prompt" for="formatHelp">Format</label>
+<select id="formatHelp"></select>
+<input id="format" type="text" name="format">
+</div>
+<br>
+<div class="pedio">
 <textarea id="mazika" name="mazika">
 </textarea>
 </div>

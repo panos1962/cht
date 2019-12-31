@@ -1,9 +1,21 @@
+///////////////////////////////////////////////////////////////////////////////@
+//
+// Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+//
+// Το παρόν οδηγεί φόρμα αναζήτησης οχημάτων, κατόχων οχημάτων, φυσικών και
+// νομικών προσώπων μέσω της πλατφόρμας "govHUB".
+//
+// Updated: 2019-12-31
+//
+///////////////////////////////////////////////////////////////////////////////@
+
 "use strict";
 
 if (!process.env.PANDORA_BASEDIR)
 process.env.PANDORA_BASEDIR = '/var/opt/pandora';
 
 const pd = require(`${process.env.PANDORA_BASEDIR}/lib/pandoraClient.js`);
+
 
 if (!process.env.CHT_BASEDIR)
 process.env.CHT_BASEDIR = '/var/opt/cht';
@@ -43,12 +55,17 @@ w3gh.exec = () => {
 
 	mazika = '';
 	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
+	mazika = '23572901 ΑΗΜ7551 2017-01-31\n' + '23126130 ΙΜΡ3593 2017-01-31\n' +
+		'23126010 ΝΜΑ0436 2017-01-31\n' + '23125988 ΝΜΡ0911 2017-01-31\n' +
+		'23125943 ΒΑΖ2942 2017-01-31\n' + '23125459 C7912HP 2017-01-31\n' +
+		'23125410 ΕΡΝ3400 2017-01-31\n' + '23125390 ΚΖΜ0012 2017-01-31\n' +
+		'23125376 ΝΟΟ0609 2017-01-31\n' + '23125361 ΝΟΤ0352 2017-01-31';
 
 	w3gh.pinakidaDOM.val(pinakida);
 	w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
 	w3gh.afmDOM.val(afm);
 	w3gh.mazikaDOM.val(mazika);
-	w3gh.ipovoliDOM.trigger('click');
+	//w3gh.ipovoliDOM.trigger('click');
 
 	return w3gh;
 };
@@ -61,12 +78,42 @@ w3gh.formSetup = () => {
 	w3gh.imerominiaDOM = $('#imerominia').datepicker();
 	w3gh.afmDOM = $('#afm');
 	w3gh.mazikaDOM = $('#mazika');
+
 	w3gh.ipovoliDOM = $('#ipovoli');
 	w3gh.clrFormDOM = $('#clrForm');
 	w3gh.akirosiDOM = $('#akirosi');
 	w3gh.pafsiDOM = $('#pafsi');
 	w3gh.clrRsltDOM = $('#clrRslt');
 	w3gh.pafsiReset();
+
+	w3gh.formatSetup();
+	return w3gh;
+};
+
+w3gh.formatSetup = () => {
+	w3gh.formatHelpDOM = $('#formatHelp');
+	w3gh.formatDOM = $('#format');
+
+	const flist = [
+		{ "format": "",		"desc": "✶Ελεύθερο✶" },
+		{ "format": "x @o x",	"desc": "Παράβαση Όχημα Ημερομηνία" },
+		{ "format": "@a @o",	"desc": "ΑΦΜ Όχημα" },
+		{ "format": "x:x:@a",	"desc": "Αρ. Αδείας:Ημερομηνία:ΑΦΜ" },
+	];
+	let format = {};
+
+	pd.arrWalk(flist, v => {
+		format[v.desc] = v.format;
+		w3gh.formatHelpDOM.
+		append($('<option>').
+		attr('value', v.desc).
+		text(v.desc));
+	});
+
+	w3gh.formatHelpDOM.
+	on('change', function() {
+		w3gh.formatDOM.val(format[$(this).val()]);
+	});
 
 	return w3gh;
 };

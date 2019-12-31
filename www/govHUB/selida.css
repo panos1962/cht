@@ -62,6 +62,7 @@ form .panel input {
 
 form label.prompt {
 	display: inline-block;
+	margin-right: 4px;
 	white-space: nowrap;
 	width: 14ch;
 	text-align: right;
@@ -131,6 +132,14 @@ form label.prompt {
 
 #mazika {
 	width: 380px;
-	height: 85px;
+	height: 54px;
 	overflow-y: auto;
+}
+
+#formatLabel {
+	width: auto;
+}
+
+#format {
+	width: 12ch;
 }

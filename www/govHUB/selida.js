@@ -23,7 +23,7 @@ const gh = require(`${process.env.CHT_BASEDIR}/lib/govHUB/apiClient.js`);
 
 const w3gh = {};
 w3gh.opts = {};
-w3gh.opts.portNumber = php.requestGet('port', 11123);
+w3gh.opts.portNumber = php.requestGet('port', 12345);
 w3gh.opts.kimeno = {
 	'pafsi': 'Παύση',
 	'sinexisi': 'Συνέχιση',

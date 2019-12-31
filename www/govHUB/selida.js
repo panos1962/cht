@@ -16,7 +16,6 @@ process.env.PANDORA_BASEDIR = '/var/opt/pandora';
 
 const pd = require(`${process.env.PANDORA_BASEDIR}/lib/pandoraClient.js`);
 
-
 if (!process.env.CHT_BASEDIR)
 process.env.CHT_BASEDIR = '/var/opt/cht';
 
@@ -54,12 +53,12 @@ w3gh.exec = () => {
 	afm = '';
 
 	mazika = '';
-	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
 	mazika = '23572901 ΑΗΜ7551 2017-01-31\n' + '23126130 ΙΜΡ3593 2017-01-31\n' +
 		'23126010 ΝΜΑ0436 2017-01-31\n' + '23125988 ΝΜΡ0911 2017-01-31\n' +
 		'23125943 ΒΑΖ2942 2017-01-31\n' + '23125459 C7912HP 2017-01-31\n' +
 		'23125410 ΕΡΝ3400 2017-01-31\n' + '23125390 ΚΖΜ0012 2017-01-31\n' +
 		'23125376 ΝΟΟ0609 2017-01-31\n' + '23125361 ΝΟΤ0352 2017-01-31';
+	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
 
 	w3gh.pinakidaDOM.val(pinakida);
 	w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
@@ -240,7 +239,7 @@ w3gh.anazitisi = (data) => {
 	let x = data[0];
 	let resDOM = w3gh.resultCreate(x);
 
-	// Κρατάμε την τρέχουσα αναζήτηση σε μεταβλητή "xhr" του reuqest/result
+	// Κρατάμε την τρέχουσα αναζήτηση σε μεταβλητή "xhr" του request/result
 	// dom element ώστε να μπορούμε να ακυρώσουμε την αναζήτηση σε περίπτωση
 	// που το θελήσουμε.
 
@@ -304,12 +303,12 @@ w3gh.anazitisi = (data) => {
 			w3gh.anazitisi(data);
 		},
 		'error': (err) => {
+			console.error(err);
 			let xhr = resDOM.data('xhr');
 
 			if (!xhr)
 			return resDOM.remove();
 
-			console.error(err);
 			if (!$('.resreq').length)
 			return;
 

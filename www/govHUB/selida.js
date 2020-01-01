@@ -38,7 +38,10 @@ process.env.CHT_BASEDIR = '/var/opt/cht';
 
 const gh = require(`${process.env.CHT_BASEDIR}/lib/govHUB/apiClient.js`);
 
+///////////////////////////////////////////////////////////////////////////////@
+
 const w3gh = {};
+
 w3gh.opts = {};
 w3gh.opts.portNumber = php.requestGet('port', 12345);
 w3gh.opts.kimeno = {
@@ -47,7 +50,9 @@ w3gh.opts.kimeno = {
 };
 w3gh.opts.sepChar = ',';
 
-w3gh.anazitisiCount = 0;
+w3gh.resultCount = 0;
+
+///////////////////////////////////////////////////////////////////////////////@
 
 $(document).ready(() => {
 	w3gh.
@@ -57,34 +62,8 @@ $(document).ready(() => {
 });
 
 w3gh.exec = () => {
-	let pinakida;
-	let afm;
-	let mazika;
-
-	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
-	pinakida = 'ΝΒΝ9596';	// NISSAN
-	pinakida = ''
-
-	afm = '043514613';	// ανενεργό ΑΦΜ
-	afm = '095675861';	// νομικό πρόσωπο
-	afm = '032792320';	// εγώ
-	afm = '';
-
-	mazika = '';
-	mazika = '23572901 ΑΗΜ7551 2017-01-31\n' + '23126130 ΙΜΡ3593 2017-01-31\n' +
-		'23126010 ΝΜΑ0436 2017-01-31\n' + '23125988 ΝΜΡ0911 2017-01-31\n' +
-		'23125943 ΒΑΖ2942 2017-01-31\n' + '23125459 C7912HP 2017-01-31\n' +
-		'23125410 ΕΡΝ3400 2017-01-31\n' + '23125390 ΚΖΜ0012 2017-01-31\n' +
-		'23125376 ΝΟΟ0609 2017-01-31\n' + '23125361 ΝΟΤ0352 2017-01-31';
-	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
-	mazika = '032792320,ΝΒΝ9596,23-03-2016';
-
-	w3gh.pinakidaDOM.val(pinakida);
-	w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
-	w3gh.afmDOM.val(afm);
-	w3gh.mazikaDOM.val(mazika);
-	w3gh.formatDOM.val('@v,@c,@d');
-	w3gh.ipovoliDOM.trigger('click');
+	if (php.requestGet('test') !== undefined)
+	w3gh.execTest();
 
 	return w3gh;
 };
@@ -144,7 +123,6 @@ w3gh.buttonSetup = () => {
 	on('click', (e) => {
 		e.stopPropagation();
 		w3gh.pafsiReset();
-console.log('Submit');
 
 		try {
 			let data = [];
@@ -153,10 +131,6 @@ console.log('Submit');
 			pushAfm(data).
 			pushMazika(data).
 			anazitisi(data);
-/*
-			anazitisi(data);
-*/
-console.log(data);
 		}
 
 		catch (e) {
@@ -189,6 +163,7 @@ console.log(data);
 	on('click', (e) => {
 		e.stopPropagation();
 		w3gh.trexonDOM.empty();
+		w3gh.pinakidaDOM.focus();
 		return true;
 	});
 
@@ -216,6 +191,8 @@ console.log(data);
 
 	return w3gh;
 };
+
+///////////////////////////////////////////////////////////////////////////////@
 
 w3gh.pushPinakida = (data) => {
 	let pinakida = w3gh.pinakidaDOM.val();
@@ -269,7 +246,6 @@ w3gh.pushMazika = (data) => {
 
 	let date = w3gh.imerominiaGet();
 	pd.arrayWalk(rows, (row) => {
-console.log('>>>', row);
 		w3gh.parseRow(data, row, flist, date);
 	});
 
@@ -330,7 +306,6 @@ w3gh.pushWords = (data, mazika) => {
 
 w3gh.parseRow = (data, row, flist, date) => {
 	let cols = row.split(w3gh.opts.sepChar);
-console.log('@@@', cols, flist, date);
 
 	if (!cols.length)
 	return w3gh;
@@ -364,7 +339,6 @@ console.log('@@@', cols, flist, date);
 			date = pd.date2date(cols[i], 'DMY', '%Y-%M-%D');
 			break;
 		}
-console.log('######', flist[i], sodi, yek);
 
 		if (!sodi)
 		continue;
@@ -562,7 +536,7 @@ w3gh.resultCreate = (data) => {
 	return $('<div>').
 	addClass('result resreq').
 	data('message', msg).
-	data('aa', w3gh.anazitisiCount++).
+	data('aa', w3gh.resultCount++).
 	html(msg).
 	prependTo(w3gh.resultsDOM);
 };
@@ -685,6 +659,8 @@ w3gh.noPause = () => {
 	return !w3gh.isPause();
 };
 
+///////////////////////////////////////////////////////////////////////////////@
+
 w3gh.imerominiaGet = () => {
 	let d = w3gh.imerominiaDOM.val();
 
@@ -692,4 +668,37 @@ w3gh.imerominiaGet = () => {
 	return undefined;
 
 	return pd.date2date(d, 'DMY', '%Y-%M-%D');
+};
+
+w3gh.execTest = () => {
+	let pinakida;
+	let afm;
+	let mazika;
+
+	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
+	pinakida = 'ΝΒΝ9596';	// NISSAN
+	pinakida = ''
+
+	afm = '043514613';	// ανενεργό ΑΦΜ
+	afm = '095675861';	// νομικό πρόσωπο
+	afm = '032792320';	// εγώ
+	afm = '';
+
+	mazika = '';
+	mazika = '23572901 ΑΗΜ7551 2017-01-31\n' + '23126130 ΙΜΡ3593 2017-01-31\n' +
+		'23126010 ΝΜΑ0436 2017-01-31\n' + '23125988 ΝΜΡ0911 2017-01-31\n' +
+		'23125943 ΒΑΖ2942 2017-01-31\n' + '23125459 C7912HP 2017-01-31\n' +
+		'23125410 ΕΡΝ3400 2017-01-31\n' + '23125390 ΚΖΜ0012 2017-01-31\n' +
+		'23125376 ΝΟΟ0609 2017-01-31\n' + '23125361 ΝΟΤ0352 2017-01-31';
+	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
+	mazika = '032792320,ΝΒΝ9596,23-03-2016';
+
+	w3gh.pinakidaDOM.val(pinakida);
+	w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
+	w3gh.afmDOM.val(afm);
+	w3gh.mazikaDOM.val(mazika);
+	w3gh.formatDOM.val('@v,@c,@d');
+	w3gh.ipovoliDOM.trigger('click');
+
+	return w3gh;
 };

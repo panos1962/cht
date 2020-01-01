@@ -5,6 +5,21 @@
 // Το παρόν οδηγεί φόρμα αναζήτησης οχημάτων, κατόχων οχημάτων, φυσικών και
 // νομικών προσώπων μέσω της πλατφόρμας "govHUB".
 //
+// Το πρόγραμμα παρουσιάζει σελίδα στην οποία ο χρήστης μπορεί να καθορίσει
+// κριτήρια αναζήτησης για:
+//
+//	⚫ Οχήματα και κατόχους οχημάτων μέσω αριθμού κυκλοφορίας οχήματος
+//	⚫ Φυσικά ή νομικά πρόσωπα μέσω ΑΦΜ
+//
+// Το πρόγραμμα λειτουργεί σε συνεργασία με τον κατάλληλο server που εκτελεί
+// τις αναζητήσεις. Ο server δέχεται αιτήματα σε συγκεκριμένη πόρτα δικτύου
+// (default port 12345) και εκτελείται με την εντολή:
+//
+//	GH w3srv
+//
+// είτε στον server που διανέμει το πρόγραμμα, είτε σε άλλον υπολογιστή του
+// δικτύου.
+//
 // Updated: 2019-12-31
 //
 ///////////////////////////////////////////////////////////////////////////////@
@@ -28,6 +43,7 @@ w3gh.opts.kimeno = {
 	'pafsi': 'Παύση',
 	'sinexisi': 'Συνέχιση',
 };
+w3gh.opts.sepChar = ',';
 
 w3gh.anazitisiCount = 0;
 
@@ -43,14 +59,14 @@ w3gh.exec = () => {
 	let afm;
 	let mazika;
 
-	pinakida = 'ΝΒΝ9596';	// NISSAN
 	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
+	pinakida = 'ΝΒΝ9596';	// NISSAN
 	pinakida = ''
 
 	afm = '043514613';	// ανενεργό ΑΦΜ
-	afm = '032792320';	// εγώ
 	afm = '095675861';	// νομικό πρόσωπο
 	afm = '';
+	afm = '032792320';	// εγώ
 
 	mazika = '';
 	mazika = '23572901 ΑΗΜ7551 2017-01-31\n' + '23126130 ΙΜΡ3593 2017-01-31\n' +
@@ -96,13 +112,14 @@ w3gh.formatSetup = () => {
 
 	const flist = [
 		{ "format": "",		"desc": "✶Ελεύθερο✶" },
-		{ "format": "x @o x",	"desc": "Παράβαση Όχημα Ημερομηνία" },
-		{ "format": "@a @o",	"desc": "ΑΦΜ Όχημα" },
-		{ "format": "x:x:@a",	"desc": "Αρ. Αδείας:Ημερομηνία:ΑΦΜ" },
+		{ "format": "p,@c,@d",	"desc": "Παράβαση,Όχημα,Ημερομηνία" },
+		{ "format": "@v,@c,@d",	"desc": "ΑΦΜ,Όχημα,Ημερομηνία" },
+		{ "format": "a,d,@v",	"desc": "Αρ. Αδείας,Ημερομηνία,ΑΦΜ" },
+		{ "format": "2,@o,3,@d","desc": "*,*,Όχημα,*,*,*,Ημερομηνία" },
 	];
 	let format = {};
 
-	pd.arrWalk(flist, v => {
+	pd.arrayWalk(flist, v => {
 		format[v.desc] = v.format;
 		w3gh.formatHelpDOM.
 		append($('<option>').
@@ -123,63 +140,25 @@ w3gh.buttonSetup = () => {
 	on('click', (e) => {
 		e.stopPropagation();
 		w3gh.pafsiReset();
+console.log('Submit');
 
-		let data = [];
-		let x;
+		try {
+			let data = [];
+			w3gh.
+			pushPinakida(data).
+			pushAfm(data).
+			pushMazika(data).
+			anazitisi(data);
+/*
+			anazitisi(data);
+*/
+console.log(data);
+		}
 
-		x = w3gh.pinakidaDOM.val();
+		catch (e) {
+			console.error(e);
+		}
 
-		if (x) {
-			let t = {
-				'idos': 'oxima',
-				'oxima': x,
-			};
-
-			let d = w3gh.imerominiaDOM.val();
-
-			if (d)
-			d = pd.date2date(d, 'DMY', '%Y-%M-%D');
-
-			if (d)
-			t.imerominia = d;
-
-			data.push(t);
-		};
-
-		x = w3gh.afmDOM.val();
-
-		if (x)
-		data.push({
-			'idos': 'prosopo',
-			'afm': x,
-		});
-
-		x = w3gh.mazikaDOM.val();
-
-		let a = x.split(/\s/);
-		pd.arrWalk(a, (v) => {
-			if (v.match(/^[0-9]+$/))
-			return data.push({
-				'idos': 'prosopo',
-				'afm': v,
-			});
-
-			let a = v.split(/:/);
-
-			if (a.length < 1)
-			return;
-
-			if (!a[0])
-			return;
-
-			return data.push({
-				'idos': 'oxima',
-				'oxima': v,
-			});
-
-		});
-
-		w3gh.anazitisi(data);
 		return false;
 	});
 
@@ -234,6 +213,185 @@ w3gh.buttonSetup = () => {
 	return w3gh;
 };
 
+w3gh.pushPinakida = (data) => {
+	let pinakida = w3gh.pinakidaDOM.val();
+
+	if (!pinakida)
+	return w3gh;
+
+	let t = {
+		'idos': 'oxima',
+		'key': pinakida,
+	};
+
+	let d = w3gh.imerominiaGet();
+
+	if (d)
+	t.imerominia = d;
+
+	data.push(t);
+	return w3gh;
+};
+
+w3gh.pushAfm = (data) => {
+	afm = w3gh.afmDOM.val();
+
+	if (!afm)
+	return w3gh;
+
+	data.push({
+		'idos': 'prosopo',
+		'key': afm,
+	});
+
+	return w3gh;
+};
+
+w3gh.pushMazika = (data) => {
+	let mazika = w3gh.mazikaDOM.val();
+
+	if (!mazika)
+	return w3gh;
+
+	let flist = w3gh.formatSplit();
+
+	if (!flist.length)
+	return w3gh.pushWords(data, mazika);
+
+	let rows = mazika.split(/[\n\r\v\f]+/);
+
+	if (!rows.length)
+	return w3gh;
+
+	let date = w3gh.imerominiaGet();
+	pd.arrayWalk(rows, (row) => {
+		w3gh.parseRow(data, row, flist, date);
+	});
+
+	return w3gh;
+};
+
+w3gh.formatSplit = () => {
+	let flist = [];
+	let format = w3gh.formatDOM.val();
+
+	if (!format)
+	return flist;
+
+	let a = format.split(w3gh.sepChar);
+
+	if (!a.length)
+	return flist;
+
+	pd.arrayWalk(a, (v) => {
+		let n = parseInt(v);
+
+		if (n != v) {
+			flist.push(v);
+			return;
+		}
+
+		while (n-- > 0)
+		flist.push('*');
+	});
+
+	return flist;
+};
+
+w3gh.pushWords = (data, mazika) => {
+	let a = mazika.split(/\s/);
+
+	if (!a.length)
+	return w3gh;
+
+	pd.arrayWalk(a, (x) => {
+		if (!a)
+		return;
+
+		if (x.match(/^[0-9]+$/))
+		return data.push({
+			'idos': 'prosopo',
+			'key': x,
+		});
+
+		return data.push({
+			'idos': 'oxima',
+			'key': x,
+		});
+	});
+
+	return w3gh;
+};
+
+w3gh.parseRow = (data, row, flist, date) => {
+	let cols = row.split(w3gh.sepChar);
+
+	if (!cols.length)
+	return w3gh;
+
+	if (!flist.length)
+	return w3gh;
+
+	let n = cols.length;
+
+	if (flist.length < n)
+	n = flist.length;
+
+	let idos = undefined;
+	let key = undefined
+
+	pd.arrayWalk(cols, (col, i) => {
+		let sodi = undefined;
+
+		switch (flist[i]) {
+		case '@c':
+			sodi = 'oxima';
+			key = cols[i];
+			break;
+		case '@v':
+			sodi = 'prosopo';
+			key = cols[i];
+			break;
+		case '@d':
+			date = pd.date2date(cols[i], 'DMY', '%Y-%M-%D');
+			break;
+		}
+
+		if (!sodi)
+		return;
+
+		if (!idos)
+		return (idos = sodi);
+
+		w3gh.pushItem(data, idos, key, date);
+		idos = undefined;
+	});
+
+	w3gh.pushItem(data, idos, key, date);
+	return w3gh;
+};
+
+w3gh.pushItem = (data, idos, key, date) => {
+	let t = {};
+
+	switch (idos) {
+	case 'oxima':
+		if (date)
+		t.imerominia = date;
+		break;
+	case 'prosopo':
+		break;
+	default:
+		return w3gh;
+	}
+
+	t.idos = idos;
+	t.key = key;
+
+	data.push(t);
+	return w3gh;
+};
+
 ///////////////////////////////////////////////////////////////////////////////@
 
 w3gh.anazitisi = (data) => {
@@ -245,7 +403,7 @@ w3gh.anazitisi = (data) => {
 	if (!data.length)
 	return w3gh;
 
-	let x = data[0];
+	let x = data[0]; // XXX avoid shift here!!!
 	let resDOM = w3gh.resultCreate(x);
 
 	// Κρατάμε την τρέχουσα αναζήτηση σε μεταβλητή "xhr" του request/result
@@ -356,8 +514,8 @@ w3gh.resultCreate = (data) => {
 	case 'oxima':
 		msg = 'Αναζήτηση οχήματος με αρ. κυκλοφορίας:';
 
-		if (data.hasOwnProperty('oxima'))
-		msg += ' <b>' + data.oxima + '</b>';
+		if (data.hasOwnProperty('key'))
+		msg += ' <b>' + data.key + '</b>';
 
 		if (data.hasOwnProperty('imerominia'))
 		msg += ' <b>(' + data.imerominia + '</b>)';
@@ -366,8 +524,8 @@ w3gh.resultCreate = (data) => {
 	case 'prosopo':
 		msg = 'Αναζήτηση προσώπου με ΑΦΜ:';
 
-		if (data.hasOwnProperty('afm'))
-		msg += ' <b>' + data.afm + '</b>';
+		if (data.hasOwnProperty('key'))
+		msg += ' <b>' + data.key + '</b>';
 
 		break;
 	default:
@@ -507,4 +665,13 @@ w3gh.isPause = () => {
 
 w3gh.noPause = () => {
 	return !w3gh.isPause();
+};
+
+w3gh.imerominiaGet = () => {
+	let d = w3gh.imerominiaDOM.val();
+
+	if (!d)
+	return undefined;
+
+	return pd.date2date(d, 'DMY', '%Y-%M-%D');
 };

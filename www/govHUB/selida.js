@@ -65,8 +65,8 @@ w3gh.exec = () => {
 
 	afm = '043514613';	// ανενεργό ΑΦΜ
 	afm = '095675861';	// νομικό πρόσωπο
-	afm = '';
 	afm = '032792320';	// εγώ
+	afm = '';
 
 	mazika = '';
 	mazika = '23572901 ΑΗΜ7551 2017-01-31\n' + '23126130 ΙΜΡ3593 2017-01-31\n' +
@@ -75,12 +75,14 @@ w3gh.exec = () => {
 		'23125410 ΕΡΝ3400 2017-01-31\n' + '23125390 ΚΖΜ0012 2017-01-31\n' +
 		'23125376 ΝΟΟ0609 2017-01-31\n' + '23125361 ΝΟΤ0352 2017-01-31';
 	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
+	mazika = '032792320,ΝΒΝ9596,23-03-2016';
 
 	w3gh.pinakidaDOM.val(pinakida);
 	w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
 	w3gh.afmDOM.val(afm);
 	w3gh.mazikaDOM.val(mazika);
-	//w3gh.ipovoliDOM.trigger('click');
+	w3gh.formatDOM.val('@v,@c,@d');
+	w3gh.ipovoliDOM.trigger('click');
 
 	return w3gh;
 };
@@ -265,6 +267,7 @@ w3gh.pushMazika = (data) => {
 
 	let date = w3gh.imerominiaGet();
 	pd.arrayWalk(rows, (row) => {
+console.log('>>>', row);
 		w3gh.parseRow(data, row, flist, date);
 	});
 
@@ -278,7 +281,7 @@ w3gh.formatSplit = () => {
 	if (!format)
 	return flist;
 
-	let a = format.split(w3gh.sepChar);
+	let a = format.split(w3gh.opts.sepChar);
 
 	if (!a.length)
 	return flist;
@@ -324,7 +327,8 @@ w3gh.pushWords = (data, mazika) => {
 };
 
 w3gh.parseRow = (data, row, flist, date) => {
-	let cols = row.split(w3gh.sepChar);
+	let cols = row.split(w3gh.opts.sepChar);
+console.log('@@@', cols, flist, date);
 
 	if (!cols.length)
 	return w3gh;
@@ -338,36 +342,48 @@ w3gh.parseRow = (data, row, flist, date) => {
 	n = flist.length;
 
 	let idos = undefined;
-	let key = undefined
+	let key = undefined;
 
-	pd.arrayWalk(cols, (col, i) => {
-		let sodi = undefined;
+	let sodi = undefined;
+	let yek = undefined;
+
+	for (let i = 0; i < n; i++) {
 
 		switch (flist[i]) {
 		case '@c':
 			sodi = 'oxima';
-			key = cols[i];
+			yek = cols[i];
 			break;
 		case '@v':
 			sodi = 'prosopo';
-			key = cols[i];
+			yek = cols[i];
 			break;
 		case '@d':
 			date = pd.date2date(cols[i], 'DMY', '%Y-%M-%D');
 			break;
 		}
+console.log('######', flist[i], sodi, yek);
 
 		if (!sodi)
-		return;
+		continue;
 
-		if (!idos)
-		return (idos = sodi);
+		if (!idos) {
+			idos = sodi;
+			key = yek;
+			sodi = undefined;
+			yek = undefined;
+			continue;
+		}
 
 		w3gh.pushItem(data, idos, key, date);
-		idos = undefined;
-	});
 
+		idos = undefined;
+		key = undefined;
+	}
+
+	if (idos)
 	w3gh.pushItem(data, idos, key, date);
+
 	return w3gh;
 };
 

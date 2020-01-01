@@ -18,13 +18,14 @@
 // Το network port στο οποίο «ακούει» ο server μπορεί να καθοριστεί στο URL
 // μέσω της παραμέτρου "port".
 //
+// Updated: 2020-01-01
 // Updated: 2019-12-26
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
-define("PANDORA_BASEDIR", getenv("PANDORA_BASEDIR") ? $_ENV["PANDORA_BASEDIR"] : "/var/opt/pandora");
+define("PANDORA_BASEDIR", getenv("PANDORA_BASEDIR") ?
+	$_ENV["PANDORA_BASEDIR"] : "/var/opt/pandora");
 define("PANDORA_HOST", "http://localhost/pandora");
-$debug = @$_GET["debug"];
 ?>
 <html>
 <head>

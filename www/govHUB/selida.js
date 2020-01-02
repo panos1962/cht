@@ -74,6 +74,8 @@ w3gh.formSetup = () => {
 	w3gh.resultsDOM = $('#resultsRegion');
 	w3gh.pinakidaDOM = $('#pinakida').focus();
 	w3gh.imerominiaDOM = $('#imerominia').datepicker();
+	w3gh.opsoiDOM = $('#opsoi');
+	w3gh.opsoiCountDOM = $('#opsoiCount');
 	w3gh.afmDOM = $('#afm');
 	w3gh.mazikaDOM = $('#mazika');
 	w3gh.trexonDOM = $('#trexon');
@@ -85,7 +87,23 @@ w3gh.formSetup = () => {
 	w3gh.clrRsltDOM = $('#clrRslt');
 	w3gh.pafsiReset();
 
-	w3gh.formatSetup();
+	w3gh.
+	opsoiSetup().
+	formatSetup();
+
+	return w3gh;
+};
+
+w3gh.opsoiSetup = () => {
+	w3gh.opsoiDOM.
+	on('change', function() {
+		if ($(this).prop('checked'))
+		w3gh.opsoiSubmit();
+
+		else
+		w3gh.opsoiAbort();
+	});
+
 	return w3gh;
 };
 
@@ -661,12 +679,51 @@ w3gh.noPause = () => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
+w3gh.opsoiSubmit = () => {
+	w3gh.opsoiDOM.data('xhr', $.post({
+		'url': 'opsoi.php',
+		'header': {
+			'Access-Control-Allow-Origin': '*',
+		},
+		'dataType': 'text',
+		'data': {
+			'imerominia': w3gh.imerominiaDOM.val(),
+			'count': w3gh.opsoiCountDOM.val(),
+		},
+		'success': (x) => {
+			w3gh.mazikaDOM.val(x);
+			w3gh.formatDOM.val('p,@c,@d');
+			w3gh.opsoiDOM.removeData('xhr');
+		},
+		'error': (err) => {
+			w3gh.opsoiDOM.data('xhr');
+
+			if (err.statusText !== 'abort')
+			console.error(err);
+		},
+	}));
+
+	return w3gh;
+};
+
+w3gh.opsoiAbort = () => {
+	let xhr = w3gh.opsoiDOM.data('xhr')
+
+	if (!xhr)
+	return w3gh;
+
+	xhr.abort();
+	return w3gh;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
 w3gh.imerominiaGet = () => {
 	let d = w3gh.imerominiaDOM.val();
 
 	if (!d)
 	return undefined;
-
+ 
 	return pd.date2date(d, 'DMY', '%Y-%M-%D');
 };
 

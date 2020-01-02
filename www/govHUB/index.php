@@ -53,28 +53,35 @@ Pandora::import_php([
 <td>
 <div class="pedio">
 <label class="prompt" for="pinakida">Αρ. Κυκλοφορίας</label>
-<input id="pinakida" type="text" name="pinakida">
+<input id="pinakida" type="text">
 </div>
 <br>
 <div class="pedio">
 <label class="prompt" for="imerominia">Ημερομηνία</label>
-<input id="imerominia" type="text" name="imerominia">
+<input id="imerominia" type="text">
+</div>
+<br>
+<div class="pedio">
+<label class="prompt" for="opsoi">Από ΟΠΣΟΥ</label>
+<input id="opsoi" type="checkbox">
+<label class="prompt promptAuto" for="opsoiCount">Πλήθος</label>
+<input id="opsoiCount" type="text" value="100">
 </div>
 <br>
 <div class="pedio">
 <label class="prompt" for="afm">ΑΦΜ</label>
-<input id="afm" type="text" name="afm">
+<input id="afm" type="text">
 </div>
 </td>
 <td>
 <div class="pedio">
-<label id="formatLabel" class="prompt" for="formatHelp">Format</label>
+<label class="prompt promptAuto" for="formatHelp">Format</label>
 <select id="formatHelp"></select>
-<input id="format" type="text" name="format">
+<input id="format" type="text">
 </div>
 <br>
 <div class="pedio">
-<textarea id="mazika" name="mazika">
+<textarea id="mazika">
 </textarea>
 </div>
 </td>

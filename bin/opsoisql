@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+[ -z "${PANDORA_BASEDIR}" ] &&
+PANDORA_BASEDIR="/var/opt/pandora"
+
+export PANDORA_BASEDIR
+
+opts=
+opts="${opts} --conf=${CHT_BASEDIR:=/var/opt/cht}/private/opsoidb.cf"
+opts="${opts} --linesize=78"
+exec "${PANDORA_BASEDIR}/bin/pd_sqlplus" ${opts} "$@"

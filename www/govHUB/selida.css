@@ -68,6 +68,10 @@ form label.prompt {
 	text-align: right;
 }
 
+.promptAuto {
+	width: auto !important;
+}
+
 #inputRegion {
 	padding: 12px;
 }
@@ -130,14 +134,14 @@ form label.prompt {
 	background-color: #00456d;
 }
 
+#opsoiCount {
+	width: 10ch;
+}
+
 #mazika {
 	width: 380px;
 	height: 54px;
 	overflow-y: auto;
-}
-
-#formatLabel {
-	width: auto;
 }
 
 #format {

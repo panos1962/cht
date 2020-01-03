@@ -47,6 +47,8 @@ w3gh.opts.portNumber = php.requestGet('port', 12345);
 w3gh.opts.kimeno = {
 	'pafsi': 'Παύση',
 	'sinexisi': 'Συνέχιση',
+	'opsoiGet': 'Εισαγωγή από ΟΠΣΟΥ',
+	'opsoiAbort': 'Διακοπή εισαγωγής ΟΠΣΟΥ',
 };
 w3gh.opts.sepChar = ',';
 
@@ -81,13 +83,14 @@ w3gh.formSetup = () => {
 	w3gh.trexonDOM = $('#trexon');
 
 	w3gh.ipovoliDOM = $('#ipovoli');
-	w3gh.clrFormDOM = $('#clrForm');
 	w3gh.akirosiDOM = $('#akirosi');
 	w3gh.pafsiDOM = $('#pafsi');
+	w3gh.opsoiGetDOM = $('#opsoiGet');
+	w3gh.clrFormDOM = $('#clrForm');
 	w3gh.clrRsltDOM = $('#clrRslt');
-	w3gh.pafsiReset();
 
 	w3gh.
+	pafsiReset().
 	opsoiSetup().
 	formatSetup();
 
@@ -96,12 +99,28 @@ w3gh.formSetup = () => {
 
 w3gh.opsoiSetup = () => {
 	w3gh.opsoiDOM.
-	on('change', function() {
-		if ($(this).prop('checked'))
-		w3gh.opsoiSubmit();
+	on('change', () => {
+		let opsoi = w3gh.opsoiDOM.prop('checked');
+		let count = w3gh.opsoiCountDOM.val();
+
+		if (opsoi && count)
+		return w3gh.opsoiGetDOM.css('display', 'inline-block');
+
+		w3gh.opsoiAbort();
+		w3gh.opsoiGetDOM.css('display', 'none');
+	});
+
+	w3gh.opsoiGetDOM.
+	addClass('buttonBlue').
+	val(w3gh.opts.kimeno.opsoiGet).
+	on('click', () => {
+		let xhr = w3gh.opsoiGetDOM.data('xhr');
+
+		if (xhr)
+		w3gh.opsoiAbort();
 
 		else
-		w3gh.opsoiAbort();
+		w3gh.opsoiSubmit();
 	});
 
 	return w3gh;
@@ -680,7 +699,11 @@ w3gh.noPause = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 w3gh.opsoiSubmit = () => {
-	w3gh.opsoiDOM.data('xhr', $.post({
+	w3gh.opsoiGetDOM.
+	removeClass('buttonBlue').
+	addClass('buttonRed').
+	val(w3gh.opts.kimeno.opsoiAbort).
+	data('xhr', $.post({
 		'url': 'opsoi.php',
 		'header': {
 			'Access-Control-Allow-Origin': '*',
@@ -691,12 +714,20 @@ w3gh.opsoiSubmit = () => {
 			'count': w3gh.opsoiCountDOM.val(),
 		},
 		'success': (x) => {
+			w3gh.opsoiGetDOM.
+			removeClass('buttonRed').
+			addClass('buttonBlue').
+			val(w3gh.opts.kimeno.opsoiGet).
+			removeData('xhr');
 			w3gh.mazikaDOM.val(x);
 			w3gh.formatDOM.val('p,@c,@d');
-			w3gh.opsoiDOM.removeData('xhr');
 		},
 		'error': (err) => {
-			w3gh.opsoiDOM.data('xhr');
+			w3gh.opsoiGetDOM.
+			removeClass('buttonRed').
+			addClass('buttonBlue').
+			val(w3gh.opts.kimeno.opsoiGet).
+			removeData('xhr');
 
 			if (err.statusText !== 'abort')
 			console.error(err);
@@ -712,6 +743,7 @@ w3gh.opsoiAbort = () => {
 	if (!xhr)
 	return w3gh;
 
+	w3gh.opsoiDOM.removeData('xhr');
 	xhr.abort();
 	return w3gh;
 };

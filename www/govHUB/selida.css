@@ -30,6 +30,14 @@ input {
 	padding: 2px 4px;
 }
 
+.buttonBlue {
+	background-color: #cceeff;
+}
+
+.buttonRed {
+	background-color: #ffcccc;
+}
+
 form .panel input {
 	cursor: pointer;
 }
@@ -138,9 +146,13 @@ form label.prompt {
 	width: 10ch;
 }
 
+#opsoiGet {
+	display: none;
+}
+
 #mazika {
 	width: 380px;
-	height: 54px;
+	height: 85px;
 	overflow-y: auto;
 }
 

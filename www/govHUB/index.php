@@ -100,6 +100,7 @@ Pandora::import_php([
 <input id="pafsi" type="button" value="">
 </div>
 <div id="panelRight" class="panel">
+<input id="opsoiGet" type="button">
 <input id="clrForm" type="reset" value="Καθαρισμός κριτηρίων">
 <input id="clrRslt" type="button" value="Καθαρισμός αποτελεσμάτων">
 </div>

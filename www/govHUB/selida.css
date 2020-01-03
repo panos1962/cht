@@ -51,6 +51,10 @@ form .panel input {
 	display: none;
 }
 
+#ektiposi {
+	display: none;
+}
+
 .prompt {
 	font-style: italic;
 }
@@ -152,13 +156,17 @@ form label.prompt {
 }
 
 #mazika {
-	width: 380px;
+	width: 420px;
 	height: 85px;
 	overflow-y: auto;
 }
 
 #format {
 	width: 12ch;
+}
+
+#trexonLabel {
+	font-style: normal;
 }
 
 #trexon {

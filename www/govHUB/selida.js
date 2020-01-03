@@ -43,7 +43,6 @@ const gh = require(`${process.env.CHT_BASEDIR}/lib/govHUB/apiClient.js`);
 const w3gh = {};
 
 w3gh.opts = {};
-w3gh.opts.portNumber = php.requestGet('port', 12345);
 w3gh.opts.kimeno = {
 	'pafsi': 'Παύση',
 	'sinexisi': 'Συνέχιση',
@@ -56,6 +55,7 @@ w3gh.opts.kimeno = {
 w3gh.opts.sepChar = ',';
 w3gh.opts.opsoiCountDefault = 10;
 w3gh.opts.opsoiCountMax = 100;
+w3gh.opts.portNumber = php.requestGet('port', 12345);
 
 w3gh.resultCount = 0;
 
@@ -87,12 +87,14 @@ w3gh.formSetup = () => {
 	w3gh.afmDOM = $('#afm');
 	w3gh.mazikaDOM = $('#mazika').
 	attr('placeholder', w3gh.opts.kimeno.mazikaPlaceHolder);
+	w3gh.trexonLabelDOM = $('#trexonLabel');
 	w3gh.trexonDOM = $('#trexon');
 
 	w3gh.ipovoliDOM = $('#ipovoli');
 	w3gh.akirosiDOM = $('#akirosi');
 	w3gh.pafsiDOM = $('#pafsi');
 	w3gh.opsoiGetDOM = $('#opsoiGet');
+	w3gh.ektiposiDOM = $('#ektiposi');
 	w3gh.clrFormDOM = $('#clrForm');
 	w3gh.clrRsltDOM = $('#clrRslt');
 
@@ -210,7 +212,10 @@ w3gh.buttonSetup = () => {
 	w3gh.ipovoliDOM.
 	on('click', (e) => {
 		e.stopPropagation();
-		w3gh.pafsiReset();
+
+		w3gh.
+		pafsiReset().
+		ektiposiOff();
 
 		try {
 			let data = [];
@@ -226,6 +231,12 @@ w3gh.buttonSetup = () => {
 		}
 
 		return false;
+	});
+
+	w3gh.ektiposiDOM.
+	on('click', (e) => {
+		e.stopPropagation();
+		w3gh.ektiposi();
 	});
 
 	w3gh.akirosiDOM.
@@ -256,6 +267,7 @@ w3gh.buttonSetup = () => {
 		w3gh.formatDOM.val('').trigger('change');
 		w3gh.mazikaDOM.val('');
 
+		w3gh.trexonLabelDOM.empty();
 		w3gh.trexonDOM.empty();
 		w3gh.opsoiOff();
 		w3gh.pinakidaDOM.focus();
@@ -299,12 +311,15 @@ w3gh.pinakidaPush = (data) => {
 	let t = {
 		'idos': 'oxima',
 		'key': pinakida,
+		'data': pinakida,
 	};
 
 	let d = w3gh.imerominiaGet();
 
-	if (d)
-	t.imerominia = d;
+	if (d) {
+		t.imerominia = d;
+		t.data += ',' + d;
+	}
 
 	data.push(t);
 	return w3gh;
@@ -319,6 +334,7 @@ w3gh.afmPush = (data) => {
 	data.push({
 		'idos': 'prosopo',
 		'key': afm,
+		'data': afm,
 	});
 
 	return w3gh;
@@ -447,19 +463,19 @@ w3gh.parseRow = (data, row, flist, date) => {
 			continue;
 		}
 
-		w3gh.pushItem(data, idos, key, date);
+		w3gh.pushItem(data, row, idos, key, date);
 
 		idos = undefined;
 		key = undefined;
 	}
 
 	if (idos)
-	w3gh.pushItem(data, idos, key, date);
+	w3gh.pushItem(data, row, idos, key, date);
 
 	return w3gh;
 };
 
-w3gh.pushItem = (data, idos, key, date) => {
+w3gh.pushItem = (data, row, idos, key, date) => {
 	let t = {};
 
 	switch (idos) {
@@ -475,6 +491,7 @@ w3gh.pushItem = (data, idos, key, date) => {
 
 	t.idos = idos;
 	t.key = key;
+	t.data = row;
 
 	data.push(t);
 	return w3gh;
@@ -489,78 +506,41 @@ w3gh.anazitisi = (data) => {
 	return w3gh;
 
 	if (!data.length)
-	return w3gh;
+	return w3gh.ektiposiOn();
 
 	let x = data[0]; // XXX avoid shift here!!!
 	let resDOM = w3gh.resultCreate(x);
 
-	// Κρατάμε την τρέχουσα αναζήτηση σε μεταβλητή "xhr" του request/result
-	// dom element ώστε να μπορούμε να ακυρώσουμε την αναζήτηση σε περίπτωση
-	// που το θελήσουμε.
+	// Κρατάμε τα κριτήρια αναζήτησης ως "reqData" στο DOM element
+	// αποτελεσμάτων της τρέχουσας αναζήτησης.
 
-	resDOM.data('xhr', $.post({
-		'url': 'http://' + php.serverGet('HTTP_HOST') + ':' + w3gh.opts.portNumber,
+	resDOM.data('reqData', x.data);
+	delete x.data;
+
+	// Κρατάμε επίσης την τρέχουσα αναζήτηση ως "xhr" στο DOM element
+	// αποτελεσμάτων της τρέχουσας αναζήτησης, ώστε να μπορούμε να
+	// ακυρώσουμε την αναζήτηση σε περίπτωση που το θελήσουμε.
+
+	resDOM.
+	data('xhr', $.post({
+		'url': 'http://' + php.serverGet('HTTP_HOST') +
+			':' + w3gh.opts.portNumber,
 		'header': {
 			'Access-Control-Allow-Origin': '*',
 		},
 		'dataType': 'json',
 		'data': x,
 		'success': (x) => {
-			data.shift();
-			resDOM.removeData('xhr');
-
-			if (x.hasOwnProperty('error')) {
-				w3gh.resultErrmsg(resDOM, x.error);
-				w3gh.anazitisi(data);
-				return;
-			}
-				
-			try {
-				let t = new gh[x.idos](x.data);
-
-				if (typeof(t.fixChildren) === 'function')
-				t.fixChildren();
-
-				let dom;
-
-				try {
-					dom = t.kartaDOM();
-				}
-
-				catch (e) {
-					dom = pd.kartaDOM(t);
-				}
-
-				resDOM.
-				removeClass('resreq').
-				addClass('resbingo resbingo' + (resDOM.data('aa') % 2)).
-				empty().
-				append(dom);
-
-				let bc = resDOM.css('background-color');
-
-				resDOM.
-				css('background-color', '#ffcc00');
-
-				resDOM.
-				finish().
-				delay(500).
-				animate({
-					'background-color': bc,
-				}, 3000, 'easeOutQuint');
-			}
-
-			catch (e) {
-				console.error(e);
-				w3gh.resultErrmsg(resDOM, 'σφάλμα επιστροφής');
-			}
-
-			w3gh.anazitisi(data);
+			w3gh.processData(x, data, resDOM);
 		},
-		'error': (err) => {
-			if (err.statusText !== 'abort')
-			console.error(err);
 
+		'error': (err) => {
+			if (err.statusText !== 'abort') {
+				data.shift();
+				console.error(err);
+			}
+
+			w3gh.trexonLabelDOM.html('&#x2639;');
 			let xhr = resDOM.data('xhr');
 
 			if (!xhr)
@@ -571,7 +551,6 @@ w3gh.anazitisi = (data) => {
 
 			resDOM.removeClass('resreq');
 			w3gh.resultErrmsg(resDOM, 'σφάλμα αναζήτησης');
-			data.shift();
 			w3gh.anazitisi(data);
 		},
 	}));
@@ -579,24 +558,112 @@ w3gh.anazitisi = (data) => {
 	return w3gh;
 };
 
-w3gh.anastoliAnazitisis = () => {
-	$('.resreq').each(function() {
-		let xhr = $(this).data('xhr');
+w3gh.processData = (x, data, resDOM) => {
+	data.shift();
+	resDOM.removeData('xhr');
 
-		if (!xhr)
-		return true;
+	if (x.hasOwnProperty('error')) {
+		w3gh.resultErrmsg(resDOM, x.error);
+		w3gh.anazitisi(data);
+		return w3gh;
+	}
+		
+	try {
+		let t = new gh[x.idos](x.data);
 
-		$(this).removeData('xhr');
-		xhr.abort();
-		return true;
-	});
+		if (typeof(t.fixChildren) === 'function')
+		t.fixChildren();
 
+		let dom;
+
+		// Αν υπάρχει μέθοδος "kartaDOM" για το αντικείμενο που
+		// παραλάβαμε, τη χρησιμοποιούμε για να δημιουργήσουμε
+		// DOM element του αντικειμένου υπό μορφή καρτέλας.
+
+		try {
+			dom = t.kartaDOM();
+		}
+
+		// Αλλιώς χρησιμοποιούμε μια αντίστοιχη function γενικής
+		// χρήσης που επιστρέφει DOM element με τα στοιχεία ενός
+		// οποιουδήποτε αντικειμένου υπό μορφή καρτέλας.
+
+		catch (e) {
+			dom = pd.kartaDOM(t);
+		}
+
+		// Με τον έναν ή τον άλλο τρόπο, έχουμε δημιουργήσει DOM
+		// element για το αντικείμενο που παραλάβαμε και ήρθε η
+		// στιγμή να το εντάξουμε στην περιοχή αποτελεσμάτων.
+		// Για λόγους απλότητας και οικονομίας, χρησιμοποιούμε
+		// το DOM element που δημιουργήσαμε κατά την έναρξη της
+		// συγκεκριμένης αναζήτησης.
+
+		resDOM.
+		removeClass('resreq').
+
+		// Χρησιμοποιούμε αμυδρή εναλλαγή χρωματισμών (zebra
+		// effect) προκειμένου να ξεχωρίζουν ευκολότερα τα
+		// αποτελέσματα κάθε αναζήτησης με τα αποτελέσματα της
+		// προηγούμενης και της απόμενης αναζήτησης.
+
+		addClass('resbingo resbingo' + (resDOM.data('aa') % 2)).
+		empty().
+		append(dom);
+
+		// Για να γίνεται ακόμη εμανέσετερο το αποτέλεσμα της
+		// αναζήτησης που μόλις τελείωσε, εφαρμόζουμε ελαφρά
+		// αναλαμπή (flash effect) παραλλάσσοντας για μικρό
+		// χρονικό διάστημα το χρώμα του αποτελέσματος που
+		// μόλις προσθέσαμε στο χώρο αποτελεσμάτων.
+
+		w3gh.trexonLabelDOM.html('&#x1F60C;');
+		let bc = resDOM.css('background-color');
+
+		resDOM.
+		css('background-color', '#ffcc00');
+
+		resDOM.
+		data('resData', t).
+		finish().
+		delay(500).
+		animate({
+			'background-color': bc,
+		}, 3000, 'easeOutQuint');
+	}
+
+	// Σε περίπτωση που κάτι από όλα τα παραπάνω δεν πήγε καλά,
+	// μετατρέπουμε το DOM element της αποτυχημένης αναζήτησης
+	// σε DOM element σφάλματος αναζήτησης.
+
+	catch (e) {
+		console.error(e);
+		w3gh.resultErrmsg(resDOM, 'σφάλμα αναζήτησης');
+		w3gh.trexonLabelDOM.html('&#x2639;');
+	}
+
+	// Τέλος, προχωρούμε στην επόμενη αναζήτηση χρησιμοποιώντας
+	// την τρέχουσα λίστα κριτηρίων αναζήτησης, αφού όμως πρώτα
+	// αφαιρέσουμε το πρώτο στοιχείο που αφορούσε στην αναζήτηση
+	// της οποίας τα αποτελέσματα μόλις διαχειριστήκαμε.
+
+	w3gh.anazitisi(data);
 	return w3gh;
 };
 
+// Η function "resultCreate" καλείται στην αρχή κάθε αναζητησης και δημιουργεί
+// DOM element στην περιοχή αποτελεσμάτων, το οποίο αφορά στην αναζήτηση που
+// πρόκειται να εξελιχθεί. Αρχικά το εν λόγω DOM element περιέχει πληροφορίες
+// σχετικές με το είδος και τα κριτήρια της αναζήτησης, ενώ μετά την παραλαβή
+// των σχετικών ευρημάτων από τον server μετατρέπεται σε χώρο παρουσίασης των
+// ευρημάτων αυτών.
+
 w3gh.resultCreate = (data) => {
-	var dom;
 	var msg;
+
+	// Παράλληλα εμφανίζουμε μήνυμα στη φόρμα καθορισμού κριτηρίων
+	// αναζήτησης, στο οποίο υπάρχουν επίσης πληροφορίες σχετικές
+	// με την αναζήτηση που πρόκειται να εκκινήσει.
 
 	switch (data.idos) {
 	case 'oxima':
@@ -606,7 +673,7 @@ w3gh.resultCreate = (data) => {
 		msg += ' <b>' + data.key + '</b>';
 
 		if (data.hasOwnProperty('imerominia'))
-		msg += ' <b>(' + data.imerominia + '</b>)';
+		msg += ' (<b>' + data.imerominia + '</b>)';
 
 		break;
 	case 'prosopo':
@@ -625,13 +692,26 @@ w3gh.resultCreate = (data) => {
 		break;
 	}
 
+	w3gh.trexonLabelDOM.html('&#x261B;');
 	w3gh.trexonDOM.html(msg);
+
+	// Οι ίδιες πληροφορίες εμφανίζονται στην περιοχή αποτελεσμάτων,
+	// όπου όμως προσθέτουμε και εικόνα που δείχνει ότι υπάρχει
+	// αναζήτηση σε εξέλιξη.
+
 	msg += '<div class="resreqWorking">' +
 		'<img class="resreqWorkingImage" src="../images/bares.gif"></div>';
 
+	// Τέλος, επιστρέφουμε το DOM element ενημέρωσης εξέλιξης αναζήτησης,
+	// το οποίο αργότερα θα μεταβληθεί σε DOM element αποτελεσμάτων. Το
+	// συγκεκριμένο DOM element το εντάσσουμε στην κορυφή της περιοχής
+	// αποτελεσμάτων προκειμένου διευκολύνουμε τον χρήστη, καθώς στην
+	// περίπτωση ένταξης του DOM element στο τέλος της περιοχής
+	// αποτελεσμάτων, θα έπρεπε να έχουμε scrolling είτε από το
+	// πρόγραμμα είτε από τον χρήστη.
+
 	return $('<div>').
 	addClass('result resreq').
-	data('message', msg).
 	data('aa', w3gh.resultCount++).
 	html(msg).
 	prependTo(w3gh.resultsDOM);
@@ -667,10 +747,7 @@ w3gh.pafsi = () => {
 
 	let data = w3gh.pafsiDOM.data('ipolipa');
 
-	if (!data)
-	return w3gh.pafsiReset();
-
-	if (!data.length)
+	if ((!data) || (!data.length))
 	return w3gh.pafsiReset();
 
 	w3gh.akirosiDOM.
@@ -680,6 +757,7 @@ w3gh.pafsi = () => {
 	css('display', 'inline-block').
 	val(w3gh.opts.kimeno.sinexisi);
 
+	w3gh.ektiposiOn();
 	return w3gh;
 };
 
@@ -689,11 +767,8 @@ w3gh.sinexisi = () => {
 
 	let data = w3gh.pafsiDOM.data('ipolipa');
 
-	if (!data)
-	return w3gh.pafsiReset();
-
-	if (!data.length)
-	return w3gh.pafsiReset();
+	if ((!data) || (!data.length))
+	return w3gh.pafsiReset().ektiposiOn();
 
 	w3gh.akirosiDOM.
 	css('display', 'inline-block');
@@ -702,25 +777,16 @@ w3gh.sinexisi = () => {
 	css('display', 'inline-block').
 	val(w3gh.opts.kimeno.pafsi);
 
+	w3gh.ektiposiOff();
 	w3gh.anazitisi(data);
-	return w3gh;
-};
-
-w3gh.pafsiReset = () => {
-	w3gh.akirosiDOM.
-	css('display', 'none');
-
-	w3gh.pafsiDOM.
-	removeData('ipolipa').
-	val(w3gh.opts.kimeno.pafsi).
-	css('display', 'none');
-
 	return w3gh;
 };
 
 w3gh.pafsiUpdate = (data) => {
 	if (!data.length)
-	return w3gh.pafsiReset();
+	return w3gh.pafsiReset().ektiposiOn();
+
+	w3gh.ektiposiOff();
 
 	w3gh.akirosiDOM.
 	css('display', 'inline-block');
@@ -753,6 +819,34 @@ w3gh.isPause = () => {
 
 w3gh.noPause = () => {
 	return !w3gh.isPause();
+};
+
+w3gh.pafsiReset = () => {
+	w3gh.akirosiDOM.
+	css('display', 'none');
+
+	w3gh.pafsiDOM.
+	removeData('ipolipa').
+	val(w3gh.opts.kimeno.pafsi).
+	css('display', 'none');
+
+	return w3gh;
+};
+
+w3gh.anastoliAnazitisis = () => {
+	$('.resreq').each(function() {
+		let xhr = $(this).data('xhr');
+
+		if (!xhr)
+		return true;
+
+		$(this).removeData('xhr');
+		xhr.abort();
+		return true;
+	});
+
+	w3gh.ektiposiOn();
+	return w3gh;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@
@@ -837,6 +931,73 @@ w3gh.opsoiAbort = () => {
 
 	w3gh.opsoiDOM.removeData('xhr');
 	xhr.abort();
+
+	return w3gh;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+w3gh.ektiposi = () => {
+	w3gh.resultsDOM.children().each(function() {
+		let t = $(this).data('reqData');
+		let x = $(this).data('resData');
+
+		if (x instanceof gh.oxima) {
+			pd.arrayWalk(x.katoxos, (x) => {
+				s = t;
+				s += ',' + x.afm;
+				s += ',' + x.pososto;
+				s += ',' + x.onomasiaGet();
+				s += ',' + x.dief;
+				s += ',' + x.tk;
+				s += ',' + x.perioxi;
+				
+				console.log(s);
+			});
+
+			return true;
+		}
+
+		if (x instanceof gh.prosopo) {
+			s = t;
+			s += ',' + x.afm;
+
+			if (x.isEponimia())
+			s += ',' + x.eponimiaGet()
+
+			else {
+				s += ',' + x.eponimo;
+				s += ',' + x.onoma;
+				s += ',' + x.patronimo;
+			}
+
+			s += ',' + x.dief;
+			s += ',' + x.tk;
+			s += ',' + x.perioxi;
+
+			console.log(s);
+
+			return true;
+		}
+
+		console.log(t + ',???');
+		return true;
+	});
+
+	return w3gh;
+};
+
+w3gh.ektiposiOn = () => {
+	w3gh.ektiposiDOM.
+	css('display', (w3gh.resultsDOM.children().length ?
+		'inline-block' : 'none'));
+
+	return w3gh;
+};
+
+w3gh.ektiposiOff = () => {
+	w3gh.ektiposiDOM.
+	css('display', 'none');
 
 	return w3gh;
 };

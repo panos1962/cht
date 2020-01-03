@@ -87,7 +87,7 @@ Pandora::import_php([
 <tr>
 <td colspan="2">
 <div class="pedio">
-<label class="prompt" for="trexon">Τρέχον</label>
+<label id="trexonLabel" class="prompt" for="trexon"></label>
 <div id="trexon"></div>
 </div>
 </td>
@@ -97,6 +97,7 @@ Pandora::import_php([
 <input id="ipovoli" type="submit" value="Υποβολή">
 <input id="akirosi" type="button" value="Ακύρωση">
 <input id="pafsi" type="button" value="">
+<input id="ektiposi" type="button" value="Εκτύπωση">
 </div>
 <div id="panelRight" class="panel">
 <input id="opsoiGet" type="button">

@@ -54,7 +54,8 @@ w3gh.opts.kimeno = {
 		'στοιχείων από το ΟΠΣΟΥ',
 };
 w3gh.opts.sepChar = ',';
-w3gh.opts.opsoiCount = 10;
+w3gh.opts.opsoiCountDefault = 10;
+w3gh.opts.opsoiCountMax = 100;
 
 w3gh.resultCount = 0;
 
@@ -81,7 +82,7 @@ w3gh.formSetup = () => {
 	w3gh.pinakidaDOM = $('#pinakida').focus();
 	w3gh.imerominiaDOM = $('#imerominia').datepicker();
 	w3gh.opsoiDOM = $('#opsoi');
-	w3gh.opsoiCountDOM = $('#opsoiCount').val(w3gh.opts.opsoiCount);
+	w3gh.opsoiCountDOM = $('#opsoiCount').val(w3gh.opts.opsoiCountDefault);
 	w3gh.afmDOM = $('#afm');
 	w3gh.mazikaDOM = $('#mazika').
 	attr('placeholder', w3gh.opts.kimeno.mazikaPlaceHolder);
@@ -117,11 +118,12 @@ w3gh.imerominiaSetup = () => {
 
 w3gh.opsoiSetup = () => {
 	w3gh.opsoiCountDOM.
+	attr('placeholder', 'Max ' + w3gh.opts.opsoiCountMax).
 	on('change', () => {
 		let count = w3gh.opsoiCountDOM.val();
 		let n = parseInt(count);
 
-		if (n != count)
+		if ((n != count) || (n < 1) || (n > w3gh.opts.opsoiCountMax))
 		w3gh.opsoiOff();
 	});
 
@@ -177,12 +179,13 @@ w3gh.formatSetup = () => {
 		{ "format": "2,@o,3,@d","desc": "*,*,Όχημα,*,*,*,Ημερομηνία" },
 	];
 
-	const tamrof = {};
 	const format = {};
+	const tamrof = {};
 
 	pd.arrayWalk(flist, v => {
-		tamrof[v.format] = v.desc;
 		format[v.desc] = v.format;
+		tamrof[v.format] = v.desc;
+
 		w3gh.formatDescDOM.
 		append($('<option>').
 		attr('value', v.desc).
@@ -196,7 +199,6 @@ w3gh.formatSetup = () => {
 
 	w3gh.formatDOM.
 	on('change', () => {
-console.log(tamrof);
 		w3gh.formatDescDOM.val(tamrof[w3gh.formatDOM.val()]);
 	});
 
@@ -249,8 +251,6 @@ w3gh.buttonSetup = () => {
 		e.stopPropagation();
 
 		w3gh.pinakidaDOM.val('');
-		w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
-		w3gh.opsoiCountDOM.val(w3gh.opts.opsoiCount);
 		w3gh.afmDOM.val('');
 		w3gh.formatDOM.val('').trigger('change');
 		w3gh.mazikaDOM.val('');
@@ -779,14 +779,7 @@ w3gh.opsoiSubmit = () => {
 		'success': (x) => {
 			w3gh.opsoiOff();
 
-			// Αν το πεδίο μαζικής αναζήτησης περιέχει στοιχεία,
-			// τότε αυτά θα διαγραφούν και στη θέση τους θα
-			// εισαχθούν τα στοιχεία των παραβάσεων που έχουν
-			// επιστραφεί από το ΟΠΣΟΥ, ενώ παράλληλα θα τεθεί
-			// το format των στοιχείων μαζικής αναζήτησης σε
-			// "παράβαση,όχημα,ημερομηνία".
-
-			w3gh.mazikaDOM.val(x);
+			w3gh.mazikaDOM.val(w3gh.mazikaDOM.val() + x);
 			w3gh.formatDOM.val('p,@c,@d').trigger('change');
 		},
 
@@ -814,7 +807,6 @@ w3gh.opsoiOn = () => {
 };
 
 w3gh.opsoiOff = () => {
-console.log('opsoiOff');
 	w3gh.opsoiDOM.
 	prop('checked', false);
 

@@ -49,8 +49,12 @@ w3gh.opts.kimeno = {
 	'sinexisi': 'Συνέχιση',
 	'opsoiGet': 'Εισαγωγή από ΟΠΣΟΥ',
 	'opsoiAbort': 'Διακοπή εισαγωγής ΟΠΣΟΥ',
+	'mazikaPlaceHolder': 'Καταχωρείστε ελεύθερα ΑΦΜ ή αριθμούς ' +
+		'κυκλοφορίας οχημάτων. Εναλλακτικά επιλέξτε εισαγωγή ' +
+		'στοιχείων από το ΟΠΣΟΥ',
 };
 w3gh.opts.sepChar = ',';
+w3gh.opts.opsoiCount = 10;
 
 w3gh.resultCount = 0;
 
@@ -60,7 +64,7 @@ $(document).ready(() => {
 	w3gh.
 	formSetup().
 	buttonSetup().
-	exec();
+	execTest();
 });
 
 w3gh.exec = () => {
@@ -77,9 +81,10 @@ w3gh.formSetup = () => {
 	w3gh.pinakidaDOM = $('#pinakida').focus();
 	w3gh.imerominiaDOM = $('#imerominia').datepicker();
 	w3gh.opsoiDOM = $('#opsoi');
-	w3gh.opsoiCountDOM = $('#opsoiCount');
+	w3gh.opsoiCountDOM = $('#opsoiCount').val(w3gh.opts.opsoiCount);
 	w3gh.afmDOM = $('#afm');
-	w3gh.mazikaDOM = $('#mazika');
+	w3gh.mazikaDOM = $('#mazika').
+	attr('placeholder', w3gh.opts.kimeno.mazikaPlaceHolder);
 	w3gh.trexonDOM = $('#trexon');
 
 	w3gh.ipovoliDOM = $('#ipovoli');
@@ -91,28 +96,62 @@ w3gh.formSetup = () => {
 
 	w3gh.
 	pafsiReset().
+	imerominiaSetup().
 	opsoiSetup().
 	formatSetup();
 
 	return w3gh;
 };
 
+w3gh.imerominiaSetup = () => {
+	w3gh.imerominiaDOM.
+	on('change', () => {
+		let imerominia = w3gh.imerominiaDOM.val();
+
+		if (!imerominia)
+		return w3gh.opsoiOff();
+	});
+
+	return w3gh;
+};
+
 w3gh.opsoiSetup = () => {
+	w3gh.opsoiCountDOM.
+	on('change', () => {
+		let count = w3gh.opsoiCountDOM.val();
+		let n = parseInt(count);
+
+		if (n != count)
+		w3gh.opsoiOff();
+	});
+
 	w3gh.opsoiDOM.
 	on('change', () => {
-		let opsoi = w3gh.opsoiDOM.prop('checked');
+		if (!w3gh.opsoiDOM.prop('checked'))
+		return w3gh.opsoiOff();
+
+		let imerominia = w3gh.imerominiaDOM.val();
+
+		if (!imerominia) {
+			w3gh.imerominiaDOM.select();
+			return w3gh.opsoiOff();
+		}
+			
 		let count = w3gh.opsoiCountDOM.val();
+		let n = parseInt(count);
 
-		if (opsoi && count)
-		return w3gh.opsoiGetDOM.css('display', 'inline-block');
+		if ((n != count) || (n > 100) || (n < 1)) {
+			w3gh.opsoiCountDOM.select();
+			return w3gh.opsoiOff();
+		}
 
-		w3gh.opsoiAbort();
-		w3gh.opsoiGetDOM.css('display', 'none');
+		w3gh.opsoiGetDOM.
+		addClass('buttonBlue').
+		css('display', 'inline-block').
+		val(w3gh.opts.kimeno.opsoiGet);
 	});
 
 	w3gh.opsoiGetDOM.
-	addClass('buttonBlue').
-	val(w3gh.opts.kimeno.opsoiGet).
 	on('click', () => {
 		let xhr = w3gh.opsoiGetDOM.data('xhr');
 
@@ -127,7 +166,7 @@ w3gh.opsoiSetup = () => {
 };
 
 w3gh.formatSetup = () => {
-	w3gh.formatHelpDOM = $('#formatHelp');
+	w3gh.formatDescDOM = $('#formatDesc');
 	w3gh.formatDOM = $('#format');
 
 	const flist = [
@@ -137,19 +176,28 @@ w3gh.formatSetup = () => {
 		{ "format": "a,d,@v",	"desc": "Αρ. Αδείας,Ημερομηνία,ΑΦΜ" },
 		{ "format": "2,@o,3,@d","desc": "*,*,Όχημα,*,*,*,Ημερομηνία" },
 	];
-	let format = {};
+
+	const tamrof = {};
+	const format = {};
 
 	pd.arrayWalk(flist, v => {
+		tamrof[v.format] = v.desc;
 		format[v.desc] = v.format;
-		w3gh.formatHelpDOM.
+		w3gh.formatDescDOM.
 		append($('<option>').
 		attr('value', v.desc).
 		text(v.desc));
 	});
 
-	w3gh.formatHelpDOM.
-	on('change', function() {
-		w3gh.formatDOM.val(format[$(this).val()]);
+	w3gh.formatDescDOM.
+	on('change', () => {
+		w3gh.formatDOM.val(format[w3gh.formatDescDOM.val()]);
+	});
+
+	w3gh.formatDOM.
+	on('change', () => {
+console.log(tamrof);
+		w3gh.formatDescDOM.val(tamrof[w3gh.formatDOM.val()]);
 	});
 
 	return w3gh;
@@ -199,9 +247,19 @@ w3gh.buttonSetup = () => {
 	w3gh.clrFormDOM.
 	on('click', (e) => {
 		e.stopPropagation();
+
+		w3gh.pinakidaDOM.val('');
+		w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
+		w3gh.opsoiCountDOM.val(w3gh.opts.opsoiCount);
+		w3gh.afmDOM.val('');
+		w3gh.formatDOM.val('').trigger('change');
+		w3gh.mazikaDOM.val('');
+
 		w3gh.trexonDOM.empty();
+		w3gh.opsoiOff();
 		w3gh.pinakidaDOM.focus();
-		return true;
+
+		return false;
 	});
 
 
@@ -713,26 +771,59 @@ w3gh.opsoiSubmit = () => {
 			'imerominia': w3gh.imerominiaDOM.val(),
 			'count': w3gh.opsoiCountDOM.val(),
 		},
+
+		// Εφόσον έχουμε θετική ανταπόκριση από το ΟΠΣΟΥ, θα πρέπει να
+		// καταχωρήσουμε τα στοιχεία των παραβάσεων που επεστράφησαν
+		// στο πεδίο μαζικής αναζήτησης.
+
 		'success': (x) => {
-			w3gh.opsoiGetDOM.
-			removeClass('buttonRed').
-			addClass('buttonBlue').
-			val(w3gh.opts.kimeno.opsoiGet).
-			removeData('xhr');
+			w3gh.opsoiOff();
+
+			// Αν το πεδίο μαζικής αναζήτησης περιέχει στοιχεία,
+			// τότε αυτά θα διαγραφούν και στη θέση τους θα
+			// εισαχθούν τα στοιχεία των παραβάσεων που έχουν
+			// επιστραφεί από το ΟΠΣΟΥ, ενώ παράλληλα θα τεθεί
+			// το format των στοιχείων μαζικής αναζήτησης σε
+			// "παράβαση,όχημα,ημερομηνία".
+
 			w3gh.mazikaDOM.val(x);
-			w3gh.formatDOM.val('p,@c,@d');
+			w3gh.formatDOM.val('p,@c,@d').trigger('change');
 		},
+
 		'error': (err) => {
-			w3gh.opsoiGetDOM.
-			removeClass('buttonRed').
-			addClass('buttonBlue').
-			val(w3gh.opts.kimeno.opsoiGet).
-			removeData('xhr');
+			w3gh.opsoiOff();
 
 			if (err.statusText !== 'abort')
 			console.error(err);
 		},
 	}));
+
+	return w3gh;
+};
+
+w3gh.opsoiOn = () => {
+	w3gh.opsoiAbort();
+	w3gh.opsoiDOM.prop('checked', true);
+
+	w3gh.opsoiGetDOM.
+	removeClass('buttonRed').
+	addClass('buttonBlue').
+	val(w3gh.opts.kimeno.opsoiGet);
+
+	return w3gh;
+};
+
+w3gh.opsoiOff = () => {
+console.log('opsoiOff');
+	w3gh.opsoiDOM.
+	prop('checked', false);
+
+	w3gh.opsoiGetDOM.
+	removeData('xhr').
+	removeClass('buttonRed').
+	removeClass('buttonBlue').
+	css('display', 'none').
+	val('');
 
 	return w3gh;
 };
@@ -745,6 +836,7 @@ w3gh.opsoiAbort = () => {
 
 	w3gh.opsoiDOM.removeData('xhr');
 	xhr.abort();
+
 	return w3gh;
 };
 
@@ -761,19 +853,22 @@ w3gh.imerominiaGet = () => {
 
 w3gh.execTest = () => {
 	let pinakida;
-	let afm;
-	let mazika;
-
 	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
 	pinakida = 'ΝΒΝ9596';	// NISSAN
 	pinakida = ''
 
+	let imerominia;
+	imerominia = '';
+	imerominia = '31-07-2018';
+	imerominia = pd.dateTime(new Date(), '%D-%M-%Y');
+
+	let afm;
 	afm = '043514613';	// ανενεργό ΑΦΜ
 	afm = '095675861';	// νομικό πρόσωπο
 	afm = '032792320';	// εγώ
 	afm = '';
 
-	mazika = '';
+	let mazika;
 	mazika = '23572901 ΑΗΜ7551 2017-01-31\n' + '23126130 ΙΜΡ3593 2017-01-31\n' +
 		'23126010 ΝΜΑ0436 2017-01-31\n' + '23125988 ΝΜΡ0911 2017-01-31\n' +
 		'23125943 ΒΑΖ2942 2017-01-31\n' + '23125459 C7912HP 2017-01-31\n' +
@@ -781,12 +876,19 @@ w3gh.execTest = () => {
 		'23125376 ΝΟΟ0609 2017-01-31\n' + '23125361 ΝΟΤ0352 2017-01-31';
 	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
 	mazika = '032792320,ΝΒΝ9596,23-03-2016';
+	mazika = '';
+
+	let ipovoli;
+	ipovoli = true;
+	ipovoli = false;
 
 	w3gh.pinakidaDOM.val(pinakida);
-	w3gh.imerominiaDOM.val(pd.dateTime(new Date(), '%D-%M-%Y'));
+	w3gh.imerominiaDOM.val(imerominia);
 	w3gh.afmDOM.val(afm);
 	w3gh.mazikaDOM.val(mazika);
 	w3gh.formatDOM.val('@v,@c,@d');
+
+	if (ipovoli)
 	w3gh.ipovoliDOM.trigger('click');
 
 	return w3gh;

@@ -49,7 +49,7 @@ w3gh.opts.kimeno = {
 	'sinexisi': 'Συνέχιση',
 	'opsoiGet': 'Εισαγωγή από ΟΠΣΟΥ',
 	'opsoiAbort': 'Διακοπή εισαγωγής ΟΠΣΟΥ',
-	'mazikaPlaceHolder': 'Καταχωρείστε ελεύθερα ΑΦΜ ή αριθμούς ' +
+	'mazikaPlaceHolder': 'Καταχωρήστε ελεύθερα ΑΦΜ ή αριθμούς ' +
 		'κυκλοφορίας οχημάτων. Εναλλακτικά επιλέξτε εισαγωγή ' +
 		'στοιχείων από το ΟΠΣΟΥ',
 };
@@ -215,9 +215,9 @@ w3gh.buttonSetup = () => {
 		try {
 			let data = [];
 			w3gh.
-			pushPinakida(data).
-			pushAfm(data).
-			pushMazika(data).
+			pinakidaPush(data).
+			afmPush(data).
+			mazikaPush(data).
 			anazitisi(data);
 		}
 
@@ -290,7 +290,7 @@ w3gh.buttonSetup = () => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-w3gh.pushPinakida = (data) => {
+w3gh.pinakidaPush = (data) => {
 	let pinakida = w3gh.pinakidaDOM.val();
 
 	if (!pinakida)
@@ -310,7 +310,7 @@ w3gh.pushPinakida = (data) => {
 	return w3gh;
 };
 
-w3gh.pushAfm = (data) => {
+w3gh.afmPush = (data) => {
 	afm = w3gh.afmDOM.val();
 
 	if (!afm)
@@ -324,7 +324,7 @@ w3gh.pushAfm = (data) => {
 	return w3gh;
 };
 
-w3gh.pushMazika = (data) => {
+w3gh.mazikaPush = (data) => {
 	let mazika = w3gh.mazikaDOM.val();
 
 	if (!mazika)
@@ -780,7 +780,15 @@ w3gh.opsoiSubmit = () => {
 		'success': (x) => {
 			w3gh.opsoiOff();
 
-			w3gh.mazikaDOM.val(w3gh.mazikaDOM.val() + x);
+			let s = w3gh.mazikaDOM.val();
+
+			if (s)
+			s += '\n' + x;
+	
+			else
+			s = x;
+
+			w3gh.mazikaDOM.val(s);
 			w3gh.formatDOM.val('p,@c,@d').trigger('change');
 		},
 

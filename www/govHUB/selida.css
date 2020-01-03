@@ -11,6 +11,7 @@ form {
 	border-width: 1px;
 	border-color: #bbbbbb;
 	border-radius: 6px;
+	box-shadow: 4px 4px 14px #d2d2d2;
 }
 
 #panelLeft {

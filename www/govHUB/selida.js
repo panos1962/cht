@@ -65,13 +65,14 @@ $(document).ready(() => {
 	w3gh.
 	formSetup().
 	buttonSetup().
-	execTest();
+	exec();
 });
 
 w3gh.exec = () => {
 	if (php.requestGet('test') !== undefined)
 	w3gh.execTest();
 
+	delete w3gh.execTest;
 	return w3gh;
 };
 
@@ -375,7 +376,7 @@ w3gh.formatSplit = () => {
 };
 
 w3gh.pushWords = (data, mazika) => {
-	let a = mazika.split(/\s/);
+	let a = mazika.split(/\s+/);
 
 	if (!a.length)
 	return w3gh;
@@ -845,8 +846,8 @@ w3gh.imerominiaGet = () => {
 
 w3gh.execTest = () => {
 	let pinakida;
-	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
 	pinakida = 'ΝΒΝ9596';	// NISSAN
+	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
 	pinakida = ''
 
 	let imerominia;
@@ -856,8 +857,8 @@ w3gh.execTest = () => {
 
 	let afm;
 	afm = '043514613';	// ανενεργό ΑΦΜ
-	afm = '095675861';	// νομικό πρόσωπο
 	afm = '032792320';	// εγώ
+	afm = '095675861';	// νομικό πρόσωπο
 	afm = '';
 
 	let mazika;
@@ -866,19 +867,19 @@ w3gh.execTest = () => {
 		'23125943 ΒΑΖ2942 2017-01-31\n' + '23125459 C7912HP 2017-01-31\n' +
 		'23125410 ΕΡΝ3400 2017-01-31\n' + '23125390 ΚΖΜ0012 2017-01-31\n' +
 		'23125376 ΝΟΟ0609 2017-01-31\n' + '23125361 ΝΟΤ0352 2017-01-31';
-	mazika = '032792320\n\n043514613\n095675861\nΝΒΝ9596\nΝΕΧ7500\n\n032792320';
 	mazika = '032792320,ΝΒΝ9596,23-03-2016';
 	mazika = '';
+	mazika = '032792320 043514613 095675861\nΝΒΝ9596 ΝΕΧ7500\n\n' +
+		'032792320 ΝΑΧ6802';
 
 	let ipovoli;
-	ipovoli = true;
 	ipovoli = false;
+	ipovoli = true;
 
 	w3gh.pinakidaDOM.val(pinakida);
 	w3gh.imerominiaDOM.val(imerominia);
 	w3gh.afmDOM.val(afm);
 	w3gh.mazikaDOM.val(mazika);
-	w3gh.formatDOM.val('@v,@c,@d');
 
 	if (ipovoli)
 	w3gh.ipovoliDOM.trigger('click');

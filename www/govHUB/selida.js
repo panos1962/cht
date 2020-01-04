@@ -607,7 +607,9 @@ w3gh.processData = (x, data, resDOM) => {
 		// αποτελέσματα κάθε αναζήτησης με τα αποτελέσματα της
 		// προηγούμενης και της απόμενης αναζήτησης.
 
-		addClass('resbingo resbingo' + (resDOM.data('aa') % 2)).
+		addClass('resbingo').
+		addClass('resbingo' + (resDOM.data('aa') % 2)).
+		addClass(x.idos).
 		empty().
 		append(dom);
 
@@ -938,9 +940,14 @@ w3gh.opsoiAbort = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 w3gh.ektiposi = () => {
-	w3gh.resultsDOM.children().each(function() {
+	let dom = $('<table>');
+	w3gh.resultsDOM.append(dom);
+
+	w3gh.resultsDOM.children('.prosopo').each(function() {
 		let t = $(this).data('reqData');
 		let x = $(this).data('resData');
+dom.append(x.gramiDOM());
+return true;
 
 		if (x instanceof gh.oxima) {
 			pd.arrayWalk(x.katoxos, (x) => {
@@ -1025,21 +1032,25 @@ w3gh.execTest = () => {
 	imerominia = pd.dateTime(new Date(), '%D-%M-%Y');
 
 	let afm;
-	afm = '043514613';	// ανενεργό ΑΦΜ
 	afm = '032792320';	// εγώ
 	afm = '095675861';	// νομικό πρόσωπο
 	afm = '';
+	afm = '043514613';	// ανενεργό ΑΦΜ
 
 	let mazika;
-	mazika = '23572901 ΑΗΜ7551 2017-01-31\n' + '23126130 ΙΜΡ3593 2017-01-31\n' +
-		'23126010 ΝΜΑ0436 2017-01-31\n' + '23125988 ΝΜΡ0911 2017-01-31\n' +
-		'23125943 ΒΑΖ2942 2017-01-31\n' + '23125459 C7912HP 2017-01-31\n' +
-		'23125410 ΕΡΝ3400 2017-01-31\n' + '23125390 ΚΖΜ0012 2017-01-31\n' +
-		'23125376 ΝΟΟ0609 2017-01-31\n' + '23125361 ΝΟΤ0352 2017-01-31';
 	mazika = '032792320,ΝΒΝ9596,23-03-2016';
 	mazika = '';
+	mazika = '23572901,ΑΗΜ7551\n' + '23126130,ΙΜΡ3593\n' +
+		'23126010,ΝΜΑ0436\n' + '23125988,ΝΜΡ0911\n' +
+		'23125943,ΒΑΖ2942\n' + '23125459,C7912HP\n' +
+		'23125410,ΕΡΝ3400\n' + '23125390,ΚΖΜ0012\n' +
+		'23125376,ΝΟΟ0609\n' + '23125361,ΝΟΤ0352';
 	mazika = '032792320 043514613 095675861\nΝΒΝ9596 ΝΕΧ7500\n\n' +
 		'032792320 ΝΑΧ6802';
+
+	let format;
+	format = 'p,@c';
+	format = '';
 
 	let ipovoli;
 	ipovoli = false;
@@ -1048,6 +1059,7 @@ w3gh.execTest = () => {
 	w3gh.pinakidaDOM.val(pinakida);
 	w3gh.imerominiaDOM.val(imerominia);
 	w3gh.afmDOM.val(afm);
+	w3gh.formatDOM.val(format);
 	w3gh.mazikaDOM.val(mazika);
 
 	if (ipovoli)

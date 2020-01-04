@@ -940,56 +940,35 @@ w3gh.opsoiAbort = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 w3gh.ektiposi = () => {
-	let dom = $('<table>');
-	w3gh.resultsDOM.append(dom);
+	let dom = $('<table>').addClass('ektiposiPinakas');
+	let count = 0;
 
 	w3gh.resultsDOM.children('.prosopo').each(function() {
 		let t = $(this).data('reqData');
 		let x = $(this).data('resData');
-dom.append(x.gramiDOM());
-return true;
 
-		if (x instanceof gh.oxima) {
-			pd.arrayWalk(x.katoxos, (x) => {
-				s = t;
-				s += ',' + x.afm;
-				s += ',' + x.pososto;
-				s += ',' + x.onomasiaGet();
-				s += ',' + x.dief;
-				s += ',' + x.tk;
-				s += ',' + x.perioxi;
-				
-				console.log(s);
-			});
-
-			return true;
-		}
-
-		if (x instanceof gh.prosopo) {
-			s = t;
-			s += ',' + x.afm;
-
-			if (x.isEponimia())
-			s += ',' + x.eponimiaGet()
-
-			else {
-				s += ',' + x.eponimo;
-				s += ',' + x.onoma;
-				s += ',' + x.patronimo;
-			}
-
-			s += ',' + x.dief;
-			s += ',' + x.tk;
-			s += ',' + x.perioxi;
-
-			console.log(s);
-
-			return true;
-		}
-
-		console.log(t + ',???');
+		dom.append(x.gramiDOM());
+		count++;
 		return true;
 	});
+
+	if (count)
+	w3gh.resultsDOM.append(dom);
+
+	dom = $('<table>').addClass('ektiposiPinakas');
+	count = 0;
+
+	w3gh.resultsDOM.children('.oxima').each(function() {
+		let t = $(this).data('reqData');
+		let x = $(this).data('resData');
+
+		dom.append(x.gramiDOM());
+		count++;
+		return true;
+	});
+
+	if (count)
+	w3gh.resultsDOM.append(dom);
 
 	return w3gh;
 };

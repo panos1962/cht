@@ -28,19 +28,12 @@
 
 "use strict";
 
-if (!process.env.PANDORA_BASEDIR)
-process.env.PANDORA_BASEDIR = '/var/opt/pandora';
-
-const pd = require(`${process.env.PANDORA_BASEDIR}/lib/pandoraClient.js`);
-
-if (!process.env.CHT_BASEDIR)
-process.env.CHT_BASEDIR = '/var/opt/cht';
-
-const gh = require(`${process.env.CHT_BASEDIR}/lib/govHUB/apiClient.js`);
+const pd = require('../../../pandora/lib/pandoraClient.js');
+const gh = require('../../lib/govHUB/apiClient.js');
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-const w3gh = {};
+window.w3gh = {};
 
 w3gh.opts = {};
 w3gh.opts.kimeno = {
@@ -515,7 +508,7 @@ w3gh.anazitisi = (data) => {
 	// αποτελεσμάτων της τρέχουσας αναζήτησης.
 
 	resDOM.data('reqData', x.data);
-	delete x.data;
+	// XXX don't delete x.data; needed for reports!!!
 
 	// Κρατάμε επίσης την τρέχουσα αναζήτηση ως "xhr" στο DOM element
 	// αποτελεσμάτων της τρέχουσας αναζήτησης, ώστε να μπορούμε να
@@ -609,7 +602,7 @@ w3gh.processData = (x, data, resDOM) => {
 
 		addClass('resbingo').
 		addClass('resbingo' + (resDOM.data('aa') % 2)).
-		addClass(x.idos).
+		addClass('RSLT_' + x.idos).
 		empty().
 		append(dom);
 
@@ -940,36 +933,7 @@ w3gh.opsoiAbort = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 w3gh.ektiposi = () => {
-	let dom = $('<table>').addClass('ektiposiPinakas');
-	let count = 0;
-
-	w3gh.resultsDOM.children('.prosopo').each(function() {
-		let t = $(this).data('reqData');
-		let x = $(this).data('resData');
-
-		dom.append(x.gramiDOM());
-		count++;
-		return true;
-	});
-
-	if (count)
-	w3gh.resultsDOM.append(dom);
-
-	dom = $('<table>').addClass('ektiposiPinakas');
-	count = 0;
-
-	w3gh.resultsDOM.children('.oxima').each(function() {
-		let t = $(this).data('reqData');
-		let x = $(this).data('resData');
-
-		dom.append(x.gramiDOM());
-		count++;
-		return true;
-	});
-
-	if (count)
-	w3gh.resultsDOM.append(dom);
-
+	window.open('ektiposi.php', 'ektiposi').focus();
 	return w3gh;
 };
 
@@ -988,6 +952,88 @@ w3gh.ektiposiOff = () => {
 	return w3gh;
 };
 
+w3gh.ektiposiOxima = (dom) => {
+	let count = 0;
+	let table = $('<table>').addClass('results');
+	let row = $('<tr>').appendTo(table);
+
+	if (w3gh.formatDOM.val() === 'p,@c,@d')
+	row.
+	append($('<th>').text('ΠΑΡΑΒΑΣΗ')).
+	append($('<th>').text('ΗΜΝΙΑ'));
+
+	row.
+	append($('<th>').text('ΑΡ.ΚΥΚΛ.')).
+	append($('<th>').text('ΜΑΡΚΑ')).
+	append($('<th>').text('ΧΡΩΜΑ')).
+	append($('<th>').text('ΤΥΠΟΣ')).
+	append($('<th>').text('#')).
+	append($('<th>').text('%')).
+	append($('<th>').text('ΑΦΜ')).
+	append($('<th>').text('ΕΠΩΝΥΜΙΑ')).
+	append($('<th>').text('ΜΟΡΦΗ')).
+	append($('<th>').text('ΕΠΩΝΥΜΟ')).
+	append($('<th>').text('ΟΝΟΜΑ')).
+	append($('<th>').text('ΠΑΤΡΩΝΥΜΟ')).
+	append($('<th>').text('ΔΙΕΥΘΥΝΣΗ')).
+	append($('<th>').text('ΤΚ')).
+	append($('<th>').text('ΠΕΡΙΟΧΗ'));
+
+	w3gh.resultsDOM.children('.RSLT_oxima').each(function() {
+		let t = $(this).data('reqData');
+		let x = $(this).data('resData');
+		let opts = {};
+
+		if (w3gh.formatDOM.val() === 'p,@c,@d') {
+			if (!t)
+			t = ',,';
+
+			let a = t.split(',');
+			opts.ante = [
+				a[0],
+				a[2],
+			];
+		}
+
+		table.append(x.gramiDOM(opts));
+		count++;
+		return true;
+	});
+
+	if (!count) {
+		table.remove();
+		return w3gh;
+	}
+
+	dom.append(table);
+	return w3gh;
+};
+
+w3gh.ektiposiProsopo = (dom) => {
+// XXX
+return w3gh;
+
+	table = $('<table>').addClass('results');
+	count = 0;
+
+	w3gh.resultsDOM.children('.prosopo').each(function() {
+		let t = $(this).data('reqData');
+		let x = $(this).data('resData');
+
+		table.append(x.gramiDOM());
+		count++;
+		return true;
+	});
+
+	if (!count) {
+		table.remove();
+		return w3gh;
+	}
+
+	w3gh.resultsDOM.append(table);
+	return w3gh;
+};
+
 ///////////////////////////////////////////////////////////////////////////////@
 
 w3gh.imerominiaGet = () => {
@@ -1001,35 +1047,37 @@ w3gh.imerominiaGet = () => {
 
 w3gh.execTest = () => {
 	let pinakida;
-	pinakida = 'ΝΒΝ9596';	// NISSAN
 	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
+	pinakida = 'ΝΒΝ9596';	// NISSAN
 	pinakida = ''
 
 	let imerominia;
 	imerominia = '';
 	imerominia = '31-07-2018';
 	imerominia = pd.dateTime(new Date(), '%D-%M-%Y');
+	imerominia = '13-11-2019';
 
 	let afm;
 	afm = '032792320';	// εγώ
 	afm = '095675861';	// νομικό πρόσωπο
-	afm = '';
 	afm = '043514613';	// ανενεργό ΑΦΜ
+	afm = '';
 
 	let mazika;
 	mazika = '032792320,ΝΒΝ9596,23-03-2016';
 	mazika = '';
+	mazika = '032792320 043514613 095675861\nΝΒΝ9596 ΝΕΧ7500\n\n' +
+		'032792320 ΝΑΧ6802';
 	mazika = '23572901,ΑΗΜ7551\n' + '23126130,ΙΜΡ3593\n' +
 		'23126010,ΝΜΑ0436\n' + '23125988,ΝΜΡ0911\n' +
 		'23125943,ΒΑΖ2942\n' + '23125459,C7912HP\n' +
 		'23125410,ΕΡΝ3400\n' + '23125390,ΚΖΜ0012\n' +
 		'23125376,ΝΟΟ0609\n' + '23125361,ΝΟΤ0352';
-	mazika = '032792320 043514613 095675861\nΝΒΝ9596 ΝΕΧ7500\n\n' +
-		'032792320 ΝΑΧ6802';
+	mazika = '';
 
 	let format;
-	format = 'p,@c';
 	format = '';
+	format = 'p,@c';
 
 	let ipovoli;
 	ipovoli = false;

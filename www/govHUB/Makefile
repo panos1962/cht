@@ -1,4 +1,5 @@
 BUNDLEJS = bundle.js
+BROWSERIFY_OPTS = -t envify
 BROWSERIFY_OPTS = -t envify -p tinyify
 
 .PHONY: all
@@ -13,6 +14,6 @@ test:
 $(BUNDLEJS): selida.js ../../lib/govHUB/apiClient.js ../../lib/govHUB/apiCore.js
 	browserify $(BROWSERIFY_OPTS) -o $@ selida.js
 
-.PHONY: clanup
+.PHONY: cleanup
 cleanup:
 	@rm -f $(BUNDLEJS)

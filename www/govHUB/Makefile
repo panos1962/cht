@@ -1,6 +1,6 @@
 BUNDLEJS = bundle.js
-BROWSERIFY_OPTS = -t envify
 BROWSERIFY_OPTS = -t envify -p tinyify
+BROWSERIFY_OPTS = -t envify
 
 .PHONY: all
 all:

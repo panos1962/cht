@@ -1,0 +1,61 @@
+.panel {
+	display: block;
+}
+
+.panel input {
+	margin: 4px;
+	font-size: 80%;
+	cursor: pointer;
+}
+
+.subpanel {
+	display: none;
+	margin-right: 10px;
+	padding: 4px;
+	background-color: #f6f7ab;
+	border-radius: 10px;
+}
+
+#results table {
+	font-size: 10px;
+	border-collapse: collapse;
+}
+
+#results table th {
+	text-align: center;
+}
+
+#results table td, th {
+	padding: 2px 4px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #000000;
+}
+
+#results table th {
+	border-style: solid solid double solid;
+	border-width: 1px 1px 3px 1px;
+}
+
+.katastasi {
+	margin-top: 8px;
+	background-color: #fffeee;
+	box-shadow: 1px 1px 4px #888888;
+}
+
+.titlos {
+	padding: 8px 0px;
+	border-style: none !important;
+}
+
+.titlosText {
+	display: inline-block;
+	font-size: 120%;
+	border-style: none none solid none;
+	border-width: 1px;
+	border-color: #000000;
+}
+
+.aspasto {
+	white-space: nowrap;
+}

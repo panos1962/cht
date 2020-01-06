@@ -319,7 +319,7 @@ w3gh.pinakidaPush = (data) => {
 };
 
 w3gh.afmPush = (data) => {
-	afm = w3gh.afmDOM.val();
+	let afm = w3gh.afmDOM.val();
 
 	if (!afm)
 	return w3gh;
@@ -952,88 +952,6 @@ w3gh.ektiposiOff = () => {
 	return w3gh;
 };
 
-w3gh.ektiposiOxima = (dom) => {
-	let count = 0;
-	let table = $('<table>').addClass('results');
-	let row = $('<tr>').appendTo(table);
-
-	if (w3gh.formatDOM.val() === 'p,@c,@d')
-	row.
-	append($('<th>').text('ΠΑΡΑΒΑΣΗ')).
-	append($('<th>').text('ΗΜΝΙΑ'));
-
-	row.
-	append($('<th>').text('ΑΡ.ΚΥΚΛ.')).
-	append($('<th>').text('ΜΑΡΚΑ')).
-	append($('<th>').text('ΧΡΩΜΑ')).
-	append($('<th>').text('ΤΥΠΟΣ')).
-	append($('<th>').text('#')).
-	append($('<th>').text('%')).
-	append($('<th>').text('ΑΦΜ')).
-	append($('<th>').text('ΕΠΩΝΥΜΙΑ')).
-	append($('<th>').text('ΜΟΡΦΗ')).
-	append($('<th>').text('ΕΠΩΝΥΜΟ')).
-	append($('<th>').text('ΟΝΟΜΑ')).
-	append($('<th>').text('ΠΑΤΡΩΝΥΜΟ')).
-	append($('<th>').text('ΔΙΕΥΘΥΝΣΗ')).
-	append($('<th>').text('ΤΚ')).
-	append($('<th>').text('ΠΕΡΙΟΧΗ'));
-
-	w3gh.resultsDOM.children('.RSLT_oxima').each(function() {
-		let t = $(this).data('reqData');
-		let x = $(this).data('resData');
-		let opts = {};
-
-		if (w3gh.formatDOM.val() === 'p,@c,@d') {
-			if (!t)
-			t = ',,';
-
-			let a = t.split(',');
-			opts.ante = [
-				a[0],
-				a[2],
-			];
-		}
-
-		table.append(x.gramiDOM(opts));
-		count++;
-		return true;
-	});
-
-	if (!count) {
-		table.remove();
-		return w3gh;
-	}
-
-	dom.append(table);
-	return w3gh;
-};
-
-w3gh.ektiposiProsopo = (dom) => {
-// XXX
-return w3gh;
-
-	table = $('<table>').addClass('results');
-	count = 0;
-
-	w3gh.resultsDOM.children('.prosopo').each(function() {
-		let t = $(this).data('reqData');
-		let x = $(this).data('resData');
-
-		table.append(x.gramiDOM());
-		count++;
-		return true;
-	});
-
-	if (!count) {
-		table.remove();
-		return w3gh;
-	}
-
-	w3gh.resultsDOM.append(table);
-	return w3gh;
-};
-
 ///////////////////////////////////////////////////////////////////////////////@
 
 w3gh.imerominiaGet = () => {
@@ -1048,7 +966,7 @@ w3gh.imerominiaGet = () => {
 w3gh.execTest = () => {
 	let pinakida;
 	pinakida = 'ΝΙΟ2332';	// MERCEDES (πέντε συνιδιοκτήτες)
-	pinakida = 'ΝΒΝ9596';	// NISSAN
+	pinakida = 'ΝΒΝ9596';	// NISSAN (δικό μου)
 	pinakida = ''
 
 	let imerominia;
@@ -1059,25 +977,23 @@ w3gh.execTest = () => {
 
 	let afm;
 	afm = '032792320';	// εγώ
-	afm = '095675861';	// νομικό πρόσωπο
 	afm = '043514613';	// ανενεργό ΑΦΜ
+	afm = '095675861';	// νομικό πρόσωπο
 	afm = '';
 
 	let mazika;
 	mazika = '032792320,ΝΒΝ9596,23-03-2016';
-	mazika = '';
-	mazika = '032792320 043514613 095675861\nΝΒΝ9596 ΝΕΧ7500\n\n' +
-		'032792320 ΝΑΧ6802';
 	mazika = '23572901,ΑΗΜ7551\n' + '23126130,ΙΜΡ3593\n' +
 		'23126010,ΝΜΑ0436\n' + '23125988,ΝΜΡ0911\n' +
 		'23125943,ΒΑΖ2942\n' + '23125459,C7912HP\n' +
 		'23125410,ΕΡΝ3400\n' + '23125390,ΚΖΜ0012\n' +
 		'23125376,ΝΟΟ0609\n' + '23125361,ΝΟΤ0352';
 	mazika = '';
+	mazika = '032792320 043514613 095675861\nΝΒΝ9596 ΝΕΧ7500';
 
 	let format;
-	format = '';
 	format = 'p,@c';
+	format = '';
 
 	let ipovoli;
 	ipovoli = false;

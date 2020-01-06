@@ -38,7 +38,7 @@ Pandora::import_php([
 ?>
 <link rel="icon" type="image/png" href="../images/favicon-96x96.png">
 <link rel="stylesheet" type="text/css" href="<?php print PANDORA_HOST; ?>/lib/pandora.css">
-<link rel="stylesheet" type="text/css" href="selida.css">
+<link rel="stylesheet" type="text/css" href="main.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>

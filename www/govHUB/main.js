@@ -47,7 +47,7 @@ w3gh.opts.kimeno = {
 };
 w3gh.opts.sepChar = ',';
 w3gh.opts.opsoiCountDefault = 10;
-w3gh.opts.opsoiCountMax = 100;
+w3gh.opts.opsoiCountMax = 500;
 w3gh.opts.portNumber = php.requestGet('port', 12345);
 
 w3gh.resultCount = 0;
@@ -138,7 +138,7 @@ w3gh.opsoiSetup = () => {
 		let count = w3gh.opsoiCountDOM.val();
 		let n = parseInt(count);
 
-		if ((n != count) || (n > 100) || (n < 1)) {
+		if ((n != count) || (n > w3gh.opts.opsoiCountMax) || (n < 1)) {
 			w3gh.opsoiCountDOM.select();
 			return w3gh.opsoiOff();
 		}

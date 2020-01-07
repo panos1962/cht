@@ -1,5 +1,33 @@
 #!/usr/bin/env bash
 
+###############################################################################@
+#
+# @BEGIN
+# @COPY BEGIN
+# Copyright (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+# @COPYRIGHT END
+#
+# @FILE BEGIN
+# bin/opsoisql —— SQL client για το ΟΠΣΟΥ
+# @FILE END
+#
+# @DESCRIPTION BEGIN
+# Το παρόν πρόγραμμα είναι ένας batch SQL client για τη βάση δεδομένων του
+# ΟΠΣΟΥ. Ως γνωστόν η βάση δεδομένων του ΟΠΣΟΥ είναι ORACLE database και
+# συνεπώς το παρόν βασίζεται στο SQL*Plus μέσω του wrapper pd_sqlplus.
+# Η ορθή λειτουργία του παρόντος βασίζεται στο configuration file "opsoidb.cf"
+# το οποίο βρίσκεται στο directory "private" το οποίο είναι σχετικά ασφαλές
+# καθώς παρέχει πρόσβαση στον κατασκευαστή και στην ομάδα "www-data" που
+# αφορά στον web server.
+# @DESCRIPTION END
+#
+# @HISTORY BEGIN
+# Updated: 2020-01-07
+# @HISTORY END
+# @END
+#
+###############################################################################@
+
 [ -z "${PANDORA_BASEDIR}" ] &&
 PANDORA_BASEDIR="/var/opt/pandora"
 
@@ -8,4 +36,5 @@ export PANDORA_BASEDIR
 opts=
 opts="${opts} --conf=${CHT_BASEDIR:=/var/opt/cht}/private/opsoidb.cf"
 opts="${opts} --linesize=78"
+
 exec "${PANDORA_BASEDIR}/bin/pd_sqlplus" ${opts} "$@"

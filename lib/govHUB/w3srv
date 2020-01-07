@@ -2,9 +2,30 @@
 
 ###############################################################################@
 #
+# @BEGIN
+# @COPYRIGHT BEGIN
 # Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+# @COPYRIGHT END
 #
+# @FILE BEGIN
+# lib/govHUB/w3srv —— Default startup πρόγραμμα του "govHUB/w3srv" server
+# @FILE END
+#
+# @DESCRIPTION BEGIN
+# Το παρόν αποτελεί πρόγραμμα εκκίνησης του "govHUB/w3srv" server ο οποίος
+# δέχεται αιτήματα αναζήτησης στοιχείων οχημάτων και κατόχων οχημάτων μέσω
+# του αριθμού κυκλοφορίας, και στοιχείων φυσικών και νομικών προσώπων μέσω
+# του ΑΦΜ.
+#
+# Μπορείτε να κατασκευάσετε custom πρόγραμμα εκκίνησης για τον "govHUB/w3srv"
+# server παρέχοντας ad hoc input/functions, ενώ το παρόν χρησιμοποιεί κάποιες
+# default input/output functions. Πιο συγκεκριμένα, το παρόν δέχεται αιτήματα
+# σε JSON format και επιστρέφει δεδομένα επίσης σε JSON format.
+# @DESCRIPTION END
+#
+# @HISTORY BEGIN
 # Updated: 2019-12-20
+# @HISTORY END
 #
 ###############################################################################@
 

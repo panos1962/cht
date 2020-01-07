@@ -37,7 +37,7 @@
 
 usage_list="${pd_progname} carget [ OPTIONS ] [ ARGS ]
 ${pd_progname} carparse [ OPTIONS ] [ ARGS ]
-${pd_progname} srv3w [ OPTIONS ] [ ARGS ]"
+${pd_progname} w3srv [ OPTIONS ] [ ARGS ]"
 
 pd_usagemsg="[--help]
 

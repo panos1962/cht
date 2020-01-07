@@ -46,7 +46,6 @@ fclose($fp);
 $ofile = $onoma . ".xlsx";
 
 system("ssconvert " .
-	"--data-dir='tmp' " .
 	"--import-type='Gnumeric_stf:stf_csvtab' " .
 	"--export-type='Gnumeric_Excel:xlsx' " .
 	$ifile . " " . $ofile . " >/dev/null 2>&1");

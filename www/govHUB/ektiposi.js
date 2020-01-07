@@ -9,19 +9,32 @@ const main = window.opener;
 const w3gh = main.w3gh;
 
 rpt.defs = {
-	'hideOxima': 'Απόκρυψη Οχημάτων',
-	'showOxima': 'Εμφάνιση Οχημάτων',
-	'excelOxima': 'Excel Οχημάτων',
-	'hideProsopo': 'Απόκρυψη Προσώπων',
-	'showProsopo': 'Εμφάνιση Προσώπων',
-	'excelProsopo': 'Excel Προσώπων',
+	'label': {
+		'hide': 'Απόκρυψη',
+		'show': 'Εμφάνιση',
+		'excel': 'Excel',
+		'katastasi': 'ΚΑΤΑΣΤΑΣΗ',
+		'oxima': {
+			'genikiKefalea': {},
+			'genikiMikra': {},
+		},
+		'prosopo': {
+			'genikiKefalea': {},
+			'genikiMikra': {},
+		},
+	},
 	'formatParavasi': 'p,@c,@d',
-	'titlosOxima': {},
-	'excelOxima': {},
 };
 
-rpt.defs.titlosOxima[rpt.defs.formatParavasi] = 'ΚΑΤΑΣΤΑΣΗ ΠΑΡΑΒΑΣΕΩΝ Κ.Ο.Κ.';
-rpt.defs.excelOxima[rpt.defs.formatParavasi] = 'Excel Οχημάτων';
+rpt.defs.label.oxima.genikiKefalea[rpt.defs.formatParavasi] = 'ΠΑΡΑΒΑΣΕΩΝ Κ.Ο.Κ.';
+rpt.defs.label.oxima.genikiMikra[rpt.defs.formatParavasi] = 'Παραβάσεων';
+
+rpt.defs.label.oxima.genikiKefalea[''] = 'ΟΧΗΜΑΤΩΝ';
+rpt.defs.label.oxima.genikiMikra[''] = 'Οχημάτων';
+
+rpt.defs.label.prosopo.genikiKefalea[''] = 'ΠΡΟΣΩΠΩΝ';
+rpt.defs.label.prosopo.genikiMikra[''] = 'Προσώπων';
+
 rpt.tmpfiles = [];
 
 ///////////////////////////////////////////////////////////////////////////////@
@@ -56,9 +69,10 @@ rpt.panelSetup = () => {
 
 	append($('<input>').
 	attr('type', 'button').
-	val(rpt.defs.excelOxima).
-	val(rpt.defs.excelOxima.hasOwnProperty(rpt.oximaFormat) ?
-	rpt.defs.excelOxima[rpt.oximaFormat] : 'Excel Οχημάτων').
+	val(rpt.defs.label.excel + ' ' +
+	(rpt.defs.label.oxima.genikiMikra.hasOwnProperty(rpt.formatOxima) ?
+	rpt.defs.label.oxima.genikiMikra[rpt.formatOxima] : 
+	rpt.defs.label.oxima.genikiMikra[''])).
 	on('click', (e) => {
 		e.stopPropagation();
 		rpt.excelConvert('oxima');
@@ -66,7 +80,10 @@ rpt.panelSetup = () => {
 
 	append($('<input>').
 	attr('type', 'button').
-	val(rpt.defs.hideOxima).
+	val(rpt.defs.label.hide + ' ' +
+	(rpt.defs.label.oxima.genikiMikra.hasOwnProperty(rpt.formatOxima) ?
+	rpt.defs.label.oxima.genikiMikra[rpt.formatOxima] : 
+	rpt.defs.label.oxima.genikiMikra[''])).
 	on('click', function(e) {
 		e.stopPropagation();
 		rpt.toggleOxima($(this));
@@ -76,14 +93,16 @@ rpt.panelSetup = () => {
 
 	append($('<input>').
 	attr('type', 'button').
-	val(rpt.defs.excelProsopo).
+	val(rpt.defs.label.excel + ' ' +
+	rpt.defs.label.prosopo.genikiMikra['']).
 	on('click', (e) => {
 		e.stopPropagation();
 		rpt.excelConvert('prosopo');
 	})).
 	append($('<input>').
 	attr('type', 'button').
-	val(rpt.defs.hideProsopo).
+	val(rpt.defs.label.hide + ' ' +
+	rpt.defs.label.prosopo.genikiMikra['']).
 	on('click', function(e) {
 		e.stopPropagation();
 		rpt.toggleProsopo($(this));
@@ -122,8 +141,10 @@ rpt.ektiposiOxima = () => {
 	addClass('titlos').
 	append($('<div>').
 	addClass('titlosText').
-	text(rpt.defs.titlosOxima.hasOwnProperty(rpt.formatOxima) ?
-	rpt.defs.titlosOxima[rpt.formatOxima] : 'ΚΑΤΑΣΤΑΣΗ ΟΧΗΜΑΤΩΝ')));
+	text(rpt.defs.label.katastasi + ' ' +
+	(rpt.defs.label.oxima.genikiKefalea.hasOwnProperty(rpt.formatOxima) ?
+	rpt.defs.label.oxima.genikiKefalea[rpt.formatOxima] :
+	rpt.defs.label.oxima.genikiKefalea['']))));
 
 	row = $('<tr>').appendTo(rpt.katastasiOximaDOM);
 	row.
@@ -194,11 +215,17 @@ rpt.toggleOxima = (dom) => {
 	switch (rpt.katastasiOximaDOM.css('display')) {
 	case 'none':
 		rpt.katastasiOximaDOM.css('display', 'table');
-		dom.val(rpt.defs.hideOxima);
+		dom.val(rpt.defs.label.hide + ' ' +
+		(rpt.defs.label.oxima.genikiMikra.hasOwnProperty(rpt.formatOxima) ?
+		rpt.defs.label.oxima.genikiMikra[rpt.formatOxima] : 
+		rpt.defs.label.oxima.genikiMikra['']));
 		break;
 	default:
 		rpt.katastasiOximaDOM.css('display', 'none');
-		dom.val(rpt.defs.showOxima);
+		dom.val(rpt.defs.label.show + ' ' +
+		(rpt.defs.label.oxima.genikiMikra.hasOwnProperty(rpt.formatOxima) ?
+		rpt.defs.label.oxima.genikiMikra[rpt.formatOxima] : 
+		rpt.defs.label.oxima.genikiMikra['']));
 		break;
 	}
 
@@ -257,7 +284,8 @@ rpt.ektiposiProsopo = () => {
 	addClass('titlos').
 	append($('<div>').
 	addClass('titlosText').
-	text('ΚΑΤΑΣΤΑΣΗ ΦΥΣΙΚΩΝ/ΝΟΜΙΚΩΝ ΠΡΟΣΩΠΩΝ')));
+	text(rpt.defs.label.katastasi + ' ' +
+	rpt.defs.label.prosopo.genikiKefalea[''])));
 
 	row = $('<tr>').appendTo(rpt.katastasiProsopoDOM);
 
@@ -308,11 +336,13 @@ rpt.toggleProsopo = (dom) => {
 	switch (rpt.katastasiProsopoDOM.css('display')) {
 	case 'none':
 		rpt.katastasiProsopoDOM.css('display', 'table');
-		dom.val(rpt.defs.hideProsopo);
+		dom.val(rpt.defs.label.hide + ' ' +
+		rpt.defs.label.prosopo.genikiMikra['']);
 		break;
 	default:
 		rpt.katastasiProsopoDOM.css('display', 'none');
-		dom.val(rpt.defs.showProsopo);
+		dom.val(rpt.defs.label.show + ' ' +
+		rpt.defs.label.prosopo.genikiMikra['']);
 		break;
 	}
 

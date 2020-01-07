@@ -17,3 +17,4 @@ test:
 
 cleanup:
 	@(cd govHUB && make cleanup)
+	@(cd tmp; rm -f *; ln -s ../../misc/index.html .;) 2>/dev/null; :

@@ -18,7 +18,7 @@
 //
 // Το πρόγραμμα λειτουργεί σε συνεργασία με τον κατάλληλο server που εκτελεί
 // τις αναζητήσεις. Ο server δέχεται αιτήματα σε συγκεκριμένη πόρτα δικτύου
-// (default port 12345) και εκτελείται με την εντολή:
+// (default port 8001) και εκτελείται με την εντολή:
 //
 //	GH w3srv
 //
@@ -55,7 +55,7 @@ w3gh.opts.kimeno = {
 w3gh.opts.sepChar = ',';
 w3gh.opts.opsoiCountDefault = 10;
 w3gh.opts.opsoiCountMax = 500;
-w3gh.opts.portNumber = php.requestGet('port', 12345);
+w3gh.opts.portNumber = php.requestGet('port', 8001);
 
 w3gh.resultCount = 0;
 

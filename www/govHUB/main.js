@@ -55,9 +55,13 @@ w3gh.opts.kimeno = {
 	'opsoiGet': 'Εισαγωγή από ΟΠΣΟΥ',
 	'opsoiAbort': 'Διακοπή εισαγωγής ΟΠΣΟΥ',
 	'mazikaPlaceHolder': 'Καταχωρήστε ελεύθερα ΑΦΜ ή αριθμούς ' +
-		'κυκλοφορίας οχημάτων. Εναλλακτικά επιλέξτε εισαγωγή ' +
-		'στοιχείων από το ΟΠΣΟΥ',
+		'κυκλοφορίας οχημάτων.',
 };
+
+if (php.parameterYes('opsoi'))
+w3gh.opts.kimeno.mazikaPlaceHolder +=
+' Εναλλακτικά επιλέξτε εισαγωγή στοιχείων από το ΟΠΣΟΥ.',
+
 w3gh.opts.sepChar = ',';
 w3gh.opts.opsoiCountDefault = 10;
 w3gh.opts.opsoiCountMax = 500;

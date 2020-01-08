@@ -51,27 +51,12 @@ Pandora::import_php([
 <table>
 <tr>
 <td>
-<div class="pedio">
-<label class="prompt" for="pinakida">Αρ. Κυκλοφορίας</label>
-<input id="pinakida" type="text">
-</div>
-<br>
-<div class="pedio">
-<label class="prompt" for="imerominia">Ημερομηνία</label>
-<input id="imerominia" type="text" placeholder="ΗΗ-ΜΜ-ΕΕΕΕ">
-</div>
-<br>
-<div class="pedio">
-<label class="prompt" for="opsoi">Από ΟΠΣΟΥ</label>
-<input id="opsoi" type="checkbox">
-<label class="prompt promptAuto" for="opsoiCount">Πλήθος</label>
-<input id="opsoiCount" type="text">
-</div>
-<br>
-<div class="pedio">
-<label class="prompt" for="afm">ΑΦΜ</label>
-<input id="afm" type="text">
-</div>
+<?php
+GovHUB::section_oxima();
+GovHUB::section_imerominia();
+GovHUB::section_opsoi();
+GovHUB::section_prosopo();
+?>
 </td>
 <td>
 <div class="pedio">
@@ -113,3 +98,54 @@ Pandora::import_php([
 
 </body>
 </html>
+<?php
+
+class GovHUB {
+	public static function section_oxima() {
+		if (!Pandora::parameter_yes("oxima"))
+		return;
+?>
+<div class="pedio">
+<label class="prompt" for="pinakida">Αρ. Κυκλοφορίας</label>
+<input id="pinakida" type="text">
+</div>
+<br>
+<?php
+	}
+
+	public static function section_imerominia() {
+?>
+<div class="pedio">
+<label class="prompt" for="imerominia">Ημερομηνία</label>
+<input id="imerominia" type="text" placeholder="ΗΗ-ΜΜ-ΕΕΕΕ">
+</div>
+<br>
+<?php
+	}
+
+	public static function section_opsoi() {
+		if (!Pandora::parameter_yes("opsoi"))
+		return;
+?>
+<div class="pedio">
+<label class="prompt" for="opsoi">Από ΟΠΣΟΥ</label>
+<input id="opsoi" type="checkbox">
+<label class="prompt promptAuto" for="opsoiCount">Πλήθος</label>
+<input id="opsoiCount" type="text">
+</div>
+<br>
+<?php
+	}
+
+	public static function section_prosopo() {
+		if (!Pandora::parameter_yes("prosopo"))
+		return;
+?>
+<div class="pedio">
+<label class="prompt" for="afm">ΑΦΜ</label>
+<input id="afm" type="text">
+</div>
+<br>
+<?php
+	}
+}

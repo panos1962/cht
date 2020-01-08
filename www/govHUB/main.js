@@ -368,6 +368,17 @@ w3gh.mazikaPush = (data) => {
 
 	let date = w3gh.imerominiaGet();
 	pd.arrayWalk(rows, (row) => {
+		try {
+			row = row.trim();
+		}
+
+		catch (e) {
+			return;
+		}
+
+		if (row === '')
+		return;
+
 		w3gh.parseRow(data, row, flist, date);
 	});
 
@@ -408,7 +419,15 @@ w3gh.pushWords = (data, mazika) => {
 	return w3gh;
 
 	pd.arrayWalk(a, (x) => {
-		if (!a)
+		try {
+			x = x.trim();
+		}
+
+		catch (e) {
+			return;
+		}
+
+		if (!x)
 		return;
 
 		if (x.match(/^[0-9]+$/))

@@ -6,9 +6,7 @@ private/*
 local/*
 mnt/*
 tmp
-www/tmp
-www/govHUB/tmp
 tmp/*
-www/tmp/*
+www/govHUB/tmp
 www/govHUB/tmp/*
 node_modules/*

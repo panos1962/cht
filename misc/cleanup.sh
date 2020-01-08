@@ -2,16 +2,26 @@
 
 ###############################################################################@
 #
-# @COPY: Copyright (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+# @BEGIN
+# @COPYRIGHT BEGIN
+# Copyright (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+# @COPYRIGHT END
 #
-# @FILE: misc/cleanup.sh —— Διαγραφή παράγωγων και περιττών αρχείων
+# @FILE BEGIN
+# misc/cleanup.sh —— Διαγραφή παράγωγων και περιττών αρχείων
+# @FILE END
 #
+# @DESCRIPTION BEGIN
 # Με το παρόν επιχειρείται καθαρισμός του τοπικού αποθετηρίου από παράγωγα και
 # περιττά αρχεία. Παράγωγα αρχεία λογίζονται αυτά που κατασκευάζονται από άλλα
 # αρχεία, ενώ περιττά είναι τα προσωρινά αρχεία και άλλα πρόχειρα αρχεία που
 # ενδεχομένως να έχουν παραμείνει στο αποθετήριο.
+# @DESCRIPTION END
 #
+# @HISTORY BEGIN
 # Created: 2020-01-07
+# @HISTORY END
+# @END
 #
 ###############################################################################@
 
@@ -28,9 +38,9 @@ bundlejs_cleanup() {
 
 tmpfiles_cleanup() {
 	find tmp \
-	-not -path tmp \
+	-not -ipath tmp \
 	-not -ipath tmp/readme.md \
-	-not -path tmp/index.html \
+	-not -ipath tmp/index.html \
 	-exec rm -rf {} \;
 }
 

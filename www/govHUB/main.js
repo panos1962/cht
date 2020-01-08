@@ -418,6 +418,8 @@ w3gh.pushWords = (data, mazika) => {
 	if (!a.length)
 	return w3gh;
 
+	let date = w3gh.imerominiaGet();
+
 	pd.arrayWalk(a, (x) => {
 		try {
 			x = x.trim();
@@ -436,10 +438,15 @@ w3gh.pushWords = (data, mazika) => {
 			'key': x,
 		});
 
-		return data.push({
+		let t = {
 			'idos': 'oxima',
 			'key': x,
-		});
+		};
+
+		if (date)
+		t.imerominia = date;
+
+		return data.push(t);
 	});
 
 	return w3gh;
@@ -509,8 +516,12 @@ w3gh.pushItem = (data, row, idos, key, date) => {
 
 	switch (idos) {
 	case 'oxima':
+		if (!date)
+		date = w3gh.imerominiaGet();
+
 		if (date)
 		t.imerominia = date;
+
 		break;
 	case 'prosopo':
 		break;

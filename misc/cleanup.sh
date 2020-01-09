@@ -3,6 +3,11 @@
 ###############################################################################@
 #
 # @BEGIN
+#
+# @FILETYPE BEGIN
+# bash script
+# @FILETYPE END
+#
 # @COPYRIGHT BEGIN
 # Copyright (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
 # @COPYRIGHT END
@@ -21,6 +26,7 @@
 # @HISTORY BEGIN
 # Created: 2020-01-07
 # @HISTORY END
+#
 # @END
 #
 ###############################################################################@

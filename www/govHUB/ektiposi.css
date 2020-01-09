@@ -59,3 +59,14 @@
 .aspasto {
 	white-space: nowrap;
 }
+
+@media print {
+	.panel {
+		display: none;
+	}
+
+	.katastasi {
+		background-color: transparent;
+		box-shadow: none;
+	}
+}

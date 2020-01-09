@@ -2,10 +2,27 @@
 
 ###############################################################################@
 #
-# Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+# @BEGIN
 #
+# @COPYRIGHT BEGIN
+# Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+# @COPYRIGHT END
+#
+# @FILETYPE BEGIN
+# makefile
+# @FILETYPE END
+#
+# @FILE BEGIN
+# Makefile —— main makefile
+# @FILE END
+#
+# @HISTORY BEGIN
+# Updated: 2020-01-09
 # Updated: 2019-12-25
 # Updated: 2019-12-16
+# @HISTORY END
+#
+# @END
 #
 ###############################################################################@
 

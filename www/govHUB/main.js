@@ -1,9 +1,14 @@
 ///////////////////////////////////////////////////////////////////////////////@
 //
 // @BEGIN
+//
 // @COPYRIGHT BEGIN
 // Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
 // @COPYRIGHT END
+//
+// @FILETYPE BEGIN
+// javascript
+// @FILETYPE END
 //
 // @FILE BEGIN
 // www/govHUB/main.js —— Πρόγραμμα που οδηγεί τη σελίδα αναζήτησης στοιχείων
@@ -35,6 +40,7 @@
 // Updated: 2020-01-01
 // Updated: 2019-12-31
 // @HISTORY END
+//
 // @END
 //
 ///////////////////////////////////////////////////////////////////////////////@
@@ -277,7 +283,7 @@ w3gh.buttonSetup = () => {
 		w3gh.formatDOM.val('').trigger('change');
 		w3gh.mazikaDOM.val('');
 
-		w3gh.trexonLabelDOM.empty();
+		w3gh.trexonLabelClear();
 		w3gh.trexonDOM.empty();
 		w3gh.opsoiOff();
 		w3gh.pinakidaDOM.focus();
@@ -580,7 +586,7 @@ w3gh.anazitisi = (data) => {
 				console.error(err);
 			}
 
-			w3gh.trexonLabelDOM.html('&#x2639;');
+			w3gh.trexonLabelSorry();
 			let xhr = resDOM.data('xhr');
 
 			if (!xhr)
@@ -603,6 +609,7 @@ w3gh.processData = (x, data, resDOM) => {
 	resDOM.removeData('xhr');
 
 	if (x.hasOwnProperty('error')) {
+		w3gh.trexonLabelSorry();
 		w3gh.resultErrmsg(resDOM, x.error);
 		w3gh.anazitisi(data);
 		return w3gh;
@@ -653,13 +660,13 @@ w3gh.processData = (x, data, resDOM) => {
 		empty().
 		append(dom);
 
-		// Για να γίνεται ακόμη εμανέσετερο το αποτέλεσμα της
+		// Για να γίνεται ακόμη εμφανέσετερο το αποτέλεσμα της
 		// αναζήτησης που μόλις τελείωσε, εφαρμόζουμε ελαφρά
 		// αναλαμπή (flash effect) παραλλάσσοντας για μικρό
 		// χρονικό διάστημα το χρώμα του αποτελέσματος που
 		// μόλις προσθέσαμε στο χώρο αποτελεσμάτων.
 
-		w3gh.trexonLabelDOM.html('&#x1F60C;');
+		w3gh.trexonLabelProud();
 		let bc = resDOM.css('background-color');
 
 		resDOM.
@@ -680,8 +687,8 @@ w3gh.processData = (x, data, resDOM) => {
 
 	catch (e) {
 		console.error(e);
+		w3gh.trexonLabelSorry();
 		w3gh.resultErrmsg(resDOM, 'σφάλμα αναζήτησης');
-		w3gh.trexonLabelDOM.html('&#x2639;');
 	}
 
 	// Τέλος, προχωρούμε στην επόμενη αναζήτηση χρησιμοποιώντας
@@ -734,7 +741,7 @@ w3gh.resultCreate = (data) => {
 		break;
 	}
 
-	w3gh.trexonLabelDOM.html('&#x261B;');
+	w3gh.trexonLabelPoint();
 	w3gh.trexonDOM.html(msg);
 
 	// Οι ίδιες πληροφορίες εμφανίζονται στην περιοχή αποτελεσμάτων,
@@ -1057,3 +1064,27 @@ w3gh.execTest = () => {
 
 	return w3gh;
 };
+
+///////////////////////////////////////////////////////////////////////////////@
+
+w3gh.trexonLabelClear = () => {
+	w3gh.trexonLabelDOM.empty();
+	return w3gh;
+};
+
+w3gh.trexonLabelPoint = () => {
+	w3gh.trexonLabelDOM.html('&#x261B;');
+	return w3gh;
+};
+
+w3gh.trexonLabelProud = () => {
+	w3gh.trexonLabelDOM.html('&#x1F60C;');
+	return w3gh;
+};
+
+w3gh.trexonLabelSorry = () => {
+	w3gh.trexonLabelDOM.html('&#x2639;');
+	return w3gh;
+};
+
+///////////////////////////////////////////////////////////////////////////////@

@@ -4,13 +4,13 @@
 #
 # @BEGIN
 #
-# @FILETYPE BEGIN
-# bash script
-# @FILETYPE END
-#
 # @COPYRIGHT BEGIN
 # Copyright (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
 # @COPYRIGHT END
+#
+# @FILETYPE BEGIN
+# bash
+# @FILETYPE END
 #
 # @FILE BEGIN
 # misc/cleanup.sh —— Διαγραφή παράγωγων και περιττών αρχείων

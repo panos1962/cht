@@ -30,15 +30,16 @@ all:
 
 .PHONY: test
 test:
+	@make cleanup
 	@make all
-	@(google-chrome --new-window http://localhost/cht/govHUB/index.php)
+	#@(google-chrome --new-window http://localhost/cht/govHUB/index.php)
 
 $(BUNDLEJS): \
-	main.js \
-	../../lib/govHUB/apiClient.js \
+	../../../pandora/lib/pandoraClient.js \
 	../../lib/govHUB/apiCore.js \
-	../../../pandora/lib/pandoraClient.js
-	browserify $(BROWSERIFY_OPTS) -o $@
+	../../lib/govHUB/apiClient.js \
+	main.js
+	browserify $(BROWSERIFY_OPTS) -o $@ main.js
 
 .PHONY: cleanup
 cleanup:

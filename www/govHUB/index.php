@@ -1,13 +1,25 @@
-<?php
+<!--
 ///////////////////////////////////////////////////////////////////////////////@
 //
+// @BEGIN
+// 
+// @COPYRIGHT BEGIN
 // Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+// @COPYRIGHT END
 //
+// @FILETYPE BEGIN
+// php
+// @FILETYPE END
+//
+// @FILE BEGIN
+// www/govHUB/index.php —— Αρχική σελίδα πακέτου "pandora" (dummy)
+// @FILE END
+//
+// @DESCRIPTION BEGIN
 // Η ανά χείρας σελίδα παρέχει στον χρήστη τη δυνατότητα αναζήτησης στοιχείων
 // μέσω της πλατφόρμας "govHUB" για:
 //
 //	⚫ Οχήματα και κατόχους με βάση τον αριθμό κυκλοφορίας οχήματος.
-//
 //	⚫ Φυσικά και νομικά πρόσωπα με βάση το ΑΦΜ.
 //
 // Η σελίδα είναι λειτουργική μόνον εφόσον υπάρχει ενεργός node server που να
@@ -17,11 +29,19 @@
 // ‾‾‾‾‾‾‾
 // Το network port στο οποίο «ακούει» ο server μπορεί να καθοριστεί στο URL
 // μέσω της παραμέτρου "port".
+// @DESCRIPTION END
 //
+// @HISTORY BEGIN
+// Updated: 2020-01-11
 // Updated: 2020-01-01
 // Updated: 2019-12-26
+// @HISTORY END
+//
+// @END
 //
 ///////////////////////////////////////////////////////////////////////////////@
+-->
+<?php
 
 define("PANDORA_BASEDIR", getenv("PANDORA_BASEDIR") ?
 	$_ENV["PANDORA_BASEDIR"] : "/var/opt/pandora");

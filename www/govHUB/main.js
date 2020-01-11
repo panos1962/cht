@@ -36,6 +36,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-11
 // Updated: 2020-01-07
 // Updated: 2020-01-01
 // Updated: 2019-12-31
@@ -46,6 +47,7 @@
 ///////////////////////////////////////////////////////////////////////////////@
 
 "use strict";
+console.log('>>>', 'www/govHUB/main.js');
 
 const pd = require('../../../pandora/lib/pandoraClient.js');
 const gh = require('../../lib/govHUB/apiClient.js');

@@ -41,30 +41,28 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 -->
-<?php
 
-define("PANDORA_BASEDIR", getenv("PANDORA_BASEDIR") ?
-	$_ENV["PANDORA_BASEDIR"] : "/var/opt/pandora");
-define("PANDORA_HOST", "http://localhost/pandora");
-?>
 <html>
 <head>
+
 <?php
+require_once("../lib/cht.php");
 require_once(PANDORA_BASEDIR . "/www/lib/pandora.php");
 Pandora::import_php([
 	"_SERVER",
 	"_GET",
 ]);
 ?>
-<link rel="icon" type="image/png" href="../images/favicon-96x96.png">
+
+<link rel="shortcut icon" type="image/png" href="../images/favicon-96x96.png">
 <link rel="stylesheet" type="text/css" href="<?php print PANDORA_HOST; ?>/lib/pandora.css">
 <link rel="stylesheet" type="text/css" href="main.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<script>console.log('>>>', 'govHUB/index.php (before bundle.js)');</script>
 <script src="bundle.js"></script>
-<script>console.log('>>>', 'govHUB/index.php (after bundle.js)');</script>
+
 </head>
 
 <body>

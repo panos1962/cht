@@ -36,6 +36,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-12
 // Updated: 2020-01-11
 // Updated: 2020-01-07
 // Updated: 2020-01-01
@@ -66,7 +67,7 @@ w3gh.opts.kimeno = {
 		'κυκλοφορίας οχημάτων.',
 };
 
-if (php.parameterYes('opsoi'))
+if (php.requestIsYes('opsoi'))
 w3gh.opts.kimeno.mazikaPlaceHolder +=
 ' Εναλλακτικά επιλέξτε εισαγωγή στοιχείων από το ΟΠΣΟΥ.',
 

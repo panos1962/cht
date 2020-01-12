@@ -49,7 +49,9 @@
 require_once("../lib/cht.php");
 require_once(PANDORA_BASEDIR . "/www/lib/pandora.php");
 Pandora::import_php([
-	"_SERVER",
+	new Pandora("_SERVER", [
+		"HTTP_HOST" => TRUE,
+	]),
 	"_GET",
 ]);
 ?>

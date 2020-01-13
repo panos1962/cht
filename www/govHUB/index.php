@@ -40,29 +40,27 @@
 // @END
 //
 ///////////////////////////////////////////////////////////////////////////////@
+
+require_once("../lib/cht.php");
+require_once(PANDORA_BASEDIR . "/www/lib/pandora.php");
 ?>
 
 <html>
 <head>
 
 <?php
-require_once("../lib/cht.php");
-require_once(PANDORA_BASEDIR . "/www/lib/pandora.php");
 Pandora::import_php([
 	new Pandora("_SERVER", [
 		"HTTP_HOST" => TRUE,
 	]),
 	"_GET",
 ]);
+Pandora::jquery();
 ?>
 
 <link rel="shortcut icon" type="image/png" href="../images/favicon-96x96.png">
 <link rel="stylesheet" type="text/css" href="<?php print PANDORA_HOST; ?>/lib/pandora.css">
 <link rel="stylesheet" type="text/css" href="main.css">
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 <script src="bundle.js"></script>
 
 </head>

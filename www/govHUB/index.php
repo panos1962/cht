@@ -43,29 +43,15 @@
 
 require_once("../lib/cht.php");
 require_once(PANDORA_BASEDIR . "/www/lib/pandora.php");
+
+Pandora::document_head();
 ?>
-
-<html>
-<head>
-
-<?php
-Pandora::import_php([
-	new Pandora("_SERVER", [
-		"HTTP_HOST" => TRUE,
-	]),
-	"_GET",
-]);
-Pandora::jquery();
-?>
-
 <link rel="shortcut icon" type="image/png" href="../images/favicon-96x96.png">
-<link rel="stylesheet" type="text/css" href="<?php print PANDORA_HOST; ?>/lib/pandora.css">
 <link rel="stylesheet" type="text/css" href="main.css">
 <script src="bundle.js"></script>
-
-</head>
-
-<body>
+<?php
+Pandora::document_body();
+?>
 <div id="inputRegion">
 <form>
 <table>
@@ -115,10 +101,8 @@ GovHUB::section_prosopo();
 
 <div id="resultsRegion">
 </div>
-
-</body>
-</html>
 <?php
+Pandora::document_close();
 
 class GovHUB {
 	public static function section_oxima() {

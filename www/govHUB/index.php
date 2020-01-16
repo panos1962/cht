@@ -32,6 +32,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-16
 // Updated: 2020-01-11
 // Updated: 2020-01-01
 // Updated: 2019-12-26
@@ -42,15 +43,10 @@
 ///////////////////////////////////////////////////////////////////////////////@
 
 require_once("../lib/cht.php");
-require_once(PANDORA_BASEDIR . "/www/lib/pandora.php");
 
-Pandora::document_head();
-?>
-<link rel="shortcut icon" type="image/png" href="../images/favicon-96x96.png">
-<link rel="stylesheet" type="text/css" href="main.css">
-<script src="bundle.js"></script>
-<?php
-Pandora::document_body();
+pandora::
+document_head()::
+document_body();
 ?>
 <div id="inputRegion">
 <form>
@@ -102,11 +98,11 @@ GovHUB::section_prosopo();
 <div id="resultsRegion">
 </div>
 <?php
-Pandora::document_close();
+pandora::document_close();
 
 class GovHUB {
 	public static function section_oxima() {
-		if (!Pandora::parameter_yes("oxima"))
+		if (!pandora::parameter_yes("oxima"))
 		return;
 ?>
 <div class="pedio">
@@ -128,7 +124,7 @@ class GovHUB {
 	}
 
 	public static function section_opsoi() {
-		if (!Pandora::parameter_yes("opsoi"))
+		if (!pandora::parameter_yes("opsoi"))
 		return;
 ?>
 <div class="pedio">
@@ -142,7 +138,7 @@ class GovHUB {
 	}
 
 	public static function section_prosopo() {
-		if (!Pandora::parameter_yes("prosopo"))
+		if (!pandora::parameter_yes("prosopo"))
 		return;
 ?>
 <div class="pedio">

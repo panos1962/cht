@@ -21,6 +21,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-16
 // Created: 2020-01-12
 // @HISTORY END
 //
@@ -28,17 +29,32 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
+if (!class_exists("pandora"))
+require_once("../../../pandora/lib/pandoraClient.php");
+
 require_once("chtCore.php");
 
-class cht extends cht_core {
-	private static $init_called = FALSE;
+class cht extends chtCore {
+	public static $www = NULL;
 
 	public static function init() {
-		if (self::$init_called)
-		return;
+		if (isset(self::$www))
+		return __CLASS__;
+
+		self::$www = pandora::$host . "/cht";
+		return __CLASS__;
+	}
+
+	public static function www($s = NULL) {
+		return (isset($s) ? self::$www . "/" . $s : self::$www);
+	}
+
+	public static function www_print($s) {
+		print self::www($s);
+		return __CLASS__;
 	}
 }
 
 cht::init();
-
+define("CHT_WWW", cht::$www);
 ?>

@@ -21,6 +21,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-16
 // Created: 2020-01-12
 // @HISTORY END
 //
@@ -28,29 +29,23 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
-// Ορίζουμε το singleton "cht" προκειμένου να εντάξουμε σε αυτό όλα τα global
-// objects (functions, variables κλπ) του πακέτου "cht".
+if (!class_exists("pandoraCore"))
+require_once("../../../pandora/lib/pandoraCore.php");
 
-class cht_core {
-	public static $pandora_basedir = NULL;
-	public static $pandora_host = NULL;
-
-	private static $init_called = FALSE;
+class chtCore {
+	public static $basedir = NULL;
 
 	public static function init_core() {
-		if (self::$init_called)
+		if (self::$basedir)
 		return;
 
-		self::$init_called = TRUE;
-		self::$pandora_basedir = getenv("PANDORA_BASEDIR");
+		self::$basedir = getenv("CHT_BASEDIR");
 
-		if (!self::$pandora_basedir)
-		self::$pandora_basedir = "/var/opt/pandora";
+		if (!self::$basedir)
+		self::$basedir = "/var/opt/cht";
 	}
 }
 
-cht_core::init_core();
-define("PANDORA_BASEDIR", cht_core::$pandora_basedir);
-define("PANDORA_HOST", "http://localhost/pandora");
-
+chtCore::init_core();
+define("CHT_BASEDIR", chtCore::$basedir);
 ?>

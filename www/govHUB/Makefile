@@ -35,7 +35,7 @@ test:
 	#@(google-chrome --new-window http://localhost/cht/govHUB/index.php)
 
 $(BUNDLEJS): \
-	../mnt/pandora/lib/pandora.js \
+	../../mnt/pandora/lib/pandoraClient.js \
 	../../lib/govHUB/apiCore.js \
 	../../lib/govHUB/apiClient.js \
 	main.js

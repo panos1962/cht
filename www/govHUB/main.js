@@ -50,7 +50,7 @@
 "use strict";
 console.log('>>>', 'www/govHUB/main.js');
 
-const pd = require('../../../pandora/lib/pandoraClient.js');
+const pd = require('../mnt/pandora/lib/pandora.js');
 const gh = require('../../lib/govHUB/apiClient.js');
 
 ///////////////////////////////////////////////////////////////////////////////@
@@ -80,7 +80,20 @@ w3gh.resultCount = 0;
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-$(document).ready(() => {
+pd.domInit(() => {
+	let bodyHTML = pd.bodyDOM.html();
+	pd.bodyDOM.empty();
+
+	pd.
+	domSetup().
+	toolbarSetup().
+	fyiSetup().
+	ofelimoSetup().
+	ribbonSetup().
+	domFixup();
+
+	pd.ofelimoDOM.append(bodyHTML);
+
 	w3gh.
 	formSetup().
 	buttonSetup().

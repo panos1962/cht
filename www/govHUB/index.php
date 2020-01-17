@@ -49,7 +49,7 @@ document_head()::
 document_body();
 ?>
 <div id="inputRegion">
-<form>
+<form class="pandoraForma">
 <table>
 <tr>
 <td>

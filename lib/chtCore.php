@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////@
 
 if (!class_exists("pandoraCore"))
-require_once("../../../pandora/lib/pandoraCore.php");
+require_once("../mnt/pandora/lib/pandoraCore.php");
 
 class chtCore {
 	public static $basedir = NULL;

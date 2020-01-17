@@ -5,8 +5,11 @@
 private/*
 local/*
 mnt/*
+!mnt/README.txt
 tmp
 tmp/*
 www/govHUB/tmp
 www/govHUB/tmp/*
+www/mnt/*
+!www/mnt/README.txt
 node_modules/*

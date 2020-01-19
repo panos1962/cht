@@ -8,6 +8,8 @@ mnt/*
 !mnt/README.txt
 tmp
 tmp/*
+local
+local/*
 www/govHUB/tmp
 www/govHUB/tmp/*
 www/mnt/*

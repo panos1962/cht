@@ -30,7 +30,7 @@
 ///////////////////////////////////////////////////////////////////////////////@
 
 if (!class_exists("pandora"))
-require_once("../mnt/pandora/lib/pandora.php");
+require_once("../../mnt/pandora/lib/pandora.php");
 
 require_once("chtCore.php");
 

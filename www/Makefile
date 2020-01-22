@@ -10,6 +10,7 @@
 
 all:
 	@(cd govHUB && make)
+	@(cd dimas/proklisi && make)
 
 test:
 	@make all

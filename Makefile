@@ -33,8 +33,7 @@ all:
 .PHONY: test
 test:
 	@make all
-	#@(cd test && make test)
-	@(cd www/govHUB && make test)
+	@(cd local && bash test.sh)
 
 .PHONY: status
 status:

@@ -17,28 +17,45 @@
 	margin: 8px;
 	padding: 8px;
 
-	width: 160px;
-	height: 100px;
+	width: 168px;
+	height: 108px;
 
 	font-size: 20px;
 	font-weight: bold;
 
-	color: saddlebrown;
-	background-color: darkkhaki;
-	text-shadow: 1px 1px 1px #191633;
+	color: sienna;
+	background-color: #d0cc95;
+	text-shadow: 1px 1px 1px #423522;
 
 	border-style: solid;
 	border-color: khaki;
-	border-width: 3px;
+	border-width: 2px;
 	border-radius: 4px;
+	box-shadow: 2px 2px 4px #cccccc;
+}
+
+.proklisiMenuTabAtono {
+	opacity: 80%;
 }
 
 .proklisiMenuTabCandi {
+	width: 160px;
+	height: 100px;
+	border-width: 6px;
+
+	opacity: 100%;
+	color: saddlebrown;
+	text-shadow: 1px 1px 1px #251b08;
+
 	border-style: outset;
+	box-shadow: 2px 2px 4px #888888,
+		-2px -2px 4px #f2f2f2;
+
 	cursor: pointer;
 }
 
 .proklisiMenuTabText {
 	display: block;
+	line-height: 140%;
 	vertical-align: middle;
 }

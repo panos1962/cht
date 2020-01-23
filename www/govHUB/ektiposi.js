@@ -400,8 +400,8 @@ rpt.excelConvert = (idos) => {
 			rpt.tmpfiles.push(x);
 			window.open('tmp/' + x, '_blank');
 		},
-		'fail': (e) => {
-			console.log(e);
+		'error': (e) => {
+			console.error(e);
 		},
 	});
 

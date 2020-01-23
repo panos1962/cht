@@ -51,7 +51,7 @@
 "use strict";
 console.log('>>>', 'www/govHUB/main.js');
 
-const pd = require('../mnt/pandora/lib/pandora.js');
+const pd = require('../../mnt/pandora/lib/pandoraClient.js');
 const gh = require('../../lib/govHUB/apiClient.js');
 
 ///////////////////////////////////////////////////////////////////////////////@

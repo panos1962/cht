@@ -49,16 +49,16 @@ pd.domInit(() => {
 
 const Proklisi = {};
 
-///////////////////////////////////////////////////////////////////////////////@
-
 Proklisi.selidaSetup = () => {
 	pd.bodyDOM.
 	on('mouseenter', '.proklisiMenuTab', function(e) {
 		e.stopPropagation()
+		$('.proklisiMenuTab').addClass('proklisiMenuTabAtono');
 		$(this).addClass('proklisiMenuTabCandi');
 	}).
 	on('mouseleave', '.proklisiMenuTab', function(e) {
 		e.stopPropagation()
+		$('.proklisiMenuTabAtono').removeClass('proklisiMenuTabAtono');
 		$(this).removeClass('proklisiMenuTabCandi');
 	});
 
@@ -117,14 +117,17 @@ Proklisi.loadData = () => {
 };
 
 Proklisi.odosLoad = () => {
+	let xxx = Proklisi.paravasiLoad;
+
 	$.post({
 		'url': '../lib/odos_list.php',
 		'success': (rsp) => {
 			Proklisi.odosList = rsp.split(/[\n\r]+/);
-			Proklisi.paravasiLoad();
+			next();
 		},
-		'fail': (err) => {
+		'error': (err) => {
 			console.error(err);
+			xxx();
 		},
 	});
 
@@ -132,14 +135,17 @@ Proklisi.odosLoad = () => {
 };
 
 Proklisi.paravasiLoad = () => {
+	let next = Proklisi.astinomosLoad;
+
 	$.post({
 		'url': '../lib/paravasi_list.php',
 		'success': (rsp) => {
 			Proklisi.paravasiList = rsp.split(/[\n\r]+/);
-			Proklisi.astinomosLoad();
+			next();
 		},
-		'fail': (err) => {
+		'error': (err) => {
 			console.error(err);
+			next();
 		},
 	});
 
@@ -147,14 +153,17 @@ Proklisi.paravasiLoad = () => {
 };
 
 Proklisi.astinomosLoad = () => {
+	let next = Proklisi.menuSetup;
+
 	$.post({
 		'url': '../lib/astinomos_list.php',
 		'success': (rsp) => {
 			Proklisi.astinomosList = rsp.split(/[\n\r]+/);
-			Proklisi.menuSetup();
+			next();
 		},
-		'fail': (err) => {
+		'error': (err) => {
 			console.error(err);
+			next();
 		},
 	});
 

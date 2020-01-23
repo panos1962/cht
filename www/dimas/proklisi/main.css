@@ -1,5 +1,17 @@
-.proklisiMenu {
-	display: inline-block;
+body {
+	width: 700px;
+}
+
+.proklisiEnotita {
+	display: none;
+	text-align: center;
+	overflow-y: hidden;
+}
+
+.proklisiEnotitaActive {
+	display: block;
+	height: 0px;
+	overflow-y: hidden;
 }
 
 .proklisiMenuLine {
@@ -58,4 +70,37 @@
 	display: block;
 	line-height: 140%;
 	vertical-align: middle;
+}
+
+.proklisiMenuBar {
+	display: inline-block;
+
+	margin: 8px;
+	padding: 4px;
+	width: 70%;
+
+	font-size: 20px;
+	font-weight: bold;
+
+	color: #b97c5f;
+	background-color: #f3eeaa;
+
+	text-align: center;
+	text-shadow: 1px 1px 1px #423522;
+
+	border-style: solid;
+	border-color: khaki;
+	border-width: 2px;
+	border-radius: 4px;
+}
+
+.proklisiMenuBar:hover {
+	padding: 2px;
+	color: saddlebrown;
+	text-shadow: 1px 1px 1px #251b08;
+
+	border-style: outset;
+	border-width: 4px;
+
+	cursor: pointer;
 }

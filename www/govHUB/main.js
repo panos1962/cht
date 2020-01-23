@@ -596,7 +596,6 @@ w3gh.anazitisi = (data) => {
 		'success': (x) => {
 			w3gh.processData(x, data, resDOM);
 		},
-
 		'error': (err) => {
 			if (err.statusText !== 'abort') {
 				data.shift();

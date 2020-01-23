@@ -72,6 +72,18 @@ body {
 	vertical-align: middle;
 }
 
+.proklisiMenuTabSuccess {
+	background-color: darkseagreen;
+}
+
+.proklisiMenuTabError {
+	background-color: indianred;
+}
+
+.proklisiMenuTabBusy {
+	background-color: gainsboro;
+}
+
 .proklisiMenuBar {
 	display: inline-block;
 

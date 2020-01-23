@@ -35,7 +35,12 @@ const Proklisi = {};
 
 Proklisi.param = {
 	'menuShrinkDuration': 300,
+	'oximaServerHost': 'http://' + php.serverGet('HTTP_HOST'),
+	'oximaServerPort': 8001,
 };
+
+Proklisi.param.oximaServerUrl = Proklisi.param.oximaServerHost +
+	':' + Proklisi.param.oximaServerPort;
 
 ///////////////////////////////////////////////////////////////////////////////@
 
@@ -68,19 +73,19 @@ Proklisi.menuSetup = () => {
 
 	append($('<div>').addClass('proklisiMenuLine').
 
-	append(Proklisi.menuBasicDOM = $('<div>').
+	append(Proklisi.basicTabDOM = $('<div>').
 	data('exec', Proklisi.bebeosiExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabText').
 	html('Στοιχεία Βεβαίωσης'))).
 
-	append(Proklisi.menuOxima = $('<div>').
+	append(Proklisi.oximaTabDOM = $('<div>').
 	data('exec', Proklisi.oximaExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabText').
 	html('Στοιχεία Οχήματος'))).
 
-	append(Proklisi.menuTopos = $('<div>').
+	append(Proklisi.toposTabDOM = $('<div>').
 	data('exec', Proklisi.toposExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabText').
@@ -88,17 +93,17 @@ Proklisi.menuSetup = () => {
 
 	append($('<div>').addClass('proklisiMenuLine').
 
-	append(Proklisi.menuParavasi = $('<div>').
+	append(Proklisi.paravasiTabDOM = $('<div>').
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabText').
 	html('Στοιχεία Παράβασης'))).
 
-	append(Proklisi.menuInfo = $('<div>').
+	append(Proklisi.infoTabDOM = $('<div>').
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabText').
 	html('Παρατηρήσεις'))).
 
-	append(Proklisi.menuEpiskopisi = $('<div>').
+	append(Proklisi.episkopisiTabDOM = $('<div>').
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabText').
 	html('Επισκόπηση'))));
@@ -142,25 +147,7 @@ Proklisi.menuActivate = () => {
 	bodyDOM.
 	on('click', '.proklisiMenuBar', function(e) {
 		e.stopPropagation();
-
-		$('.proklisiEnotitaActive').
-		not('.prosklisiMenu').
-		finish().
-		animate({
-			'height': 0,
-			'opacity': 0,
-		}, Proklisi.param.menuShrinkDuration, function() {
-			$(this).removeClass('proklisiEnotitaActive');
-		});
-
-		Proklisi.menuDOM.
-		finish().
-		css('height', '0px').
-		addClass('proklisiEnotitaActive').
-		animate({
-			'height': Proklisi.menuDOM.data('height') + 'px',
-			'opacity': 1,
-		}, Proklisi.param.menuShrinkDuration);
+		Proklisi.menuRise();
 	});
 };
 
@@ -170,6 +157,27 @@ Proklisi.menuBarDOM = () => {
 	text('Αρχικό Μενού Επιλογών');
 
 	return menuBarDOM;
+};
+
+Proklisi.menuRise = () => {
+	$('.proklisiEnotitaActive').
+	not('.prosklisiMenu').
+	finish().
+	animate({
+		'height': 0,
+		'opacity': 0,
+	}, Proklisi.param.menuShrinkDuration, function() {
+		$(this).removeClass('proklisiEnotitaActive');
+	});
+
+	Proklisi.menuDOM.
+	finish().
+	css('height', '0px').
+	addClass('proklisiEnotitaActive').
+	animate({
+		'height': Proklisi.menuDOM.data('height') + 'px',
+		'opacity': 1,
+	}, Proklisi.param.menuShrinkDuration);
 };
 
 ///////////////////////////////////////////////////////////////////////////////@
@@ -190,20 +198,75 @@ Proklisi.bebeosiExec = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.oximaSetup = () => {
-	Proklisi.oximaDOM = Proklisi.enotitaDOM().
-	append(pd.paleta({
+	Proklisi.oximaPaletaDOM = pd.paleta({
 		'paleta': [
 			pd.paletaList['latin'],
 			pd.paletaList['greek'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
-	}));
+		'submit': Proklisi.menuRise,
+		'change': Proklisi.oximaGetData,
+	});
+
+	Proklisi.oximaDOM = Proklisi.enotitaDOM();
+
+	Proklisi.oximaDOM.
+	append(Proklisi.oximaPaletaDOM);
 
 	return Proklisi;
 };
 
 Proklisi.oximaExec = () => {
 	Proklisi.enotitaActivate(Proklisi.oximaDOM);
+
+	return Proklisi;
+};
+
+Proklisi.oximaGetData = (paletaDOM) => {
+	let oximaDOM = Proklisi.oximaTabDOM;
+	let oxima = paletaDOM.data('text');
+
+	oximaDOM.
+	removeData('oximaData').
+	removeData('oximaError').
+	removeClass('proklisiMenuTabSuccess').
+	removeClass('proklisiMenuTabError');
+
+	if (!oxima)
+	return Proklisi;
+
+	oximaDOM.
+	addClass('proklisiMenuTabBusy');
+
+	$.post({
+		'url': Proklisi.param.oximaServerUrl,
+		'type': 'POST',
+		'dataType': 'json',
+		'data': {
+			'idos': 'oxima',
+			'key': oxima,
+		},
+		'success': (rsp) => {
+			oximaDOM.removeClass('proklisiMenuTabBusy');
+
+			if (rsp.hasOwnProperty('error'))
+			oximaDOM.
+			data('oximaError', rsp.error).
+			addClass('proklisiMenuTabError');
+
+			else
+			oximaDOM.
+			data('oximaData', rsp).
+			addClass('proklisiMenuTabSuccess');
+		},
+		'error': (err) => {
+			console.error(err);
+			oximaDOM.
+			data('oximaError', 'ERROR').
+			removeClass('proklisiMenuTabBusy').
+			addClass('proklisiMenuTabError');
+		},
+	});
 
 	return Proklisi;
 };

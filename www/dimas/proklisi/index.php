@@ -24,7 +24,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
-require_once('../../../mnt/pandora/lib/pandoraClient.php');
+require_once("../../../local/conf.php");
+print PANDORA_BASEDIR;
+require_once(CHT_BASEDIR . "/lib/chtClient.php");
 
 pandora::
 document_head()::

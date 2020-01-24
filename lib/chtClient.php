@@ -21,6 +21,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-24
 // Updated: 2020-01-16
 // Created: 2020-01-12
 // @HISTORY END
@@ -29,10 +30,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
-if (!class_exists("pandora"))
-require_once("../../mnt/pandora/lib/pandoraClient.php");
+print getcwd();
+exit(0);
+if (!defined("CHT_BASEDIR"))
+require_once("../local/conf.php");
 
-require_once("chtCore.php");
+if (!class_exists("pandora"))
+require_once(PANDORA_BASEDIR . "/lib/pandoraClient.php");
+
+require_once(CHT_BASEDIR . "/lib/chtCore.php");
 
 class cht extends chtCore {
 	public static $www = NULL;

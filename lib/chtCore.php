@@ -30,22 +30,18 @@
 ///////////////////////////////////////////////////////////////////////////////@
 
 if (!class_exists("pandoraCore"))
-require_once("../mnt/pandora/lib/pandoraCore.php");
+require_once(PANDORA_BASEDIR . "lib/pandoraCore.php");
 
 class chtCore {
-	public static $basedir = NULL;
+	public static $init_ok = FALSE;
 
 	public static function init_core() {
-		if (self::$basedir)
+		if (self::$init_ok)
 		return;
 
-		self::$basedir = getenv("CHT_BASEDIR");
-
-		if (!self::$basedir)
-		self::$basedir = "/var/opt/cht";
+		self::$init_ok = TRUE;
 	}
 }
 
 chtCore::init_core();
-define("CHT_BASEDIR", chtCore::$basedir);
 ?>

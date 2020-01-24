@@ -11,14 +11,11 @@
 // @FILETYPE END
 //
 // @FILE BEGIN
-// www/dimas/proklisi/main.js —— Πρόγραμμα οδήγησης σελίδας καταχώρησης και
-// επεξεργασίας προ-κλήσεων.
+// www/dimas/proklisi/klisi.js —— Προεπισκόπηση προ-κλησεων παραβάσεων ΚΟΚ.
 // @FILE END
 //
 // @HISTORY BEGIN
-// Updated: 2020-01-24
-// Updated: 2020-01-23
-// Created: 2020-01-22
+// Created: 2020-01-24
 // @HISTORY END
 //
 // @END
@@ -37,31 +34,91 @@ Proklisi.param.filler = '';
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.klisi = function() {
-	this.oxima = new gh.oxima(Proklisi.oximaTabDOM.data('oximaData'));
+	let data = Proklisi.oximaTabDOM.data('oximaData');
+
+	if (data)
+	this.oxima = (new gh.oxima(data)).fixChildren();
+else
+this.oxima = (new gh.oxima({
+	'pinakida': 'ΝΒΝ9596',
+	'marka': 'NISSAN',
+	'xroma': 'ΕΡΥΘΡΟ',
+	'tipos': 'ΕΠΙΒΑΤΙΚΟ',
+	'katoxos': [
+		{
+			'afm': '032792320',
+			'pososto': 100,
+			'eponimo': 'ΠΑΠΑΔΟΠΟΥΛΟΣ',
+			'onoma': 'ΟΝΟΜΑ',
+			'patronimo': 'ΙΩΑΝΝΗΣ',
+			'dief': 'ΜΗΤΡ. ΜΟΣΧΟΝΗΣΙΩΝ 54, 55131, ΚΑΛΑΜΑΡΙΑ',
+		},
+	]
+})).fixChildren();
+
+	data = Proklisi.toposTabDOM.data('toposData');
+
+	if (data)
 	this.topos = Proklisi.toposTabDOM.data('toposData');
+else
+this.topos = 'ΜΗΤΡΟΠΟΛΙΤΟΥ ΜΟΣΧΟΝΗΣΙΩΝ ΚΑΙ ΑΝΑΤΟΛΙΚΗΣ ΘΡΑΚΗΣ ΑΜΒΡΟΣΙΟΥ 54';
 };
 
 Proklisi.klisi.prototype.klisiDOM = function() {
-	let oxima = this.oxima;
-	let topos = this.topos;
+	let klisiSelidaDOM = $('<div>').
+	addClass('proklisiKlisiSelida');
 
 	let klisiDOM = $('<div>').
-	addClass('proklisiKlisiSelida').
-	append($('<div>').
 	addClass('proklisiKlisi').
+	appendTo(klisiSelidaDOM);
 
+	let data = this.oxima;
+
+	if (data)
+	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ')).
-	append(Proklisi.klisi.klisiPedioDOM('Αρ. Κυκλοφορίας', oxima.pinakidaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Μάρκα', oxima.markaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Χρώμα', oxima.xromaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Τύπος', oxima.tiposGet())).
+	append(Proklisi.klisi.enotitaDOM().
+	append(Proklisi.klisi.klisiPedioDOM('Αρ. Κυκλοφορίας', data.pinakidaGet())).
+	append(Proklisi.klisi.klisiPedioDOM('Μάρκα', data.markaGet())).
+	append(Proklisi.klisi.klisiPedioDOM('Χρώμα', data.xromaGet())).
+	append(Proklisi.klisi.klisiPedioDOM('Τύπος', data.tiposGet())));
 
+	if (data)
+	data = data.kiriosKatoxosGet();
+
+	if (this.oxima && data)
+	data = this.oxima.katoxos[data - 1];
+
+	if (data) {
+console.log(data);
+console.log(data.isFisikoProsopo());
+console.log(data.isNomikoProsopo());
+		klisiDOM.
+		append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΚΥΡΙΟΥ ΚΑΤΟΧΟΥ')).
+		append(Proklisi.klisi.enotitaDOM().
+		append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', data.afm)));
+
+		if (data.pososto != 100)
+		klisiDOM.
+		append(Proklisi.klisi.klisiPedioDOM('Ποσοστό', data.pososto + '%'));
+
+		klisiDOM.
+		append(Proklisi.klisi.klisiPedioDOM((data.isFisikoProsopo() ?
+			'Ονοματεπώνυμο' : 'Επωνυμία'), data.onomasiaGet())).
+		append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', data.dief));
+	}
+
+	data = this.topos;
+
+	if (!data)
+	data = '';
+
+	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ')).
-	append(Proklisi.klisi.klisiPedioDOM('Τόπος', topos)).
+	append(Proklisi.klisi.enotitaDOM()).
+	append(Proklisi.klisi.klisiPedioDOM('Τόπος', data));
 
-	append($('<div>').text('xxx')));
-
-	return klisiDOM;
+	return klisiSelidaDOM;
 }
 
 Proklisi.klisi.enotitaTitlosDOM = (titlos) => {
@@ -70,16 +127,15 @@ Proklisi.klisi.enotitaTitlosDOM = (titlos) => {
 	html(titlos);
 };
 
-Proklisi.klisi.klisiPedioDOM = (label, data) => {
-	if (!label)
-	label = '&#x200b;';
+Proklisi.klisi.enotitaDOM = () => {
+	return $('<table>').
+	addClass('proklisiKlisiEnotitaData');
+};
 
+Proklisi.klisi.klisiPedioDOM = (label, data) => {
 	label += Proklisi.param.filler;
 
-	if (!data)
-	data = '&#x200b;';
-
-	return $('<div>').
+	return $('<tr>').
 	addClass('proklisiKlisiPedio').
 
 	append(Proklisi.klisi.klisiLabelDOM(label)).
@@ -87,13 +143,13 @@ Proklisi.klisi.klisiPedioDOM = (label, data) => {
 };
 
 Proklisi.klisi.klisiLabelDOM = (label) => {
-	return $('<div>').
+	return $('<td>').
 	addClass('proklisiKlisiLabel').
 	html(label);
 };
 
 Proklisi.klisi.klisiDataDOM = (data) => {
-	return $('<div>').
+	return $('<td>').
 	addClass('proklisiKlisiData').
 	html(data);
 };

@@ -32,6 +32,9 @@ require('../../../mnt/pandora/lib/pandoraClient.js');
 require('../../../mnt/pandora/www/lib/pandoraPaleta.js')(pd);
 require('../../../mnt/pandora/www/lib/pandoraJQueryUI.js')(pd);
 
+const gh =
+require('../../../lib/govHUB/apiCore.js');
+
 const Proklisi = {};
 
 Proklisi.param = {
@@ -42,6 +45,8 @@ Proklisi.param = {
 
 Proklisi.param.oximaServerUrl = Proklisi.param.oximaServerHost +
 	':' + Proklisi.param.oximaServerPort;
+
+require('./klisi.js')(Proklisi, gh, pd);
 
 ///////////////////////////////////////////////////////////////////////////////@
 
@@ -60,6 +65,7 @@ pd.domInit(() => {
 	bebeosiSetup().
 	oximaSetup().
 	toposSetup().
+	episkopisiSetup().
 	loadData();
 });
 
@@ -107,6 +113,7 @@ Proklisi.menuSetup = () => {
 	html('Παρατηρήσεις'))).
 
 	append(Proklisi.episkopisiTabDOM = $('<div>').
+	data('exec', Proklisi.episkopisiExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Επισκόπηση'))));
@@ -314,7 +321,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 
 			Proklisi.
 			menuTabStatus(oximaDOM.
-			data('oximaData', rsp), 'success').
+			data('oximaData', rsp.data), 'success').
 			menuTabFyi(oximaDOM,
 			rsp.data.pinakida + ' ' +
 			rsp.data.marka + ' ' +
@@ -341,64 +348,7 @@ Proklisi.toposSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'zoom': 20,
-		'scribe': (paletaDOM) => {
-			let inputDOM = paletaDOM.children('.pandoraPaletaInput');
-			let text = inputDOM.val();
-			let list = text.split('');
-			let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
-
-			zoomDOM.empty();
-
-			if (!list.length)
-			return pd;
-
-			let re = '';
-
-			if (paletaDOM.data('zoomStrict'))
-			re += '^';
-
-			re += list.shift();
-			pd.arrayWalk(list, (c) => {
-				re += '.*' + c;
-			});
-
-			let match = [];
-
-			// Υπάρχει περίπτωση ο χρήστης να πληκτρολογήσει
-			// διάφορα σύμβολα που δεν θα βγάζουν νόημα ως
-			// regular expression.
-
-			try {
-				re = new RegExp(re, 'i');
-
-				pd.arrayWalk(Proklisi.odosList, (x) => {
-					if (x.match(re)) 
-					match.push(x);
-				});
-			}
-
-			catch (e) {
-				return pd;
-			}
-
-			if (!match.length)
-			return pd;
-
-			let zoom = paletaDOM.data('zoom');
-
-			if (match.length > zoom)
-			return pd;
-
-			zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
-			pd.arrayWalk(match, (x) => {
-				$('<div>').
-				addClass('pandoraPaletaZoomGrami').
-				text(x).
-				appendTo(zoomDOM);
-			});
-
-			return pd;
-		},
+		'scribe': Proklisi.toposScribe,
 		'submit': Proklisi.menuRise,
 		'change': Proklisi.toposCheckData,
 		'helper': true,
@@ -410,13 +360,72 @@ Proklisi.toposSetup = () => {
 
 Proklisi.toposExec = () => {
 	Proklisi.enotitaActivate(Proklisi.toposDOM);
-
 	return Proklisi;
+};
+
+Proklisi.toposScribe = (paletaDOM) => {
+	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
+	let text = inputDOM.val();
+	let list = text.split('');
+	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+
+	zoomDOM.empty();
+
+	if (!list.length)
+	return pd;
+
+	let re = '';
+
+	if (paletaDOM.data('zoomStrict'))
+	re += '^';
+
+	re += list.shift();
+	pd.arrayWalk(list, (c) => {
+		re += '.*' + c;
+	});
+
+	let match = [];
+
+	// Υπάρχει περίπτωση ο χρήστης να πληκτρολογήσει
+	// διάφορα σύμβολα που δεν θα βγάζουν νόημα ως
+	// regular expression.
+
+	try {
+		re = new RegExp(re, 'i');
+
+		pd.arrayWalk(Proklisi.odosList, (x) => {
+			if (x.match(re)) 
+			match.push(x);
+		});
+	}
+
+	catch (e) {
+		return pd;
+	}
+
+	if (!match.length)
+	return pd;
+
+	let zoom = paletaDOM.data('zoom');
+
+	if (match.length > zoom)
+	return pd;
+
+	zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	pd.arrayWalk(match, (x) => {
+		$('<div>').
+		addClass('pandoraPaletaZoomGrami').
+		text(x).
+		appendTo(zoomDOM);
+	});
+
+	return pd;
 };
 
 Proklisi.toposCheckData = (paletaDOM) => {
 	let toposDOM = Proklisi.toposTabDOM;
 	let topos = paletaDOM.data('text');
+console.log(topos);
 
 	if (topos)
 	Proklisi.menuTabStatus(toposDOM.
@@ -426,7 +435,28 @@ Proklisi.toposCheckData = (paletaDOM) => {
 	Proklisi.menuTabStatus(toposDOM.
 	removeData('toposData'),  'clear');
 
+console.log('>>>' + toposDOM.data('toposData') + '<<<');
 	Proklisi.menuTabFyi(toposDOM, topos);
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+Proklisi.episkopisiSetup = () => {
+	Proklisi.episkopisiDOM = Proklisi.enotitaDOM();
+
+	Proklisi.episkopisiKlisiDOM = $('<div>').
+	appendTo(Proklisi.episkopisiDOM);
+
+	return Proklisi;
+};
+
+Proklisi.episkopisiExec = () => {
+	Proklisi.episkopisiKlisiDOM.
+	empty().
+	append((new Proklisi.klisi()).klisiDOM());
+
+	Proklisi.enotitaActivate(Proklisi.episkopisiDOM);
 	return Proklisi;
 };
 

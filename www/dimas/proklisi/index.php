@@ -28,7 +28,12 @@ require_once("../../../local/conf.php");
 require_once(CHT_BASEDIR . "/lib/chtClient.php");
 
 pandora::
-document_head()::
+document_head([
+	"css" => [
+		"main",
+		"klisi",
+	],
+])::
 document_body()::
 document_close();
 ?>

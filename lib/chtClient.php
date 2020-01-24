@@ -30,11 +30,6 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
-print getcwd();
-exit(0);
-if (!defined("CHT_BASEDIR"))
-require_once("../local/conf.php");
-
 if (!class_exists("pandora"))
 require_once(PANDORA_BASEDIR . "/lib/pandoraClient.php");
 

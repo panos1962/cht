@@ -16,6 +16,7 @@
 // @FILE END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-24
 // Updated: 2020-01-23
 // Created: 2020-01-22
 // @HISTORY END
@@ -76,36 +77,38 @@ Proklisi.menuSetup = () => {
 	append(Proklisi.basicTabDOM = $('<div>').
 	data('exec', Proklisi.bebeosiExec).
 	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabText').
+	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Στοιχεία Βεβαίωσης'))).
 
 	append(Proklisi.oximaTabDOM = $('<div>').
 	data('exec', Proklisi.oximaExec).
 	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabText').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Στοιχεία Οχήματος'))).
 
 	append(Proklisi.toposTabDOM = $('<div>').
 	data('exec', Proklisi.toposExec).
 	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabText').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Τοποθεσία Παράβασης')))).
 
 	append($('<div>').addClass('proklisiMenuLine').
 
 	append(Proklisi.paravasiTabDOM = $('<div>').
 	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabText').
-	html('Στοιχεία Παράβασης'))).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Είδος Παράβασης'))).
 
 	append(Proklisi.infoTabDOM = $('<div>').
 	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabText').
+	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Παρατηρήσεις'))).
 
 	append(Proklisi.episkopisiTabDOM = $('<div>').
 	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabText').
+	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Επισκόπηση'))));
 
 	Proklisi.menuDOM.
@@ -180,6 +183,62 @@ Proklisi.menuRise = () => {
 	}, Proklisi.param.menuShrinkDuration);
 };
 
+Proklisi.menuTabStatus = (menuTabDOM, status) => {
+	menuTabDOM.
+	removeClass('proklisiMenuTabBusy').
+	removeClass('proklisiMenuTabSuccess').
+	removeClass('proklisiMenuTabError').
+	children('.proklisiMenuTabStatusIcon').
+	remove();
+
+	switch (status) {
+	case 'busy':
+		menuTabDOM.
+		addClass('proklisiMenuTabBusy').
+		append($('<img>').
+		addClass('proklisiMenuTabStatusIcon').
+		attr('src', '../../images/busy.gif'));
+		break;
+	case 'success':
+		menuTabDOM.
+		addClass('proklisiMenuTabSuccess').
+		append($('<img>').
+		addClass('proklisiMenuTabStatusIcon').
+		attr('src', '../../images/success.png'));
+		break;
+	case 'error':
+		menuTabDOM.
+		addClass('proklisiMenuTabError').
+		append($('<img>').
+		addClass('proklisiMenuTabStatusIcon').
+		attr('src', '../../images/error.png'));
+		break;
+	}
+
+	return Proklisi;
+};
+
+Proklisi.menuTabFyi = (menuTabDOM, msg, error) => {
+	let labelDOM = menuTabDOM.children('.proklisiMenuTabLabel');
+	let fyiDOM = menuTabDOM.children('.proklisiMenuTabFyi');
+
+	labelDOM.css('display', 'none');
+	fyiDOM.css('display', 'none').
+	removeClass('proklisiMenuTabFyiError');
+
+	if (!msg) {
+		labelDOM.css('display', 'block');
+		return Proklisi;
+	}
+
+	fyiDOM.css('display', 'block').text(msg);
+
+	if (error)
+	fyiDOM.addClass('proklisiMenuTabFyiError');
+
+	return Proklisi;
+};
+
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.bebeosiSetup = () => {
@@ -226,17 +285,18 @@ Proklisi.oximaGetData = (paletaDOM) => {
 	let oximaDOM = Proklisi.oximaTabDOM;
 	let oxima = paletaDOM.data('text');
 
-	oximaDOM.
+	Proklisi.
+	menuTabStatus(oximaDOM.
 	removeData('oximaData').
-	removeData('oximaError').
-	removeClass('proklisiMenuTabSuccess').
-	removeClass('proklisiMenuTabError');
+	removeData('oximaError')).
+	menuTabFyi(oximaDOM);
 
 	if (!oxima)
 	return Proklisi;
 
-	oximaDOM.
-	addClass('proklisiMenuTabBusy');
+	Proklisi.
+	menuTabStatus(oximaDOM, 'busy').
+	menuTabFyi(oximaDOM, oxima);
 
 	$.post({
 		'url': Proklisi.param.oximaServerUrl,
@@ -247,24 +307,23 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			'key': oxima,
 		},
 		'success': (rsp) => {
-			oximaDOM.removeClass('proklisiMenuTabBusy');
-
 			if (rsp.hasOwnProperty('error'))
-			oximaDOM.
-			data('oximaError', rsp.error).
-			addClass('proklisiMenuTabError');
+			return Proklisi.menuTabStatus(oximaDOM.
+			data('oximaError', rsp.error), 'error').
+			menuTabFyi(oximaDOM, oxima, true);
 
-			else
-			oximaDOM.
-			data('oximaData', rsp).
-			addClass('proklisiMenuTabSuccess');
+			Proklisi.
+			menuTabStatus(oximaDOM.
+			data('oximaData', rsp), 'success').
+			menuTabFyi(oximaDOM,
+			rsp.data.pinakida + ' ' +
+			rsp.data.marka + ' ' +
+			rsp.data.xroma);
 		},
 		'error': (err) => {
-			console.error(err);
-			oximaDOM.
-			data('oximaError', 'ERROR').
-			removeClass('proklisiMenuTabBusy').
-			addClass('proklisiMenuTabError');
+			if (rsp.hasOwnProperty('error'))
+			Proklisi.menuTabStatus(oximaDOM.
+			data('oximaError', 'ERROR'), 'error');
 		},
 	});
 
@@ -340,6 +399,10 @@ Proklisi.toposSetup = () => {
 
 			return pd;
 		},
+		'submit': Proklisi.menuRise,
+		'change': Proklisi.toposCheckData,
+		'helper': true,
+			
 	}));
 
 	return Proklisi;
@@ -348,6 +411,22 @@ Proklisi.toposSetup = () => {
 Proklisi.toposExec = () => {
 	Proklisi.enotitaActivate(Proklisi.toposDOM);
 
+	return Proklisi;
+};
+
+Proklisi.toposCheckData = (paletaDOM) => {
+	let toposDOM = Proklisi.toposTabDOM;
+	let topos = paletaDOM.data('text');
+
+	if (topos)
+	Proklisi.menuTabStatus(toposDOM.
+	data('toposData', topos), 'success');
+
+	else
+	Proklisi.menuTabStatus(toposDOM.
+	removeData('toposData'),  'clear');
+
+	Proklisi.menuTabFyi(toposDOM, topos);
 	return Proklisi;
 };
 

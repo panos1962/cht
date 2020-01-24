@@ -1,5 +1,7 @@
 <?php
+if (!defined("CHT_BASEDIR"))
 require_once("../../../local/conf.php");
+
 require_once(CHT_BASEDIR . "/lib/chtClient.php");
 pandora::database();
 

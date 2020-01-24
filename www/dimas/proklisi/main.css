@@ -19,6 +19,7 @@ body {
 }
 
 .proklisiMenuTab {
+	position: relative;
 	display: inline-flex;
 
 	justify-content: center;
@@ -29,8 +30,8 @@ body {
 	margin: 8px;
 	padding: 8px;
 
-	width: 168px;
-	height: 108px;
+	width: 160px;
+	height: 100px;
 
 	font-size: 20px;
 	font-weight: bold;
@@ -41,7 +42,7 @@ body {
 
 	border-style: solid;
 	border-color: khaki;
-	border-width: 2px;
+	border-width: 4px;
 	border-radius: 4px;
 	box-shadow: 2px 2px 4px #cccccc;
 }
@@ -51,10 +52,6 @@ body {
 }
 
 .proklisiMenuTabCandi {
-	width: 160px;
-	height: 100px;
-	border-width: 6px;
-
 	opacity: 100%;
 	color: saddlebrown;
 	text-shadow: 1px 1px 1px #251b08;
@@ -66,18 +63,43 @@ body {
 	cursor: pointer;
 }
 
-.proklisiMenuTabText {
+.proklisiMenuTabLabel {
 	display: block;
 	line-height: 140%;
 	vertical-align: middle;
 }
 
+.proklisiMenuTabFyi {
+	display: none;
+	padding: 2px;
+
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	font-weight: normal;
+	text-shadow: none;
+
+	color: midnightblue;
+	background-color: yellow;
+	border-radius: 2px;
+}
+
+.proklisiMenuTabFyiError {
+	color: firebrick;
+}
+
+.proklisiMenuTabStatusIcon {
+	position: absolute;
+	top: 4px;
+	right: 4px;
+	width: 30px;
+}
+
 .proklisiMenuTabSuccess {
-	background-color: darkseagreen;
+	background-color: #bbe6bb;
 }
 
 .proklisiMenuTabError {
-	background-color: indianred;
+	background-color: #e29090;
 }
 
 .proklisiMenuTabBusy {

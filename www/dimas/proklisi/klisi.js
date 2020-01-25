@@ -11,10 +11,21 @@
 // @FILETYPE END
 //
 // @FILE BEGIN
-// www/dimas/proklisi/klisi.js —— Προεπισκόπηση προ-κλησεων παραβάσεων ΚΟΚ.
+// www/dimas/proklisi/klisi.js —— Προεπισκόπηση προ-κλήσεων παραβάσεων ΚΟΚ.
 // @FILE END
 //
+// @DESCRIPTION BEGIN
+// Στο παρόν JavaScript module περιέχονται δομές και functions που εξυπηρτούν
+// τη σύνταξη και την προεπισκόπηση προ-κλήσεων που συντάσσουν οι δημοτικοί
+// αστυνομικοί και αφορούν σε παραβάσεις του ΚΟΚ.
+//
+// Το παρόν δεν είναι αυτόνομο JavaScript module αλλά αποτελεί παρακολούθημα
+// του προγράμματος δημιουργίας προ-κλήσεων "dimas/proklisi/main.js" και ο
+// κύριος λόγος διαχωρισμού είναι η ευκολότερη διαχείριση των προγραμμάτων.
+// @DESCRIPTION END
+//
 // @HISTORY BEGIN
+// Updated: 2020-01-25
 // Created: 2020-01-24
 // @HISTORY END
 //
@@ -23,13 +34,11 @@
 ///////////////////////////////////////////////////////////////////////////////@
 
 "use strict";
-module.exports = function(Proklisi, gh, pd) {
 
-Proklisi.param.filler = '';
-{
-	for (let i = 0; i < 100; i++)
-	Proklisi.param.filler += '&hellip;';
-}
+// Από το κυρίως πρόγραμμα μεταφέρουμε τα modules "Proklisi" (κυρίως πρόγραμμα),
+// "gh" ("govHUB" API) και "pd" ("pandora" module).
+
+module.exports = function(Proklisi, gh, pd) {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
@@ -90,19 +99,26 @@ Proklisi.klisi.prototype.klisiDOM = function() {
 	data = this.oxima.katoxos[data - 1];
 
 	if (data) {
-console.log(data);
-console.log(data.isFisikoProsopo());
-console.log(data.isNomikoProsopo());
-		klisiDOM.
-		append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΚΥΡΙΟΥ ΚΑΤΟΧΟΥ')).
-		append(Proklisi.klisi.enotitaDOM().
-		append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', data.afm)));
+		let enotitaDOM = $('<div>').
+		addClass('proklisiKlisiEnotitaPrivate').
+		appendTo(klisiDOM);
+
+		enotitaDOM.
+		append(Proklisi.klisi.
+		enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΚΥΡΙΟΥ ΚΑΤΟΧΟΥ'));
+
+		let dataDOM = Proklisi.klisi.enotitaDOM().
+		addClass('proklisiKlisiEnotitaPrivate').
+		appendTo(enotitaDOM);
+
+		dataDOM.
+		append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', data.afm));
 
 		if (data.pososto != 100)
-		klisiDOM.
+		dataDOM.
 		append(Proklisi.klisi.klisiPedioDOM('Ποσοστό', data.pososto + '%'));
 
-		klisiDOM.
+		dataDOM.
 		append(Proklisi.klisi.klisiPedioDOM((data.isFisikoProsopo() ?
 			'Ονοματεπώνυμο' : 'Επωνυμία'), data.onomasiaGet())).
 		append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', data.dief));
@@ -133,7 +149,7 @@ Proklisi.klisi.enotitaDOM = () => {
 };
 
 Proklisi.klisi.klisiPedioDOM = (label, data) => {
-	label += Proklisi.param.filler;
+	label += pd.param.filler;
 
 	return $('<tr>').
 	addClass('proklisiKlisiPedio').

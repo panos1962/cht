@@ -225,7 +225,7 @@ Proklisi.menuTabStatus = (menuTabDOM, status) => {
 	return Proklisi;
 };
 
-Proklisi.menuTabFyi = (menuTabDOM, msg, error) => {
+Proklisi.menuTabFyi = (menuTabDOM, msg) => {
 	let labelDOM = menuTabDOM.children('.proklisiMenuTabLabel');
 	let fyiDOM = menuTabDOM.children('.proklisiMenuTabFyi');
 
@@ -239,10 +239,13 @@ Proklisi.menuTabFyi = (menuTabDOM, msg, error) => {
 	}
 
 	fyiDOM.css('display', 'block').text(msg);
+	return Proklisi;
+};
 
-	if (error)
-	fyiDOM.addClass('proklisiMenuTabFyiError');
-
+Proklisi.menuTabFyiError = (menuTabDOM, msg) => {
+	Proklisi.menuTabFyi(menuTabDOM, msg);
+	menuTabDOM.children('.proklisiMenuTabFyi').
+	addClass('proklisiMenuTabFyiError');
 	return Proklisi;
 };
 
@@ -317,7 +320,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			if (rsp.hasOwnProperty('error'))
 			return Proklisi.menuTabStatus(oximaDOM.
 			data('oximaError', rsp.error), 'error').
-			menuTabFyi(oximaDOM, oxima, true);
+			menuTabFyiError(oximaDOM, oxima);
 
 			Proklisi.
 			menuTabStatus(oximaDOM.
@@ -328,9 +331,9 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			rsp.data.xroma);
 		},
 		'error': (err) => {
-			if (rsp.hasOwnProperty('error'))
 			Proklisi.menuTabStatus(oximaDOM.
-			data('oximaError', 'ERROR'), 'error');
+			data('oximaError', 'ERROR'), 'error').
+			menuTabFyiError(oximaDOM, oxima);
 		},
 	});
 
@@ -425,7 +428,6 @@ Proklisi.toposScribe = (paletaDOM) => {
 Proklisi.toposCheckData = (paletaDOM) => {
 	let toposDOM = Proklisi.toposTabDOM;
 	let topos = paletaDOM.data('text');
-console.log(topos);
 
 	if (topos)
 	Proklisi.menuTabStatus(toposDOM.
@@ -435,7 +437,6 @@ console.log(topos);
 	Proklisi.menuTabStatus(toposDOM.
 	removeData('toposData'),  'clear');
 
-console.log('>>>' + toposDOM.data('toposData') + '<<<');
 	Proklisi.menuTabFyi(toposDOM, topos);
 	return Proklisi;
 };

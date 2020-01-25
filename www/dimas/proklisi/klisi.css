@@ -38,6 +38,10 @@
 	border-collapse: collapse;
 }
 
+.proklisiKlisiEnotitaPrivate {
+	background-color: yellow;
+}
+
 .proklisiKlisiPedio {
 	line-height: 140%;
 }

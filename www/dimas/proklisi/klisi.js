@@ -71,6 +71,11 @@ this.oxima = (new gh.oxima({
 	this.topos = Proklisi.toposTabDOM.data('toposData');
 else
 this.topos = 'ΜΗΤΡΟΠΟΛΙΤΟΥ ΜΟΣΧΟΝΗΣΙΩΝ ΚΑΙ ΑΝΑΤΟΛΙΚΗΣ ΘΡΑΚΗΣ ΑΜΒΡΟΣΙΟΥ 54';
+
+	data = Proklisi.paravidosTabDOM.data('paravidosData');
+
+	if (data)
+	this.paravidos = data;
 };
 
 Proklisi.klisi.prototype.klisiDOM = function() {
@@ -81,60 +86,92 @@ Proklisi.klisi.prototype.klisiDOM = function() {
 	addClass('proklisiKlisi').
 	appendTo(klisiSelidaDOM);
 
-	let data = this.oxima;
+	this.
+	klisiOximaDOM(klisiDOM).
+	klisiKatoxosDOM(klisiDOM).
+	klisiParavasiDOM(klisiDOM);
 
-	if (data)
+	return klisiSelidaDOM;
+};
+
+Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
+	klisiDOM.
+	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ'));
+
+	let enotitaDOM =
+	Proklisi.klisi.enotitaDOM().
+	appendTo(klisiDOM);
+
+	let topos = this.topos;
+
+	if (!topos)
+	topos = '';
+
+	let paravasi = (this.paravidos ?
+		this.paravidos.diataxiGet() +
+		'<span class="proklisiKlisiParavasi">' +
+		this.paravidos.perigrafi + '</span>' : '');
+
+	klisiDOM.
+	append(Proklisi.klisi.klisiPedioDOM('Τόπος', topos)).
+	append(Proklisi.klisi.klisiPedioDOM('Παράβαση', paravasi));
+
+	return this;
+}
+
+Proklisi.klisi.prototype.klisiOximaDOM = function(klisiDOM) {
+	let oxima = this.oxima;
+
+	if (!oxima)
+	return this;
+
 	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ')).
 	append(Proklisi.klisi.enotitaDOM().
-	append(Proklisi.klisi.klisiPedioDOM('Αρ. Κυκλοφορίας', data.pinakidaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Μάρκα', data.markaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Χρώμα', data.xromaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Τύπος', data.tiposGet())));
+	append(Proklisi.klisi.klisiPedioDOM('Αρ. Κυκλοφορίας', oxima.pinakidaGet())).
+	append(Proklisi.klisi.klisiPedioDOM('Μάρκα', oxima.markaGet())).
+	append(Proklisi.klisi.klisiPedioDOM('Χρώμα', oxima.xromaGet())).
+	append(Proklisi.klisi.klisiPedioDOM('Τύπος', oxima.tiposGet())));
 
-	if (data)
-	data = data.kiriosKatoxosGet();
+	return this;
+};
 
-	if (this.oxima && data)
-	data = this.oxima.katoxos[data - 1];
+Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
+	if (!this.oxima)
+	return this;
 
-	if (data) {
-		let enotitaDOM = $('<div>').
-		addClass('proklisiKlisiEnotitaPrivate').
-		appendTo(klisiDOM);
+	let katoxos = this.oxima.kiriosKatoxosGet();
 
-		enotitaDOM.
-		append(Proklisi.klisi.
-		enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΚΥΡΙΟΥ ΚΑΤΟΧΟΥ'));
+	if (!katoxos)
+	return this;
 
-		let dataDOM = Proklisi.klisi.enotitaDOM().
-		addClass('proklisiKlisiEnotitaPrivate').
-		appendTo(enotitaDOM);
+	katoxos = this.oxima.katoxos[katoxos - 1];
 
-		dataDOM.
-		append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', data.afm));
+	let enotitaDOM = $('<div>').
+	addClass('proklisiKlisiEnotitaPrivate').
+	appendTo(klisiDOM);
 
-		if (data.pososto != 100)
-		dataDOM.
-		append(Proklisi.klisi.klisiPedioDOM('Ποσοστό', data.pososto + '%'));
+	enotitaDOM.
+	append(Proklisi.klisi.
+	enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΚΥΡΙΟΥ ΚΑΤΟΧΟΥ'));
 
-		dataDOM.
-		append(Proklisi.klisi.klisiPedioDOM((data.isFisikoProsopo() ?
-			'Ονοματεπώνυμο' : 'Επωνυμία'), data.onomasiaGet())).
-		append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', data.dief));
-	}
+	let dataDOM = Proklisi.klisi.enotitaDOM().
+	addClass('proklisiKlisiEnotitaPrivate').
+	appendTo(enotitaDOM);
 
-	data = this.topos;
+	dataDOM.
+	append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', katoxos.afm));
 
-	if (!data)
-	data = '';
+	if (katoxos.pososto != 100)
+	dataDOM.
+	append(Proklisi.klisi.klisiPedioDOM('Ποσοστό', katoxos.pososto + '%'));
 
-	klisiDOM.
-	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ')).
-	append(Proklisi.klisi.enotitaDOM()).
-	append(Proklisi.klisi.klisiPedioDOM('Τόπος', data));
+	dataDOM.
+	append(Proklisi.klisi.klisiPedioDOM((katoxos.isFisikoProsopo() ?
+		'Ονοματεπώνυμο' : 'Επωνυμία'), katoxos.onomasiaGet())).
+	append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', katoxos.dief));
 
-	return klisiSelidaDOM;
+	return this;
 }
 
 Proklisi.klisi.enotitaTitlosDOM = (titlos) => {

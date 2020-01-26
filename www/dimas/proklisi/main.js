@@ -35,6 +35,9 @@ require('../../../mnt/pandora/www/lib/pandoraJQueryUI.js')(pd);
 const gh =
 require('../../../lib/govHUB/apiCore.js');
 
+const Dimas =
+require('../../../lib/dimasCore.js');
+
 const Proklisi = {};
 
 Proklisi.param = {
@@ -65,6 +68,7 @@ pd.domInit(() => {
 	bebeosiSetup().
 	oximaSetup().
 	toposSetup().
+	paravidosSetup().
 	episkopisiSetup().
 	loadData();
 });
@@ -102,8 +106,10 @@ Proklisi.menuSetup = () => {
 
 	append($('<div>').addClass('proklisiMenuLine').
 
-	append(Proklisi.paravasiTabDOM = $('<div>').
+	append(Proklisi.paravidosTabDOM = $('<div>').
+	data('exec', Proklisi.paravidosExec).
 	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Είδος Παράβασης'))).
 
@@ -355,7 +361,6 @@ Proklisi.toposSetup = () => {
 		'submit': Proklisi.menuRise,
 		'change': Proklisi.toposCheckData,
 		'helper': true,
-			
 	}));
 
 	return Proklisi;
@@ -443,6 +448,105 @@ Proklisi.toposCheckData = (paletaDOM) => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
+Proklisi.paravidosSetup = () => {
+	Proklisi.paravidosDOM = Proklisi.enotitaDOM().
+	append(pd.paleta({
+		'paleta': [
+			pd.paletaList['greek'],
+			pd.paletaList['latin'],
+		],
+		'keyboard': php.requestIsYes('keyboard'),
+		'scribe': Proklisi.paravidosScribe,
+		'submit': Proklisi.menuRise,
+		'change': Proklisi.paravidosCheckData,
+		'zoom': 1000,
+	}));
+
+	return Proklisi;
+};
+
+Proklisi.paravidosExec = () => {
+	Proklisi.enotitaActivate(Proklisi.paravidosDOM);
+	return Proklisi;
+};
+
+Proklisi.paravidosScribe = (paletaDOM) => {
+	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
+	let text = inputDOM.val();
+	let list = text.split('');
+	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+
+	zoomDOM.empty();
+
+	if (!list.length)
+	return pd;
+
+	let re = '';
+
+	if (paletaDOM.data('zoomStrict'))
+	re += '^';
+
+	re += list.shift();
+	pd.arrayWalk(list, (c) => {
+		re += '.*' + c;
+	});
+
+	let match = [];
+
+	// Υπάρχει περίπτωση ο χρήστης να πληκτρολογήσει
+	// διάφορα σύμβολα που δεν θα βγάζουν νόημα ως
+	// regular expression.
+
+	try {
+		re = new RegExp(re, 'i');
+
+		pd.arrayWalk(Proklisi.paravidosList, (x) => {
+			let s = x.kodikos + x.perigrafi;
+
+			if (s.match(re)) 
+			return match.push(x);
+		});
+	}
+
+	catch (e) {
+		return pd;
+	}
+
+	if (!match.length)
+	return pd;
+
+	zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	pd.arrayWalk(match, (x) => {
+		$('<div>').
+		addClass('pandoraPaletaZoomGrami').
+		data('value', x).
+		text(x.diataxiGet() + ' ' + x.perigrafi).
+		appendTo(zoomDOM);
+	});
+
+	return pd;
+};
+
+Proklisi.paravidosCheckData = (paletaDOM) => {
+	let paravidosDOM = Proklisi.paravidosTabDOM;
+	let paravidos = paletaDOM.data('value');
+
+	if (paravidos) {
+		Proklisi.menuTabStatus(paravidosDOM.
+		data('paravidosData', paravidos), 'success');
+		Proklisi.menuTabFyi(paravidosDOM, paravidos.diataxiGet());
+		return Proklisi;
+	}
+
+	Proklisi.menuTabStatus(paravidosDOM.
+	removeData('paravidosData'),  'clear');
+	Proklisi.menuTabFyi(paravidosDOM);
+
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
 Proklisi.episkopisiSetup = () => {
 	Proklisi.episkopisiDOM = Proklisi.enotitaDOM();
 
@@ -506,12 +610,13 @@ Proklisi.loadData = () => {
 };
 
 Proklisi.odosLoad = () => {
-	let next = Proklisi.paravasiLoad;
+	let next = Proklisi.paravidosLoad;
 
 	$.post({
 		'url': '../lib/odos_list.php',
 		'success': (rsp) => {
 			Proklisi.odosList = rsp.split(/[\n\r]+/);
+			Proklisi.odosList.pop();
 			next();
 		},
 		'error': (err) => {
@@ -523,13 +628,17 @@ Proklisi.odosLoad = () => {
 	return Proklisi;
 };
 
-Proklisi.paravasiLoad = () => {
+Proklisi.paravidosLoad = () => {
 	let next = Proklisi.astinomosLoad;
 
 	$.post({
-		'url': '../lib/paravasi_list.php',
+		'url': '../lib/paravidos_list.php',
 		'success': (rsp) => {
-			Proklisi.paravasiList = rsp.split(/[\n\r]+/);
+			Proklisi.paravidosList = rsp.split(/[\n\r]+/);
+			Proklisi.paravidosList.pop();
+			pd.arrayWalk(Proklisi.paravidosList, (x, i) =>
+				Proklisi.paravidosList[i] = Dimas.paravidos.
+					fromParavidosList(x));
 			next();
 		},
 		'error': (err) => {

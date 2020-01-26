@@ -66,3 +66,18 @@
 	vertical-align: top;
 	font-weight: bold;
 }
+
+.proklisiKlisiParavasi {
+	font-style: italic;
+}
+
+.proklisiKlisiParavasi::before {
+	content: '\201C';
+	margin: 0px 0px 0px 8px;
+	font-style: normal;
+}
+
+.proklisiKlisiParavasi::after {
+	content: '\201E';
+	font-style: normal;
+}

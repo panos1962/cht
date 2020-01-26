@@ -42,35 +42,23 @@ module.exports = function(Proklisi, gh, pd) {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
+// Η κλάση "Proklisi.klisi" αφορά σε προ-κλήσεις παταβάσεων ΚΟΚ τουτέστιν
+// βεβαιώσεις παραβάσεων ΚΟΚ σε πρώιμο στάδιο. Βεβαίωση παράβασης ΚΟΚ σε
+// πρώιμο στάδιο είναι η αρχική διαπίστωση της παράβασης επί του πεδίου και
+// η καταγραφή από τον δημοτικό αστυνομικό των στοιχείων της παράβασης σε
+// καρνέ κλήσεων. Οι προ-κλήσεις καταχωρούνται αρχικά σε πρόχειρη database
+// και κατόπιν ελέγχονται και μεταφέρονται ως κλήσεις στο ΟΠΣΟΥ.
+
 Proklisi.klisi = function() {
 	let data = Proklisi.oximaTabDOM.data('oximaData');
 
 	if (data)
 	this.oxima = (new gh.oxima(data)).fixChildren();
-else
-this.oxima = (new gh.oxima({
-	'pinakida': 'ΝΒΝ9596',
-	'marka': 'NISSAN',
-	'xroma': 'ΕΡΥΘΡΟ',
-	'tipos': 'ΕΠΙΒΑΤΙΚΟ',
-	'katoxos': [
-		{
-			'afm': '032792320',
-			'pososto': 100,
-			'eponimo': 'ΠΑΠΑΔΟΠΟΥΛΟΣ',
-			'onoma': 'ΟΝΟΜΑ',
-			'patronimo': 'ΙΩΑΝΝΗΣ',
-			'dief': 'ΜΗΤΡ. ΜΟΣΧΟΝΗΣΙΩΝ 54, 55131, ΚΑΛΑΜΑΡΙΑ',
-		},
-	]
-})).fixChildren();
 
 	data = Proklisi.toposTabDOM.data('toposData');
 
 	if (data)
 	this.topos = Proklisi.toposTabDOM.data('toposData');
-else
-this.topos = 'ΜΗΤΡΟΠΟΛΙΤΟΥ ΜΟΣΧΟΝΗΣΙΩΝ ΚΑΙ ΑΝΑΤΟΛΙΚΗΣ ΘΡΑΚΗΣ ΑΜΒΡΟΣΙΟΥ 54';
 
 	data = Proklisi.paravidosTabDOM.data('paravidosData');
 

@@ -34,8 +34,10 @@
 }
 
 .proklisiKlisiEnotitaData {
-	width: 100%;
 	border-collapse: collapse;
+	border-style: solid;
+	border-width: 1px;
+	border-color: transparent;
 }
 
 .proklisiKlisiEnotitaPrivate {

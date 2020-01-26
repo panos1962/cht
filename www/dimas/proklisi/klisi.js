@@ -112,7 +112,7 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 		'<span class="proklisiKlisiParavasi">' +
 		this.paravidos.perigrafi + '</span>' : '');
 
-	klisiDOM.
+	enotitaDOM.
 	append(Proklisi.klisi.klisiPedioDOM('Τόπος', topos)).
 	append(Proklisi.klisi.klisiPedioDOM('Παράβαση', paravasi));
 

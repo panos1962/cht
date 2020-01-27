@@ -11,20 +11,23 @@
 // @FILETYPE END
 //
 // @FILE BEGIN
-// www/dimas/proklisi/klisi.js —— Προεπισκόπηση προ-κλήσεων παραβάσεων ΚΟΚ.
+// www/dimas/proklisi/klisi.js —— Δημιουργία, προεπισκόπηση και υποβολή
+// προ-κλήσεων παραβάσεων ΚΟΚ.
 // @FILE END
 //
 // @DESCRIPTION BEGIN
 // Στο παρόν JavaScript module περιέχονται δομές και functions που εξυπηρτούν
-// τη σύνταξη και την προεπισκόπηση προ-κλήσεων που συντάσσουν οι δημοτικοί
-// αστυνομικοί και αφορούν σε παραβάσεις του ΚΟΚ.
+// τη σύνταξη, την προεπισκόπηση και την υποβολή προ-κλήσεων που αφορούν σε
+// παραβάσεις του ΚΟΚ.
 //
-// Το παρόν δεν είναι αυτόνομο JavaScript module αλλά αποτελεί παρακολούθημα
-// του προγράμματος δημιουργίας προ-κλήσεων "dimas/proklisi/main.js" και ο
-// κύριος λόγος διαχωρισμού είναι η ευκολότερη διαχείριση των προγραμμάτων.
+// Το παρόν δεν έχει δημιουργηθεί ως αυτόνομο JavaScript module αλλά αποτελεί
+// παρακολούθημα της βασικής σελίδας δημιουργίας, επεξεργασίας και υποβολής
+// προ-κλήσεων "www/dimas/proklisi/main.js" και ο κύριος λόγος διαχωρισμού
+// είναι η ευκολότερη διαχείριση των προγραμμάτων.
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-27
 // Updated: 2020-01-25
 // Created: 2020-01-24
 // @HISTORY END
@@ -45,12 +48,18 @@ module.exports = function(Proklisi) {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-// Η κλάση "Proklisi.klisi" αφορά σε προ-κλήσεις παταβάσεων ΚΟΚ τουτέστιν
+// Η κλάση "Proklisi.klisi" αφορά σε προ-κλήσεις παραβάσεων ΚΟΚ, τουτέστιν
 // βεβαιώσεις παραβάσεων ΚΟΚ σε πρώιμο στάδιο. Βεβαίωση παράβασης ΚΟΚ σε
 // πρώιμο στάδιο είναι η αρχική διαπίστωση της παράβασης επί του πεδίου και
-// η καταγραφή από τον δημοτικό αστυνομικό των στοιχείων της παράβασης σε
-// καρνέ κλήσεων. Οι προ-κλήσεις καταχωρούνται αρχικά σε πρόχειρη database
-// και κατόπιν ελέγχονται και μεταφέρονται ως κλήσεις στο ΟΠΣΟΥ.
+// η καταγραφή από τον δημοτικό αστυνομικό, ή άλλον αρμόδιο υπάλληλο, των
+// στοιχείων της παράβασης σε καρνέ κλήσεων, σε PDA ή άλλο μέσο καταγραφής.
+// Οι προ-κλήσεις αφού καταγραφούν και ελεγχθούν, υπογράφονται από τον
+// συντάκτη και υποβάλλονται προς καταχώρηση αρχικά σε πρόχειρη database
+// και όπου αφού ελεγχθούν ως προς την τεχνική τους ορθότητα και αρτιότητα,
+// μεταφέρονται στην database του ΟΠΣΟΥ. Από την καταχώρηση των προ-κλήσεων
+// στο ΟΠΣΟΥ και μετά, οι προ-κλήσεις μπορούν να κρατούνται χωρίς να έχουν
+// κάποια επίσημη υπόσταση, ωστόσο μπορούν να αποτελέσουν χρήσιμο ιστορικό
+// αρχείο για την παραγωγή στατιστικών και άλλων συγκεντρωτικών στοιχείων.
 
 Proklisi.klisi = function() {
 	let data = Proklisi.oximaTabDOM.data('oximaData');
@@ -69,6 +78,45 @@ Proklisi.klisi = function() {
 	this.paravidos = data;
 };
 
+Proklisi.klisi.prototype.kodikosGet = function() {
+	let kodikos = this.kodikos;
+
+	if (!kodikos)
+	kodikos = 123456789;
+
+	return kodikos;
+};
+
+Proklisi.klisi.prototype.imerominiaGet = function() {
+	let imerominia = this.imerominia;
+
+	if (!imerominia)
+	imerominia = '27-01-2020';
+
+	return imerominia;
+};
+
+Proklisi.klisi.prototype.prostimoGet = function() {
+	let paravidos = this.paravidos;
+
+	if (!paravidos)
+	return 0;
+
+	if (!paravidos.hasOwnProperty('prostimo'))
+	return 0;
+
+	if (parseInt(paravidos.prostimo) != paravidos.prostimo)
+	return 0;
+
+	return paravidos.prostimo;
+};
+
+Proklisi.klisi.prototype.isProstimo = function() {
+	return this.prostimoGet();
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
 Proklisi.klisi.prototype.klisiDOM = function() {
 	let klisiSelidaDOM = $('<div>').
 	addClass('proklisiKlisiSelida');
@@ -78,12 +126,71 @@ Proklisi.klisi.prototype.klisiDOM = function() {
 	appendTo(klisiSelidaDOM);
 
 	this.
+	klisiHeaderDOM(klisiDOM).
 	klisiOximaDOM(klisiDOM).
 	klisiKatoxosDOM(klisiDOM).
 	klisiParavasiDOM(klisiDOM);
 
 	return klisiSelidaDOM;
 };
+
+Proklisi.klisi.prototype.klisiHeaderDOM = function(klisiDOM) {
+	let headerDOM = $('<table>').
+	addClass('proklisiKlisiEnotitaData').
+	addClass('proklisiKlisiEnotitaHeader').
+
+	append($('<tr>').
+	addClass('proklisiKlisiHeaderLine').
+
+	append($('<td>').
+	addClass('proklisiKlisiHeaderLeft').
+
+	append($('<div>').
+	addClass('proklisiKlisiKratos').
+	append($('<img>').
+	addClass('proklisiKlisiEthnosimo').
+	attr('src', '../../images/ethnosimoBlack.png')).
+	append($('<div>').
+	addClass('proklisiKlisiKratosText').
+	text('ΕΛΛΗΝΙΚΗ ΔΗΜΟΚΡΑΤΙΑ'))).
+	append($('<br>')).
+
+	append($('<div>').
+	addClass('proklisiKlisiDimos').
+	text('ΔΗΜΟΣ ΘΕΣΣΑΛΟΝΙΚΗΣ')).
+
+	append($('<div>').
+	addClass('proklisiKlisiIpiresia').
+	text('ΔΙΕΥΘΥΝΣΗ ΔΗΜΟΤΙΚΗΣ ΑΣΤΥΝΟΜΙΑΣ')).
+
+	append($('<div>').
+	addClass('proklisiKlisiContact').
+	text('Βασ. Γεωργίου 1, ΤΚ 54640, Τηλ. 231331-7936'))).
+
+	append($('<td>').
+	addClass('proklisiKlisiHeaderRight').
+
+	append($('<div>').
+	addClass('proklisiKlisiPraxi').
+	html('ΠΡΑΞΗ ΒΕΒΑΙΩΣΗΣ ΠΑΡΑΒΑΣΗΣ<br>' + 
+		(this.isProstimo() ? 'ΜΕ' : 'ΧΩΡΙΣ') +
+		' ΕΠΙΒΟΛΗ ΠΡΟΣΤΙΜΟΥ')).
+
+	append($('<div>').
+	addClass('proklisiKlisiKodikos').
+	text(this.kodikosGet())).
+
+	append($('<div>').
+	addClass('proklisiKlisiImerominia').
+	text(this.imerominiaGet()))
+
+	));
+
+	headerDOM.
+	appendTo(klisiDOM);
+
+	return this;
+}
 
 Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 	klisiDOM.

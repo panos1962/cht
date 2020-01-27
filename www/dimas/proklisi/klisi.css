@@ -2,6 +2,7 @@
 	display: block;
 	padding: 8px;
 
+	font-family: "Roboto Condensed", "Trebuchet MS", Helvetica, sans-serif;
 	font-size: 18px;
 	text-align: left;
 
@@ -21,7 +22,6 @@
 .proklisiKlisiEnotitaTitlos {
 	margin: 12px 0px 4px 0px;
 
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
 	font-style: normal;
 	font-weight: bold;
 
@@ -44,6 +44,89 @@
 	background-color: yellow;
 }
 
+/*////////////////////////////////////////////////////////////////////////////*/
+
+.proklisiKlisiEnotitaHeader {
+	width: 100%;
+	font-weight: bold;
+}
+
+.proklisiKlisiHeaderLine {
+	vertical-align: top;
+}
+
+.proklisiKlisiHeaderLeft {
+}
+
+.proklisiKlisiEthnosimo {
+	width: 30px;
+}
+
+.proklisiKlisiKratos {
+	display: inline-block;
+	text-align: center;
+}
+
+.proklisiKlisiKratosText {
+}
+
+.proklisiKlisiDimos {
+	display: inline-block;
+
+	border-style: none none double none;
+	border-width: 0px 0px 3px 0px;
+	border-color: #222222;
+}
+
+.proklisiKlisiIpiresia {
+}
+
+.proklisiKlisiContact {
+	font-weight: normal;
+}
+
+.proklisiKlisiHeaderRight {
+	text-align: right;
+}
+
+.proklisiKlisiPraxi {
+	font-size: 16px;
+}
+
+.proklisiKlisiKodikos {
+	margin-top: 2px;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 32px;
+	color: #ff0000;
+}
+
+.proklisiKlisiKodikos::before {
+	content: '\2116';
+	padding-right: 8px;
+
+	font-family: Georgia, serif;
+	font-size: 28px;
+	font-weight: normal;
+
+	color: #000000;
+}
+
+.proklisiKlisiImerominia {
+	margin: 2px 0px 0px 0px;
+}
+
+.proklisiKlisiImerominia::before {
+	content: 'Ημ. Βεβαίωσης:';
+	padding-right: 4px;
+
+	font-size: 16px;
+	font-weight: normal;
+
+	color: #000000;
+}
+
+/*////////////////////////////////////////////////////////////////////////////*/
+
 .proklisiKlisiPedio {
 	line-height: 140%;
 }
@@ -54,9 +137,7 @@
 	text-align: left;
 	vertical-align: top;
 
-	font-family: "Trebuchet MS", Helvetica, sans-serif;
 	font-style: italic;
-	letter-spacing: -1px;
 	color: #282828;
 
 	white-space: nowrap;

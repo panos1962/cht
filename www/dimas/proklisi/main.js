@@ -480,6 +480,7 @@ Proklisi.paravidosSetup = () => {
 		'submit': Proklisi.menuRise,
 		'change': Proklisi.paravidosCheckData,
 		'zoom': 1000,
+		'text': 'Α',
 	}));
 
 	return Proklisi;
@@ -487,6 +488,8 @@ Proklisi.paravidosSetup = () => {
 
 Proklisi.paravidosExec = () => {
 	Proklisi.enotitaActivate(Proklisi.paravidosDOM);
+	Proklisi.paravidosScribe(Proklisi.paravidosDOM.
+	find('.pandoraPaleta').first());
 	return Proklisi;
 };
 

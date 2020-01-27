@@ -35,10 +35,13 @@
 
 "use strict";
 
-// Από το κυρίως πρόγραμμα μεταφέρουμε τα modules "Proklisi" (κυρίως πρόγραμμα),
-// "gh" ("govHUB" API) και "pd" ("pandora" module).
+const pd =
+require('../../../mnt/pandora/lib/pandoraClient.js');
 
-module.exports = function(Proklisi, gh, pd) {
+const gh =
+require('../../../lib/govHUB/apiCore.js');
+
+module.exports = function(Proklisi) {
 
 ///////////////////////////////////////////////////////////////////////////////@
 

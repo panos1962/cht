@@ -45,6 +45,11 @@ body {
 	border-width: 4px;
 	border-radius: 4px;
 	box-shadow: 2px 2px 4px #cccccc;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .proklisiMenuTabAtono {
@@ -129,6 +134,11 @@ body {
 	border-color: khaki;
 	border-width: 2px;
 	border-radius: 4px;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 .proklisiMenuBar:hover {

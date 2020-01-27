@@ -11,30 +11,15 @@
 // @FILETYPE END
 //
 // @FILE BEGIN
-// www/dimas/proklisi/main.js —— Πρόγραμμα οδήγησης σελίδας καταχώρησης και
-// επεξεργασίας προ-κλήσεων.
+// www/lib/menu.js —— JavaScript δομές και functions που αφορούν σε σελίδες
+// μενού.
 // @FILE END
 //
 // @DESCRIPTION BEGIN
-// Το παρόν πρόγραμμα οδηγεί τη σελίδα καταχώρησης προ-κλήσεων. Πρό-κληση
-// ονομάζεται μια κλήση σε πρώιμο στάδιο, πράγμα που σημαίνει βεβαίωση
-// παράβασης ΚΟΚ από τη στιγμή που συντάσσεται από τον δημοτικό αστυνομικό
-// μέχρι να περαστεί στο ΟΠΣΟΥ.
-//
-// Το πρόγραμμα είναι προσανατολισμένο σε PDA (Personal Digital Assistant)
-// με Android και touch screen, αλλά μπορεί να χρησιμοποιηθεί σε οποιονδήποτε
-// υπολογιστή διαθέτει browser με σύνδεση στο intranet του Δήμου Θεσσαλονίκης.
-// Οι δημοτικοί αστυνομικοί του ΔΘ φέρουν ούτως ή άλλως PDAs από την έναρξη
-// εφαρμογής του συστήματος THESi που ανέπτυξε η εταιρεία ParkPal το 2018.
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
-// Updated: 2020-01-27
-// Updated: 2020-01-26
-// Updated: 2020-01-25
-// Updated: 2020-01-24
-// Updated: 2020-01-23
-// Created: 2020-01-22
+// Created: 2020-01-27
 // @HISTORY END
 //
 // @END
@@ -44,58 +29,22 @@
 "use strict";
 
 const pd =
-require('../../../mnt/pandora/lib/pandoraClient.js');
-require('../../../mnt/pandora/www/lib/pandoraPaleta.js')(pd);
-require('../../../mnt/pandora/www/lib/pandoraJQueryUI.js')(pd);
+require('../../mnt/pandora/lib/pandoraClient.js');
 
-const Dimas =
-require('../../../lib/dimasCore.js');
+const Menu = {};
 
-/*
-XXX
-const Menu =
-require('../../../lib/menu.js');
-*/
-
-const Proklisi = {};
-
-require('./klisi.js')(Proklisi);
-
-Proklisi.param = {
-	'oximaServerHost': 'http://' + php.serverGet('HTTP_HOST'),
-	'oximaServerPort': 8001,
+Menu.param = {
 	'menuShrinkDuration': 300,
 };
 
-Proklisi.param.oximaServerUrl = Proklisi.param.oximaServerHost +
-	':' + Proklisi.param.oximaServerPort;
-
 ///////////////////////////////////////////////////////////////////////////////@
 
-pd.domInit(() => {
-	pd.
-	domSetup().
-	toolbarSetup().
-	fyiSetup().
-	ofelimoSetup().
-	ribbonSetup().
-	domFixup().
-	noop();
+Menu.menu = function(opts) {
+	pd.initObject(this, opts);
+};
 
-	Proklisi.
-	menuSetup().
-	bebeosiSetup().
-	oximaSetup().
-	toposSetup().
-	paravidosSetup().
-	episkopisiSetup().
-	loadData();
-});
-
-///////////////////////////////////////////////////////////////////////////////@
-
-Proklisi.menuSetup = () => {
-	Proklisi.menuDOM = $('<div>').
+Menu.menuDOM = function() {
+	let menuDOM = $('<div>').
 	addClass('proklisiMenu').
 	addClass('proklisiEnotita').
 	addClass('proklisiEnotitaActive').
@@ -278,9 +227,7 @@ Proklisi.menuTabFyiError = (menuTabDOM, msg) => {
 
 Proklisi.bebeosiSetup = () => {
 	Proklisi.bebeosiDOM = Proklisi.enotitaDOM().
-	append($('<div>').text('Εδώ διαχειριζόμαστε τα στοιχεία βεβαίωσης, ' +
-		'τουτέστιν τον αριθμό κλήσης, την ημερομηνία και την ώρα ' +
-		'βεβαίωσης, τα στοιχεία του δημοτικού αστυνομικού κλπ.'));
+	append('ΣΤΟΙΧΕΙΑ ΒΕΒΑΙΩΣΗΣ');
 
 	return Proklisi;
 };
@@ -314,6 +261,7 @@ Proklisi.oximaSetup = () => {
 
 Proklisi.oximaExec = () => {
 	Proklisi.enotitaActivate(Proklisi.oximaDOM);
+
 	return Proklisi;
 };
 
@@ -618,12 +566,6 @@ Proklisi.enotitaActivate = (enotitaDOM) => {
 	}, Proklisi.param.menuShrinkDuration, function() {
 		$(this).css('height', 'auto');
 	});
-
-	// Αν υπάρχει παλέτα στο επιλεγμένο menu tab την ενεργοποιούμε
-	// κυρίως για να έχουμε focus στο σχετικό input field, εφόσον
-	// αυτό εμφανίζεται.
-
-	pd.paletaActivate(enotitaDOM.find('.pandoraPaleta').first());
 
 	return Proklisi;
 };

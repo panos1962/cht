@@ -85,6 +85,8 @@ CREATE TABLE `astinomikos` (
 	`klisieos`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'έως κλήση',
 	`klisilast`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'τελευταία κλήση',
 
+	`password`	CHARACTER(40) NULL DEFAULT NULL COMMENT 'passwprd SHA1',
+
 	PRIMARY KEY (
 		`kodikos`
 	) USING BTREE,

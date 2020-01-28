@@ -56,6 +56,51 @@ SET default_storage_engine = INNODB
 
 -------------------------------------------------------------------------------@
 
+-- Ο πίνακας "astinomikos" περιέχει τους δημοτικούς αστυνομικούς.
+
+CREATE TABLE `astinomikos` (
+	`kodikos`	VARCHAR(16) NOT NULL COMMENT 'κωδικός αστυνομικού',
+	`armit`		VARCHAR(16) NULL DEFAULT NULL COMMENT 'αρ. μητρώου',
+	`onomateponimo`	VARCHAR(60) NOT NULL COMMENT 'ονοματεπώνυμο',
+	`email`		VARCHAR(60) NULL DEFAULT NULL COMMENT 'email address',
+	`tilefono`	VARCHAR(30) NULL DEFAULT NULL COMMENT 'τηλ. υπηρεσίας',
+	`kinito`	VARCHAR(30) NULL DEFAULT NULL COMMENT 'κινητό τηλέφωνο',
+
+	-- Ακολουθούν πεδία που αφορούν στην αρίθμηση των κλήσεων από τον
+	-- συγκεκριμένο αστυνομικό. Πράγματι, πριν βγεί ο αστυνομικός στο
+	-- πεδίο, η διοικητική υποστήριξη της ΔΑ καταχωρεί στον αστυνομικό
+	-- τον αριθμό της πρώτης και της τελευταίας βεβαίωσης, π.χ. από
+	-- κλήση 290700 έως κλήση 290799. Επίσης, τίθεται το πεδίο "klisilast"
+	-- σε null που σημαίνει ότι ο αστυνομικός δεν έχει βεβαιώσει ακόμη
+	-- κάποια από τις βεβαιώσεις του εν λόγω διαστήματος. Το εν λόγω
+	-- πεδίο θα χρησιμοποιηθεί κατά την αυτόματη αρίθμηση των βεβαιώσεων
+	-- καθώς κάθε φορά που ο αστυνομικός βεβαιώνει νέα παράβαση, το πεδίο
+	-- αυτό αυξάνεται κατά ένα. Όσο η τιμή τού εν λόγω πεδίου παραμένει
+	-- μικρότερη από την τιμή του πεδίου "klisieos", ο αστυνομικός μπορεί
+	-- να βεβαιώνει παραβάσεις, ενώ αν η τιμή του πεδίου γίνει ίση με την
+	-- τιμή τού πεδίου "klisieos", τότε θα πρέπει να αιτηθεί νέο διάστημα
+	-- κλήσεων προκειμένου να συνεχίσει τις βεβαιώσεις.
+
+	`klisiapo`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'από κλήση',
+	`klisieos`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'έως κλήση',
+	`klisilast`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'τελευταία κλήση',
+
+	PRIMARY KEY (
+		`kodikos`
+	) USING BTREE,
+
+	UNIQUE INDEX (
+		`armit`
+	) USING BTREE,
+
+	INDEX (
+		`onomateponimo`
+	) USING BTREE
+)
+
+COMMENT = 'Πίνακας δημοτικών αστυνομικών'
+;
+
 -- Ο πίνακας "odos" περιέχει ονόματα οδών, πλατειών κλπ, τα οποία μπορούν να
 -- χρησιμοποιηθούν στην τοποσήμανση των παραβάσεων ΚΟΚ.
 
@@ -157,3 +202,16 @@ INTO TABLE `paravidos` (
 	`adia`,
 	`diploma`
 );
+
+\! echo 'Table `astinomikos`…' >[[MONITOR]]
+
+LOAD DATA LOCAL INFILE 'local/database/dimas/astinomikos.tsv'
+INTO TABLE `astinomikos` (
+	`kodikos`,
+	`onomateponimo`
+);
+
+COMMIT WORK
+;
+
+-------------------------------------------------------------------------------@

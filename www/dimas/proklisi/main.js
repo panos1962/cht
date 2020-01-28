@@ -65,6 +65,11 @@ Proklisi.param = {
 	'oximaServerHost': 'http://' + php.serverGet('HTTP_HOST'),
 	'oximaServerPort': 8001,
 	'menuShrinkDuration': 300,
+	'dimas': {
+		'ota': 'ΔΗΜΟΣ ΘΕΣΣΑΛΟΝΙΚΗΣ',
+		'ipiresia': 'ΔΙΕΥΘΥΝΣΗ ΔΗΜΟΤΙΚΗΣ ΑΣΤΥΝΟΜΙΑΣ',
+		'contact': 'Βασ. Γεωργίου 1, ΤΚ 54640, Τηλ. 231331-7930',
+	},
 };
 
 Proklisi.param.oximaServerUrl = Proklisi.param.oximaServerHost +

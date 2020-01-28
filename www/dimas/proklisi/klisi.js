@@ -157,15 +157,15 @@ Proklisi.klisi.prototype.klisiHeaderDOM = function(klisiDOM) {
 
 	append($('<div>').
 	addClass('proklisiKlisiDimos').
-	text('ΔΗΜΟΣ ΘΕΣΣΑΛΟΝΙΚΗΣ')).
+	text(Proklisi.param.dimas.ota)).
 
 	append($('<div>').
 	addClass('proklisiKlisiIpiresia').
-	text('ΔΙΕΥΘΥΝΣΗ ΔΗΜΟΤΙΚΗΣ ΑΣΤΥΝΟΜΙΑΣ')).
+	text(Proklisi.param.dimas.ipiresia)).
 
 	append($('<div>').
 	addClass('proklisiKlisiContact').
-	text('Βασ. Γεωργίου 1, ΤΚ 54640, Τηλ. 231331-7936'))).
+	text(Proklisi.param.dimas.contact))).
 
 	append($('<td>').
 	addClass('proklisiKlisiHeaderRight').
@@ -193,6 +193,25 @@ Proklisi.klisi.prototype.klisiHeaderDOM = function(klisiDOM) {
 }
 
 Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
+	let cols = [];
+
+	if (this.topos)
+	cols.push({
+		'k': 'Τόπος',
+		'v': this.topos,
+	});
+
+	if (this.paravidos)
+	cols.push({
+		'k': 'Παράβαση',
+		'v': this.paravidos.diataxiGet() +
+			'<span class="proklisiKlisiParavasi">' +
+			this.paravidos.perigrafi + '</span>',
+	});
+
+	if (!cols.length)
+	return this;
+
 	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ'));
 
@@ -200,19 +219,8 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 	Proklisi.klisi.enotitaDOM().
 	appendTo(klisiDOM);
 
-	let topos = this.topos;
-
-	if (!topos)
-	topos = '';
-
-	let paravasi = (this.paravidos ?
-		this.paravidos.diataxiGet() +
-		'<span class="proklisiKlisiParavasi">' +
-		this.paravidos.perigrafi + '</span>' : '');
-
-	enotitaDOM.
-	append(Proklisi.klisi.klisiPedioDOM('Τόπος', topos)).
-	append(Proklisi.klisi.klisiPedioDOM('Παράβαση', paravasi));
+	pd.arrayWalk(cols, (x) => enotitaDOM.
+	append(Proklisi.klisi.klisiPedioDOM(x.k, x.v)));
 
 	return this;
 }

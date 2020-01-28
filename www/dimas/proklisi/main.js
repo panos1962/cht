@@ -51,14 +51,10 @@ require('../../../mnt/pandora/www/lib/pandoraJQueryUI.js')(pd);
 const Dimas =
 require('../../../lib/dimasCore.js');
 
-/*
-XXX
-const Menu =
-require('../../../lib/menu.js');
-*/
-
 const Proklisi = {};
 
+require('./menu.js')(Proklisi);
+require('./isodos.js')(Proklisi);
 require('./klisi.js')(Proklisi);
 
 Proklisi.param = {
@@ -87,20 +83,47 @@ pd.domInit(() => {
 	domFixup().
 	noop();
 
+	Proklisi[Proklisi.isLogin() ? 'eponimiXrisi' : 'anonimiXrisi']();
+});
+
+Proklisi.isLogin = () => {
+	console.log(php);
+return true;
+return false;
+};
+
+Proklisi.eponimiXrisi = () => {
 	Proklisi.
-	menuSetup().
+	menuKlisiSetup().
 	bebeosiSetup().
 	oximaSetup().
 	toposSetup().
 	paravidosSetup().
 	episkopisiSetup().
-	loadData();
-});
+	odosLoad([
+		Proklisi.paravidosLoad,
+		Proklisi.astinomikosLoad,
+		() => Proklisi.menuActivate(Proklisi.menuKlisiDOM),
+	]);
+
+	return Proklisi;
+};
+
+Proklisi.anonimiXrisi = () => {
+	Proklisi.
+	menuIsodosSetup().
+	isodosAstinomikosSetup().
+	astinomikosLoad([
+		() => Proklisi.menuActivate(Proklisi.menuIsodosDOM),
+	]);
+
+	return Proklisi;
+};
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-Proklisi.menuSetup = () => {
-	Proklisi.menuDOM = $('<div>').
+Proklisi.menuKlisiSetup = () => {
+	Proklisi.menuKlisiDOM = $('<div>').
 	addClass('proklisiMenu').
 	addClass('proklisiEnotita').
 	addClass('proklisiEnotitaActive').
@@ -148,47 +171,13 @@ Proklisi.menuSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Επισκόπηση'))));
 
-	Proklisi.menuDOM.
+	Proklisi.menuKlisiDOM.
 	appendTo(pd.ofelimoDOM);
 
-	Proklisi.menuDOM.
-	data('height', Proklisi.menuDOM.height());
+	Proklisi.menuKlisiDOM.
+	data('height', Proklisi.menuKlisiDOM.height());
 
 	return Proklisi;
-};
-
-Proklisi.menuActivate = () => {
-	pd.bodyDOM.
-	on('mouseenter', '.proklisiMenuTab', function(e) {
-		e.stopPropagation();
-
-		if (!$(this).data('exec'))
-		return;
-
-		$('.proklisiMenuTab').addClass('proklisiMenuTabAtono');
-		$(this).addClass('proklisiMenuTabCandi');
-	}).
-	on('mouseleave', '.proklisiMenuTab', function(e) {
-		e.stopPropagation();
-		$('.proklisiMenuTabAtono').removeClass('proklisiMenuTabAtono');
-		$(this).removeClass('proklisiMenuTabCandi');
-	}).
-	on('click', '.proklisiMenuTab', function(e) {
-		e.stopPropagation();
-
-		let exec = $(this).data('exec');
-
-		if (exec)
-		exec();
-	});
-
-	pd.
-	paletaSetup().
-	bodyDOM.
-	on('click', '.proklisiMenuBar', function(e) {
-		e.stopPropagation();
-		Proklisi.menuRise();
-	});
 };
 
 Proklisi.menuBarDOM = () => {
@@ -197,27 +186,6 @@ Proklisi.menuBarDOM = () => {
 	text('Αρχικό Μενού Επιλογών');
 
 	return menuBarDOM;
-};
-
-Proklisi.menuRise = () => {
-	$('.proklisiEnotitaActive').
-	not('.prosklisiMenu').
-	finish().
-	animate({
-		'height': 0,
-		'opacity': 0,
-	}, Proklisi.param.menuShrinkDuration, function() {
-		$(this).removeClass('proklisiEnotitaActive');
-	});
-
-	Proklisi.menuDOM.
-	finish().
-	css('height', '0px').
-	addClass('proklisiEnotitaActive').
-	animate({
-		'height': Proklisi.menuDOM.data('height') + 'px',
-		'opacity': 1,
-	}, Proklisi.param.menuShrinkDuration);
 };
 
 Proklisi.menuTabStatus = (menuTabDOM, status) => {
@@ -264,6 +232,7 @@ Proklisi.menuTabFyi = (menuTabDOM, msg) => {
 	removeClass('proklisiMenuTabFyiError');
 
 	if (!msg) {
+		fyiDOM.empty();
 		labelDOM.css('display', 'block');
 		return Proklisi;
 	}
@@ -292,7 +261,6 @@ Proklisi.bebeosiSetup = () => {
 
 Proklisi.bebeosiExec = () => {
 	Proklisi.enotitaActivate(Proklisi.bebeosiDOM);
-
 	return Proklisi;
 };
 
@@ -305,7 +273,7 @@ Proklisi.oximaSetup = () => {
 			pd.paletaList['greek'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
-		'submit': Proklisi.menuRise,
+		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.oximaGetData,
 	});
 
@@ -383,7 +351,7 @@ Proklisi.toposSetup = () => {
 		'keyboard': php.requestIsYes('keyboard'),
 		'zoom': 20,
 		'scribe': Proklisi.toposScribe,
-		'submit': Proklisi.menuRise,
+		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.toposCheckData,
 		'helper': true,
 	}));
@@ -482,7 +450,7 @@ Proklisi.paravidosSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'scribe': Proklisi.paravidosScribe,
-		'submit': Proklisi.menuRise,
+		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.paravidosCheckData,
 		'zoom': 1000,
 		'text': 'Α',
@@ -638,32 +606,33 @@ Proklisi.enotitaActivate = (enotitaDOM) => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-Proklisi.loadData = () => {
-	Proklisi.odosLoad();
-	return Proklisi;
-};
+Proklisi.odosLoad = (chain) => {
+	let next = chain.shift();
 
-Proklisi.odosLoad = () => {
-	let next = Proklisi.paravidosLoad;
+	if (Proklisi.hasOwnProperty('odosList'))
+	return next(chain);
 
 	$.post({
 		'url': '../lib/odos_list.php',
 		'success': (rsp) => {
 			Proklisi.odosList = rsp.split(/[\n\r]+/);
 			Proklisi.odosList.pop();
-			next();
+			next(chain);
 		},
 		'error': (err) => {
 			console.error(err);
-			next();
+			next(chain);
 		},
 	});
 
 	return Proklisi;
 };
 
-Proklisi.paravidosLoad = () => {
-	let next = Proklisi.astinomosLoad;
+Proklisi.paravidosLoad = (chain) => {
+	let next = chain.shift();
+
+	if (Proklisi.hasOwnProperty('paravidosList'))
+	return next(chain);
 
 	$.post({
 		'url': '../lib/paravidos_list.php',
@@ -673,29 +642,36 @@ Proklisi.paravidosLoad = () => {
 			pd.arrayWalk(Proklisi.paravidosList, (x, i) =>
 				Proklisi.paravidosList[i] = Dimas.paravidos.
 					fromParavidosList(x));
-			next();
+			next(chain);
 		},
 		'error': (err) => {
 			console.error(err);
-			next();
+			next(chain);
 		},
 	});
 
 	return Proklisi;
 };
 
-Proklisi.astinomosLoad = () => {
-	let next = Proklisi.menuActivate;
+Proklisi.astinomikosLoad = (chain) => {
+	let next = chain.shift();
+
+	if (Proklisi.hasOwnProperty('paravidosList'))
+	return next(chain);
 
 	$.post({
-		'url': '../lib/astinomos_list.php',
+		'url': '../lib/astinomikos_list.php',
 		'success': (rsp) => {
-			Proklisi.astinomosList = rsp.split(/[\n\r]+/);
-			next();
+			Proklisi.astinomikosList = rsp.split(/[\n\r]+/);
+			Proklisi.astinomikosList.pop();
+			pd.arrayWalk(Proklisi.astinomikosList, (x, i) =>
+				Proklisi.astinomikosList[i] = Dimas.astinomikos.
+					fromAstinomikosList(x));
+			next(chain);
 		},
 		'error': (err) => {
 			console.error(err);
-			next();
+			next(chain);
 		},
 	});
 

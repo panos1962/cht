@@ -39,11 +39,11 @@ Menu.param = {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-Menu.menu = function(opts) {
-	pd.initObject(this, opts);
+Menu.menu = function(props) {
+	pd.initObject(this, props);
 };
 
-Menu.menuDOM = function() {
+Menu.menu.prototype.menuDOM = function() {
 	let menuDOM = $('<div>').
 	addClass('proklisiMenu').
 	addClass('proklisiEnotita').

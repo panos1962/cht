@@ -20,7 +20,8 @@ $(BUNDLEJS): \
 	$(PANDORA)/lib/pandoraCore.js \
 	$(PANDORA)/lib/pandoraClient.js \
 	$(PANDORA)/www/lib/pandoraPaleta.js \
-	main.js klisi.js ../../../lib/dimasCore.js
+	main.js klisi.js isodos.js menu.js \
+	../../../lib/dimasCore.js
 	browserify $(BROWSERIFY_OPTS) -o $@ main.js
 
 .PHONY: cleanup

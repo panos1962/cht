@@ -35,6 +35,15 @@ test:
 	@make all
 	@(cd local && bash test.sh)
 
+.PHONY: git
+git:
+	make -s status
+	make -s commit
+	make -s push
+	make -s status
+	make -s commit
+	make -s push
+
 .PHONY: status
 status:
 	@git status .

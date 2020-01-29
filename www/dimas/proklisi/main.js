@@ -111,6 +111,7 @@ Proklisi.anonimiXrisi = () => {
 	Proklisi.
 	menuIsodosSetup().
 	isodosAstinomikosSetup().
+	isodosPasswordSetup().
 	astinomikosLoad([
 		() => Proklisi.menuActivate(Proklisi.menuIsodosDOM),
 	]);
@@ -349,7 +350,7 @@ Proklisi.toposSetup = () => {
 			pd.paletaList['latin'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
-		'zoom': 20,
+		'zoom': true,
 		'scribe': Proklisi.toposScribe,
 		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.toposCheckData,
@@ -407,19 +408,6 @@ Proklisi.toposScribe = (paletaDOM) => {
 	if (!match.length)
 	return pd;
 
-	let zoom = paletaDOM.data('zoom');
-
-	/*
-	XXX
-	Αρχικά υπήρχε ο σχεδιασμός να περιορίζεται το output σε κάποιο
-	συγκεκριμένο πλήθος εγγραφών, αλλά μάλλον κάτι τέτοιο δημιουργεί
-	περισσότερα προβλήματα από όσα λύνει. Αν δεν παρουσιαστούν νέες
-	δυσκολίες θα απαλείψουμε τελείως την παράμετρο "zoom".
-
-	if (match.length > zoom)
-	return pd;
-	*/
-
 	zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
 	pd.arrayWalk(match, (x) => {
 		$('<div>').
@@ -461,7 +449,7 @@ Proklisi.paravidosSetup = () => {
 		'scribe': Proklisi.paravidosScribe,
 		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.paravidosCheckData,
-		'zoom': 1000,
+		'zoom': true,
 		'text': 'Α',
 	}));
 

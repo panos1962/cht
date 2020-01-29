@@ -145,7 +145,7 @@ Proklisi.menuBarDOM = () => {
 
 Proklisi.menuRise = () => {
 	$('.proklisiEnotitaActive').
-	not('.prosklisiMenu').
+	//not('.prosklisiMenu').
 	finish().
 	animate({
 		'height': 0,
@@ -324,7 +324,7 @@ Proklisi.toposSetup = () => {
 			pd.paletaList['latin'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
-		'zoom': 20,
+		'zoom': true,
 		'scribe': Proklisi.toposScribe,
 		'submit': Proklisi.menuRise,
 		'change': Proklisi.toposCheckData,
@@ -382,11 +382,6 @@ Proklisi.toposScribe = (paletaDOM) => {
 	if (!match.length)
 	return pd;
 
-	let zoom = paletaDOM.data('zoom');
-
-	if (match.length > zoom)
-	return pd;
-
 	zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
 	pd.arrayWalk(match, (x) => {
 		$('<div>').
@@ -427,7 +422,7 @@ Proklisi.paravidosSetup = () => {
 		'scribe': Proklisi.paravidosScribe,
 		'submit': Proklisi.menuRise,
 		'change': Proklisi.paravidosCheckData,
-		'zoom': 1000,
+		'zoom': true,
 	}));
 
 	return Proklisi;

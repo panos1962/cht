@@ -56,6 +56,7 @@ Proklisi.isodosAstinomikosSetup = () => {
 			pd.paletaList['latin'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
+		'zoom': true,
 		'scribe': Proklisi.isodosAstinomikosScribe,
 		'submit': () => Proklisi.menuRise(Proklisi.menuIsodosDOM),
 		'change': Proklisi.isodosAstinomikosCheckData,
@@ -126,6 +127,7 @@ Proklisi.isodosAstinomikosCheckData = (paletaDOM) => {
 		Proklisi.menuTabStatus(astinomikosDOM.
 		data('astinomikosData', astinomikos), 'success');
 		Proklisi.menuTabFyi(astinomikosDOM, astinomikos.onomateponimo);
+		Proklisi.isodosPasswordExec();
 		return Proklisi;
 	}
 
@@ -145,6 +147,35 @@ Proklisi.isodosIpalilosExec = () => {
 };
 
 Proklisi.isodosXristisExec = () => {
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+Proklisi.isodosPasswordSetup = () => {
+	Proklisi.isodosPasswordDOM = Proklisi.enotitaDOM().
+	data('fyi', 'Πληκτρολογήστε το password').
+	append(pd.paleta({
+		'paleta': [
+			pd.paletaList['greek'],
+			pd.paletaList['latin'],
+		],
+		'keyboard': php.requestIsYes('keyboard'),
+		'scribe': Proklisi.isodosAstinomikosScribe,
+		'submit': () => Proklisi.menuRise(Proklisi.menuIsodosDOM),
+		'change': Proklisi.isodosPasswordCheckData,
+	}));
+
+	return Proklisi;
+};
+
+Proklisi.isodosPasswordExec = () => {
+	Proklisi.enotitaActivate(Proklisi.isodosPasswordDOM);
+	return Proklisi;
+};
+
+Proklisi.isodosPasswordCheckData = () => {
+	self.location = self.location + '?xristis=panos';
+	return Proklisi;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@

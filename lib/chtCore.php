@@ -29,6 +29,8 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
+define("SESSION_IDOS_XRISTI", "idos_xristi");
+
 if (!class_exists("pandoraCore"))
 require_once(PANDORA_BASEDIR . "lib/pandoraCore.php");
 

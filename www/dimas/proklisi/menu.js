@@ -45,10 +45,13 @@ Proklisi.menuActivate = (menuDOM) => {
 };
 
 Proklisi.menuRise = (menuDOM) => {
+	let fyi = menuDOM.data('fyi');
+
+	if (fyi)
 	pd.fyiDOM.
 	finish().
 	fadeTo(Proklisi.param.menuShrinkDuration, 0, function() {
-		pd.fyiMessage(menuDOM.data('fyi'));
+		pd.fyiMessage(fyi);
 		pd.fyiDOM.css('opacity', 1);
 	});
 

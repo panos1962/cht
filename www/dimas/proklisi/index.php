@@ -23,18 +23,16 @@
 // @END
 //
 ///////////////////////////////////////////////////////////////////////////////@
+/*
+print "<html><body><pre><code>";
+print_r($_SERVER);
+print "</code></pre></body></html>";
+exit(0);
+*/
 
 require_once("../../../local/conf.php");
 require_once(CHT_BASEDIR . "/lib/chtClient.php");
 session_start();
-
-$xristis = pandora::parameter_get("xristis");
-
-if (isset($xristis) && $xristis)
-$_SESSION["xristis"] = $xristis;
-
-else
-unset($_SESSION["xristis"]);
 
 pandora::
 document_head([

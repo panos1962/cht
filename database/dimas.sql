@@ -86,6 +86,7 @@ CREATE TABLE `astinomikos` (
 	`klisilast`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'τελευταία κλήση',
 
 	`password`	CHARACTER(40) NULL DEFAULT NULL COMMENT 'passwprd SHA1',
+	`anenergos`	DATE NULL DEFAULT NULL COMMENT 'ημερομηνία απενεργοποίησης',
 
 	PRIMARY KEY (
 		`kodikos`

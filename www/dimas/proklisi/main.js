@@ -81,14 +81,10 @@ pd.domInit(() => {
 	ribbonSetup().
 	domFixup().
 	noop();
+console.log(pd.isXristis());
 
-	Proklisi[Proklisi.isLogin() ? 'eponimiXrisi' : 'anonimiXrisi']();
+	Proklisi[pd.isXristis() ? 'eponimiXrisi' : 'anonimiXrisi']();
 });
-
-Proklisi.isLogin = () => {
-	console.log(php);
-	return php._SESSION.hasOwnProperty('xristis');
-};
 
 Proklisi.eponimiXrisi = () => {
 	Proklisi.
@@ -517,6 +513,7 @@ Proklisi.enotitaActivate = (enotitaDOM) => {
 	enotitaDOM.
 	finish().
 	addClass('proklisiEnotitaActive').
+	css('display', 'block').
 	animate({
 		'height': h + 'px',
 		'opacity': 1,

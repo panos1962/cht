@@ -137,8 +137,11 @@ Proklisi.isodosAstinomikosCheckData = (paletaDOM) => {
 		Proklisi.menuTabStatus(astinomikosDOM.
 		data('astinomikosData', astinomikos), 'success');
 		Proklisi.menuTabFyi(astinomikosDOM, astinomikos.onomateponimo);
-		Proklisi.passwordTabDOM.css('visibility', '');
-		Proklisi.passwordTabDOM.trigger('click');
+
+		Proklisi.passwordTabDOM.
+		css('visibility', '').
+		trigger('click');
+
 		return Proklisi;
 	}
 
@@ -168,8 +171,8 @@ Proklisi.isodosPasswordSetup = () => {
 	data('fyi', 'Πληκτρολογήστε το password').
 	append(pd.paleta({
 		'paleta': [
-			pd.paletaList['greek'],
 			pd.paletaList['latin'],
+			pd.paletaList['symbols'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'scribe': Proklisi.isodosAstinomikosScribe,
@@ -181,14 +184,60 @@ Proklisi.isodosPasswordSetup = () => {
 };
 
 Proklisi.isodosPasswordExec = () => {
-	Proklisi.isodosAstinomikosDOM.css('display', 'block');
 	Proklisi.enotitaActivate(Proklisi.isodosPasswordDOM);
 	return Proklisi;
 };
 
-Proklisi.isodosPasswordCheckData = () => {
-	self.location = self.location + '&xristis=panos';
+Proklisi.isodosPasswordCheckData = (paletaDOM) => {
+	let xristis = Proklisi.isodosXristisGet();
+	if (!xristis) {
+		pd.fyiError('Ακαθόριστα στοιχεία χρήστη');
+		return Proklisi;
+	}
+
+	xristis.kodikos = paletaDOM.data('text');
+	$.post({
+		'url': '../../lib/prosvasi.php',
+		'type': 'POST',
+		'dataType': 'text',
+		'data': xristis,
+
+		'success': (rsp) => {
+			if (rsp)
+			return pd.fyiError(rsp);
+
+			let url = 'http://';
+			url += php.serverGet('HTTP_HOST');
+			url += php.serverGet('PHP_SELF');
+
+			let qs = php.serverGet('QUERY_STRING');
+
+			if (qs)
+			url += '?' + qs;
+
+			window.location = url;
+		},
+
+		'error': (err) => {
+console.error(err);
+			pd.fyiError('>>>>>Ανεπιτυχής έλεγχος πρόσβασης');
+		},
+	});
+
 	return Proklisi;
+};
+
+Proklisi.isodosXristisGet = () => {
+	let xristis = Proklisi.astinomikosTabDOM.
+	data('astinomikosData');
+
+	if (xristis)
+	return {
+		'idos': 'dimas',
+		'login': xristis.kodikos,
+	};
+
+	return undefined;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@

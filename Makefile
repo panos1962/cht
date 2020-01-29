@@ -40,6 +40,7 @@ git:
 	make -s status
 	make -s commit
 	make -s push
+	echo '#####################################################'
 	make -s status
 	make -s commit
 	make -s push

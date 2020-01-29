@@ -26,6 +26,15 @@
 
 require_once("../../../local/conf.php");
 require_once(CHT_BASEDIR . "/lib/chtClient.php");
+session_start();
+
+$xristis = pandora::parameter_get("xristis");
+
+if (isset($xristis) && $xristis)
+$_SESSION["xristis"] = $xristis;
+
+else
+unset($_SESSION["xristis"]);
 
 pandora::
 document_head([

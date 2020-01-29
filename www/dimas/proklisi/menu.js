@@ -4,8 +4,9 @@ const pd =
 require('../../../mnt/pandora/lib/pandoraClient.js');
 
 module.exports = function(Proklisi) {
-
 ///////////////////////////////////////////////////////////////////////////////@
+
+Proklisi.param.menuShrinkDuration = 300;
 
 Proklisi.menuActivate = (menuDOM) => {
 	pd.bodyDOM.
@@ -39,9 +40,18 @@ Proklisi.menuActivate = (menuDOM) => {
 		e.stopPropagation();
 		Proklisi.menuRise(menuDOM);
 	});
+
+	return Proklisi;
 };
 
 Proklisi.menuRise = (menuDOM) => {
+	pd.fyiDOM.
+	finish().
+	fadeTo(Proklisi.param.menuShrinkDuration, 0, function() {
+		pd.fyiMessage(menuDOM.data('fyi'));
+		pd.fyiDOM.css('opacity', 1);
+	});
+
 	$('.proklisiEnotitaActive').
 	not('.prosklisiMenu').
 	finish().
@@ -60,6 +70,8 @@ Proklisi.menuRise = (menuDOM) => {
 		'height': menuDOM.data('height') + 'px',
 		'opacity': 1,
 	}, Proklisi.param.menuShrinkDuration);
+
+	return Proklisi;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@

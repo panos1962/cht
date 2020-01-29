@@ -239,6 +239,13 @@ Proklisi.klisi.prototype.klisiOximaDOM = function(klisiDOM) {
 	append(Proklisi.klisi.klisiPedioDOM('Χρώμα', oxima.xromaGet())).
 	append(Proklisi.klisi.klisiPedioDOM('Τύπος', oxima.tiposGet())));
 
+	let x = oxima.katastasiGet();
+
+	if (x !== 'ΚΙΝΗΣΗ')
+	klisiDOM.
+	append(Proklisi.klisi.klisiPedioDOM('Κατάσταση', x).
+	addClass('proklisiKlisiAlert'));
+
 	return this;
 };
 
@@ -254,7 +261,7 @@ Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
 	katoxos = this.oxima.katoxos[katoxos - 1];
 
 	let enotitaDOM = $('<div>').
-	addClass('proklisiKlisiEnotitaPrivate').
+	addClass('proklisiKlisiProtected').
 	appendTo(klisiDOM);
 
 	enotitaDOM.
@@ -262,7 +269,7 @@ Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
 	enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΚΥΡΙΟΥ ΚΑΤΟΧΟΥ'));
 
 	let dataDOM = Proklisi.klisi.enotitaDOM().
-	addClass('proklisiKlisiEnotitaPrivate').
+	addClass('proklisiKlisiProtected').
 	appendTo(enotitaDOM);
 
 	dataDOM.
@@ -303,8 +310,9 @@ Proklisi.klisi.klisiPedioDOM = (label, data) => {
 
 Proklisi.klisi.klisiLabelDOM = (label) => {
 	return $('<td>').
+	append($('<div>').
 	addClass('proklisiKlisiLabel').
-	html(label);
+	html(label));
 };
 
 Proklisi.klisi.klisiDataDOM = (data) => {

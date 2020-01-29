@@ -53,14 +53,9 @@ require('../../../lib/dimasCore.js');
 
 const Proklisi = {};
 
-require('./menu.js')(Proklisi);
-require('./isodos.js')(Proklisi);
-require('./klisi.js')(Proklisi);
-
 Proklisi.param = {
 	'oximaServerHost': 'http://' + php.serverGet('HTTP_HOST'),
 	'oximaServerPort': 8001,
-	'menuShrinkDuration': 300,
 	'dimas': {
 		'ota': 'ΔΗΜΟΣ ΘΕΣΣΑΛΟΝΙΚΗΣ',
 		'ipiresia': 'ΔΙΕΥΘΥΝΣΗ ΔΗΜΟΤΙΚΗΣ ΑΣΤΥΝΟΜΙΑΣ',
@@ -70,6 +65,10 @@ Proklisi.param = {
 
 Proklisi.param.oximaServerUrl = Proklisi.param.oximaServerHost +
 	':' + Proklisi.param.oximaServerPort;
+
+require('./menu.js')(Proklisi);
+require('./isodos.js')(Proklisi);
+require('./klisi.js')(Proklisi);
 
 ///////////////////////////////////////////////////////////////////////////////@
 
@@ -88,8 +87,7 @@ pd.domInit(() => {
 
 Proklisi.isLogin = () => {
 	console.log(php);
-return true;
-return false;
+	return php._SESSION.hasOwnProperty('xristis');
 };
 
 Proklisi.eponimiXrisi = () => {
@@ -277,7 +275,8 @@ Proklisi.oximaSetup = () => {
 		'change': Proklisi.oximaGetData,
 	});
 
-	Proklisi.oximaDOM = Proklisi.enotitaDOM();
+	Proklisi.oximaDOM = Proklisi.enotitaDOM().
+	data('fyi', 'Πληκτρολογήστε τον αρ. κυκλοφορίας οχήματος');
 
 	Proklisi.oximaDOM.
 	append(Proklisi.oximaPaletaDOM);
@@ -343,6 +342,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 
 Proklisi.toposSetup = () => {
 	Proklisi.toposDOM = Proklisi.enotitaDOM().
+	data('fyi', 'Πληκτρολογήστε το όνομα της οδού').
 	append(pd.paleta({
 		'paleta': [
 			pd.paletaList['greek'],
@@ -353,7 +353,7 @@ Proklisi.toposSetup = () => {
 		'scribe': Proklisi.toposScribe,
 		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.toposCheckData,
-		'helper': true,
+		'helper': 'Πληκτρολογήστε τον αριθμό',
 	}));
 
 	return Proklisi;
@@ -409,8 +409,16 @@ Proklisi.toposScribe = (paletaDOM) => {
 
 	let zoom = paletaDOM.data('zoom');
 
+	/*
+	XXX
+	Αρχικά υπήρχε ο σχεδιασμός να περιορίζεται το output σε κάποιο
+	συγκεκριμένο πλήθος εγγραφών, αλλά μάλλον κάτι τέτοιο δημιουργεί
+	περισσότερα προβλήματα από όσα λύνει. Αν δεν παρουσιαστούν νέες
+	δυσκολίες θα απαλείψουμε τελείως την παράμετρο "zoom".
+
 	if (match.length > zoom)
 	return pd;
+	*/
 
 	zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
 	pd.arrayWalk(match, (x) => {
@@ -443,6 +451,7 @@ Proklisi.toposCheckData = (paletaDOM) => {
 
 Proklisi.paravidosSetup = () => {
 	Proklisi.paravidosDOM = Proklisi.enotitaDOM().
+	data('fyi', 'Πληκτρολογήστε τη διάταξη ή την περιγραφή της παράβασης').
 	append(pd.paleta({
 		'paleta': [
 			pd.paletaList['greek'],
@@ -593,6 +602,7 @@ Proklisi.enotitaActivate = (enotitaDOM) => {
 		'opacity': 1,
 	}, Proklisi.param.menuShrinkDuration, function() {
 		$(this).css('height', 'auto');
+		pd.fyiMessage(enotitaDOM.data('fyi'));
 	});
 
 	// Αν υπάρχει παλέτα στο επιλεγμένο menu tab την ενεργοποιούμε

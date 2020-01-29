@@ -40,8 +40,18 @@
 	border-color: transparent;
 }
 
-.proklisiKlisiEnotitaPrivate {
+.proklisiKlisiProtected {
+	background-color: #f1f1f1;
+}
+
+.proklisiKlisiAlert {
+	color: red;
 	background-color: yellow;
+}
+
+.proklisiKlisiAlert::after {
+	content: '\2753\2757';
+	margin-left: 4px;
 }
 
 /*////////////////////////////////////////////////////////////////////////////*/

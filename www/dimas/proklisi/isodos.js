@@ -25,11 +25,12 @@ Proklisi.menuIsodosSetup = () => {
 	append(Proklisi.ipalilosTabDOM = $('<div>').
 	data('exec', Proklisi.isodosIpalilosExec).
 	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Είσοδος με κωδικό ΟΠΣΟΥ'))).
 
 	append(Proklisi.xristisTabDOM = $('<div>').
-	data('exec', Proklisi.isidosXristisExec).
+	data('exec', Proklisi.isodosXristisExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
@@ -48,6 +49,7 @@ Proklisi.menuIsodosSetup = () => {
 
 Proklisi.isodosAstinomikosSetup = () => {
 	Proklisi.isodosAstinomikosDOM = Proklisi.enotitaDOM().
+	data('fyi', 'Πληκτρολογήστε κωδικό/όνομα δημοτικού αστυνομικού').
 	append(pd.paleta({
 		'paleta': [
 			pd.paletaList['greek'],
@@ -57,7 +59,6 @@ Proklisi.isodosAstinomikosSetup = () => {
 		'scribe': Proklisi.isodosAstinomikosScribe,
 		'submit': () => Proklisi.menuRise(Proklisi.menuIsodosDOM),
 		'change': Proklisi.isodosAstinomikosCheckData,
-		'zoom': 1000,
 	}));
 
 	return Proklisi;

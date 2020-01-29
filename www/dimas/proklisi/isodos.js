@@ -34,7 +34,17 @@ Proklisi.menuIsodosSetup = () => {
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Είσοδος με όνομα χρήστη'))));
+	html('Είσοδος με όνομα χρήστη')))).
+
+	append($('<div>').addClass('proklisiMenuLine').
+
+	append(Proklisi.passwordTabDOM = $('<div>').
+	data('exec', Proklisi.isodosPasswordExec).
+	addClass('proklisiMenuTab').
+	css('visibility', 'hidden').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Εισαγωγή μυστικού κωδικού'))));
 
 	Proklisi.menuIsodosDOM.
 	appendTo(pd.ofelimoDOM);
@@ -127,13 +137,14 @@ Proklisi.isodosAstinomikosCheckData = (paletaDOM) => {
 		Proklisi.menuTabStatus(astinomikosDOM.
 		data('astinomikosData', astinomikos), 'success');
 		Proklisi.menuTabFyi(astinomikosDOM, astinomikos.onomateponimo);
-		Proklisi.isodosPasswordExec();
+		Proklisi.passwordTabDOM.css('visibility', '');
 		return Proklisi;
 	}
 
 	Proklisi.menuTabStatus(astinomikosDOM.
 	removeData('astinomikosData'),  'clear');
 	Proklisi.menuTabFyi(astinomikosDOM);
+	Proklisi.passwordTabDOM.css('visibility', 'hidden');
 
 	return Proklisi;
 };

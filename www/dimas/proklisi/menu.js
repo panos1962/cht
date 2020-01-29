@@ -74,5 +74,73 @@ Proklisi.menuRise = (menuDOM) => {
 	return Proklisi;
 };
 
+Proklisi.menuBarDOM = () => {
+	let menuBarDOM = $('<div>').
+	addClass('proklisiMenuBar').
+	text('Αρχικό Μενού Επιλογών');
+
+	return menuBarDOM;
+};
+
+Proklisi.menuTabStatus = (menuTabDOM, status) => {
+	menuTabDOM.
+	removeClass('proklisiMenuTabBusy').
+	removeClass('proklisiMenuTabSuccess').
+	removeClass('proklisiMenuTabError').
+	children('.proklisiMenuTabStatusIcon').
+	remove();
+
+	switch (status) {
+	case 'busy':
+		menuTabDOM.
+		addClass('proklisiMenuTabBusy').
+		append($('<img>').
+		addClass('proklisiMenuTabStatusIcon').
+		attr('src', '../../images/busy.gif'));
+		break;
+	case 'success':
+		menuTabDOM.
+		addClass('proklisiMenuTabSuccess').
+		append($('<img>').
+		addClass('proklisiMenuTabStatusIcon').
+		attr('src', '../../images/success.png'));
+		break;
+	case 'error':
+		menuTabDOM.
+		addClass('proklisiMenuTabError').
+		append($('<img>').
+		addClass('proklisiMenuTabStatusIcon').
+		attr('src', '../../images/error.png'));
+		break;
+	}
+
+	return Proklisi;
+};
+
+Proklisi.menuTabFyi = (menuTabDOM, msg) => {
+	let labelDOM = menuTabDOM.children('.proklisiMenuTabLabel');
+	let fyiDOM = menuTabDOM.children('.proklisiMenuTabFyi');
+
+	labelDOM.css('display', 'none');
+	fyiDOM.css('display', 'none').
+	removeClass('proklisiMenuTabFyiError');
+
+	if (!msg) {
+		fyiDOM.empty();
+		labelDOM.css('display', 'block');
+		return Proklisi;
+	}
+
+	fyiDOM.css('display', 'block').text(msg);
+	return Proklisi;
+};
+
+Proklisi.menuTabFyiError = (menuTabDOM, msg) => {
+	Proklisi.menuTabFyi(menuTabDOM, msg);
+	menuTabDOM.children('.proklisiMenuTabFyi').
+	addClass('proklisiMenuTabFyiError');
+	return Proklisi;
+};
+
 ///////////////////////////////////////////////////////////////////////////////@
 };

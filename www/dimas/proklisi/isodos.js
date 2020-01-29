@@ -138,6 +138,7 @@ Proklisi.isodosAstinomikosCheckData = (paletaDOM) => {
 		data('astinomikosData', astinomikos), 'success');
 		Proklisi.menuTabFyi(astinomikosDOM, astinomikos.onomateponimo);
 		Proklisi.passwordTabDOM.css('visibility', '');
+		Proklisi.passwordTabDOM.trigger('click');
 		return Proklisi;
 	}
 
@@ -180,12 +181,13 @@ Proklisi.isodosPasswordSetup = () => {
 };
 
 Proklisi.isodosPasswordExec = () => {
+	Proklisi.isodosAstinomikosDOM.css('display', 'block');
 	Proklisi.enotitaActivate(Proklisi.isodosPasswordDOM);
 	return Proklisi;
 };
 
 Proklisi.isodosPasswordCheckData = () => {
-	self.location = self.location + '?xristis=panos';
+	self.location = self.location + '&xristis=panos';
 	return Proklisi;
 };
 

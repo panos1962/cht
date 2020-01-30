@@ -1,3 +1,29 @@
+/*******************************************************************************
+
+@BEGIN
+
+@COPYRIGHT BEGIN
+Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+@COPYRIGHT END
+
+@FILETYPE BEGIN
+css
+@FILETYPE END
+
+@FILE BEGIN
+www/dimas/proklisi/main.css —— Αρχείο προδιαγραφών CSS για το πρόγραμμα
+καταχώρησης και επεξεργασίας προ-κλήσεων.
+@FILE END
+
+@HISTORY BEGIN
+Updated: 2020-01-30
+Created: 2019-12-25
+@HISTORY END
+
+@END
+
+*******************************************************************************/
+
 body {
 	width: 700px;
 }

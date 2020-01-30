@@ -1,3 +1,34 @@
+///////////////////////////////////////////////////////////////////////////////@
+//
+// @BEGIN
+//
+// @COPYRIGHT BEGIN
+// Copyright (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+// @COPYRIGHT END
+//
+// @FILETYPE BEGIN
+// javascipt
+// @FILETYPE END
+//
+// @FILE BEGIN
+// www/dimas/proklisi/isodos.js —— Πρόγραμμα οδήγησης σελίδας εισόδου στο
+// πρόγραμμα δημιουργίας και επεξεργασίας προ-κλήσεων.
+// @FILE END
+//
+// @DESCRIPTION BEGIN
+// Το παρόν πρόγραμμα οδηγεί τη σελίδα καταχώρησης συνθηματικών εισόδου στο
+// πρόγραμμα δημιουργίας και επεξεργασίας προ-κλήσεων.
+// @DESCRIPTION END
+//
+// @HISTORY BEGIN
+// Updated: 2020-01-30
+// Created: 2020-01-29
+// @HISTORY END
+//
+// @END
+//
+///////////////////////////////////////////////////////////////////////////////@
+
 "use strict";
 
 const pd =

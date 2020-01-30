@@ -21,6 +21,8 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-30
+// Updated: 2020-01-29
 // Updated: 2020-01-16
 // Created: 2020-01-12
 // @HISTORY END
@@ -29,7 +31,7 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
-define("SESSION_IDOS_XRISTI", "idos_xristi");
+define("CHT_SESSION_IDOS_XRISTI", "cht_idos_xristi");
 
 if (!class_exists("pandoraCore"))
 require_once(PANDORA_BASEDIR . "lib/pandoraCore.php");

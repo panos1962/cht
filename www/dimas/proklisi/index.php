@@ -17,18 +17,13 @@
 // @FILE END
 //
 // @HISTORY BEGIN
+// updated: 2020-01-29
 // Created: 2020-01-22
 // @HISTORY END
 //
 // @END
 //
 ///////////////////////////////////////////////////////////////////////////////@
-/*
-print "<html><body><pre><code>";
-print_r($_SERVER);
-print "</code></pre></body></html>";
-exit(0);
-*/
 
 require_once("../../../local/conf.php");
 require_once(CHT_BASEDIR . "/lib/chtClient.php");

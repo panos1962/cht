@@ -1,3 +1,39 @@
+///////////////////////////////////////////////////////////////////////////////@
+//
+// @BEGIN
+//
+// @COPYRIGHT BEGIN
+// Copyright (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+// @COPYRIGHT END
+//
+// @FILETYPE BEGIN
+// javascipt
+// @FILETYPE END
+//
+// @FILE BEGIN
+// www/dimas/proklisi/menu.js —— Δομές και functions που αφορούν στη διαχείριση
+// των menu του προγράμματος καταχώρησης και επεξεργασίας προ-κλήσεων.
+// @FILE END
+//
+// @DESCRIPTION BEGIN
+// Στο παρόν αρχείο ορίζονται δομές και functions που αφορούν στην καθολική
+// συμπεριφορά του προγράμματος καταχώρησης και επεξεργασίας προ-κλήσεων.
+// @DESCRIPTION END
+//
+// @HISTORY BEGIN
+// Updated: 2020-01-30
+// Updated: 2020-01-27
+// Updated: 2020-01-26
+// Updated: 2020-01-25
+// Updated: 2020-01-24
+// Updated: 2020-01-23
+// Created: 2020-01-22
+// @HISTORY END
+//
+// @END
+//
+///////////////////////////////////////////////////////////////////////////////@
+
 "use strict";
 
 const pd =

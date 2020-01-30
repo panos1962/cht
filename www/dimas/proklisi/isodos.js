@@ -27,7 +27,7 @@ Proklisi.menuIsodosSetup = () => {
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Είσοδος με κωδικό ΟΠΣΟΥ'))).
+	html('Είσοδος Α.Μ. Υπαλλήλου'))).
 
 	append(Proklisi.xristisTabDOM = $('<div>').
 	data('exec', Proklisi.isodosXristisExec).

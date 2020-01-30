@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-01-30
 // Updated: 2020-01-27
 // Updated: 2020-01-26
 // Updated: 2020-01-25
@@ -81,7 +82,6 @@ pd.domInit(() => {
 	ribbonSetup().
 	domFixup().
 	noop();
-console.log(pd.isXristis());
 
 	Proklisi[pd.isXristis() ? 'eponimiXrisi' : 'anonimiXrisi']();
 });
@@ -93,6 +93,7 @@ Proklisi.eponimiXrisi = () => {
 	oximaSetup().
 	toposSetup().
 	paravidosSetup().
+	kirosiSetup().
 	episkopisiSetup().
 	exodosSetup().
 	odosLoad([
@@ -168,6 +169,13 @@ Proklisi.menuKlisiSetup = () => {
 	html('Επισκόπηση')))).
 
 	append($('<div>').addClass('proklisiMenuLine').
+
+	append(Proklisi.kirosiTabDOM = $('<div>').
+	data('exec', Proklisi.kirosiExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Κυρώσεις &amp; Πρόστιμα'))).
 
 	append(Proklisi.exodosTabDOM = $('<div>').
 	data('exec', Proklisi.exodosExec).
@@ -473,6 +481,13 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 	removeData('paravidosData'),  'clear');
 	Proklisi.menuTabFyi(paravidosDOM);
 
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+Proklisi.kirosiSetup = () => {
+	Proklisi.kirosiDOM = Proklisi.enotitaDOM();
 	return Proklisi;
 };
 

@@ -94,6 +94,7 @@ Proklisi.eponimiXrisi = () => {
 	toposSetup().
 	paravidosSetup().
 	episkopisiSetup().
+	exodosSetup().
 	odosLoad([
 		Proklisi.paravidosLoad,
 		Proklisi.astinomikosLoad,
@@ -164,7 +165,16 @@ Proklisi.menuKlisiSetup = () => {
 	data('exec', Proklisi.episkopisiExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Επισκόπηση'))));
+	html('Επισκόπηση')))).
+
+	append($('<div>').addClass('proklisiMenuLine').
+
+	append(Proklisi.exodosTabDOM = $('<div>').
+	data('exec', Proklisi.exodosExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Έξοδος'))));
 
 	Proklisi.menuKlisiDOM.
 	appendTo(pd.ofelimoDOM);
@@ -483,6 +493,44 @@ Proklisi.episkopisiExec = () => {
 	append((new Proklisi.klisi()).klisiDOM());
 
 	Proklisi.enotitaActivate(Proklisi.episkopisiDOM);
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+Proklisi.exodosSetup = () => {
+	Proklisi.exodosDOM = Proklisi.enotitaDOM();
+
+	Proklisi.exodosKlisiDOM = $('<div>').
+	appendTo(Proklisi.exodosDOM);
+
+	Proklisi.exodosKlisiDOM.
+	append(Proklisi.basicTabDOM = $('<div>').
+	data('exec', Proklisi.exodosConfirmExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Επιβεβαίωση Εξόδου')));
+
+	return Proklisi;
+};
+
+Proklisi.exodosExec = () => {
+	Proklisi.enotitaActivate(Proklisi.exodosDOM);
+	return Proklisi;
+};
+
+Proklisi.exodosConfirmExec = () => {
+	$.post({
+		'url': '../../lib/exodos.php',
+		'success': () => {
+			window.location = self.location;
+		},
+		'error': (err) => {
+			console.error(err);
+			pd.fyiError('Αποτυχία εξόδου');
+		},
+	});
+
 	return Proklisi;
 };
 

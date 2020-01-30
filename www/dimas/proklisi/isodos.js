@@ -219,8 +219,8 @@ Proklisi.isodosPasswordCheckData = (paletaDOM) => {
 		},
 
 		'error': (err) => {
-console.error(err);
-			pd.fyiError('>>>>>Ανεπιτυχής έλεγχος πρόσβασης');
+			console.error(err);
+			pd.fyiError('Ανεπιτυχής έλεγχος πρόσβασης');
 		},
 	});
 

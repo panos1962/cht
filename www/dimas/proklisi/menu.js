@@ -16,8 +16,12 @@ Proklisi.menuActivate = (menuDOM) => {
 		if (!$(this).data('exec'))
 		return;
 
-		$('.proklisiMenuTab').addClass('proklisiMenuTabAtono');
-		$(this).addClass('proklisiMenuTabCandi');
+		$('.proklisiMenuTab').
+		addClass('proklisiMenuTabAtono');
+
+		$(this).
+		removeClass('proklisiMenuTabAtono').
+		addClass('proklisiMenuTabCandi');
 	}).
 	on('mouseleave', '.proklisiMenuTab', function(e) {
 		e.stopPropagation();

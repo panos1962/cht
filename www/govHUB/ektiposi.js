@@ -1,13 +1,27 @@
 ///////////////////////////////////////////////////////////////////////////////@
 //
-// @>Copyright<@ (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+// @BEGIN
 //
-// File: www/govHUB/ektiposi.js
+// @COPYRIGHT BEGIN
+// Copyright (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+// @COPYRIGHT END
 //
-// Description: Το παρόν οδηγεί τη σελίδα εκτυπώσεων/εξαγωγών
-// στοιχείων οχημάτων, κατόχων οχημάτων, νομικών και φυσικών προσώπων που
-// συλλέγει η σχετική σελίδα αναζήτησης (www/govHUB/main.js).
-
+// @FILETYPE BEGIN
+// javascript
+// @FILETYPE END
+//
+// @FILE BEGIN
+// www/govHUB/ektiposi.js —— Πρόγραμμα οδήγησης σελίδας εκτύπωσης αποτελεσμάτων
+// αναζήτησης στοιχείων οχημάτων, κατόχων οχημάτων, φυσικών και νομικών προσώπων
+// μέσω της πλατφόρμας "govHUB".
+// @FILE END
+//
+// @HISTORY BEGIN
+// Updated: 2020-01-31
+// Created: 2020-01-05
+// @HISTORY END
+//
+// @END
 //
 ///////////////////////////////////////////////////////////////////////////////@
 

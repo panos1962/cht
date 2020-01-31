@@ -106,6 +106,19 @@ COMMIT WORK
 
 -------------------------------------------------------------------------------@
 
+\! echo "Creating users…" >[[MONITOR]]
+
+DROP USER IF EXISTS '[[USERNAME]]'@'localhost'
+;
+
+CREATE USER '[[USERNAME]]'@'localhost' IDENTIFIED BY '[[USERPASS]]'
+;
+
+COMMIT WORK
+;
+
+-------------------------------------------------------------------------------@
+
 \! echo "Granting permissions…" >[[MONITOR]]
 
 GRANT SELECT, INSERT, UPDATE, DELETE

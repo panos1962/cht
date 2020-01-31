@@ -69,8 +69,8 @@ class Prosvasi {
 
 	public static function check() {
 		self::$idos = $_POST["idos"];
-		self::$login = pandora::sql_string($_POST["login"]);
-		self::$kodikos = pandora::sql_string(sha1($_POST["kodikos"]));
+		self::$login = $_POST["login"];
+		self::$kodikos = $_POST["kodikos"];
 
 		switch (self::$idos) {
 		case "dimas":
@@ -92,10 +92,13 @@ class Prosvasi {
 	}
 
 	private static function check_dimas() {
+		$slogin = pandora::sql_string(self::$login);
+		$skodikos = sha1(self::$kodikos);
+
 		$query = "SELECT `onomateponimo` " .
 			"FROM `dimas`.`astinomikos` " .
-			"WHERE (`kodikos` = " . self::$login . ") " .
-			"AND (`password` = " . self::$kodikos  .") " .
+			"WHERE (`kodikos` = " . $slogin . ") " .
+			"AND (`password` = '" . $skodikos  ."') " .
 			"AND (`anenergos` IS NULL) " .
 			"LIMIT 1";
 		return pandora::first_row($query, MYSQLI_NUM);

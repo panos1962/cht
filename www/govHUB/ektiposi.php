@@ -7,8 +7,9 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
+require_once("../../local/conf.php");
 require_once("../lib/cht.php");
-require_once("../mnt/pandora/lib/pandora.php");
+require_once("../../mnt/pandora/lib/pandoraClient.php");
 
 pandora::
 document_head([

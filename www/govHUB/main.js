@@ -82,8 +82,8 @@ w3gh.resultCount = 0;
 ///////////////////////////////////////////////////////////////////////////////@
 
 pd.domInit(() => {
-	let bodyHTML = pd.bodyDOM.html();
-	pd.bodyDOM.empty().css('display', 'block');
+	let tmpHTML = $('#tmp');
+	pd.bodyDOM.empty();
 
 	pd.
 	domSetup().
@@ -93,7 +93,8 @@ pd.domInit(() => {
 	ribbonSetup().
 	domFixup();
 
-	pd.ofelimoDOM.append(bodyHTML);
+	pd.ofelimoDOM.append(tmpHTML);
+	tmpHTML.css('display', 'block');
 
 	w3gh.
 	formSetup().

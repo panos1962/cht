@@ -49,6 +49,7 @@ pandora::
 document_head()::
 document_body();
 ?>
+<div id="tmp">
 <div id="inputRegion">
 <form class="pandoraForma">
 <table>
@@ -97,6 +98,7 @@ GovHUB::section_prosopo();
 </div>
 
 <div id="resultsRegion">
+</div>
 </div>
 <?php
 pandora::document_close();

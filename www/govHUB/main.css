@@ -18,9 +18,12 @@
 */
 
 body {
-	display: none;
 	font-size: 18px;
 	font-family: Georgia, serif;
+}
+
+#tmp {
+	display: none;
 }
 
 form {

@@ -47,6 +47,7 @@ rpt.tmpfiles = [];
 ///////////////////////////////////////////////////////////////////////////////@
 
 $(document).ready(() => {
+console.log('asdasdasd');
 	rpt.bodyDOM = $(document.body);
 	rpt.formatOxima = w3gh.formatDOM.val();
 
@@ -127,6 +128,7 @@ rpt.resultsSetup = () => {
 };
 
 rpt.exec = () => {
+console.log(php);
 	rpt.
 	ektiposiOxima().
 	ektiposiProsopo();
@@ -180,6 +182,7 @@ rpt.ektiposiOxima = () => {
 	append($('<th>').text('ΠΕΡΙΟΧΗ'));
 
 	w3gh.resultsDOM.children('.RSLT_oxima').each(function() {
+console.log('>>>');
 		try {
 			let t = main.$(this).data('reqData');
 			let x = main.$(this).data('resData');

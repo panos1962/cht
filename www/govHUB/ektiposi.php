@@ -16,8 +16,9 @@ document_head([
 	"title" => "Εκτύπωση",
 	"css" => "ektiposi",
 	"favicon" => "../images/favicon-96x96.png",
-	"script" => "ektiposi",
 ])::
 document_body()::
-document_close();
+document_close([
+	"script" => "ektiposi",
+]);
 ?>

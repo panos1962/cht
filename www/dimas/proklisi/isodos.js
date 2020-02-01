@@ -120,13 +120,18 @@ Proklisi.isodosAstinomikosScribe = (paletaDOM) => {
 
 	let re = '';
 
-	if (paletaDOM.data('zoomStrict'))
-	re += '^';
+	if (paletaDOM.data('zoomMode') === 'ZOOMSTRICT')
+	re = text;
 
-	re += list.shift();
-	pd.arrayWalk(list, (c) => {
-		re += '.*' + c;
-	});
+	else {
+		if (paletaDOM.data('zoomMode') === 'ZOOMMEDIUM')
+		re += '^';
+
+		re += list.shift();
+		pd.arrayWalk(list, (c) => {
+			re += '.*' + c;
+		});
+	}
 
 	let match = [];
 

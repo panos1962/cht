@@ -325,13 +325,18 @@ Proklisi.toposScribe = (paletaDOM) => {
 
 	let re = '';
 
-	if (paletaDOM.data('zoomStrict'))
-	re += '^';
+	if (paletaDOM.data('zoomMode') === 'ZOOMSTRICT')
+	re = text;
 
-	re += list.shift();
-	pd.arrayWalk(list, (c) => {
-		re += '.*' + c;
-	});
+	else {
+		if (paletaDOM.data('zoomMode') === 'ZOOMMEDIUM')
+		re += '^';
+
+		re += list.shift();
+		pd.arrayWalk(list, (c) => {
+			re += '.*' + c;
+		});
+	}
 
 	let match = [];
 
@@ -397,6 +402,7 @@ Proklisi.paravidosSetup = () => {
 		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.paravidosCheckData,
 		'zoom': true,
+		'zoomMode': 'ZOOMSTRICT',
 		'text': 'Α',
 	}));
 
@@ -423,13 +429,18 @@ Proklisi.paravidosScribe = (paletaDOM) => {
 
 	let re = '';
 
-	if (paletaDOM.data('zoomStrict'))
-	re += '^';
+	if (paletaDOM.data('zoomMode') === 'ZOOMSTRICT')
+	re = text;
 
-	re += list.shift();
-	pd.arrayWalk(list, (c) => {
-		re += '.*' + c;
-	});
+	else {
+		if (paletaDOM.data('zoomMode') === 'ZOOMMEDIUM')
+		re += '^';
+
+		re += list.shift();
+		pd.arrayWalk(list, (c) => {
+			re += '.*' + c;
+		});
+	}
 
 	let match = [];
 

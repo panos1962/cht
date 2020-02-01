@@ -220,7 +220,7 @@ Proklisi.enotitaActivate = (enotitaDOM) => {
 		pd.fyiMessage(enotitaDOM.data('fyi'));
 	});
 
-	// Αν υπάρχει παλέτα στο επιλεγμένο menu tab την ενεργοποιούμε
+	// Αν υπάρχει παλέτα στο επιλεγμένο menutab την ενεργοποιούμε
 	// κυρίως για να έχουμε focus στο σχετικό input field, εφόσον
 	// αυτό εμφανίζεται.
 

@@ -114,6 +114,7 @@ Proklisi.anonimiXrisi = () => {
 		() => Proklisi.menuActivate(Proklisi.menuIsodosDOM),
 	]);
 
+	Proklisi.menuRise(Proklisi.menuIsodosDOM);
 	return Proklisi;
 };
 

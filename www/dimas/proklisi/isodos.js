@@ -39,6 +39,7 @@ module.exports = function(Proklisi) {
 
 Proklisi.menuIsodosSetup = () => {
 	Proklisi.menuIsodosDOM = $('<div>').
+	data('fyi', 'Επιλέξτε μέθοδο πιστοποίησης').
 	addClass('proklisiMenu').
 	addClass('proklisiEnotita').
 	addClass('proklisiEnotitaActive').

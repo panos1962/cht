@@ -87,7 +87,6 @@ Proklisi.menuActivate = (menuDOM) => {
 Proklisi.menuRise = (menuDOM) => {
 	let fyi = menuDOM.data('fyi');
 
-	if (fyi)
 	pd.fyiDOM.
 	finish().
 	fadeTo(Proklisi.param.menuShrinkDuration, 0, function() {

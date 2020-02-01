@@ -552,51 +552,6 @@ Proklisi.exodosConfirmExec = () => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-Proklisi.enotitaDOM = () => {
-	let enotitaDOM = $('<div>').
-	addClass('proklisiEnotita').
-	appendTo(pd.ofelimoDOM);
-
-	enotitaDOM.
-	append(Proklisi.menuBarDOM());
-
-	return enotitaDOM;
-};
-
-Proklisi.enotitaActivate = (enotitaDOM) => {
-	let active = $('.proklisiEnotitaActive');
-	let h = (active.length ? $(active[0]).innerHeight() : 0);
-
-	active.
-	finish().
-	animate({
-		'height': '0px',
-		'opacity': 0,
-	}, Proklisi.param.menuShrinkDuration);
-
-	enotitaDOM.
-	finish().
-	addClass('proklisiEnotitaActive').
-	css('display', 'block').
-	animate({
-		'height': h + 'px',
-		'opacity': 1,
-	}, Proklisi.param.menuShrinkDuration, function() {
-		$(this).css('height', 'auto');
-		pd.fyiMessage(enotitaDOM.data('fyi'));
-	});
-
-	// Αν υπάρχει παλέτα στο επιλεγμένο menu tab την ενεργοποιούμε
-	// κυρίως για να έχουμε focus στο σχετικό input field, εφόσον
-	// αυτό εμφανίζεται.
-
-	pd.paletaActivate(enotitaDOM.find('.pandoraPaleta').first());
-
-	return Proklisi;
-};
-
-///////////////////////////////////////////////////////////////////////////////@
-
 Proklisi.odosLoad = (chain) => {
 	let next = chain.shift();
 

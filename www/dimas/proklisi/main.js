@@ -357,6 +357,9 @@ Proklisi.toposScribe = (paletaDOM) => {
 		return pd;
 	}
 
+	paletaDOM.data('match', match);
+	paletaDOM.removeData('matchPointer');
+
 	if (!match.length)
 	return pd;
 
@@ -402,7 +405,6 @@ Proklisi.paravidosSetup = () => {
 		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.paravidosCheckData,
 		'zoom': true,
-		'zoomMode': 'ZOOMSTRICT',
 		'text': 'Α',
 	}));
 
@@ -462,6 +464,9 @@ Proklisi.paravidosScribe = (paletaDOM) => {
 	catch (e) {
 		return pd;
 	}
+
+	paletaDOM.data('match', match);
+	paletaDOM.removeData('matchPointer');
 
 	if (!match.length)
 	return pd;

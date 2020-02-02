@@ -78,6 +78,9 @@ Proklisi.menuIsodosSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Εισαγωγή μυστικού κωδικού'))));
 
+	Proklisi.menuTabStatus(Proklisi.ipalilosTabDOM, 'inactive');
+	Proklisi.menuTabStatus(Proklisi.xristisTabDOM, 'inactive');
+
 	Proklisi.menuIsodosDOM.
 	appendTo(pd.ofelimoDOM);
 

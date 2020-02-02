@@ -129,12 +129,16 @@ body {
 	background-color: #bbe6bb;
 }
 
-.proklisiMenuTabError {
-	background-color: #e29090;
-}
-
 .proklisiMenuTabBusy {
 	background-color: gainsboro;
+}
+
+.proklisiMenuTabInactive {
+	opacity: 0.5;
+}
+
+.proklisiMenuTabError {
+	background-color: #e29090;
 }
 
 .proklisiMenuBar {

@@ -158,19 +158,6 @@ Proklisi.menuKlisiSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Είδος Παράβασης'))).
 
-	append(Proklisi.infoTabDOM = $('<div>').
-	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Παρατηρήσεις'))).
-
-	append(Proklisi.episkopisiTabDOM = $('<div>').
-	data('exec', Proklisi.episkopisiExec).
-	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Επισκόπηση')))).
-
-	append($('<div>').addClass('proklisiMenuLine').
-
 	append(Proklisi.kirosiTabDOM = $('<div>').
 	data('exec', Proklisi.kirosiExec).
 	addClass('proklisiMenuTab').
@@ -178,12 +165,33 @@ Proklisi.menuKlisiSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Κυρώσεις &amp; Πρόστιμα'))).
 
+	append(Proklisi.infoTabDOM = $('<div>').
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Παρατηρήσεις')))).
+
+	append($('<div>').addClass('proklisiMenuLine').
+
 	append(Proklisi.exodosTabDOM = $('<div>').
 	data('exec', Proklisi.exodosExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Έξοδος'))));
+	html('Έξοδος'))).
+
+	append(Proklisi.exodosTabDOM = $('<div>').
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel'))).
+
+	append(Proklisi.episkopisiTabDOM = $('<div>').
+	data('exec', Proklisi.episkopisiExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Επισκόπηση'))));
+
+	Proklisi.menuTabStatus(Proklisi.kirosiTabDOM, 'inactive');
+	Proklisi.menuTabStatus(Proklisi.infoTabDOM, 'inactive');
 
 	Proklisi.menuKlisiDOM.
 	appendTo(pd.ofelimoDOM);

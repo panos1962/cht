@@ -128,6 +128,7 @@ Proklisi.menuTabStatus = (menuTabDOM, status) => {
 	menuTabDOM.
 	removeClass('proklisiMenuTabBusy').
 	removeClass('proklisiMenuTabSuccess').
+	removeClass('proklisiMenuTabInactive').
 	removeClass('proklisiMenuTabError').
 	children('.proklisiMenuTabStatusIcon').
 	remove();
@@ -146,6 +147,13 @@ Proklisi.menuTabStatus = (menuTabDOM, status) => {
 		append($('<img>').
 		addClass('proklisiMenuTabStatusIcon').
 		attr('src', '../../images/success.png'));
+		break;
+	case 'inactive':
+		menuTabDOM.
+		addClass('proklisiMenuTabInactive').
+		append($('<img>').
+		addClass('proklisiMenuTabStatusIcon').
+		attr('src', '../../images/inactive.png'));
 		break;
 	case 'error':
 		menuTabDOM.

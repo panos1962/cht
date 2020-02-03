@@ -86,7 +86,7 @@ class Prosvasi {
 		}
 
 		$_SESSION[CHT_SESSION_IDOS_XRISTI] = self::$idos;
-		$_SESSION[PANDORA_SESSION_XRISTIS] = self::$kodikos;
+		$_SESSION[PANDORA_SESSION_XRISTIS] = self::$login;
 
 		exit(0);
 	}

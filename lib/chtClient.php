@@ -35,6 +35,8 @@ require_once("chtCore.php");
 if (!class_exists("pandora"))
 require_once(PANDORA_BASEDIR . "/lib/pandoraClient.php");
 
+define("CHT_SESSION_IDOS_XRISTI", "cht_idos_xristi");
+
 class cht extends chtCore {
 	public static $www = NULL;
 

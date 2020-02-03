@@ -35,8 +35,6 @@
 if (!class_exists("pandoraCore"))
 require_once(PANDORA_BASEDIR . "/lib/pandoraCore.php");
 
-define("CHT_SESSION_IDOS_XRISTI", "cht_idos_xristi");
-
 class chtCore {
 	public static $init_ok = FALSE;
 

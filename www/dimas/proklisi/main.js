@@ -219,6 +219,7 @@ Proklisi.bebeosiExec = () => {
 		'url': 'bebeosi.php',
 		'dataType': 'text',
 		'success': (rsp) => {
+			let klisi = parseInt(rsp);
 			console.log('>>>', rsp);
 		},
 		'error': (err) => {

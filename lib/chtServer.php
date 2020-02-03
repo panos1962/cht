@@ -28,9 +28,12 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
+if (!class_exists("pandora"))
+require_once(PANDORA_BASEDIR . "/lib/pandoraServer.php");
+
 require_once("chtCore.php");
 
-class cht extends cht_core {
+class cht extends chtCore {
 	private static $init_called = FALSE;
 
 	public static function init() {

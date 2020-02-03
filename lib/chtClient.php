@@ -30,10 +30,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
+require_once("chtCore.php");
+
 if (!class_exists("pandora"))
 require_once(PANDORA_BASEDIR . "/lib/pandoraClient.php");
-
-require_once(CHT_BASEDIR . "/lib/chtCore.php");
 
 class cht extends chtCore {
 	public static $www = NULL;
@@ -53,6 +53,26 @@ class cht extends chtCore {
 	public static function www_print($s) {
 		print self::www($s);
 		return __CLASS__;
+	}
+
+	public static function idos_xristi_get() {
+		return pandora::session_get(CHT_SESSION_IDOS_XRISTI);
+	}
+
+	public static function xristis_is_dimas() {
+		return (cht::idos_xristi_get() === "dimas");
+	}
+
+	public static function xristis_no_dimas() {
+		return !cht::xristis_is_dimas();
+	}
+
+	public static function xristis_is_ipalilos() {
+		return (cht::idos_xristi_get() === "ipalilos");
+	}
+
+	public static function xristis_is_user() {
+		return (cht::idos_xristi_get() === "user");
 	}
 }
 

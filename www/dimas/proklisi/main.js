@@ -215,6 +215,17 @@ Proklisi.bebeosiSetup = () => {
 
 Proklisi.bebeosiExec = () => {
 	Proklisi.enotitaActivate(Proklisi.bebeosiDOM);
+	$.post({
+		'url': 'bebeosi.php',
+		'dataType': 'text',
+		'success': (rsp) => {
+			console.log('>>>', rsp);
+		},
+		'error': (err) => {
+			console.error('@@@', err);
+		},
+	});
+		
 	return Proklisi;
 };
 

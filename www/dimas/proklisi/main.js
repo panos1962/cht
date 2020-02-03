@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-03
 // Updated: 2020-01-30
 // Updated: 2020-01-27
 // Updated: 2020-01-26
@@ -180,10 +181,10 @@ Proklisi.menuKlisiSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Έξοδος'))).
 
-	append(Proklisi.exodosTabDOM = $('<div>').
+	append(Proklisi.istorikoTabDOM = $('<div>').
 	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabFyi')).
-	append($('<div>').addClass('proklisiMenuTabLabel'))).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Ιστορικό'))).
 
 	append(Proklisi.episkopisiTabDOM = $('<div>').
 	data('exec', Proklisi.episkopisiExec).
@@ -191,8 +192,10 @@ Proklisi.menuKlisiSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Επισκόπηση'))));
 
-	Proklisi.menuTabStatus(Proklisi.kirosiTabDOM, 'inactive');
-	Proklisi.menuTabStatus(Proklisi.infoTabDOM, 'inactive');
+	Proklisi.
+	menuTabStatus(Proklisi.kirosiTabDOM, 'inactive').
+	menuTabStatus(Proklisi.infoTabDOM, 'inactive').
+	menuTabStatus(Proklisi.istorikoTabDOM, 'inactive');
 
 	Proklisi.menuKlisiDOM.
 	appendTo(pd.ofelimoDOM);
@@ -226,8 +229,15 @@ Proklisi.bebeosiExec = () => {
 			if (bebnum != rsp)
 			return Proklisi.fyiError('Λανθασμένος αρ. βεβαίωσης');
 
-			bebeosiDOM.data('bebnum', bebnum);
-			Proklisi.menuTabFyi(bebeosiDOM, bebnum);
+			let date = new Date();
+
+			bebeosiDOM.data('bebeosiData', {
+				'bebnum': bebnum,
+				'date': date,
+			});
+			Proklisi.menuTabFyi(bebeosiDOM,
+				'<b>' + bebnum + '</b><br>' +
+				pd.dateTime(date, '%D/%M/%Y, %h:%m'));
 		},
 		'error': (err) => {
 			Proklisi.fyiError('ERROR');

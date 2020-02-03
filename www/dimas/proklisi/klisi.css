@@ -148,16 +148,30 @@ Created: 2019-12-25
 }
 
 .proklisiKlisiImerominia {
-	margin: 2px 0px 0px 0px;
+	display: inline-flex;
+	justify-content: right;
 }
 
-.proklisiKlisiImerominia::before {
-	content: 'Ημ. Βεβαίωσης:';
-	padding-right: 4px;
+.proklisiKlisiImerominiaPrompt {
+	text-align: right;
+	white-space: nowrap;
+
+	font-size: 90%;
+	font-style: italic;
+	font-weight: normal;
+	color: #282828;
+}
+
+.proklisiKlisiImerominiaTimi {
+	text-align: left;
+}
+
+.proklisiKlisiOraPrometa::after {
+	content: 'π.μ.';
+	padding-left: 4px;
 
 	font-weight: normal;
-
-	color: #000000;
+	color: #282828;
 }
 
 /*////////////////////////////////////////////////////////////////////////////*/
@@ -199,4 +213,10 @@ Created: 2019-12-25
 .proklisiKlisiParavasi::after {
 	content: '\201E';
 	font-style: normal;
+}
+
+.proklisiKlisiMissing {
+	display: inline-block;
+	color: midnightblue;
+	font-weight: bold;
 }

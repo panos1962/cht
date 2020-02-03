@@ -27,6 +27,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-03
 // Updated: 2020-01-30
 // Updated: 2020-01-29
 // Updated: 2020-01-27
@@ -64,7 +65,18 @@ module.exports = function(Proklisi) {
 // αρχείο για την παραγωγή στατιστικών και άλλων συγκεντρωτικών στοιχείων.
 
 Proklisi.klisi = function() {
-	let data = Proklisi.oximaTabDOM.data('oximaData');
+	let data = Proklisi.bebeosiTabDOM.data('bebeosiData');
+
+	if (data) {
+		if (data.hasOwnProperty('bebnum'))
+		this.kodikos = data.bebnum;
+			let date = pd.dateTime(undefined, '%D/%M/%Y, %h:%m');
+
+		if (data.hasOwnProperty('date'))
+		this.imerominia = data.date;
+	}
+
+	data = Proklisi.oximaTabDOM.data('oximaData');
 
 	if (data)
 	this.oxima = (new gh.oxima(data)).fixChildren();
@@ -72,7 +84,7 @@ Proklisi.klisi = function() {
 	data = Proklisi.toposTabDOM.data('toposData');
 
 	if (data)
-	this.topos = Proklisi.toposTabDOM.data('toposData');
+	this.topos = data;
 
 	data = Proklisi.paravidosTabDOM.data('paravidosData');
 
@@ -81,21 +93,23 @@ Proklisi.klisi = function() {
 };
 
 Proklisi.klisi.prototype.kodikosGet = function() {
-	let kodikos = this.kodikos;
+	if (!this.hasOwnProperty('kodikos'))
+	return undefined;
 
-	if (!kodikos)
-	kodikos = 123456789;
+	if (!this.kodikos)
+	return undefined;
 
-	return kodikos;
+	return this.kodikos;
 };
 
 Proklisi.klisi.prototype.imerominiaGet = function() {
-	let imerominia = this.imerominia;
+	if (!this.hasOwnProperty('imerominia'))
+	return undefined;
 
-	if (!imerominia)
-	imerominia = '27-01-2020';
+	if (!this.imerominia)
+	return undefined;
 
-	return imerominia;
+	return this.imerominia;
 };
 
 Proklisi.klisi.prototype.prostimoGet = function() {
@@ -124,6 +138,7 @@ Proklisi.klisi.prototype.klisiDOM = function() {
 	addClass('proklisiKlisiSelida');
 
 	let klisiDOM = $('<div>').
+	data('errors', []).
 	addClass('proklisiKlisi').
 	appendTo(klisiSelidaDOM);
 
@@ -133,10 +148,30 @@ Proklisi.klisi.prototype.klisiDOM = function() {
 	klisiKatoxosDOM(klisiDOM).
 	klisiParavasiDOM(klisiDOM);
 
+	let errors = klisiDOM.data('errors');
+
+	if (!errors.length) {
+		Proklisi.episkopisiDOM.
+		removeData('errmsg');
+		return klisiSelidaDOM;
+	}
+
+	let errmsg = (errors.length < 2 ? 'Λείπει' : 'Λείπουν');
+	pd.arrayWalk(errors, (x, i) => errmsg += (i ? ',' : ':') +
+		' <span class="proklisiKlisiMissing">' + x + '</span>');
+
+	Proklisi.episkopisiDOM.
+	data('errmsg', errmsg);
+
 	return klisiSelidaDOM;
 };
 
 Proklisi.klisi.prototype.klisiHeaderDOM = function(klisiDOM) {
+	let errors = klisiDOM.data('errors');
+
+	let headerRightDOM = $('<td>').
+	addClass('proklisiKlisiHeaderRight');
+
 	let headerDOM = $('<table>').
 	addClass('proklisiKlisiEnotitaData').
 	addClass('proklisiKlisiEnotitaHeader').
@@ -169,32 +204,75 @@ Proklisi.klisi.prototype.klisiHeaderDOM = function(klisiDOM) {
 	addClass('proklisiKlisiContact').
 	text(Proklisi.param.dimas.contact))).
 
-	append($('<td>').
-	addClass('proklisiKlisiHeaderRight').
-
+	append(headerRightDOM.
 	append($('<div>').
 	addClass('proklisiKlisiPraxi').
-	html('ΠΡΑΞΗ ΒΕΒΑΙΩΣΗΣ ΠΑΡΑΒΑΣΗΣ<br>' + 
-		(this.isProstimo() ? 'ΜΕ' : 'ΧΩΡΙΣ') +
-		' ΕΠΙΒΟΛΗ ΠΡΟΣΤΙΜΟΥ')).
+	html('ΠΡΑΞΗ ΒΕΒΑΙΩΣΗΣ ΠΑΡΑΒΑΣΗΣ<br>' + (this.isProstimo() ?
+		'ΜΕ' : 'ΧΩΡΙΣ') + ' ΕΠΙΒΟΛΗ ΠΡΟΣΤΙΜΟΥ'))));
 
+	let data = this.kodikosGet();
+
+	if (data)
+	headerRightDOM.
 	append($('<div>').
 	addClass('proklisiKlisiKodikos').
-	text(this.kodikosGet())).
+	text(data));
 
+	else
+	errors.push('Αρ. Βεβαίωσης');
+
+	data = this.imerominiaGet();
+
+	if (data)
+	headerRightDOM.
 	append($('<div>').
 	addClass('proklisiKlisiImerominia').
-	text(this.imerominiaGet()))
+	append($('<table>').
 
-	));
+	append($('<tr>').
+	append($('<td>').
+	addClass('proklisiKlisiImerominiaPrompt').
+	html('Ημ. βεβαίωσης')).
+	append($('<td>').
+	addClass('proklisiKlisiImerominiaTimi').
+	html(pd.dateTime(this.imerominiaGet(), '%D-%M-%Y')))).
+
+	append($('<tr>').
+	append($('<td>').
+	addClass('proklisiKlisiImerominiaPrompt').
+	html('Ώρα βεβαίωσης')).
+	append($('<td>').
+	addClass('proklisiKlisiImerominiaTimi').
+	html(this.oraPrometa())))));
+
+	else
+	errors.push('Ημερομηνία');
 
 	headerDOM.
 	appendTo(klisiDOM);
 
+	klisiDOM.data('errors', errors);
 	return this;
 }
 
+Proklisi.klisi.prototype.oraPrometa = function() {
+	let date = this.imerominiaGet();
+
+	if (date === undefined)
+	return '';
+
+	let ora = pd.dateTime(date, '%h:%m');
+
+	if (pd.dateTime(date, '%h') > 12)
+	return ora;
+
+	return $('<div>').
+	addClass('proklisiKlisiOraPrometa').
+	text(ora);
+};
+
 Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
+	let errors = klisiDOM.data('errors');
 	let cols = [];
 
 	if (this.topos)
@@ -203,6 +281,9 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 		'v': this.topos,
 	});
 
+	else
+	errors.push('Τόπος');
+
 	if (this.paravidos)
 	cols.push({
 		'k': 'Παράβαση',
@@ -210,6 +291,11 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 			'<span class="proklisiKlisiParavasi">' +
 			this.paravidos.perigrafi + '</span>',
 	});
+
+	else
+	errors.push('Παράβαση');
+
+	klisiDOM.data('errors', errors);
 
 	if (!cols.length)
 	return this;
@@ -228,10 +314,14 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 }
 
 Proklisi.klisi.prototype.klisiOximaDOM = function(klisiDOM) {
+	let errors = klisiDOM.data('errors');
 	let oxima = this.oxima;
 
-	if (!oxima)
-	return this;
+	if (!oxima) {
+		errors.push('Όχημα');
+		klisiDOM.data('errors', errors);
+		return this;
+	}
 
 	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ')).
@@ -255,10 +345,14 @@ Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
 	if (!this.oxima)
 	return this;
 
+	let errors = klisiDOM.data('errors');
 	let katoxos = this.oxima.kiriosKatoxosGet();
 
-	if (!katoxos)
-	return this;
+	if (!katoxos) {
+		errors.push('Κάτοχος');
+		klisiDOM.data('errors', errors);
+		return this;
+	}
 
 	katoxos = this.oxima.katoxos[katoxos - 1];
 

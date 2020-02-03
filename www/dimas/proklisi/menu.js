@@ -181,7 +181,7 @@ Proklisi.menuTabFyi = (menuTabDOM, msg) => {
 		return Proklisi;
 	}
 
-	fyiDOM.css('display', 'block').text(msg);
+	fyiDOM.css('display', 'block').html(msg);
 	return Proklisi;
 };
 
@@ -225,6 +225,13 @@ Proklisi.enotitaActivate = (enotitaDOM) => {
 		'opacity': 1,
 	}, Proklisi.param.menuShrinkDuration, function() {
 		$(this).css('height', 'auto');
+
+		let errmsg = enotitaDOM.data('errmsg');
+
+		if (errmsg)
+		pd.fyiError(errmsg);
+
+		else
 		pd.fyiMessage(enotitaDOM.data('fyi'));
 	});
 

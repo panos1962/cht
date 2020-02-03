@@ -129,9 +129,10 @@ Proklisi.menuKlisiSetup = () => {
 
 	append($('<div>').addClass('proklisiMenuLine').
 
-	append(Proklisi.basicTabDOM = $('<div>').
+	append(Proklisi.bebeosiTabDOM = $('<div>').
 	data('exec', Proklisi.bebeosiExec).
 	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Στοιχεία Βεβαίωσης'))).
 
@@ -214,16 +215,23 @@ Proklisi.bebeosiSetup = () => {
 };
 
 Proklisi.bebeosiExec = () => {
-	Proklisi.enotitaActivate(Proklisi.bebeosiDOM);
+	let bebeosiDOM = Proklisi.bebeosiTabDOM;
+
 	$.post({
 		'url': 'bebeosi.php',
 		'dataType': 'text',
 		'success': (rsp) => {
-			let klisi = parseInt(rsp);
-			console.log('>>>', rsp);
+			let bebnum = parseInt(rsp);
+
+			if (bebnum != rsp)
+			return Proklisi.fyiError('Λανθασμένος αρ. βεβαίωσης');
+
+			bebeosiDOM.data('bebnum', bebnum);
+			Proklisi.menuTabFyi(bebeosiDOM, bebnum);
 		},
 		'error': (err) => {
-			console.error('@@@', err);
+			Proklisi.fyiError('ERROR');
+			console.error(err);
 		},
 	});
 		
@@ -557,7 +565,7 @@ Proklisi.exodosSetup = () => {
 	appendTo(Proklisi.exodosDOM);
 
 	Proklisi.exodosKlisiDOM.
-	append(Proklisi.basicTabDOM = $('<div>').
+	append(Proklisi.exodosTabDOM = $('<div>').
 	data('exec', Proklisi.exodosConfirmExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabLabel').

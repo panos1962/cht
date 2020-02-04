@@ -24,9 +24,11 @@ Created: 2019-12-25
 
 *******************************************************************************/
 
+/*
 body {
 	width: 700px;
 }
+*/
 
 .proklisiEnotita {
 	display: none;
@@ -142,11 +144,12 @@ body {
 }
 
 .proklisiMenuBar {
-	display: inline-block;
+	display: block;
 	opacity: 0.8;
 
 	margin: 8px;
 	padding: 4px 20px;
+	max-width: 400px;
 
 	font-size: 20px;
 	font-weight: bold;

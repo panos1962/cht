@@ -227,7 +227,7 @@ Proklisi.bebeosiExec = () => {
 			let bebnum = parseInt(rsp);
 
 			if (bebnum != rsp)
-			return Proklisi.fyiError('Λανθασμένος αρ. βεβαίωσης');
+			return pd.fyiError('Λανθασμένος αρ. βεβαίωσης');
 
 			let date = new Date();
 
@@ -240,7 +240,7 @@ Proklisi.bebeosiExec = () => {
 				pd.dateTime(date, '%D/%M/%Y, %h:%m'));
 		},
 		'error': (err) => {
-			Proklisi.fyiError('ERROR');
+			pd.fyiError('ERROR');
 			console.error(err);
 		},
 	});

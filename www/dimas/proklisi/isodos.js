@@ -40,10 +40,9 @@ module.exports = function(Proklisi) {
 Proklisi.menuIsodosSetup = () => {
 	Proklisi.menuIsodosDOM = $('<div>').
 	data('fyi', 'Επιλέξτε μέθοδο πιστοποίησης').
-	addClass('proklisiMenu').
 	addClass('proklisiEnotita').
+	addClass('proklisiMenu').
 	addClass('proklisiEnotitaActive').
-	css('height', 'auto').
 
 	append($('<div>').addClass('proklisiMenuLine').
 
@@ -150,8 +149,12 @@ Proklisi.isodosAstinomikosScribe = (paletaDOM) => {
 	}
 
 	catch (e) {
+		console.error(e);
 		return pd;
 	}
+
+	paletaDOM.data('match', match);
+	paletaDOM.removeData('matchPointer');
 
 	if (!match.length)
 	return pd;
@@ -166,6 +169,11 @@ Proklisi.isodosAstinomikosScribe = (paletaDOM) => {
 	});
 
 	return pd;
+};
+
+Proklisi.isodosAstinomikosExec = () => {
+	Proklisi.enotitaActivate(Proklisi.isodosAstinomikosDOM);
+	return Proklisi;
 };
 
 Proklisi.isodosAstinomikosCheckData = (paletaDOM) => {
@@ -190,11 +198,6 @@ Proklisi.isodosAstinomikosCheckData = (paletaDOM) => {
 	Proklisi.menuTabFyi(astinomikosDOM);
 	Proklisi.passwordTabDOM.css('visibility', 'hidden');
 
-	return Proklisi;
-};
-
-Proklisi.isodosAstinomikosExec = () => {
-	Proklisi.enotitaActivate(Proklisi.isodosAstinomikosDOM);
 	return Proklisi;
 };
 
@@ -244,21 +247,11 @@ Proklisi.isodosPasswordCheckData = (paletaDOM) => {
 		'data': xristis,
 
 		'success': (rsp) => {
-			if (rsp) {
-				pd.fyiError(rsp);
-				Proklisi.menuIsodosDOM.data('errmsg', rsp);
-				return;
-			}
-			let url = 'http://';
-			url += php.serverGet('HTTP_HOST');
-			url += php.serverGet('PHP_SELF');
+			if (!rsp)
+			return Proklisi.eponimiXrisi();
 
-			let qs = php.serverGet('QUERY_STRING');
-
-			if (qs)
-			url += '?' + qs;
-
-			window.location = url;
+			pd.fyiError(rsp);
+			Proklisi.menuIsodosDOM.data('errmsg', rsp);
 		},
 
 		'error': (err) => {

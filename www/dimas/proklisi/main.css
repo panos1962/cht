@@ -24,21 +24,13 @@ Created: 2019-12-25
 
 *******************************************************************************/
 
-/*
-body {
-	width: 700px;
-}
-*/
-
 .proklisiEnotita {
 	display: none;
-	overflow-y: hidden;
+	overflow: hidden;
 }
 
 .proklisiEnotitaActive {
 	display: block;
-	height: 0px;
-	overflow-y: hidden;
 }
 
 .proklisiMenuLine {

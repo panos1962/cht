@@ -84,11 +84,13 @@ pd.domInit(() => {
 	domFixup().
 	noop();
 
-	Proklisi[pd.isXristis() ? 'eponimiXrisi' : 'anonimiXrisi']();
+	Proklisi[pd.isXristis() ? 'eponimiXrisi' : 'anonimiXrisi']().
+	fullScreen();
 });
 
 Proklisi.eponimiXrisi = () => {
 	Proklisi.
+	cleanup().
 	menuKlisiSetup().
 	bebeosiSetup().
 	oximaSetup().
@@ -108,6 +110,7 @@ Proklisi.eponimiXrisi = () => {
 
 Proklisi.anonimiXrisi = () => {
 	Proklisi.
+	cleanup().
 	menuIsodosSetup().
 	isodosAstinomikosSetup().
 	isodosPasswordSetup().
@@ -115,7 +118,19 @@ Proklisi.anonimiXrisi = () => {
 		() => Proklisi.menuActivate(Proklisi.menuIsodosDOM),
 	]);
 
-	Proklisi.menuRise(Proklisi.menuIsodosDOM);
+	//Proklisi.menuRise(Proklisi.menuIsodosDOM);
+	return Proklisi;
+};
+
+Proklisi.fullScreen = () => {
+	if (php.getIsYes('fullScreen'))
+	pd.fullScreen();
+
+	return Proklisi;
+};
+
+Proklisi.cleanup = () => {
+	pd.ofelimoDOM.empty();
 	return Proklisi;
 };
 
@@ -123,10 +138,9 @@ Proklisi.anonimiXrisi = () => {
 
 Proklisi.menuKlisiSetup = () => {
 	Proklisi.menuKlisiDOM = $('<div>').
-	addClass('proklisiMenu').
 	addClass('proklisiEnotita').
+	addClass('proklisiMenu').
 	addClass('proklisiEnotitaActive').
-	css('height', 'auto').
 
 	append($('<div>').addClass('proklisiMenuLine').
 
@@ -247,7 +261,7 @@ Proklisi.bebeosiExec = () => {
 			console.error(err);
 		},
 	});
-		
+
 	return Proklisi;
 };
 
@@ -395,6 +409,7 @@ Proklisi.toposScribe = (paletaDOM) => {
 	}
 
 	catch (e) {
+		console.error(e);
 		return pd;
 	}
 
@@ -503,6 +518,7 @@ Proklisi.paravidosScribe = (paletaDOM) => {
 	}
 
 	catch (e) {
+		console.error(e);
 		return pd;
 	}
 
@@ -595,9 +611,7 @@ Proklisi.exodosExec = () => {
 Proklisi.exodosConfirmExec = () => {
 	$.post({
 		'url': '../../lib/exodos.php',
-		'success': () => {
-			window.location = self.location;
-		},
+		'success': () => Proklisi.anonimiXrisi(),
 		'error': (err) => {
 			console.error(err);
 			pd.fyiError('Αποτυχία εξόδου');
@@ -659,7 +673,7 @@ Proklisi.paravidosLoad = (chain) => {
 Proklisi.astinomikosLoad = (chain) => {
 	let next = chain.shift();
 
-	if (Proklisi.hasOwnProperty('paravidosList'))
+	if (Proklisi.hasOwnProperty('astinomikosList'))
 	return next(chain);
 
 	$.post({

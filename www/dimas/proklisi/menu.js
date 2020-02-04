@@ -40,11 +40,21 @@ const pd =
 require('../../../mnt/pandora/lib/pandoraClient.js');
 
 module.exports = function(Proklisi) {
+
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.param.menuShrinkDuration = 300;
 
-Proklisi.menuActivate = (menuDOM) => {
+///////////////////////////////////////////////////////////////////////////////@
+
+Proklisi.menuSetupOk = false;
+
+Proklisi.menuSetup = () => {
+	if (Proklisi.menuSetupOk)
+	return Proklisi;
+
+	Proklisi.menuSetupOk = true;
+
 	pd.bodyDOM.
 	on('mouseenter', '.proklisiMenuTab', function(e) {
 		e.stopPropagation();
@@ -71,52 +81,64 @@ Proklisi.menuActivate = (menuDOM) => {
 
 		if (exec)
 		exec();
-	});
-
-	pd.
-	paletaSetup().
-	bodyDOM.
+	}).
 	on('click', '.proklisiMenuBar', function(e) {
 		e.stopPropagation();
-		Proklisi.menuRise(menuDOM);
+		Proklisi.menuRise();
 	});
+};
+
+Proklisi.menuActivate = (menuDOM) => {
+	Proklisi.activeMenuDOM = menuDOM;
+	Proklisi.menuSetup();
+	pd.paletaSetup();
 
 	return Proklisi;
 };
 
 Proklisi.menuRise = (menuDOM) => {
-	pd.fyiDOM.
-	finish().
-	fadeTo(Proklisi.param.menuShrinkDuration, 0, function() {
-		let fyi = menuDOM.data('errmsg');
+	if (!menuDOM)
+	menuDOM = Proklisi.activeMenuDOM;
 
-		if (fyi)
-		pd.fyiError(fyi);
+	if (!menuDOM)
+	return Proklisi;
 
-		else
-		pd.fyiMessage(menuDOM.data('fyi'));
+	let fyi = menuDOM.data('errmsg');
 
-		pd.fyiDOM.css('opacity', 1);
-	});
+	if (fyi)
+	pd.fyiError(fyi);
+
+	else
+	pd.fyiMessage(menuDOM.data('fyi'));
 
 	$('.proklisiEnotitaActive').
-	not('.prosklisiMenu').
+	filter(function() {
+		return ($(this) !== menuDOM);
+	}).
 	finish().
 	animate({
-		'height': 0,
+		'height': '0px',
 		'opacity': 0,
 	}, Proklisi.param.menuShrinkDuration, function() {
-		$(this).removeClass('proklisiEnotitaActive');
+		$(this).
+		removeClass('proklisiEnotitaActive');
 	});
 
 	menuDOM.
 	finish().
-	css('height', '0px').
+	css({
+		'height': '0px',
+		'opacity': 0,
+		'display': '',
+	}).
 	addClass('proklisiEnotitaActive').
 	animate({
-		'height': menuDOM.data('height') + 'px',
+		'height': '100px',
 		'opacity': 1,
-	}, Proklisi.param.menuShrinkDuration);
+	}, Proklisi.param.menuShrinkDuration, function() {
+		$(this).
+		css('height', '');
+	});
 
 	return Proklisi;
 };
@@ -215,30 +237,42 @@ Proklisi.enotitaActivate = (enotitaDOM) => {
 	let h = (active.length ? $(active[0]).innerHeight() : 0);
 
 	active.
+	filter(function() {
+		return ($(this) !== enotitaDOM);
+	}).
 	finish().
 	animate({
 		'height': '0px',
 		'opacity': 0,
-	}, Proklisi.param.menuShrinkDuration);
+	}, Proklisi.param.menuShrinkDuration, function() {
+		$(this).removeClass('proklisiEnotitaActive');
+	});
 
 	enotitaDOM.
 	finish().
+	css({
+		'height': '0px',
+		'opacity': 0,
+		'display': '',
+	}).
 	addClass('proklisiEnotitaActive').
-	css('display', 'block').
 	animate({
 		'height': h + 'px',
 		'opacity': 1,
 	}, Proklisi.param.menuShrinkDuration, function() {
-		$(this).css('height', 'auto');
-
-		let errmsg = enotitaDOM.data('errmsg');
-
-		if (errmsg)
-		pd.fyiError(errmsg);
-
-		else
-		pd.fyiMessage(enotitaDOM.data('fyi'));
+		$(this).css({
+			'height': '',
+			'opacity': '',
+		});
 	});
+
+	let errmsg = enotitaDOM.data('errmsg');
+
+	if (errmsg)
+	pd.fyiError(errmsg);
+
+	else
+	pd.fyiMessage(enotitaDOM.data('fyi'));
 
 	// Αν υπάρχει παλέτα στο επιλεγμένο menutab την ενεργοποιούμε
 	// κυρίως για να έχουμε focus στο σχετικό input field, εφόσον

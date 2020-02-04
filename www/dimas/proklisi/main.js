@@ -220,6 +220,7 @@ Proklisi.bebeosiSetup = () => {
 Proklisi.bebeosiExec = () => {
 	let bebeosiDOM = Proklisi.bebeosiTabDOM;
 
+
 	$.post({
 		'url': 'bebeosi.php',
 		'dataType': 'text',
@@ -238,9 +239,11 @@ Proklisi.bebeosiExec = () => {
 			Proklisi.menuTabFyi(bebeosiDOM,
 				'<b>' + bebnum + '</b><br>' +
 				pd.dateTime(date, '%D/%M/%Y, %h:%m'));
+				Proklisi.menuTabStatus(bebeosiDOM, 'success');
 		},
 		'error': (err) => {
 			pd.fyiError('ERROR');
+			Proklisi.menuTabStatus(bebeosiDOM, 'error');
 			console.error(err);
 		},
 	});

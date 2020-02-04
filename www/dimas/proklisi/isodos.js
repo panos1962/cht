@@ -235,6 +235,7 @@ Proklisi.isodosPasswordCheckData = (paletaDOM) => {
 		return Proklisi;
 	}
 
+	Proklisi.menuIsodosDOM.removeData('errmsg');
 	xristis.kodikos = paletaDOM.data('text');
 	$.post({
 		'url': '../../lib/prosvasi.php',
@@ -243,9 +244,11 @@ Proklisi.isodosPasswordCheckData = (paletaDOM) => {
 		'data': xristis,
 
 		'success': (rsp) => {
-			if (rsp)
-			return pd.fyiError(rsp);
-
+			if (rsp) {
+				pd.fyiError(rsp);
+				Proklisi.menuIsodosDOM.data('errmsg', rsp);
+				return;
+			}
 			let url = 'http://';
 			url += php.serverGet('HTTP_HOST');
 			url += php.serverGet('PHP_SELF');
@@ -260,7 +263,9 @@ Proklisi.isodosPasswordCheckData = (paletaDOM) => {
 
 		'error': (err) => {
 			console.error(err);
-			pd.fyiError('Ανεπιτυχής έλεγχος πρόσβασης');
+			let msg = 'Ανεπιτυχής έλεγχος πρόσβασης';
+			pd.fyiError(msg);
+			Proklisi.menuIsodosDOM.data('errmsg', msg);
 		},
 	});
 

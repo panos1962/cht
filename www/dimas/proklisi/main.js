@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-05
 // Updated: 2020-02-03
 // Updated: 2020-01-30
 // Updated: 2020-01-27
@@ -102,7 +103,7 @@ Proklisi.eponimiXrisi = () => {
 	odosLoad([
 		Proklisi.paravidosLoad,
 		Proklisi.astinomikosLoad,
-		() => Proklisi.menuActivate(Proklisi.menuKlisiDOM),
+		() => Proklisi.activate(Proklisi.menuKlisiDOM),
 	]);
 
 	return Proklisi;
@@ -115,17 +116,21 @@ Proklisi.anonimiXrisi = () => {
 	isodosAstinomikosSetup().
 	isodosPasswordSetup().
 	astinomikosLoad([
-		() => Proklisi.menuActivate(Proklisi.menuIsodosDOM),
+		() => Proklisi.activate(Proklisi.menuIsodosDOM),
 	]);
 
-	//Proklisi.menuRise(Proklisi.menuIsodosDOM);
 	return Proklisi;
 };
 
-Proklisi.fullScreen = () => {
-	if (php.getIsYes('fullScreen'))
-	pd.fullScreen();
+// By default το πρόγραμμα επιχειρεί να ενεργοποιήσεις το full screen mode
+// προκειμένου να κερδίσει χώρο στην οθόνη του PDA. Αν δεν το θέλουμε αυτό,
+// τότε πρέπει να δώσουμε sto url την παράμετρο "fullscreen=no".
 
+Proklisi.fullScreen = () => {
+	if (php.isGet('fullscreen') && (!php.getIsYes('fullscreen')))
+	return;
+
+pd.fullScreen();
 	return Proklisi;
 };
 
@@ -138,9 +143,9 @@ Proklisi.cleanup = () => {
 
 Proklisi.menuKlisiSetup = () => {
 	Proklisi.menuKlisiDOM = $('<div>').
+	data('titlos', 'Βεβαιώσεις παραβάσεων ΚΟΚ').
 	addClass('proklisiEnotita').
 	addClass('proklisiMenu').
-	addClass('proklisiEnotitaActive').
 
 	append($('<div>').addClass('proklisiMenuLine').
 
@@ -223,10 +228,8 @@ Proklisi.menuKlisiSetup = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.bebeosiSetup = () => {
-	Proklisi.bebeosiDOM = Proklisi.enotitaDOM().
-	append($('<div>').text('Εδώ διαχειριζόμαστε τα στοιχεία βεβαίωσης, ' +
-		'τουτέστιν τον αριθμό κλήσης, την ημερομηνία και την ώρα ' +
-		'βεβαίωσης, τα στοιχεία του δημοτικού αστυνομικού κλπ.'));
+	Proklisi.bebeosiDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
+	data('titlos', 'Στοιχεία βεβαίωσης');
 
 	return Proklisi;
 };
@@ -274,11 +277,11 @@ Proklisi.oximaSetup = () => {
 			pd.paletaList['greek'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
-		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
+		'submit': () => Proklisi.enotitaRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.oximaGetData,
 	});
 
-	Proklisi.oximaDOM = Proklisi.enotitaDOM().
+	Proklisi.oximaDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
 	data('fyi', 'Πληκτρολογήστε τον αρ. κυκλοφορίας οχήματος');
 
 	Proklisi.oximaDOM.
@@ -344,7 +347,8 @@ Proklisi.oximaGetData = (paletaDOM) => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.toposSetup = () => {
-	Proklisi.toposDOM = Proklisi.enotitaDOM().
+	Proklisi.toposDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
+	data('topos', 'Τόπος παράβασης').
 	data('fyi', 'Πληκτρολογήστε το όνομα της οδού').
 	append(pd.paleta({
 		'paleta': [
@@ -354,7 +358,7 @@ Proklisi.toposSetup = () => {
 		'keyboard': php.requestIsYes('keyboard'),
 		'zoom': true,
 		'scribe': Proklisi.toposScribe,
-		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
+		'submit': () => Proklisi.enotitaRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.toposCheckData,
 		'helper': 'Πληκτρολογήστε τον αριθμό',
 	}));
@@ -449,7 +453,8 @@ Proklisi.toposCheckData = (paletaDOM) => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.paravidosSetup = () => {
-	Proklisi.paravidosDOM = Proklisi.enotitaDOM().
+	Proklisi.paravidosDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
+	data('titlos', 'Είδος παράβασης').
 	data('fyi', 'Πληκτρολογήστε τη διάταξη ή την περιγραφή της παράβασης').
 	append(pd.paleta({
 		'paleta': [
@@ -458,7 +463,7 @@ Proklisi.paravidosSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'scribe': Proklisi.paravidosScribe,
-		'submit': () => Proklisi.menuRise(Proklisi.menuKlisiDOM),
+		'submit': () => Proklisi.enotitaRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.paravidosCheckData,
 		'zoom': true,
 		'text': 'Α',
@@ -561,14 +566,17 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.kirosiSetup = () => {
-	Proklisi.kirosiDOM = Proklisi.enotitaDOM();
+	Proklisi.kirosiDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
+	data('titlos', 'Κυρώσεις και πρόστιμα');
+
 	return Proklisi;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.episkopisiSetup = () => {
-	Proklisi.episkopisiDOM = Proklisi.enotitaDOM();
+	Proklisi.episkopisiDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
+	data('titlos', 'Επισκόπηση κλήσης');
 
 	Proklisi.episkopisiKlisiDOM = $('<div>').
 	appendTo(Proklisi.episkopisiDOM);
@@ -588,7 +596,8 @@ Proklisi.episkopisiExec = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.exodosSetup = () => {
-	Proklisi.exodosDOM = Proklisi.enotitaDOM();
+	Proklisi.exodosDOM = Proklisi.enotitaDOM(Proklisi.menuIsodosDOM).
+	data('titlos', 'Έξοδος');
 
 	Proklisi.exodosKlisiDOM = $('<div>').
 	appendTo(Proklisi.exodosDOM);

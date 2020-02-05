@@ -39,6 +39,7 @@ module.exports = function(Proklisi) {
 
 Proklisi.menuIsodosSetup = () => {
 	Proklisi.menuIsodosDOM = $('<div>').
+	data('titlos', 'Πιστοποίηση χρήστη').
 	data('fyi', 'Επιλέξτε μέθοδο πιστοποίησης').
 	addClass('proklisiEnotita').
 	addClass('proklisiMenu').
@@ -92,7 +93,7 @@ Proklisi.menuIsodosSetup = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.isodosAstinomikosSetup = () => {
-	Proklisi.isodosAstinomikosDOM = Proklisi.enotitaDOM().
+	Proklisi.isodosAstinomikosDOM = Proklisi.enotitaDOM(Proklisi.menuIsodosDOM).
 	data('fyi', 'Πληκτρολογήστε κωδικό/όνομα δημοτικού αστυνομικού').
 	append(pd.paleta({
 		'paleta': [
@@ -102,7 +103,7 @@ Proklisi.isodosAstinomikosSetup = () => {
 		'keyboard': php.requestIsYes('keyboard'),
 		'zoom': true,
 		'scribe': Proklisi.isodosAstinomikosScribe,
-		'submit': () => Proklisi.menuRise(Proklisi.menuIsodosDOM),
+		'submit': () => Proklisi.enotitaRise(Proklisi.menuIsodosDOM),
 		'change': Proklisi.isodosAstinomikosCheckData,
 	}));
 
@@ -210,7 +211,7 @@ Proklisi.isodosXristisExec = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.isodosPasswordSetup = () => {
-	Proklisi.isodosPasswordDOM = Proklisi.enotitaDOM().
+	Proklisi.isodosPasswordDOM = Proklisi.enotitaDOM(Proklisi.menuIsodosDOM).
 	data('fyi', 'Πληκτρολογήστε το password').
 	append(pd.paleta({
 		'paleta': [
@@ -219,7 +220,7 @@ Proklisi.isodosPasswordSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'scribe': Proklisi.isodosAstinomikosScribe,
-		'submit': () => Proklisi.menuRise(Proklisi.menuIsodosDOM),
+		'submit': () => Proklisi.enotitaRise(Proklisi.menuIsodosDOM),
 		'change': Proklisi.isodosPasswordCheckData,
 	}));
 

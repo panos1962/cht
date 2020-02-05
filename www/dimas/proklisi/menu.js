@@ -21,6 +21,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-05
 // Updated: 2020-01-30
 // Updated: 2020-01-27
 // Updated: 2020-01-26
@@ -82,49 +83,48 @@ Proklisi.menuSetup = () => {
 		if (exec)
 		exec();
 	}).
-	on('click', '.proklisiMenuBar', function(e) {
+	on('click', '.proklisiEpistrofiBar', function(e) {
 		e.stopPropagation();
-		Proklisi.menuRise();
+		Proklisi.enotitaRise($(this).data('epistrofi'));
 	});
+
+	return Proklisi;
 };
 
-Proklisi.menuActivate = (menuDOM) => {
-	Proklisi.activeMenuDOM = menuDOM;
-	Proklisi.menuSetup();
+Proklisi.activate = (enotitaDOM) => {
 	pd.paletaSetup();
+	Proklisi.
+	menuSetup().
+	enotitaActivate(enotitaDOM);
 
 	return Proklisi;
 };
 
-Proklisi.menuRise = (menuDOM) => {
-	if (!menuDOM)
-	menuDOM = Proklisi.activeMenuDOM;
-
-	if (!menuDOM)
+Proklisi.enotitaRise = (enotitaDOM) => {
+	if (!enotitaDOM)
 	return Proklisi;
 
-	let fyi = menuDOM.data('errmsg');
+	let fyi = enotitaDOM.data('errmsg');
 
 	if (fyi)
 	pd.fyiError(fyi);
 
 	else
-	pd.fyiMessage(menuDOM.data('fyi'));
+	pd.fyiMessage(enotitaDOM.data('fyi'));
 
 	$('.proklisiEnotitaActive').
 	filter(function() {
-		return ($(this) !== menuDOM);
+		return ($(this) !== enotitaDOM);
 	}).
 	finish().
 	animate({
 		'height': '0px',
 		'opacity': 0,
-	}, Proklisi.param.menuShrinkDuration, function() {
-		$(this).
-		removeClass('proklisiEnotitaActive');
+	}, Proklisi.param.enotitaShrinkDuration, function() {
+		$(this).removeClass('proklisiEnotitaActive');
 	});
 
-	menuDOM.
+	enotitaDOM.
 	finish().
 	css({
 		'height': '0px',
@@ -135,20 +135,11 @@ Proklisi.menuRise = (menuDOM) => {
 	animate({
 		'height': '100px',
 		'opacity': 1,
-	}, Proklisi.param.menuShrinkDuration, function() {
-		$(this).
-		css('height', '');
+	}, Proklisi.param.enotitaShrinkDuration, function() {
+		$(this).css('height', '');
 	});
 
 	return Proklisi;
-};
-
-Proklisi.menuBarDOM = () => {
-	let menuBarDOM = $('<div>').
-	addClass('proklisiMenuBar').
-	text('Αρχικό Μενού Επιλογών');
-
-	return menuBarDOM;
 };
 
 Proklisi.menuTabStatus = (menuTabDOM, status) => {
@@ -221,18 +212,35 @@ Proklisi.menuTabFyiError = (menuTabDOM, msg) => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-Proklisi.enotitaDOM = () => {
+Proklisi.enotitaDOM = (parentDOM) => {
 	let enotitaDOM = $('<div>').
 	addClass('proklisiEnotita').
 	appendTo(pd.ofelimoDOM);
 
-	enotitaDOM.
-	append(Proklisi.menuBarDOM());
+	if (!parentDOM)
+	return enotitaDOM;
+
+	let epistrofiBarDOM = $('<div>').
+	data('epistrofi', parentDOM).
+	addClass('proklisiEpistrofiBar').
+	appendTo(enotitaDOM);
+
+	let titlos = parentDOM.data('titlos');
+
+	if (!titlos)
+	titlos = 'Επιστροφή';
+
+	epistrofiBarDOM.text(titlos);
 
 	return enotitaDOM;
 };
 
 Proklisi.enotitaActivate = (enotitaDOM) => {
+	let titlos = enotitaDOM.data('titlos');
+
+	if (titlos)
+	pd.toolbarCenterDOM.text(titlos);
+
 	let active = $('.proklisiEnotitaActive');
 	let h = (active.length ? $(active[0]).innerHeight() : 0);
 

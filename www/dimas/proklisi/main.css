@@ -60,6 +60,18 @@ body {
 	box-shadow: 1px 1px 2px #888888;
 }
 
+.proklisiRibbonCopyright {
+	display: inline-block;
+	padding-right: 4px;
+	cursor: pointer;
+}
+
+.proklisiRibbonCopyright:hover {
+	text-shadow: 1px 1px 1px #423522;
+}
+
+/******************************************************************************/
+
 .proklisiEnotita {
 	display: none;
 	overflow: hidden;

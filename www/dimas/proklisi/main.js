@@ -85,18 +85,10 @@ pd.domInit(() => {
 	domFixup().
 	noop();
 
-	pd.toolbarCenterDOM.
-	addClass('proklisiToolbarTitlos');
-
-	pd.toolbarLeftDOM.
-	empty().
-	append($('<div>').
-	attr('id', 'proklisiToggleFullscreen').
-	text('Toggle fullscreen').
-	on('click', () => Proklisi.toggleFullscreen()));
-	
-
-	Proklisi[pd.isXristis() ? 'eponimiXrisi' : 'anonimiXrisi']();
+	Proklisi.
+	toolbarSetup().
+	ribbonSetup()
+	[pd.isXristis() ? 'eponimiXrisi' : 'anonimiXrisi']();
 });
 
 Proklisi.eponimiXrisi = () => {
@@ -132,8 +124,28 @@ Proklisi.anonimiXrisi = () => {
 	return Proklisi;
 };
 
-Proklisi.cleanup = () => {
-	pd.ofelimoDOM.empty();
+Proklisi.toolbarSetup = () => {
+	pd.toolbarCenterDOM.
+	addClass('proklisiToolbarTitlos');
+
+	pd.toolbarLeftDOM.
+	empty().
+	append($('<div>').
+	attr('id', 'proklisiToggleFullscreen').
+	text('Toggle fullscreen').
+	on('click', () => Proklisi.toggleFullscreen()));
+
+	return Proklisi;
+};
+
+Proklisi.ribbonSetup = () => {
+	pd.ribbonRightDOM.
+	append($('<div>').
+	addClass('proklisiRibbonCopyright').
+	html('<a href="copyright.php" target="copyright">' +
+		'&copy; Δήμος Θεσσαλονίκης 2019 - ' +
+		pd.dateTime(undefined, '%Y') + '</a>'));
+
 	return Proklisi;
 };
 
@@ -147,6 +159,11 @@ Proklisi.toggleFullscreen = () => {
 	pd.enterFullscreen();
 
 	Proklisi.fullscreen = !Proklisi.fullscreen;
+	return Proklisi;
+};
+
+Proklisi.cleanup = () => {
+	pd.ofelimoDOM.empty();
 	return Proklisi;
 };
 

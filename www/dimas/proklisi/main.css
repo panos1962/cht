@@ -24,6 +24,14 @@ Created: 2019-12-25
 
 *******************************************************************************/
 
+html {
+	background-color: ivory;
+}
+
+body {
+	background-color: ivory;
+}
+
 .proklisiEnotita {
 	display: none;
 	overflow: hidden;

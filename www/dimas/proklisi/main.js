@@ -85,8 +85,12 @@ pd.domInit(() => {
 	domFixup().
 	noop();
 
-	Proklisi[pd.isXristis() ? 'eponimiXrisi' : 'anonimiXrisi']().
-	fullScreen();
+	pd.toolbarLeftDOM.
+	html('&#x21D4;').
+	on('click', () => Proklisi.toggleFullscreen());
+	
+
+	Proklisi[pd.isXristis() ? 'eponimiXrisi' : 'anonimiXrisi']();
 });
 
 Proklisi.eponimiXrisi = () => {
@@ -122,20 +126,21 @@ Proklisi.anonimiXrisi = () => {
 	return Proklisi;
 };
 
-// By default το πρόγραμμα επιχειρεί να ενεργοποιήσεις το full screen mode
-// προκειμένου να κερδίσει χώρο στην οθόνη του PDA. Αν δεν το θέλουμε αυτό,
-// τότε πρέπει να δώσουμε sto url την παράμετρο "fullscreen=no".
-
-Proklisi.fullScreen = () => {
-	if (php.isGet('fullscreen') && (!php.getIsYes('fullscreen')))
-	return;
-
-pd.fullScreen();
+Proklisi.cleanup = () => {
+	pd.ofelimoDOM.empty();
 	return Proklisi;
 };
 
-Proklisi.cleanup = () => {
-	pd.ofelimoDOM.empty();
+Proklisi.fullscreen = false;
+
+Proklisi.toggleFullscreen = () => {
+	if (Proklisi.fullscreen)
+	pd.exitFullscreen();
+
+	else
+	pd.enterFullscreen();
+
+	Proklisi.fullscreen = !Proklisi.fullscreen;
 	return Proklisi;
 };
 

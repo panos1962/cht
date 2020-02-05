@@ -243,7 +243,6 @@ Proklisi.isodosPasswordCheckData = (paletaDOM) => {
 	xristis.kodikos = paletaDOM.data('text');
 	$.post({
 		'url': '../../lib/prosvasi.php',
-		'type': 'POST',
 		'dataType': 'text',
 		'data': xristis,
 

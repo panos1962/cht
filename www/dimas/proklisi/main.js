@@ -326,7 +326,6 @@ Proklisi.oximaGetData = (paletaDOM) => {
 
 	$.post({
 		'url': Proklisi.param.oximaServerUrl,
-		'type': 'POST',
 		'dataType': 'json',
 		'data': {
 			'idos': 'oxima',

@@ -85,9 +85,15 @@ pd.domInit(() => {
 	domFixup().
 	noop();
 
+	pd.toolbarCenterDOM.
+	addClass('proklisiToolbarTitlos');
+
 	pd.toolbarLeftDOM.
-	html('&#x21D4;').
-	on('click', () => Proklisi.toggleFullscreen());
+	empty().
+	append($('<div>').
+	attr('id', 'proklisiToggleFullscreen').
+	text('Toggle fullscreen').
+	on('click', () => Proklisi.toggleFullscreen()));
 	
 
 	Proklisi[pd.isXristis() ? 'eponimiXrisi' : 'anonimiXrisi']();
@@ -287,6 +293,7 @@ Proklisi.oximaSetup = () => {
 	});
 
 	Proklisi.oximaDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
+	data('titlos', 'Στοιχεία οχήματος').
 	data('fyi', 'Πληκτρολογήστε τον αρ. κυκλοφορίας οχήματος');
 
 	Proklisi.oximaDOM.
@@ -353,7 +360,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 
 Proklisi.toposSetup = () => {
 	Proklisi.toposDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
-	data('topos', 'Τόπος παράβασης').
+	data('titlos', 'Τόπος παράβασης').
 	data('fyi', 'Πληκτρολογήστε το όνομα της οδού').
 	append(pd.paleta({
 		'paleta': [
@@ -601,7 +608,7 @@ Proklisi.episkopisiExec = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.exodosSetup = () => {
-	Proklisi.exodosDOM = Proklisi.enotitaDOM(Proklisi.menuIsodosDOM).
+	Proklisi.exodosDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
 	data('titlos', 'Έξοδος');
 
 	Proklisi.exodosKlisiDOM = $('<div>').

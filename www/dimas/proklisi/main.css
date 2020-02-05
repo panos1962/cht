@@ -32,6 +32,34 @@ body {
 	background-color: ivory;
 }
 
+.proklisiToolbarTitlos {
+	font-weight: bold;
+	color: sienna;
+	text-shadow: 1px 1px 1px #423522;
+}
+
+#proklisiToggleFullscreen {
+	display: inline-block;
+	padding: 0px 4px;
+
+	opacity: 0.4;
+	color: #d08562;
+	text-shadow: 1px 0px 0px #55055f;
+
+	background-color: #fffbd1;
+	border-style: solid;
+	border-color: #e8dac7;
+	border-width: 1px;
+	border-radius: 5px;
+
+	cursor: pointer;
+}
+
+#proklisiToggleFullscreen:hover {
+	opacity: 1;
+	box-shadow: 1px 1px 2px #888888;
+}
+
 .proklisiEnotita {
 	display: none;
 	overflow: hidden;

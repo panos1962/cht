@@ -104,6 +104,8 @@ Proklisi.enotitaRise = (enotitaDOM) => {
 	if (!enotitaDOM)
 	return Proklisi;
 
+	Proklisi.toolbarTitlos(enotitaDOM);
+
 	let fyi = enotitaDOM.data('errmsg');
 
 	if (fyi)
@@ -236,10 +238,7 @@ Proklisi.enotitaDOM = (parentDOM) => {
 };
 
 Proklisi.enotitaActivate = (enotitaDOM) => {
-	let titlos = enotitaDOM.data('titlos');
-
-	if (titlos)
-	pd.toolbarCenterDOM.text(titlos);
+	Proklisi.toolbarTitlos(enotitaDOM);
 
 	let active = $('.proklisiEnotitaActive');
 	let h = (active.length ? $(active[0]).innerHeight() : 0);
@@ -287,6 +286,26 @@ Proklisi.enotitaActivate = (enotitaDOM) => {
 	// αυτό εμφανίζεται.
 
 	pd.paletaActivate(enotitaDOM.find('.pandoraPaleta').first());
+
+	return Proklisi;
+};
+
+Proklisi.toolbarTitlos = (enotitaDOM) => {
+	let titlos = enotitaDOM.data('titlos');
+
+	if (!titlos)
+	titlos = 'Βεβαίωση παραβάσεων ΚΟΚ';
+
+	pd.toolbarCenterDOM.
+	finish().
+	fadeTo(Proklisi.param.menuShrinkDuration, 0, function() {
+		$(this).
+		css({
+			'display': 'table-cell',
+			'opacity': '',
+		}).
+		text(titlos);
+	});
 
 	return Proklisi;
 };

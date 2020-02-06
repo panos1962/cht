@@ -59,44 +59,50 @@ SET default_storage_engine = INNODB
 
 -------------------------------------------------------------------------------@
 
--- Ο πίνακας "astinomikos" περιέχει τους δημοτικούς αστυνομικούς.
+-- Ο πίνακας "ipalilos" περιέχει τους υπαλλήλους που είναι αρμόδιοι για τη
+-- βεβαίωση παραβάσεων ΚΟΚ. Πρόκειται κυρίως για υπαλλήλους της Δημοτικής
+-- Αστυνομίας, αλλά δεν αποκλείεται να προκύψουν και υπάλληλοι εκτός Δ.Α.
+-- Οι δημοτικοί αστυνομικοί φέρουν κωδικούς της μορφής "Αn", όπου "n" είναι
+-- κάποιος αριθμός, π.χ. "Α54", "Α175", "Α231" κλπ, ενώ τυχόν υπάλληλοι που
+-- δεν ανήκουν στη Δημοτική Αστυνομία φέρουν άλλης μορφής κωδικούς για τους
+-- οποίους δεν υπάρχουν σαφείς κανόνες (προς το παρόν), και πάντως όχι της
+-- μορφής "Αn" που χαρακτηρίζει τους υπαλλήλους της Δημοτικής Αστυνομίας.
 
-CREATE TABLE `astinomikos` (
-	`kodikos`	VARCHAR(16) NOT NULL COMMENT 'κωδικός αστυνομικού',
-	`armit`		VARCHAR(16) NULL DEFAULT NULL COMMENT 'αρ. μητρώου',
-	`onomateponimo`	VARCHAR(60) NOT NULL COMMENT 'ονοματεπώνυμο',
-	`email`		VARCHAR(60) NULL DEFAULT NULL COMMENT 'email address',
-	`tilefono`	VARCHAR(30) NULL DEFAULT NULL COMMENT 'τηλ. υπηρεσίας',
-	`kinito`	VARCHAR(30) NULL DEFAULT NULL COMMENT 'κινητό τηλέφωνο',
+CREATE TABLE `ipalilos` (
+	`kodikos`	VARCHAR(20) NOT NULL COMMENT 'Κωδικός υπαλλήλου',
+	`onomateponimo`	VARCHAR(60) NOT NULL COMMENT 'Ονοματεπώνυμο',
+	`katigoria`	ENUM (
+		'ΔΗΜΟΤΙΚΗ ΑΣΤΥΝΟΜΙΑ'
+	) NULL DEFAULT NULL COMMENT 'Κατηγορία υπαλλήλου',
+	`email`		VARCHAR(60) NULL DEFAULT NULL COMMENT 'Email address',
+	`tilefono`	VARCHAR(30) NULL DEFAULT NULL COMMENT 'Τηλ. υπηρεσίας',
+	`kinito`	VARCHAR(30) NULL DEFAULT NULL COMMENT 'Κινητό τηλέφωνο',
 
 	-- Ακολουθούν πεδία που αφορούν στην αρίθμηση των κλήσεων από τον
-	-- συγκεκριμένο αστυνομικό. Πράγματι, πριν βγεί ο αστυνομικός στο
-	-- πεδίο, η διοικητική υποστήριξη της ΔΑ καταχωρεί στον αστυνομικό
-	-- τον αριθμό της πρώτης και της τελευταίας βεβαίωσης, π.χ. από
-	-- κλήση 290700 έως κλήση 290799. Επίσης, τίθεται το πεδίο "klisilast"
-	-- σε null που σημαίνει ότι ο αστυνομικός δεν έχει βεβαιώσει ακόμη
-	-- κάποια από τις βεβαιώσεις του εν λόγω διαστήματος. Το εν λόγω
-	-- πεδίο θα χρησιμοποιηθεί κατά την αυτόματη αρίθμηση των βεβαιώσεων
-	-- καθώς κάθε φορά που ο αστυνομικός βεβαιώνει νέα παράβαση, το πεδίο
-	-- αυτό αυξάνεται κατά ένα. Όσο η τιμή τού εν λόγω πεδίου παραμένει
-	-- μικρότερη από την τιμή του πεδίου "klisieos", ο αστυνομικός μπορεί
-	-- να βεβαιώνει παραβάσεις, ενώ αν η τιμή του πεδίου γίνει ίση με την
-	-- τιμή τού πεδίου "klisieos", τότε θα πρέπει να αιτηθεί νέο διάστημα
-	-- κλήσεων προκειμένου να συνεχίσει τις βεβαιώσεις.
+	-- συγκεκριμένο υπάλληλο. Πράγματι, πριν βγεί ο υπάλληλος στο πεδίο,
+	-- η διοικητική υποστήριξη της Δ.Α. καταχωρεί στον υπάλληλο τον αριθμό
+	-- της πρώτης και της τελευταίας βεβαίωσης που δικαιούται να βεβαιώσει
+	-- κατά τη βάρδιά του, π.χ. από 290701 έως 290800. Επίσης, τίθεται το
+	-- πεδίο "klisilast" σε null που σημαίνει ότι ο υπάλληλος δεν έχει
+	-- βεβαιώσει ακόμη κάποια από τις βεβαιώσεις του συγκεκριμένου χρονικού
+	-- διαστήματος. Το εν λόγω πεδίο θα χρησιμοποιηθεί κατά την (αυτόματη)
+	-- αρίθμηση των βεβαιώσεων καθώς κάθε φορά που ο αστυνομικός βεβαιώνει
+	-- νέα παράβαση, το πεδίο αυτό αυξάνεται κατά ένα. Όσο η τιμή τού εν
+	-- λόγω πεδίου παραμένει μικρότερη από την τιμή του πεδίου "klisieos",
+	-- ο υπάλληλος μπορεί να βεβαιώνει παραβάσεις, ενώ αν η τιμή του πεδίου
+	-- φτάσει την τιμή τού πεδίου "klisieos", τότε θα πρέπει να αιτηθεί νέο
+	-- διάστημα αρίθμησης κλήσεων προκειμένου να συνεχίσει τις βεβαιώσεις.
 
-	`klisiapo`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'από κλήση',
-	`klisieos`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'έως κλήση',
-	`klisilast`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'τελευταία κλήση',
+	`klisiapo`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'Από κλήση',
+	`klisieos`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'Έως κλήση',
+	`klisilast`	INTEGER UNSIGNED NULL DEFAULT NULL COMMENT 'Τελευταία κλήση',
 
-	`password`	CHARACTER(40) NULL DEFAULT NULL COMMENT 'passwprd SHA1',
-	`anenergos`	DATE NULL DEFAULT NULL COMMENT 'ημερομηνία απενεργοποίησης',
+	`info`		VARCHAR(1024) NULL DEFAULT NULL COMMENT 'Πληροφορίες',
+	`anenergos`	DATE NULL DEFAULT NULL COMMENT 'Ημερομηνία απενεργοποίησης',
+	`password`	CHARACTER(40) NULL DEFAULT NULL COMMENT 'Password (SHA1)',
 
 	PRIMARY KEY (
 		`kodikos`
-	) USING BTREE,
-
-	UNIQUE INDEX (
-		`armit`
 	) USING BTREE,
 
 	INDEX (
@@ -104,14 +110,49 @@ CREATE TABLE `astinomikos` (
 	) USING BTREE
 )
 
-COMMENT = 'Πίνακας δημοτικών αστυνομικών'
+COMMENT = 'Πίνακας υπαλλήλων με δικαίωμα βεβαίωσης παραβάσεων ΚΟΚ'
+;
+
+-- Ο πίνακας "vardia" περιέχει περιόδους κατά τις οποίες ο υπάλληλος έχει
+-- δικαίωμα βεβαίωσης παραβάσεων ΚΟΚ. Αν δεν υπάρχει καμία εγγραφή "vardia"
+-- για κάποιον υπάλληλο, τότε θεωρείται ότι ο υπάλληλος έχει δικαίωμα
+-- βεβαίωσης παραβάσεων ΚΟΚ οποιαδήποτε χρονική στιγμή, ενώ αντίθετα αν
+-- υπάρχει έστω και μια εγγραφή "vardia" για τον συγκεκριμένο υπάλληλο,
+-- ελέγχεται το δικαίωμα βεβαίωσης παραβάσεων ΚΟΚ του υπαλλήλου για τη
+-- χρονική στιγμή κατά την οποία βεβαιώνει την παράβαση.
+
+CREATE TABLE `vardia` (
+	`ipalilos`	VARCHAR(16) NOT NULL COMMENT 'Κωδικός υπαλλήλου',
+
+	-- Ακολουθεί το πεδίο "apo" που δείχνει τη χρονική στιγμή έναρξης
+	-- της βάρδιας του υπαλλήλου. Αν η τιμή του πεδίου είναι null
+	-- σημαίνει ότι δεν υπάρχει κάτω χρονικό όριο ελέγχου δικαιώματος
+	-- βεβαίωσης παραβάσεων ΚΟΚ από τον συγκεκριμένο υπάλληλο.
+
+	`apo`		DATETIME NULL DEFAULT NULL COMMENT 'Έναρξη βάρδιας',
+
+	-- Ακολουθεί το πεδίο "eos" που δείχνει τη χρονική στιγμή λήξης
+	-- της βάρδιας του υπαλλήλου. Αν η τιμή του πεδίου είναι null
+	-- σημαίνει ότι δεν υπάρχει πάνω χρονικό όριο ελέγχου δικαιώματος
+	-- βεβαίωσης παραβάσεων ΚΟΚ από τον συγκεκριμένο υπάλληλο.
+
+	`eos`		DATETIME NULL DEFAULT NULL COMMENT 'Λήξη βάρδιας',
+
+	INDEX (
+		`ipalilos`,
+		`apo`,
+		`eos`
+	) USING BTREE
+)
+
+COMMENT = 'Βάρδιες υπαλλήλων'
 ;
 
 -- Ο πίνακας "odos" περιέχει ονόματα οδών, πλατειών κλπ, τα οποία μπορούν να
 -- χρησιμοποιηθούν στην τοποσήμανση των παραβάσεων ΚΟΚ.
 
 CREATE TABLE `odos` (
-	`onomasia`	VARCHAR(128) NOT NULL COMMENT 'ονομασία οδού',
+	`onomasia`	VARCHAR(128) NOT NULL COMMENT 'Ονομασία οδού',
 
 	PRIMARY KEY (
 		`onomasia`
@@ -121,38 +162,36 @@ CREATE TABLE `odos` (
 COMMENT = 'Πίνακας τοποσημάνσεων παραβάσεων ΚΟΚ'
 ;
 
--- Ο πίνακας "paravidos" περιέχει τα είδη των παραβάσεων που μπορεί να
--- βεβαιώσει η Δημοτική Αστυνομία.
+-- Ο πίνακας "paravidos" περιέχει τα είδη των παραβάσεων ΚΟΚ που βεβαιώνουν
+-- οι υπάλληλοι της Δημοτικής Αστυνομίας.
 
 CREATE TABLE `paravidos` (
-	-- Ο κωδικός έχει τη μορφή "ΑaaΠpp[nn]" όπου "aa" είναι ο αριθμός
-	-- άρθρου του σχετικού νόμου, "pp" είναι ο αριθμός παραγράφου, και
-	-- "nn" είναι η περαιτέρω εξειδίκευση (περίπτωση), π.χ.
+	-- Ο κωδικός έχει τη μορφή "ΑaΠp[n]" όπου "a" είναι ο αριθμός άρθρου
+	-- του σχετικού νόμου, "p" είναι ο αριθμός παραγράφου, και "n" είναι
+	-- η περαιτέρω εξειδίκευση (περίπτωση), π.χ.
 	--
 	-- Α5Π8Θ	άρθρο 5, παράγραφος 8, περίπτωση "θ"
 	-- Α15Π4	άρθρο 16, παράγραφος 4
 	
-	`kodikos`	VARCHAR(16) NOT NULL COMMENT 'κωδικός παράβασης',
+	`kodikos`	VARCHAR(16) NOT NULL COMMENT 'Κωδικός είδους παράβασης',
 
-	-- Το πεδίο "apo" είναι η ημερομηνία έναρξης ισχύος της σχετικής
-	-- παράβασης. Αν είναι null τότε σημαίνει ότι η παράβαση ισχύει
-	-- από πάντα.
+	-- Το πεδίο "apo" είναι η ημερομηνία έναρξης ισχύος του σχετικού
+	-- νόμου. Αν είναι null τότε σημαίνει ότι η παράβαση ισχύει από
+	-- πάντα.
 
-	`apo`		DATE NULL DEFAULT NULL COMMENT 'έναρξη ισχύος',
+	`apo`		DATE NULL DEFAULT NULL COMMENT 'Έναρξη ισχύος',
 
-	-- Το πεδίο "eos" είναι η ημερομηνία λήξης ισχύος της σχετικής
-	-- παράβασης, αν π.χ. το πεδίο "eos" έχει τιμή "01/02/2019" σημαίνει
-	-- ότι η παράβαση είναι σε ισχύ μέχρι 31/01/2019.
+	-- Το πεδίο "eos" είναι η ημερομηνία λήξης ισχύος του σχετικού νόμου.
 
-	`eos`		DATE NULL DEFAULT NULL COMMENT 'λήξη ισχύος',
+	`eos`		DATE NULL DEFAULT NULL COMMENT 'Λήξη ισχύος',
 
-	`perigrafi`	VARCHAR(128) NOT NULL COMMENT 'περιγραφή παράβασης',
+	`perigrafi`	VARCHAR(1024) NOT NULL COMMENT 'Περιγραφή παράβασης',
 
 	-- Το πρόστιμο είναι το ποσό που βεβαιώνεται (σε λεπτά του ευρώ). Αν
 	-- είναι null τότε σημαίνει ότι η παράβαση δεν επισύρει χρηματικό
 	-- πρόστιμο.
 
-	`prostimo`	MEDIUMINT UNSIGNED NULL DEFAULT NULL COMMENT 'πρόστιμο',
+	`prostimo`	MEDIUMINT UNSIGNED NULL DEFAULT NULL COMMENT 'Πρόστιμο',
 
 	-- Ακολουθούν τα πεδία "pinakides", "adia" και "diploma" που δείχνουν
 	-- για πόσες ημέρες θα αφαιρεθούν οι πινακίδες, η άδεια κυκλοφορίας
@@ -160,9 +199,9 @@ CREATE TABLE `paravidos` (
 	-- είναι null σημαίνει ότι η παράβαση δεν επισύρει την αντίστοιχη
 	-- διοικητική κύρωση.
 
-	`pinakides`	SMALLINT UNSIGNED NULL DEFAULT NULL COMMENT 'πινακίδες',
-	`adia`		SMALLINT UNSIGNED NULL DEFAULT NULL COMMENT 'άδεια',
-	`diploma`	SMALLINT UNSIGNED NULL DEFAULT NULL COMMENT 'δίπλωμα',
+	`pinakides`	SMALLINT UNSIGNED NULL DEFAULT NULL COMMENT 'Πινακίδες',
+	`adia`		SMALLINT UNSIGNED NULL DEFAULT NULL COMMENT 'Άδεια',
+	`diploma`	SMALLINT UNSIGNED NULL DEFAULT NULL COMMENT 'Δίπλωμα',
 
 	PRIMARY KEY (
 		`kodikos`
@@ -174,86 +213,79 @@ COMMENT = 'Πίνακας ειδών παραβάσεων'
 
 -- Ο πίνακας "proklisi" περιέχει τις βεβαιώσεις παραβάσεων ΚΟΚ σε πρώιμο
 -- στάδιο, δηλαδή κατά τη στιγμή που τις βεβαιώνει και τις καταγράφει ο
--- αρμόδιος υπάλληλος της Δημοτικής Αστυνομίας.
+-- αρμόδιος υπάλληλος.
 
 CREATE TABLE `proklisi` (
-	`kodikos`	INTEGER UNSIGNED NOT NULL COMMENT 'κωδικός βεβαίωσης',
-	`imerominia`	DATETIME NOT NULL COMMENT 'ημερομηνία βεβαίωσης',
-	`astinomikos`	VARCHAR(16) NOT NULL COMMENT 'κωδικός αστυνομικού',
-
-	`oxima`		VARCHAR(20) NULL DEFAULT NULL COMMENT 'αρ. κυκλοφορίας',
-	`marka`		VARCHAR(60) NULL DEFAULT NULL COMMENT 'μάρκα οχήματος',
-	`xroma`		VARCHAR(20) NULL DEFAULT NULL COMMENT 'χρώμα οχήματος',
-	`tipos`		VARCHAR(20) NULL DEFAULT NULL COMMENT 'τύπος οχήματος',
-
-	`topos`		VARCHAR(100) NOT NULL COMMENT 'τόπος βεβαίωσης',
-
-	`afm`		INTEGER UNSIGNED NOT NULL COMMENT 'ΑΦΜ οφειλέτη',
-	`prosopo`	ENUMERATED (
-		'ΦΥΣΙΚΟ',
-		'ΝΟΜΙΚΟ'
-	)		NOT NULL COMMENT 'νομική μορφή οφειλέτη',
-
-	`eponimo`	VARCHAR(20) NULL COMMENT 'επώνυμο οφειλέτη',
-	`onoma`		VARCHAR(20) NULL COMMENT 'όνομα οφειλέτη',
-	`patronimo`	VARCHAR(20) NULL COMMENT 'πατρώνυμο οφειλέτη',
-
-	`eponimia`	VARCHAR(100) NULL COMMENT 'επωνυμία νομικού προσώπου',
-	`morfi`		VARCHAR(20) NULL COMMENT 'νομική μορφή οφειλέτη',
-
-	`dief`		VARCHAR(100) NULL COMMENT 'διεύθυνση οφειλέτη',
-	`tk`		CHARACTER(5) NULL COMMENT 'ταχυδρομικός κωδικός',
-	`perioxi`	VARCHAR(100) NULL COMMENT 'πόλη/περιοχή',
-
-	`ipovoli`	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-			COMMENT 'ημερομηνία και ώρα υποβολής',
+	`kodikos`	INTEGER UNSIGNED NOT NULL COMMENT 'Κωδικός βεβαίωσης',
+	`imerominia`	DATETIME NOT NULL COMMENT 'Ημερομηνία βεβαίωσης',
+	`ipalilos`	VARCHAR(16) NOT NULL COMMENT 'Κωδικός υπαλλήλου',
 
 	PRIMARY KEY (
 		`kodikos`
 	) USING BTREE,
 
 	INDEX (
-		`astinomikos`
-	) USING HASH,
-
-	INDEX (
-		`afm`
-	) USING BTREE
-);
+		`ipalilos`
+	) USING HASH
+)
 
 COMMENT = 'Πίνακας προ-κλήσεων'
 ;
 
--- Ο πίνακας "kirosi" περιέχει τις κυρώσεις που αφορούν σε παραβάσεις ΚΟΚ.
--- Οι κυρώσεις είναι διοικητικές (αφαίρεση πινακίδων, αφαίρεση άδειας κλπ)
--- ή οικονομικές (πρόστιμο).
+-- Ο πίνακας "proklidata" περιέχει τα στοιχεία της βεβαίωςη, π.χ. στοιχεία
+-- παράβασης, στοιχεία οχήματος, στοιχεία υπόχρεου κλπ.
 
-CREATE TABLE `kirosi` (
-	`proklisi`	INTEGER UNSIGNED NOT NULL COMMENT 'κωδικός πρό-κλησης',
-	`idos`		ENUMERATED (
-		'ΠΡΟΣΤΙΜΟ',
-		'ΠΙΝΑΚΙΔΕΣ',
-		'ΑΔΕΙΑ',
-		'ΔΙΠΛΩΜΑ'
-	)		NOT NULL COMMENT 'είδος κύρωσης',
+CREATE TABLE `proklidata` (
+	`proklisi`	INTEGER UNSIGNED NOT NULL COMMENT 'Κωδικός βεβαίωσης',
+	`katigoria`	ENUM (
+		'ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ',
+		'ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ',
+		'ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ',
+		'ΚΥΡΩΣΕΙΣ',
+		'ΔΙΑΦΟΡΑ'
+	) NOT NULL COMMENT 'Κατηγορία στοιχείου βεβαίωσης',
+	`idos`		ENUM (
+		'ΠΑΡΑΒΑΣΗ',
+		'ΤΟΠΟΣ',
+		'GEOX',
+		'GEOY',
 
-	-- Το πεδίο `timi` περιέχει το μέγεθος του προστίμου το οποίο είναι
-	-- ακέραιη αριθμητική τιμή και ερμηνεύεται ανάλογα με το είδος της
-	-- κύρωσης. Πιο συγκεκριμένα:
-	--
-	--	ΠΡΟΣΤΙΜΟ	ευρώ
-	--	ΠΙΝΑΚΙΔΕΣ	ημέρες
-	--	ΑΔΕΙΑ		ημέρες
-	--	ΔΙΠΛΩΜΑ		ημέρες
+		'ΑΡ. ΚΥΚΛΟΦΟΡΙΑΣ',
+		'ΜΑΡΚΑ',
+		'ΧΡΩΜΑ',
+		'ΤΥΠΟΣ',
 
-	`timi`		MEDIUMINT UNSIGNED NOT NULL COMMENT 'τιμή κύρωσης',
+		'ΑΦΜ',
+
+		'ΕΠΩΝΥΜΟ',
+		'ΟΝΟΜΑ',
+		'ΠΑΤΡΩΝΥΜΟ',
+
+		'ΝΟΜΙΚΗ ΜΟΡΦΗ',
+		'ΕΠΩΝΥΜΙΑ',
+
+		'ΔΙΕΥΘΥΝΣΗ',
+		'ΤΚ',
+		'ΠΕΡΙΟΧΗ/ΠΟΛΗ',
+
+		'ΠΑΡΑΤΗΡΗΣΕΙΣ'
+	) NOT NULL COMMENT 'Είδος στοιχείου βεβαίωσης',
+	`timi`		VARCHAR(512) NOT NULL COMMENT 'Τιμή στοιχείου παράβασης',
+
+	UNIQUE INDEX (
+		`proklisi`,
+		`katigoria`,
+		`idos`
+	) USING BTREE,
 
 	INDEX (
-		`proklisi`
+		`katigoria`,
+		`idos`,
+		`timi`
 	) USING BTREE
-);
+)
 
-COMMENT = 'Πίνακας κυρώσεων προ-κλήσεων'
+COMMENT = 'Πίνακας επιμέρους στοιχείων προ-κλήσεων'
 ;
 
 COMMIT WORK
@@ -308,10 +340,11 @@ INTO TABLE `paravidos` (
 
 \! echo 'Table `astinomikos`…' >[[MONITOR]]
 
-LOAD DATA LOCAL INFILE 'local/database/dimas/astinomikos.tsv'
-INTO TABLE `astinomikos` (
+LOAD DATA LOCAL INFILE 'local/database/dimas/ipalilos.tsv'
+INTO TABLE `ipalilos` (
 	`kodikos`,
-	`onomateponimo`
+	`onomateponimo`,
+	`katigoria`
 );
 
 COMMIT WORK

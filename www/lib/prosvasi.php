@@ -96,7 +96,7 @@ class Prosvasi {
 		$skodikos = sha1(self::$kodikos);
 
 		$query = "SELECT `onomateponimo` " .
-			"FROM `dimas`.`astinomikos` " .
+			"FROM `dimas`.`ipalilos` " .
 			"WHERE (`kodikos` = " . $slogin . ") " .
 			"AND (`password` = '" . $skodikos  ."') " .
 			"AND (`anenergos` IS NULL) " .

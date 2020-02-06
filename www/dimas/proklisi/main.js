@@ -719,7 +719,7 @@ Proklisi.astinomikosLoad = (chain) => {
 			Proklisi.astinomikosList = rsp.split(/[\n\r]+/);
 			Proklisi.astinomikosList.pop();
 			pd.arrayWalk(Proklisi.astinomikosList, (x, i) =>
-				Proklisi.astinomikosList[i] = Dimas.astinomikos.
+				Proklisi.astinomikosList[i] = Dimas.ipalilos.
 					fromAstinomikosList(x));
 			next(chain);
 		},

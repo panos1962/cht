@@ -293,19 +293,6 @@ COMMIT WORK
 
 -------------------------------------------------------------------------------@
 
-\! echo "Creating users…" >[[MONITOR]]
-
-DROP USER IF EXISTS '[[USERNAME]]'@'localhost'
-;
-
-CREATE USER '[[USERNAME]]'@'localhost' IDENTIFIED BY '[[USERPASS]]'
-;
-
-COMMIT WORK
-;
-
--------------------------------------------------------------------------------@
-
 \! echo "Granting permissions…" >[[MONITOR]]
 
 GRANT SELECT, INSERT, UPDATE, DELETE
@@ -338,13 +325,16 @@ INTO TABLE `paravidos` (
 	`diploma`
 );
 
-\! echo 'Table `astinomikos`…' >[[MONITOR]]
+\! echo 'Table `ipalilos`…' >[[MONITOR]]
 
 LOAD DATA LOCAL INFILE 'local/database/dimas/ipalilos.tsv'
 INTO TABLE `ipalilos` (
 	`kodikos`,
 	`onomateponimo`,
-	`katigoria`
+	`katigoria`,
+	`password`,
+	`klisiapo`,
+	`klisieos`
 );
 
 COMMIT WORK

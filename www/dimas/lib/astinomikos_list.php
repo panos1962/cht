@@ -6,7 +6,7 @@ require_once(CHT_BASEDIR . "/lib/chtClient.php");
 pandora::database();
 
 $query = "SELECT `kodikos`, `onomateponimo` " .
-	"FROM `dimas`.`astinomikos` " .
+	"FROM `dimas`.`ipalilos` " .
 	"ORDER BY `onomateponimo`, `kodikos`";
 $result = pandora::query($query);
 

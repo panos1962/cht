@@ -12,12 +12,12 @@ exit(0);
 if (cht::xristis_no_dimas())
 exit(0);
 
-$astinomikos = new Astinomikos($xristis);
+$ipalilos = new Ipalilos($xristis);
 
-if (!isset($astinomikos->kodikos))
+if (!isset($ipalilos->kodikos))
 exit(0);
 
-$klisi = $astinomikos->epomeni_klisi();
+$klisi = $ipalilos->epomeni_klisi();
 
 if (!isset($klisi))
 exit(0);

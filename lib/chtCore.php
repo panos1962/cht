@@ -46,7 +46,7 @@ class chtCore {
 	}
 }
 
-class Astinomikos {
+class Ipalilos {
 	public $kodikos = NULL;
 	public $onomateponimo = NULL;
 
@@ -63,7 +63,7 @@ class Astinomikos {
 	}
 
 	public function fromdb($kodikos) {
-		$query = "SELECT * FROM `dimas`.`astinomikos` " .
+		$query = "SELECT * FROM `dimas`.`ipalilos` " .
 			"WHERE `kodikos` = " . pandora::sql_string($kodikos);
 		$row = pandora::first_row($query, MYSQLI_ASSOC);
 

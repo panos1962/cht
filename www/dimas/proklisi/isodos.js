@@ -219,7 +219,7 @@ Proklisi.isodosPasswordSetup = () => {
 			pd.paletaList['symbols'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
-		'scribe': Proklisi.isodosAstinomikosScribe,
+		'scribe': Proklisi.isodosIpalilosScribe,
 		'submit': () => Proklisi.enotitaRise(Proklisi.menuIsodosDOM),
 		'change': Proklisi.isodosPasswordCheckData,
 	}));

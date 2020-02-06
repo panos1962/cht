@@ -30,7 +30,10 @@
 //
 ///////////////////////////////////////////////////////////////////////////////@
 
-require_once("chtCore.php");
+if (!defined("CHT_BASEDIR"))
+require_once("../local/conf.php");
+
+require_once(CHT_BASEDIR . "/lib/chtCore.php");
 
 if (!class_exists("pandora"))
 require_once(PANDORA_BASEDIR . "/lib/pandoraClient.php");

@@ -240,7 +240,6 @@ Proklisi.menuKlisiSetup = () => {
 	html('Επισκόπηση'))));
 
 	Proklisi.
-	menuTabStatus(Proklisi.kirosiTabDOM, 'inactive').
 	menuTabStatus(Proklisi.infoTabDOM, 'inactive').
 	menuTabStatus(Proklisi.istorikoTabDOM, 'inactive');
 
@@ -595,8 +594,46 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 
 Proklisi.kirosiSetup = () => {
 	Proklisi.kirosiDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
-	data('titlos', 'Κυρώσεις και πρόστιμα');
+	data('titlos', 'Κυρώσεις & πρόστιμα').
+	addClass('proklisiMenu').
 
+	append($('<div>').addClass('proklisiMenuLine').
+
+	append(Proklisi.kirosiPinakidaTabDOM = $('<div>').
+	data('exec', Proklisi.kirosiPinakidaExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Αφαίρεση πινακίδων'))).
+
+	append(Proklisi.kirosiAdiaTabDOM = $('<div>').
+	data('exec', Proklisi.kirosiAdiaExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Αφαίρεση αδείας'))).
+
+	append(Proklisi.kirosiDiplomaTabDOM = $('<div>').
+	data('exec', Proklisi.kirosiDiplomaExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Αφαίρεση διπλώματος')))).
+
+	append($('<div>').addClass('proklisiMenuLine').
+
+	append(Proklisi.kirosiProstimoTabDOM = $('<div>').
+	data('exec', Proklisi.kirosiProstimoExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Πρόστιμο'))));
+
+	return Proklisi;
+};
+
+Proklisi.kirosiExec = () => {
+	Proklisi.enotitaActivate(Proklisi.kirosiDOM);
 	return Proklisi;
 };
 

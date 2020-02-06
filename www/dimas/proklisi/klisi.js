@@ -27,6 +27,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-06
 // Updated: 2020-02-03
 // Updated: 2020-01-30
 // Updated: 2020-01-29
@@ -81,15 +82,19 @@ Proklisi.klisi = function() {
 	if (data)
 	this.oxima = (new gh.oxima(data)).fixChildren();
 
-	data = Proklisi.toposTabDOM.data('toposData');
+	pd.arrayWalk([
+		'topos',
+		'paravidos',
+		'pinakides',
+		'adia',
+		'diploma',
+		'prostimo',
+	], (x) => {
+		let data = Proklisi[x + 'TabDOM'].data(x +'Data');
 
-	if (data)
-	this.topos = data;
-
-	data = Proklisi.paravidosTabDOM.data('paravidosData');
-
-	if (data)
-	this.paravidos = data;
+		if (data)
+		this[x] = data;
+	});
 };
 
 Proklisi.klisi.prototype.kodikosGet = function() {
@@ -146,7 +151,8 @@ Proklisi.klisi.prototype.klisiDOM = function() {
 	klisiHeaderDOM(klisiDOM).
 	klisiOximaDOM(klisiDOM).
 	klisiKatoxosDOM(klisiDOM).
-	klisiParavasiDOM(klisiDOM);
+	klisiParavasiDOM(klisiDOM).
+	klisiKirosiDOM(klisiDOM);
 
 	let errors = klisiDOM.data('errors');
 
@@ -302,6 +308,49 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 
 	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ'));
+
+	let enotitaDOM =
+	Proklisi.klisi.enotitaDOM().
+	appendTo(klisiDOM);
+
+	pd.arrayWalk(cols, (x) => enotitaDOM.
+	append(Proklisi.klisi.klisiPedioDOM(x.k, x.v)));
+
+	return this;
+}
+
+Proklisi.klisi.prototype.klisiKirosiDOM = function(klisiDOM) {
+	let cols = [];
+
+	if (this.pinakides)
+	cols.push({
+		'k': 'Αφαίρεση πινακίδων',
+		'v': this.pinakides + ' ημέρες',
+	});
+
+	if (this.adia)
+	cols.push({
+		'k': 'Αφαίρεση αδείας',
+		'v': this.adia + ' ημέρες',
+	});
+
+	if (this.diploma)
+	cols.push({
+		'k': 'Αφαίρεση διπλώματος',
+		'v': this.diploma + ' ημέρες',
+	});
+
+	if (this.prostimo)
+	cols.push({
+		'k': 'Πρόστιμο',
+		'v': this.prostimo,
+	});
+
+	if (!cols.length)
+	return this;
+
+	klisiDOM.
+	append(Proklisi.klisi.enotitaTitlosDOM('ΚΥΡΩΣΕΙΣ & ΠΡΟΣΤΙΜΑ'));
 
 	let enotitaDOM =
 	Proklisi.klisi.enotitaDOM().

@@ -216,7 +216,7 @@ Proklisi.isodosPasswordSetup = () => {
 	append(pd.paleta({
 		'paleta': [
 			pd.paletaList['latin'],
-			pd.paletaList['symbols'],
+			pd.paletaList['symbol'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'scribe': Proklisi.isodosIpalilosScribe,

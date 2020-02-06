@@ -172,6 +172,90 @@ CREATE TABLE `paravidos` (
 COMMENT = 'Πίνακας ειδών παραβάσεων'
 ;
 
+-- Ο πίνακας "proklisi" περιέχει τις βεβαιώσεις παραβάσεων ΚΟΚ σε πρώιμο
+-- στάδιο, δηλαδή κατά τη στιγμή που τις βεβαιώνει και τις καταγράφει ο
+-- αρμόδιος υπάλληλος της Δημοτικής Αστυνομίας.
+
+CREATE TABLE `proklisi` (
+	`kodikos`	INTEGER UNSIGNED NOT NULL COMMENT 'κωδικός βεβαίωσης',
+	`imerominia`	DATETIME NOT NULL COMMENT 'ημερομηνία βεβαίωσης',
+	`astinomikos`	VARCHAR(16) NOT NULL COMMENT 'κωδικός αστυνομικού',
+
+	`oxima`		VARCHAR(20) NULL DEFAULT NULL COMMENT 'αρ. κυκλοφορίας',
+	`marka`		VARCHAR(60) NULL DEFAULT NULL COMMENT 'μάρκα οχήματος',
+	`xroma`		VARCHAR(20) NULL DEFAULT NULL COMMENT 'χρώμα οχήματος',
+	`tipos`		VARCHAR(20) NULL DEFAULT NULL COMMENT 'τύπος οχήματος',
+
+	`topos`		VARCHAR(100) NOT NULL COMMENT 'τόπος βεβαίωσης',
+
+	`afm`		INTEGER UNSIGNED NOT NULL COMMENT 'ΑΦΜ οφειλέτη',
+	`prosopo`	ENUMERATED (
+		'ΦΥΣΙΚΟ',
+		'ΝΟΜΙΚΟ'
+	)		NOT NULL COMMENT 'νομική μορφή οφειλέτη',
+
+	`eponimo`	VARCHAR(20) NULL COMMENT 'επώνυμο οφειλέτη',
+	`onoma`		VARCHAR(20) NULL COMMENT 'όνομα οφειλέτη',
+	`patronimo`	VARCHAR(20) NULL COMMENT 'πατρώνυμο οφειλέτη',
+
+	`eponimia`	VARCHAR(100) NULL COMMENT 'επωνυμία νομικού προσώπου',
+	`morfi`		VARCHAR(20) NULL COMMENT 'νομική μορφή οφειλέτη',
+
+	`dief`		VARCHAR(100) NULL COMMENT 'διεύθυνση οφειλέτη',
+	`tk`		CHARACTER(5) NULL COMMENT 'ταχυδρομικός κωδικός',
+	`perioxi`	VARCHAR(100) NULL COMMENT 'πόλη/περιοχή',
+
+	`ipovoli`	DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+			COMMENT 'ημερομηνία και ώρα υποβολής',
+
+	PRIMARY KEY (
+		`kodikos`
+	) USING BTREE,
+
+	INDEX (
+		`astinomikos`
+	) USING HASH,
+
+	INDEX (
+		`afm`
+	) USING BTREE
+);
+
+COMMENT = 'Πίνακας προ-κλήσεων'
+;
+
+-- Ο πίνακας "kirosi" περιέχει τις κυρώσεις που αφορούν σε παραβάσεις ΚΟΚ.
+-- Οι κυρώσεις είναι διοικητικές (αφαίρεση πινακίδων, αφαίρεση άδειας κλπ)
+-- ή οικονομικές (πρόστιμο).
+
+CREATE TABLE `kirosi` (
+	`proklisi`	INTEGER UNSIGNED NOT NULL COMMENT 'κωδικός πρό-κλησης',
+	`idos`		ENUMERATED (
+		'ΠΡΟΣΤΙΜΟ',
+		'ΠΙΝΑΚΙΔΕΣ',
+		'ΑΔΕΙΑ',
+		'ΔΙΠΛΩΜΑ'
+	)		NOT NULL COMMENT 'είδος κύρωσης',
+
+	-- Το πεδίο `timi` περιέχει το μέγεθος του προστίμου το οποίο είναι
+	-- ακέραιη αριθμητική τιμή και ερμηνεύεται ανάλογα με το είδος της
+	-- κύρωσης. Πιο συγκεκριμένα:
+	--
+	--	ΠΡΟΣΤΙΜΟ	ευρώ
+	--	ΠΙΝΑΚΙΔΕΣ	ημέρες
+	--	ΑΔΕΙΑ		ημέρες
+	--	ΔΙΠΛΩΜΑ		ημέρες
+
+	`timi`		MEDIUMINT UNSIGNED NOT NULL COMMENT 'τιμή κύρωσης',
+
+	INDEX (
+		`proklisi`
+	) USING BTREE
+);
+
+COMMENT = 'Πίνακας κυρώσεων προ-κλήσεων'
+;
+
 COMMIT WORK
 ;
 

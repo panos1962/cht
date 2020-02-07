@@ -214,12 +214,12 @@ Proklisi.isodosPasswordSetup = () => {
 	Proklisi.isodosPasswordDOM = Proklisi.enotitaDOM(Proklisi.menuIsodosDOM).
 	data('fyi', 'Πληκτρολογήστε το password').
 	append(pd.paleta({
+		'tipos': 'password',
 		'paleta': [
 			pd.paletaList['latin'],
 			pd.paletaList['symbol'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
-		'scribe': Proklisi.isodosIpalilosScribe,
 		'submit': () => Proklisi.enotitaRise(Proklisi.menuIsodosDOM),
 		'change': Proklisi.isodosPasswordCheckData,
 	}));

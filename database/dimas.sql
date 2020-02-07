@@ -71,6 +71,10 @@ SET default_storage_engine = INNODB
 CREATE TABLE `ipalilos` (
 	`kodikos`	VARCHAR(20) NOT NULL COMMENT 'Κωδικός υπαλλήλου',
 	`onomateponimo`	VARCHAR(60) NOT NULL COMMENT 'Ονοματεπώνυμο',
+	`filo`		ENUM (
+		'ΑΝΔΡΑΣ',
+		'ΓΥΝΑΙΚΑ'
+	) NOT NULL COMMENT 'Φύλλο υπαλλήλου',
 	`katigoria`	ENUM (
 		'ΔΗΜΟΤΙΚΗ ΑΣΤΥΝΟΜΙΑ'
 	) NULL DEFAULT NULL COMMENT 'Κατηγορία υπαλλήλου',
@@ -331,6 +335,7 @@ LOAD DATA LOCAL INFILE 'local/database/dimas/ipalilos.tsv'
 INTO TABLE `ipalilos` (
 	`kodikos`,
 	`onomateponimo`,
+	`filo`,
 	`katigoria`,
 	`password`,
 	`klisiapo`,

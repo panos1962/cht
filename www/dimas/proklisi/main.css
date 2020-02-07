@@ -228,3 +228,12 @@ body {
 
 	cursor: pointer;
 }
+
+.proklisiKirosiFyiLeft {
+	padding-right: 4px;
+	text-align: right;
+}
+
+.proklisiKirosiFyiRight {
+	text-align: left;
+}

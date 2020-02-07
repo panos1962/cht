@@ -321,29 +321,36 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 
 Proklisi.klisi.prototype.klisiKirosiDOM = function(klisiDOM) {
 	let cols = [];
+	let post = '<span style="font-weight: normal;">&nbsp;ημέρες</span>';
 
 	if (this.pinakides)
 	cols.push({
 		'k': 'Αφαίρεση πινακίδων',
-		'v': this.pinakides + ' ημέρες',
+		'v': this.pinakides + post,
 	});
 
 	if (this.adia)
 	cols.push({
 		'k': 'Αφαίρεση αδείας',
-		'v': this.adia + ' ημέρες',
+		'v': this.adia + post,
 	});
 
 	if (this.diploma)
 	cols.push({
 		'k': 'Αφαίρεση διπλώματος',
-		'v': this.diploma + ' ημέρες',
+		'v': this.diploma + post,
 	});
+
+	post = '<span style="font-weight: normal;">&nbsp;&euro;</span>';
 
 	if (this.prostimo)
 	cols.push({
 		'k': 'Πρόστιμο',
-		'v': this.prostimo,
+		'v': pd.centsToEuros(this.prostimo, {
+			'cents': ',',
+			'triad': '.',
+			'post': post,
+		}),
 	});
 
 	if (!cols.length)

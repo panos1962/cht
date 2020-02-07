@@ -107,12 +107,15 @@ Proklisi.eponimiXrisi = () => {
 		Proklisi.paravidosLoad,
 		Proklisi.astinomikosLoad,
 		() => Proklisi.activate(Proklisi.menuKlisiDOM),
+		pd.keepAlive,
 	]);
 
 	return Proklisi;
 };
 
 Proklisi.anonimiXrisi = () => {
+	pd.keepAlive(false);
+
 	Proklisi.
 	cleanup().
 	menuIsodosSetup().

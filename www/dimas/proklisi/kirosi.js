@@ -91,22 +91,22 @@ Proklisi.kirosiFyiRefresh = () => {
 	let s = Proklisi.prostimoTabDOM.children('.proklisiMenuTabFyi').html();
 
 	if (s)
-	fyi += '<div>' + s + '</div>';
+	fyi += '<tr>' + s + '</tr>';
 
 	s = Proklisi.pinakidesTabDOM.children('.proklisiMenuTabFyi').html();
 
 	if (s)
-	fyi += '<div>' + s + '</div>';
+	fyi += '<tr>' + s + '</tr>';
 
 	s = Proklisi.adiaTabDOM.children('.proklisiMenuTabFyi').html();
 
 	if (s)
-	fyi += '<div>' + s + '</div>';
+	fyi += '<tr>' + s + '</tr>';
 
 	s = Proklisi.diplomaTabDOM.children('.proklisiMenuTabFyi').html();
 
 	if (s)
-	fyi += '<div>' + s + '</div>';
+	fyi += '<tr>' + s + '</tr>';
 
 	Proklisi.menuTabFyi(Proklisi.kirosiTabDOM, fyi);
 	return Proklisi;
@@ -156,7 +156,12 @@ Proklisi.pinakidesCheckData = (paletaDOM) => {
 		Proklisi.menuTabStatus(pinakidesDOM.
 		data('pinakidesData', pinakides), 'success');
 		Proklisi.menuTabFyi(pinakidesDOM,
-			'Πινακίδες ' + pinakides + '&nbsp;ημέρες');
+			'<td class="proklisiKirosiFyiLeft">' +
+			'Πινακίδες' +
+			'</td>' +
+			'<td class="proklisiKirosiFyiRight">' +
+			pinakides + '&nbsp;ημέρες' +
+			'</td>');
 		return Proklisi;
 	}
 
@@ -211,7 +216,12 @@ Proklisi.adiaCheckData = (paletaDOM) => {
 		Proklisi.menuTabStatus(adiaDOM.
 		data('adiaData', adia), 'success');
 		Proklisi.menuTabFyi(adiaDOM,
-			'Άδεια ' + adia + '&nbsp;ημέρες');
+			'<td class="proklisiKirosiFyiLeft">' +
+			'Άδεια' +
+			'</td>' +
+			'<td class="proklisiKirosiFyiRight">' +
+			adia + '&nbsp;ημέρες' +
+			'</td>');
 		return Proklisi;
 	}
 
@@ -266,7 +276,12 @@ Proklisi.diplomaCheckData = (paletaDOM) => {
 		Proklisi.menuTabStatus(diplomaDOM.
 		data('diplomaData', diploma), 'success');
 		Proklisi.menuTabFyi(diplomaDOM,
-			'Δίπλωμα ' + diploma + '&nbsp;ημέρες');
+			'<td class="proklisiKirosiFyiLeft">' +
+			'Δίπλωμα' +
+			'</td>' +
+			'<td class="proklisiKirosiFyiRight">' +
+			diploma + '&nbsp;ημέρες' +
+			'</td>');
 		return Proklisi;
 	}
 
@@ -321,14 +336,19 @@ Proklisi.prostimoCheckData = (paletaDOM) => {
 	prostimo *= 100;
 
 	if (prostimo) {
-		let cents = prostimo % 100;
-		let euros = (prostimo - cents) / 100;
-		cents = prostimo.toString().slice(-2);
-
 		Proklisi.menuTabStatus(prostimoDOM.
 		data('prostimoData', prostimo), 'success');
-		Proklisi.menuTabFyi(prostimoDOM, 'Πρόστιμο ' +
-			(euros + '.' + cents) + '&nbsp;&euro;');
+		Proklisi.menuTabFyi(prostimoDOM,
+			'<td class="proklisiKirosiFyiLeft">' +
+			'Πρόστιμο' +
+			'</td>' +
+			'<td class="proklisiKirosiFyiRight">' +
+			pd.centsToEuros(prostimo, {
+				'triad': '.',
+				'cents': ',',
+				'post': '&nbsp;&euro;',
+			}) +
+			'</td>');
 		return Proklisi;
 	}
 

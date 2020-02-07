@@ -1,0 +1,36 @@
+.chtToolbarXristis {
+	display: inline-block;
+	white-space: nowrap;
+
+	font-family: "Trebuchet MS", Helvetica, sans-serif;
+}
+
+.chtToolbarXristisKodikos {
+	display: inline-block;
+	font-weight: bold;
+	text-shadow: 1px 0 0 #222222;
+}
+
+.chtToolbarXristisKodikos::before {
+	content: '[';
+	margin-right: 2px;
+
+	color: gray;
+	font-weight: normal;
+	text-shadow: none;
+}
+
+.chtToolbarXristisKodikos::after {
+	content: ']';
+	margin-left: 2px;
+
+	color: gray;
+	font-weight: normal;
+	text-shadow: none;
+}
+
+.chtToolbarXristisOnomateponimo {
+	display: inline-block;
+	padding: 0px 4px;
+	font-weight: normal;
+}

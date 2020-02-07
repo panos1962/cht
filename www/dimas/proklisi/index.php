@@ -34,6 +34,7 @@ document_head([
 	"css" => [
 		"main",
 		"klisi",
+		"../../lib/cht",
 	],
 ])::
 document_body()::

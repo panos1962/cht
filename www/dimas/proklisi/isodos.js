@@ -255,6 +255,7 @@ Proklisi.isodosPasswordCheckData = (paletaDOM) => {
 		},
 
 		'error': (err) => {
+			Proklisi.toolbarXristisRefresh();
 			console.error(err);
 			let msg = 'Ανεπιτυχής έλεγχος πρόσβασης';
 			pd.fyiError(msg);

@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-07
 // Updated: 2020-02-05
 // Updated: 2020-02-03
 // Updated: 2020-01-30
@@ -52,7 +53,7 @@ require('../../../mnt/pandora/www/lib/pandoraPaleta.js')(pd);
 require('../../../mnt/pandora/www/lib/pandoraJQueryUI.js')(pd);
 
 const Dimas =
-require('../../../lib/dimasCore.js');
+require('../../../lib/dimasClient.js');
 
 const Proklisi = {};
 
@@ -95,6 +96,7 @@ pd.domInit(() => {
 Proklisi.eponimiXrisi = () => {
 	Proklisi.
 	cleanup().
+	toolbarXristisRefresh().
 	menuKlisiSetup().
 	bebeosiSetup().
 	oximaSetup().
@@ -118,6 +120,7 @@ Proklisi.anonimiXrisi = () => {
 
 	Proklisi.
 	cleanup().
+	toolbarXristisRefresh().
 	menuIsodosSetup().
 	isodosAstinomikosSetup().
 	isodosPasswordSetup().
@@ -138,6 +141,50 @@ Proklisi.toolbarSetup = () => {
 	attr('id', 'proklisiToggleFullscreen').
 	text('Toggle fullscreen').
 	on('click', () => Proklisi.toggleFullscreen()));
+
+	pd.toolbarRightDOM.
+	append($('<div>').addClass('chtToolbarXristis'));
+
+	return Proklisi;
+};
+
+Proklisi.toolbarXristisRefresh = () => {
+	let dom = pd.toolbarRightDOM.children('.chtToolbarXristis');
+
+	if (!dom.length)
+	return Proklisi;
+
+	dom.empty();
+
+	Proklisi.xristisGet((x) => {
+		if (!x)
+		return;
+
+		switch (x.idos) {
+		case 'dimas':
+			(new Dimas.ipalilos(x)).toolbarXristisRefresh(dom);
+			break;
+		}
+	});
+
+	return Proklisi;
+};
+
+Proklisi.xristisGet = (callback) => {
+	$.post({
+		'url': '../../lib/xristis_get.php',
+		'dataType': 'json',
+		'success': (rsp) => {
+			if (callback)
+			callback(rsp);
+		},
+		'error': (err) => {
+			console.error(err);
+
+			if (callback)
+			callback();
+		},
+	});
 
 	return Proklisi;
 };
@@ -218,10 +265,10 @@ Proklisi.menuKlisiSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Κυρώσεις &amp; Πρόστιμα'))).
 
-	append(Proklisi.infoTabDOM = $('<div>').
+	append(Proklisi.moreTabDOM = $('<div>').
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Παρατηρήσεις')))).
+	html('Περισσότερες επιλογές')))).
 
 	append($('<div>').addClass('proklisiMenuLine').
 
@@ -244,7 +291,7 @@ Proklisi.menuKlisiSetup = () => {
 	html('Επισκόπηση'))));
 
 	Proklisi.
-	menuTabStatus(Proklisi.infoTabDOM, 'inactive').
+	menuTabStatus(Proklisi.moreTabDOM, 'inactive').
 	menuTabStatus(Proklisi.istorikoTabDOM, 'inactive');
 
 	Proklisi.menuKlisiDOM.

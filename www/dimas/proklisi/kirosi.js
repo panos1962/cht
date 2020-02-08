@@ -69,13 +69,21 @@ Proklisi.kirosiSetup = () => {
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Πρόστιμο'))));
+	html('Πρόστιμο'))).
+
+	append(Proklisi.misthosiTabDOM = $('<div>').
+	data('exec', Proklisi.misthosiExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Μισθωμένα, ΤΑΞΙ, Δ.Χ. κλπ'))));
 
 	Proklisi.
 	pinakidesSetup().
 	adiaSetup().
 	diplomaSetup().
-	prostimoSetup();
+	prostimoSetup().
+	misthosiSetup();
 
 	return Proklisi;
 };
@@ -356,6 +364,64 @@ Proklisi.prostimoCheckData = (paletaDOM) => {
 	removeData('prostimoData'), 'clear');
 	Proklisi.menuTabFyi(prostimoDOM);
 
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+Proklisi.misthosiSetup = () => {
+	let lista = [
+		'ΜΙΣΘΩΜΕΝΟ',
+		'ΤΑΞΙ',
+		'ΑΓΟΡΑΙΟ',
+		'ΔΗΜΟΣΙΑΣ ΧΡΗΣΗΣ',
+	];
+
+	let paletaDOM = pd.paleta({
+		'paleta': [
+			pd.paletaList['greek'],
+			pd.paletaList['latin'],
+		],
+		'keyboard': php.requestIsYes('keyboard'),
+		'zoom': true,
+		'submit': () => Proklisi.enotitaRise(Proklisi.kirosiDOM),
+		'change': Proklisi.misthosiCheckData,
+	}).data('match', lista);
+
+	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom').empty();
+
+	pd.arrayWalk(lista, (x) => $('<div>').
+	addClass('pandoraPaletaZoomGrami').
+	text(x).
+	appendTo(zoomDOM));
+
+	Proklisi.misthosiDOM = Proklisi.enotitaDOM(Proklisi.kirosiDOM).
+	data('titlos', 'Μισθωμένα, ΤΑΞΙ, Δ.Χ. κλπ').
+	data('fyi', 'Πληκτρολογήστε ή επιλέξτε ειδική κατηγορία οχήματος').
+	append(paletaDOM);
+
+	return Proklisi;
+};
+
+Proklisi.misthosiExec = () => {
+	Proklisi.enotitaActivate(Proklisi.misthosiDOM);
+	return Proklisi;
+};
+
+Proklisi.misthosiCheckData = (paletaDOM) => {
+	let misthosiDOM = Proklisi.misthosiTabDOM;
+	let misthosi = paletaDOM.data('text');
+
+	if (misthosi) {
+		Proklisi.menuTabStatus(misthosiDOM.
+		data('misthosiData', misthosi), 'success');
+		Proklisi.menuTabFyi(misthosiDOM, misthosi);
+		return Proklisi;
+	}
+
+	Proklisi.menuTabStatus(misthosiDOM.
+	removeData('misthosiData'), 'clear');
+	Proklisi.menuTabFyi(misthosiDOM);
 	return Proklisi;
 };
 

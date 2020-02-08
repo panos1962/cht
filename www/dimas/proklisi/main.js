@@ -470,9 +470,7 @@ Proklisi.toposScribe = (paletaDOM) => {
 		re += '^';
 
 		re += list.shift();
-		pd.arrayWalk(list, (c) => {
-			re += '.*' + c;
-		});
+		pd.arrayWalk(list, (c) => re += '.*' + c);
 	}
 
 	let match = [];
@@ -578,9 +576,7 @@ Proklisi.paravidosScribe = (paletaDOM) => {
 		re += '^';
 
 		re += list.shift();
-		pd.arrayWalk(list, (c) => {
-			re += '.*' + c;
-		});
+		pd.arrayWalk(list, (c) => re += '.*' + c);
 	}
 
 	let match = [];

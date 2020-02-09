@@ -25,11 +25,8 @@
 
 "use strict";
 
-const pd =
-require('../../../mnt/pandora/lib/pandoraClient.js');
-
-const gh =
-require('../../../lib/govHUB/apiCore.js');
+const pd = require('../../../mnt/pandora/lib/pandoraClient.js');
+//const gh = require('../../../lib/govHUB/apiCore.js');
 
 module.exports = function(Proklisi) {
 ///////////////////////////////////////////////////////////////////////////////@

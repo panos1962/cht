@@ -404,13 +404,28 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			data('oximaError', rsp.error), 'error').
 			menuTabFyiError(oximaDOM, oxima);
 
+			if (rsp.data.pinakida != oxima)
+			return Proklisi.menuTabStatus(oximaDOM.
+			data('oximaError', rsp.error), 'error').
+			menuTabFyiError(oximaDOM, '&#x2753;');
+
+			let fyi =
+			rsp.data.pinakida + ' ' +
+			rsp.data.marka + ' ' +
+			rsp.data.xroma;
+
+			switch (rsp.data.tipos) {
+			case 'ΕΠΙΒΑΤΙΚΟ':
+				break;
+			default:
+				fyi += ' <div class="proklisiOximaTipos">' +
+				rsp.data.tipos + '</div>';
+			}
+
 			Proklisi.
 			menuTabStatus(oximaDOM.
 			data('oximaData', rsp.data), 'success').
-			menuTabFyi(oximaDOM,
-			rsp.data.pinakida + ' ' +
-			rsp.data.marka + ' ' +
-			rsp.data.xroma);
+			menuTabFyi(oximaDOM, fyi);
 		},
 		'error': (err) => {
 			Proklisi.menuTabStatus(oximaDOM.

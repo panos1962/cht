@@ -237,3 +237,8 @@ body {
 .proklisiKirosiFyiRight {
 	text-align: left;
 }
+
+.proklisiOximaTipos {
+	color: firebrick;
+	font-weight: bold;
+}

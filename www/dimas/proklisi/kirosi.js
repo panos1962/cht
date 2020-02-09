@@ -26,7 +26,7 @@
 "use strict";
 
 const pd = require('../../../mnt/pandora/lib/pandoraClient.js');
-//const gh = require('../../../lib/govHUB/apiCore.js');
+const Dimas = require('../../../lib/dimasCore.js');
 
 module.exports = function(Proklisi) {
 ///////////////////////////////////////////////////////////////////////////////@
@@ -68,19 +68,19 @@ Proklisi.kirosiSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Πρόστιμο'))).
 
-	append(Proklisi.misthosiTabDOM = $('<div>').
-	data('exec', Proklisi.misthosiExec).
+	append(Proklisi.oximaTiposTabDOM = $('<div>').
+	data('exec', Proklisi.oximaTiposExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Μισθωμένα, ΤΑΞΙ, Δ.Χ. κλπ'))));
+	html('Ειδική κατηγορία οχήματος'))));
 
 	Proklisi.
 	pinakidesSetup().
 	adiaSetup().
 	diplomaSetup().
 	prostimoSetup().
-	misthosiSetup();
+	oximaTiposSetup();
 
 	return Proklisi;
 };
@@ -311,8 +311,7 @@ Proklisi.prostimoSetup = () => {
 		'submit': () => Proklisi.enotitaRise(Proklisi.kirosiDOM),
 		'change': (paletaDOM) => {
 			Proklisi.
-			prostimoCheckData(paletaDOM).
-			kirosiFyiRefresh();
+			paravidosCheckData(paletaDOM);
 		},
 	}));
 
@@ -366,14 +365,7 @@ Proklisi.prostimoCheckData = (paletaDOM) => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-Proklisi.misthosiSetup = () => {
-	let lista = [
-		'ΜΙΣΘΩΜΕΝΟ',
-		'ΤΑΞΙ',
-		'ΑΓΟΡΑΙΟ',
-		'ΔΗΜΟΣΙΑΣ ΧΡΗΣΗΣ',
-	];
-
+Proklisi.oximaTiposSetup = () => {
 	let paletaDOM = pd.paleta({
 		'paleta': [
 			pd.paletaList['greek'],
@@ -381,44 +373,54 @@ Proklisi.misthosiSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'zoom': true,
-		'submit': () => Proklisi.enotitaRise(Proklisi.kirosiDOM),
-		'change': Proklisi.misthosiCheckData,
-	}).data('match', lista);
+		'submit': () => {
+			Proklisi.
+			oximaTiposCheckData(paletaDOM).
+			enotitaRise(Proklisi.kirosiDOM);
+		},
+		'change': Proklisi.oximaTiposCheckData,
+	}).data('match', Dimas.paravidos.oximaTipos);
 
 	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom').empty();
 
-	pd.arrayWalk(lista, (x) => $('<div>').
+	pd.arrayWalk(Dimas.paravidos.oximaTipos, (x) => $('<div>').
 	addClass('pandoraPaletaZoomGrami').
 	text(x).
 	appendTo(zoomDOM));
 
-	Proklisi.misthosiDOM = Proklisi.enotitaDOM(Proklisi.kirosiDOM).
-	data('titlos', 'Μισθωμένα, ΤΑΞΙ, Δ.Χ. κλπ').
+	Proklisi.oximaTiposDOM = Proklisi.enotitaDOM(Proklisi.kirosiDOM).
+	data('titlos', 'Ειδική κατηγορία οχήματος').
 	data('fyi', 'Πληκτρολογήστε ή επιλέξτε ειδική κατηγορία οχήματος').
 	append(paletaDOM);
 
 	return Proklisi;
 };
 
-Proklisi.misthosiExec = () => {
-	Proklisi.enotitaActivate(Proklisi.misthosiDOM);
+Proklisi.oximaTiposExec = () => {
+	Proklisi.enotitaActivate(Proklisi.oximaTiposDOM);
 	return Proklisi;
 };
 
-Proklisi.misthosiCheckData = (paletaDOM) => {
-	let misthosiDOM = Proklisi.misthosiTabDOM;
-	let misthosi = paletaDOM.data('text');
+Proklisi.oximaTiposCheckData = (paletaDOM) => {
+	if (paletaDOM === undefined)
+	paletaDOM = Proklisi.oximaTiposDOM.
+	find('.pandoraPaleta').first();
 
-	if (misthosi) {
-		Proklisi.menuTabStatus(misthosiDOM.
-		data('misthosiData', misthosi), 'success');
-		Proklisi.menuTabFyi(misthosiDOM, misthosi);
-		return Proklisi;
+	let oximaTipos = paletaDOM.data('text');
+
+	if (oximaTipos) {
+		Proklisi.menuTabStatus(Proklisi.oximaTiposTabDOM.
+		data('oximaTiposData', oximaTipos), 'success');
+		Proklisi.menuTabFyi(Proklisi.oximaTiposTabDOM, oximaTipos);
 	}
 
-	Proklisi.menuTabStatus(misthosiDOM.
-	removeData('misthosiData'), 'clear');
-	Proklisi.menuTabFyi(misthosiDOM);
+	else {
+		Proklisi.menuTabStatus(Proklisi.oximaTiposTabDOM.
+		removeData('oximaTiposData'), 'clear');
+		Proklisi.menuTabFyi(Proklisi.oximaTiposTabDOM);
+	}
+
+	Proklisi.paravidosCheckData();
 	return Proklisi;
 };
 

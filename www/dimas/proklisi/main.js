@@ -109,9 +109,9 @@ Proklisi.eponimiXrisi = () => {
 		Proklisi.paravidosLoad,
 		Proklisi.astinomikosLoad,
 		() => Proklisi.activate(Proklisi.menuKlisiDOM),
-		pd.keepAlive,
 	]);
 
+	pd.keepAlive('../../mnt/pandora', true);
 	return Proklisi;
 };
 
@@ -402,12 +402,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			if (rsp.hasOwnProperty('error'))
 			return Proklisi.menuTabStatus(oximaDOM.
 			data('oximaError', rsp.error), 'error').
-			menuTabFyiError(oximaDOM, oxima);
-
-			if (rsp.data.pinakida != oxima)
-			return Proklisi.menuTabStatus(oximaDOM.
-			data('oximaError', rsp.error), 'error').
-			menuTabFyiError(oximaDOM, '&#x2753;');
+			menuTabFyiError(oximaDOM, '<div>&#x2753;</div>' + oxima);
 
 			let fyi =
 			rsp.data.pinakida + ' ' +
@@ -418,18 +413,44 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			case 'ΕΠΙΒΑΤΙΚΟ':
 				break;
 			default:
-				fyi += ' <div class="proklisiOximaTipos">' +
+				fyi += ' <div class="proklisiOximaTiposNotice">' +
 				rsp.data.tipos + '</div>';
 			}
 
-			Proklisi.
-			menuTabStatus(oximaDOM.
+			switch (rsp.data.katastasi) {
+			case 'ΚΙΝΗΣΗ':
+				break;
+			default:
+				fyi += ' <div class="proklisiOximaKatastasiNotice">' +
+				rsp.data.katastasi + '</div>';
+			}
+
+			Proklisi.menuTabStatus(oximaDOM.
 			data('oximaData', rsp.data), 'success').
 			menuTabFyi(oximaDOM, fyi);
+
+			if (Dimas.paravidos.oximaTiposList.
+				hasOwnProperty(rsp.data.tipos)) {
+				Proklisi.menuTabStatus(Proklisi.oximaTiposTabDOM.
+				data('oximaTiposData', rsp.data.tipos), 'success');
+				Proklisi.menuTabFyi(Proklisi.oximaTiposTabDOM,
+				rsp.data.tipos);
+			}
+
+			else {
+				Proklisi.menuTabStatus(Proklisi.oximaTiposTabDOM.
+				removeData('oximaTiposData'), 'clear');
+				Proklisi.menuTabFyi(Proklisi.oximaTiposTabDOM);
+			}
+
+			let oximaTiposPaletaDOM = Proklisi.oximaTiposDOM.
+			find('.pandoraPaleta').first();
+
+			Proklisi.paravidosCheckData();
 		},
 		'error': (err) => {
 			Proklisi.menuTabStatus(oximaDOM.
-			data('oximaError', 'ERROR'), 'error').
+			data('oximaError', 'Αποτυχημένη ανάκτηση'), 'error').
 			menuTabFyiError(oximaDOM, oxima);
 		},
 	});
@@ -635,10 +656,20 @@ Proklisi.paravidosScribe = (paletaDOM) => {
 };
 
 Proklisi.paravidosCheckData = (paletaDOM) => {
+	if (paletaDOM === undefined)
+	paletaDOM = Proklisi.paravidosDOM.
+	find('.pandoraPaleta').first();
+
 	let paravidosDOM = Proklisi.paravidosTabDOM;
 	let paravidos = paletaDOM.data('value');
 
 	if (paravidos) {
+		let oxima = Proklisi.oximaTabDOM.data('oximaData');
+		let tipos = Proklisi.oximaTiposTabDOM.data('oximaTiposData');
+
+		if (!tipos)
+		tipos = (oxima ? oxima.tipos : undefined);
+
 		Proklisi.menuTabStatus(paravidosDOM.
 		data('paravidosData', paravidos), 'success');
 		Proklisi.menuTabFyi(paravidosDOM, paravidos.diataxiGet());
@@ -649,15 +680,15 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 			'diploma',
 			'prostimo',
 		], (x) => {
-			let val = paravidos[x];
+			let val = paravidos.kirosiGet(x, tipos);
 			let kirosiDOM = Proklisi[x + 'DOM'];
 			let paletaDOM = kirosiDOM.
 			children('.pandoraPaleta');
 
 			if (val)
 			paletaDOM.
-			data('text', paravidos[x]).
-			data('value', paravidos[x]);
+			data('text', val).
+			data('value', val);
 
 			else
 			paletaDOM.removeData('text');

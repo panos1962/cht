@@ -85,6 +85,7 @@ Proklisi.klisi = function() {
 	pd.arrayWalk([
 		'topos',
 		'paravidos',
+		'oximaTipos',
 		'pinakides',
 		'adia',
 		'diploma',
@@ -95,6 +96,7 @@ Proklisi.klisi = function() {
 		if (data)
 		this[x] = data;
 	});
+console.log(this);
 };
 
 Proklisi.klisi.prototype.kodikosGet = function() {
@@ -323,6 +325,12 @@ Proklisi.klisi.prototype.klisiKirosiDOM = function(klisiDOM) {
 	let cols = [];
 	let post = '<span style="font-weight: normal;">&nbsp;ημέρες</span>';
 
+	if (this.oximaTipos)
+	cols.push({
+		'k': 'Ειδ. κατ. οχήματος',
+		'v': this.oximaTipos,
+	});
+
 	if (this.pinakides)
 	cols.push({
 		'k': 'Αφαίρεση πινακίδων',
@@ -433,8 +441,22 @@ Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
 
 	dataDOM.
 	append(Proklisi.klisi.klisiPedioDOM((katoxos.isFisikoProsopo() ?
-		'Ονοματεπώνυμο' : 'Επωνυμία'), katoxos.onomasiaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', katoxos.dief));
+		'Ονοματεπώνυμο' : 'Επωνυμία'), katoxos.onomasiaGet()));
+
+	if (katoxos.dief)
+	dataDOM.append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', katoxos.dief));
+
+	if (katoxos.perioxi && katoxos.tk)
+	dataDOM.append(Proklisi.klisi.
+	klisiPedioDOM('Πόλη/Περιοχή', katoxos.perioxi +
+	'<span style="font-weight: normal;">, </span>' + katoxos.tk));
+
+	else if (katoxos.perioxi)
+	dataDOM.append(Proklisi.klisi.
+	klisiPedioDOM('Πόλη/Περιοχή', katoxos.perioxi));
+
+	else if (katoxos.tk)
+	dataDOM.append(Proklisi.klisi.klisiPedioDOM('Ταχ. κωδικός', katoxos.tk));
 
 	return this;
 }

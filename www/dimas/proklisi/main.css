@@ -238,7 +238,16 @@ body {
 	text-align: left;
 }
 
-.proklisiOximaTipos {
+.proklisiOximaTiposNotice {
 	color: firebrick;
+	text-shadow: 1px 1px 1px black;
+	background-color: lightblue;
+	font-weight: bold;
+}
+
+.proklisiOximaKatastasiNotice {
+	color: red;
+	text-shadow: 1px 1px 1px yellow;
+	background-color: black;
 	font-weight: bold;
 }

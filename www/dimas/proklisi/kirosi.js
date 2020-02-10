@@ -11,11 +11,12 @@
 // @FILETYPE END
 //
 // @FILE BEGIN
-// www/dimas/proklisi/kirosi.js —— Module επεξεργασίας κρώσεων και προστίμου
+// www/dimas/proklisi/kirosi.js —— Module επεξεργασίας κυρώσεων και προστίμων
 // προ-κλήσεων.
 // @FILE END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-10
 // Created: 2020-02-06
 // @HISTORY END
 //

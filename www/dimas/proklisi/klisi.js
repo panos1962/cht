@@ -16,9 +16,19 @@
 // @FILE END
 //
 // @DESCRIPTION BEGIN
-// Στο παρόν JavaScript module περιέχονται δομές και functions που εξυπηρτούν
-// τη δημιουργία, την επεξεργασία, την προεπισκόπηση και την υποβολή
-// προ-κλήσεων που αφορούν σε παραβάσεις του ΚΟΚ.
+// Στο παρόν module υπάρχουν δομές και functions που εξυπηρετούν τη δημιουργία
+// φύλλου βεβαίωσης παράβασης ΚΟΚ, δηλαδή του αποκόμματος που εναποθέτει σε
+// εμφανές σημείο του οχήματος ο δημοτικός αστυνομικός. Αυτά τα αποκόμματα
+// συνήθως έχουν βαθύ ροζ χρώμα κατά την κλασική (χειροκίνητη) διαδικασία ο
+// δημοτικός αστυνομικός συνέτασσε χειρόγραφα τη βεβαίωση στο καρνέ του και
+// κατόπιν αποσπούσε το ένα από τα δύο αντίγραφα.
+//
+// Με τη χρήση των PDAs αυτό έχει αλλάξει και ο δημοτικός αστυνομικός συντάσσει
+// ψηφιακά τη βεβαίωση της παράβασης και κατόπιν την ελέγχει και την υποβάλλει
+// στην κεντρική database της Δημοτικής Αστυνομίας. Από εκεί η βεβαίωση μπορεί
+// εύκολα να καταχωρηθεί στο ΟΠΣΟΥ, ενώ διευκολύνονται και άλλες διαδικασίες
+// όπως παρακολούθηση ενστάσεων, παράδοση και επιστροφή πινακίδων, άδειας
+// κυκλοφορίας και διπλώματος οδήγησης κλπ.
 //
 // Το παρόν δεν έχει δημιουργηθεί ως αυτόνομο JavaScript module αλλά αποτελεί
 // παρακολούθημα της βασικής σελίδας δημιουργίας, επεξεργασίας και υποβολής
@@ -47,7 +57,6 @@ const pd = require('../../../mnt/pandora/lib/pandoraClient.js');
 const gh = require('../../../lib/govHUB/apiCore.js');
 
 module.exports = function(Proklisi) {
-
 ///////////////////////////////////////////////////////////////////////////////@
 
 // Η κλάση "Proklisi.klisi" αφορά σε προ-κλήσεις παραβάσεων ΚΟΚ, τουτέστιν
@@ -148,7 +157,8 @@ Proklisi.klisi.prototype.klisiDOM = function() {
 	klisiOximaDOM(klisiDOM).
 	klisiKatoxosDOM(klisiDOM).
 	klisiParavasiDOM(klisiDOM).
-	klisiKirosiDOM(klisiDOM);
+	klisiKirosiDOM(klisiDOM).
+	klisiFooterDOM(klisiDOM);
 
 	let errors = klisiDOM.data('errors');
 
@@ -471,6 +481,49 @@ Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
 
 	return this;
 }
+
+Proklisi.klisi.prototype.klisiFooterDOM = function(klisiDOM) {
+	let errors = klisiDOM.data('errors');
+	let xristis = Proklisi.xristis;
+	let titlos;
+	let kodikos;
+	let onoma;
+
+	if (Proklisi.xristisIsAstinomikos()) {
+		titlos = (Proklisi.xristis.filo === 'ΑΝΔΡΑΣ' ?
+			'Ο Δημοτικός Αστυνομικός' :
+			'Η Δημοτική Αστυνομικός');
+		kodikos = Proklisi.xristis.kodikos;
+		onoma = Proklisi.xristis.onomateponimo;
+	}
+
+	if (!kodikos) {
+		errors.push('Αρμόδιος');
+		return this;
+	}
+
+	let footerDOM = $('<table>').addClass('proklisiKlisiEnotitaFooter');
+	let footerLeftDOM = $('<div>').addClass('proklisiKlisiFooterLeft');
+	let footerRightDOM = $('<div>').addClass('proklisiKlisiFooterRight');
+
+	footerRightDOM.
+	append($('<div>').addClass('proklisiKlisiFooterArmodios').
+	append($('<div>').addClass('proklisiKlisiFooterArmodiosTitlos').text(titlos)).
+	append($('<div>').addClass('proklisiKlisiFooterArmodiosKodikos').text(kodikos)).
+	append($('<div>').addClass('proklisiKlisiFooterArmodiosOnoma').text(onoma)));
+
+	klisiDOM.
+	append(footerDOM.
+	append($('<tr>').addClass('proklisiKlisiFooterLine').
+	append($('<td>').addClass('proklisiKlisiFooterLeftCol').
+	append(footerLeftDOM)).
+	append($('<td>').addClass('proklisiKlisiFooterRightCol').
+	append(footerRightDOM))));
+
+	return this;
+}
+
+///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.klisi.enotitaTitlosDOM = (titlos) => {
 	return $('<div>').

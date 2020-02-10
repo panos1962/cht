@@ -46,19 +46,19 @@ return_xristis($xristis);
 
 switch ($xristis["idos"]) {
 case "dimas":
-	$query = "SELECT `onomateponimo` FROM `dimas`.`ipalilos` " .
+	$query = "SELECT 'dimas' AS `idos`, `kodikos`, " .
+		"`onomateponimo`, `filo` FROM `dimas`.`ipalilos` " .
 		"WHERE `kodikos` = " . pandora::sql_string($xristis["kodikos"]);
 	break;
 default:
 	return_xristis($xristis);
 }
 
-$row = pandora::first_row($query, MYSQLI_NUM);
+$row = pandora::first_row($query, MYSQLI_ASSOC);
 
-if (!$row)
-return_xristis($xristis);
+if ($row)
+return_xristis($row);
 
-$xristis["onomateponimo"] = $row[0];
 return_xristis($xristis);
 
 function return_xristis($xristis) {

@@ -55,8 +55,8 @@ Created: 2019-12-25
 	color: #282828;
 	text-align: center;
 
-	border-style: double none double none;
-	border-width: 3px;
+	border-style: solid none solid none;
+	border-width: 2px;
 	border-color: #444444;
 }
 
@@ -93,6 +93,7 @@ Created: 2019-12-25
 }
 
 .proklisiKlisiHeaderLeft {
+	text-align: left;
 }
 
 .proklisiKlisiEthnosimo {
@@ -173,6 +174,63 @@ Created: 2019-12-25
 
 	font-weight: normal;
 	color: #282828;
+}
+
+/*////////////////////////////////////////////////////////////////////////////*/
+
+.proklisiKlisiEnotitaFooter {
+	width: 100%;
+	margin-top: 10px;
+	padding-top: 8px;
+
+	border-style: solid none none none;
+	border-width: 2px;
+	border-color: #444444;
+}
+
+.proklisiKlisiFooterLine {
+	vertical-align: top;
+}
+
+.proklisiKlisiFooterLeft {
+	text-align: left;
+}
+
+.proklisiKlisiFooterRightCol {
+	width: 50%;
+}
+
+.proklisiKlisiFooterRight {
+	text-align: right;
+}
+
+.proklisiKlisiFooterArmodios {
+	text-align: center;
+	white-space: nowrap;
+}
+
+.proklisiKlisiFooterArmodiosKodikos {
+	display: inline-block;
+	font-weight: bold;
+}
+
+.proklisiKlisiFooterArmodiosKodikos::before {
+	content: '[';
+	margin-right: 2px;
+	font-weight: normal;
+}
+
+.proklisiKlisiFooterArmodiosKodikos::after {
+	content: ']';
+	margin-left: 2px;
+	margin-right: 8px;
+	font-weight: normal;
+}
+
+.proklisiKlisiFooterArmodiosOnoma {
+	display: inline-block;
+	margin-top: 50px;
+	font-weight: bold;
 }
 
 /*////////////////////////////////////////////////////////////////////////////*/

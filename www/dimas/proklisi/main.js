@@ -149,6 +149,49 @@ Proklisi.toolbarSetup = () => {
 	return Proklisi;
 };
 
+// Η παράμετρος "xristis" περιέχει τον χρήστη που λειτουργεί του πρόγραμμα.
+// Ο χρήστης μπορεί να είναι δημοτικός αστυνομικός, τρίτος υπάλληλος του
+// δήμου, ή γενικά χρήστης της εφαρμογής· αυτό καθορίζεται από τον τρόπο
+// εισόδου του χρήστη στο πρόγραμμα (επώνυμη χρήση).
+
+Proklisi.xristis = undefined;
+
+Proklisi.xristisIsAstinomikos = () => {
+	try {
+		return (Proklisi.xristis instanceof Dimas.ipalilos);
+	}
+
+	catch (e) {
+		return false;
+	}
+};
+
+Proklisi.xristisNoAstinomikos = () => !Proklisi.xristisIsAstinomikos();
+
+Proklisi.xristisIsIpalilos = () => {
+	try {
+		return (Proklisi.xristis instanceof Prosop.ipalilos);
+	}
+
+	catch (e) {
+		return false;
+	}
+};
+
+Proklisi.xristisNoIpalilos = () => !Proklisi.xristisIsIpalilos();
+
+Proklisi.xristisIsXristis = () => {
+	try {
+		return (Proklisi.xristis instanceof Pandora.xristis);
+	}
+
+	catch (e) {
+		return false;
+	}
+};
+
+Proklisi.xristisNoXristis = () => !Proklisi.xristisIsXristis();
+
 Proklisi.toolbarXristisRefresh = () => {
 	let dom = pd.toolbarRightDOM.children('.chtToolbarXristis');
 
@@ -156,14 +199,17 @@ Proklisi.toolbarXristisRefresh = () => {
 	return Proklisi;
 
 	dom.empty();
+	Proklisi.xristis = undefined;
 
 	Proklisi.xristisGet((x) => {
 		if (!x)
 		return;
 
+		Proklisi.xristis = x;
 		switch (x.idos) {
 		case 'dimas':
-			(new Dimas.ipalilos(x)).toolbarXristisRefresh(dom);
+			Proklisi.xristis = new Dimas.ipalilos(x);
+			Proklisi.xristis.toolbarXristisRefresh(dom);
 			break;
 		}
 	});

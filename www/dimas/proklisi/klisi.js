@@ -321,55 +321,56 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 	return this;
 }
 
+// Ακολουθεί λίστα κυρώσεων/προστίμων που εκτυπώνονται στη σχετική ενότητα.
+// Τα πεδία της λίστας ερμηνεύονται ως εξής:
+//
+//	k:	Είδος κύρωσης/προστίμου
+//	v:	Τιμή κύρωσης προστίμου (μέρες/cents)
+//	f:	Custom function διαμόρφωσης
+//	p:	Post string (ημέρες/€, default ημέρες)
+//	c:	Αν είναι false θεωρείται δευτερεύον (default true)
+
+Proklisi.klisi.kirosiList = [
+	{
+		'k': 'Ειδ. κατ. οχήματος',
+		'v': 'oximaTipos',
+		'p': '',
+		'c': false,
+	},
+	{
+		'k': 'Αφαίρεση πινακίδων',
+		'v': 'pinakides',
+	},
+	{
+		'k': 'Αφαίρεση αδείας',
+		'v': 'adia',
+	},
+	{
+		'k': 'Αφαίρεση διπλώματος',
+		'v': 'diploma',
+	},
+	{
+		'k': 'Πρόστιμο',
+		'v': 'prostimo',
+		'f': (x) => pd.centsToEuros(x, {
+			'cents': ',',
+			'triad': '.',
+		}),
+		'p': '&euro;',
+	},
+];
+
 Proklisi.klisi.prototype.klisiKirosiDOM = function(klisiDOM) {
 	let errors = klisiDOM.data('errors');
 	let count = 0;
+	let klist = Proklisi.klisi.kirosiList.filter((x) => {
+		if (!this[x.v])
+		return false;
 
-	// k:	Είδος κύρωσης/προστίμου
-	// v:	Τιμή κύρωσης προστίμου (μέρες/cents)
-	// p:	Post string (ημέρες/€)
-	// c:	Αν είναι false θεωρείται δευτερεύον στοιχείο (default true)
-
-	let klist = [
-		{
-			'k': 'Ειδ. κατ. οχήματος',
-			'v': this.oximaTipos,
-			'c': false,
-		},
-		{
-			'k': 'Αφαίρεση πινακίδων',
-			'v': this.pinakides,
-			'p': 'ημέρες',
-		},
-		{
-			'k': 'Αφαίρεση αδείας',
-			'v': this.adia,
-			'p': 'ημέρες',
-		},
-		{
-			'k': 'Αφαίρεση διπλώματος',
-			'v': this.diploma,
-			'p': 'ημέρες',
-		},
-		{
-			'k': 'Πρόστιμο',
-			'v': pd.centsToEuros(this.prostimo, {
-				'cents': ',',
-				'triad': '.',
-			}),
-			'p': '&euro;',
-		},
-	];
-
-	pd.arrayWalk(klist, (x) => {
-		if (!x.v)
-		return;
-
-		if (!x.hasOwnProperty('c'))
-		x.c = true;
-
-		if (x.c)
+		if ((!x.hasOwnProperty('c')) || x.c)
 		count++;
+
+		return true;
 	});
 
 	if (!count) {
@@ -386,13 +387,11 @@ Proklisi.klisi.prototype.klisiKirosiDOM = function(klisiDOM) {
 	appendTo(klisiDOM);
 
 	pd.arrayWalk(klist, (x) => {
-		if (!x.v)
-		return;
+		let val = (x.f ? x.f(this[x.v]) : this[x.v]);
+		let post = (x.hasOwnProperty('p') ? x.p : 'ημέρες');
 
-		let val = x.v;
-
-		if (x.hasOwnProperty('p'))
-		val += '<span style="font-weight: normal;">&nbsp;' + x.p + '</span>';
+		if (post)
+		val += '<span style="font-weight: normal;">&nbsp;' + post + '</span>';
 
 		enotitaDOM.
 		append(Proklisi.klisi.klisiPedioDOM(x.k, val));

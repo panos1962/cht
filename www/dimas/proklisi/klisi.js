@@ -259,7 +259,6 @@ Proklisi.klisi.prototype.klisiHeaderDOM = function(klisiDOM) {
 	headerDOM.
 	appendTo(klisiDOM);
 
-	klisiDOM.data('errors', errors);
 	return this;
 }
 
@@ -303,8 +302,6 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 	else
 	errors.push('Παράβαση');
 
-	klisiDOM.data('errors', errors);
-
 	if (!cols.length)
 	return this;
 
@@ -327,7 +324,7 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 //	k:	Είδος κύρωσης/προστίμου
 //	v:	Τιμή κύρωσης προστίμου (μέρες/cents)
 //	f:	Custom function διαμόρφωσης
-//	p:	Post string (ημέρες/€, default ημέρες)
+//	p:	Post string ("ημέρες"/"€", default "ημέρες")
 //	c:	Αν είναι false θεωρείται δευτερεύον (default true)
 
 Proklisi.klisi.kirosiList = [
@@ -375,7 +372,6 @@ Proklisi.klisi.prototype.klisiKirosiDOM = function(klisiDOM) {
 
 	if (!count) {
 		errors.push('Κυρώσεις');
-		klisiDOM.data('errors', errors);
 		return this;
 	}
 
@@ -406,7 +402,6 @@ Proklisi.klisi.prototype.klisiOximaDOM = function(klisiDOM) {
 
 	if (!oxima) {
 		errors.push('Όχημα');
-		klisiDOM.data('errors', errors);
 		return this;
 	}
 
@@ -437,7 +432,6 @@ Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
 
 	if (!katoxos) {
 		errors.push('Κάτοχος');
-		klisiDOM.data('errors', errors);
 		return this;
 	}
 

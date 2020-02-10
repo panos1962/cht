@@ -55,8 +55,8 @@ Created: 2019-12-25
 	color: #282828;
 	text-align: center;
 
-	border-style: solid none solid none;
-	border-width: 2px;
+	border-style: double none double none;
+	border-width: 3px;
 	border-color: #444444;
 }
 
@@ -183,8 +183,8 @@ Created: 2019-12-25
 	margin-top: 10px;
 	padding-top: 8px;
 
-	border-style: solid none none none;
-	border-width: 2px;
+	border-style: double none none none;
+	border-width: 3px;
 	border-color: #444444;
 }
 
@@ -291,34 +291,3 @@ Created: 2019-12-25
 }
 
 /*////////////////////////////////////////////////////////////////////////////*/
-
-@media print {
-	#pandoraToolbar {
-		display: none;
-	}
-
-	#pandoraFyi {
-		display: none;
-	}
-
-	#pandoraOfelimo {
-		height: auto;
-		overflow-y: visible;
-	}
-
-	.proklisiEpistrofiBar {
-		display: none;
-	}
-
-	.proklisiKlisiSelida {
-		background-color: transparent;
-	}
-
-	.proklisiKlisiProtected {
-		display: none;
-	}
-
-	#pandoraRibbon {
-		display: none;
-	}
-}

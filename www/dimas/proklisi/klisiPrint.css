@@ -1,0 +1,64 @@
+/*******************************************************************************
+
+@BEGIN
+
+@COPYRIGHT BEGIN
+Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+@COPYRIGHT END
+
+@FILETYPE BEGIN
+css
+@FILETYPE END
+
+@FILE BEGIN
+www/dimas/proklisi/klisiPrint.css —— Αρχείο προδιαγραφών CSS για την εκτύπωση
+των κλήσεων.
+@FILE END
+
+@HISTORY BEGIN
+Created: 2019-02-10
+@HISTORY END
+
+@END
+
+*******************************************************************************/
+
+#pandoraToolbar {
+	display: none;
+}
+
+#pandoraFyi {
+	display: none;
+}
+
+#pandoraOfelimo {
+	height: auto;
+	overflow-y: visible;
+}
+
+.proklisiEpistrofiBar {
+	display: none;
+}
+
+.proklisiKlisiSelida {
+	background-color: transparent;
+}
+
+.proklisiKlisiEnotitaTitlos {
+	border-style: solid none solid none;
+	border-width: 1px;
+}
+
+.proklisiKlisiEnotitaFooter {
+	border-style: solid none none none;
+	border-width: 1px;
+	border-color: #444444;
+}
+
+.proklisiKlisiProtected {
+	display: none;
+}
+
+#pandoraRibbon {
+	display: none;
+}

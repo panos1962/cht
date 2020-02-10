@@ -510,7 +510,9 @@ Proklisi.klisi.prototype.klisiFooterDOM = function(klisiDOM) {
 	append($('<div>').addClass('proklisiKlisiFooterArmodios').
 	append($('<div>').addClass('proklisiKlisiFooterArmodiosTitlos').text(titlos)).
 	append($('<div>').addClass('proklisiKlisiFooterArmodiosKodikos').text(kodikos)).
-	append($('<div>').addClass('proklisiKlisiFooterArmodiosOnoma').text(onoma)));
+	append($('<div>').addClass('proklisiKlisiFooterArmodiosOnoma').text(onoma)).
+	append($('<img>').addClass('proklisiKlisiFooterArmodiosIpografi').
+	attr('src', '../ipografi/' + kodikos + '.png?xxx')));
 
 	klisiDOM.
 	append(footerDOM.

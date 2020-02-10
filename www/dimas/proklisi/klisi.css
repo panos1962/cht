@@ -289,3 +289,36 @@ Created: 2019-12-25
 	color: midnightblue;
 	font-weight: bold;
 }
+
+/*////////////////////////////////////////////////////////////////////////////*/
+
+@media print {
+	#pandoraToolbar {
+		display: none;
+	}
+
+	#pandoraFyi {
+		display: none;
+	}
+
+	#pandoraOfelimo {
+		height: auto;
+		overflow-y: visible;
+	}
+
+	.proklisiEpistrofiBar {
+		display: none;
+	}
+
+	.proklisiKlisiSelida {
+		background-color: transparent;
+	}
+
+	.proklisiKlisiProtected {
+		display: none;
+	}
+
+	#pandoraRibbon {
+		display: none;
+	}
+}

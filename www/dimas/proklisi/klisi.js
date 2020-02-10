@@ -27,6 +27,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-10
 // Updated: 2020-02-06
 // Updated: 2020-02-03
 // Updated: 2020-01-30
@@ -42,11 +43,8 @@
 
 "use strict";
 
-const pd =
-require('../../../mnt/pandora/lib/pandoraClient.js');
-
-const gh =
-require('../../../lib/govHUB/apiCore.js');
+const pd = require('../../../mnt/pandora/lib/pandoraClient.js');
+const gh = require('../../../lib/govHUB/apiCore.js');
 
 module.exports = function(Proklisi) {
 
@@ -71,7 +69,8 @@ Proklisi.klisi = function() {
 	if (data) {
 		if (data.hasOwnProperty('bebnum'))
 		this.kodikos = data.bebnum;
-			let date = pd.dateTime(undefined, '%D/%M/%Y, %h:%m');
+
+		let date = pd.dateTime(undefined, '%D/%M/%Y, %h:%m');
 
 		if (data.hasOwnProperty('date'))
 		this.imerominia = data.date;
@@ -81,6 +80,14 @@ Proklisi.klisi = function() {
 
 	if (data)
 	this.oxima = (new gh.oxima(data)).fixChildren();
+
+	// Σε κάθε menu tab (κουτάκι επιλογής από μενού) υπάρχει data
+	// item με όνομα σχετικό με το όνομα του menu tab, π.χ. στο
+	// menu tab "oximaMenuTab" υπάρχει data item "oximaData" με
+	// τον αρ. κυκλοφορίας οχήματος. Εκμεταλλευόμαστε, λοιπόν,
+	// αυτήν την ευταξία στο πρόγραμμα προκειμένου να δώσουμε
+	// αρχικές τιμές στα υπόλοιπα πεδία της υπό επεξεργασία
+	// πρό-κλησης.
 
 	pd.arrayWalk([
 		'topos',
@@ -96,26 +103,13 @@ Proklisi.klisi = function() {
 		if (data)
 		this[x] = data;
 	});
-console.log(this);
 };
 
 Proklisi.klisi.prototype.kodikosGet = function() {
-	if (!this.hasOwnProperty('kodikos'))
-	return undefined;
-
-	if (!this.kodikos)
-	return undefined;
-
 	return this.kodikos;
 };
 
 Proklisi.klisi.prototype.imerominiaGet = function() {
-	if (!this.hasOwnProperty('imerominia'))
-	return undefined;
-
-	if (!this.imerominia)
-	return undefined;
-
 	return this.imerominia;
 };
 

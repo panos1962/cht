@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-10
 // Updated: 2020-02-07
 // Updated: 2020-02-05
 // Updated: 2020-02-03
@@ -111,7 +112,7 @@ Proklisi.eponimiXrisi = () => {
 		() => Proklisi.activate(Proklisi.menuKlisiDOM),
 	]);
 
-	pd.keepAlive('../../mnt/pandora', true);
+	pd.keepAlive('../../mnt/pandora');
 	return Proklisi;
 };
 

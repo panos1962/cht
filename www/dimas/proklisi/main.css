@@ -156,6 +156,10 @@ body {
 	border-radius: 2px;
 }
 
+.proklisiMenuTabFyi tr {
+	line-height: 90%;
+}
+
 .proklisiMenuTabFyiError {
 	color: firebrick;
 }

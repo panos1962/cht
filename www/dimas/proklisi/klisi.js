@@ -322,47 +322,61 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 }
 
 Proklisi.klisi.prototype.klisiKirosiDOM = function(klisiDOM) {
-	let cols = [];
-	let post = '<span style="font-weight: normal;">&nbsp;ημέρες</span>';
+	let errors = klisiDOM.data('errors');
+	let count = 0;
 
-	if (this.oximaTipos)
-	cols.push({
-		'k': 'Ειδ. κατ. οχήματος',
-		'v': this.oximaTipos,
+	// k:	Είδος κύρωσης/προστίμου
+	// v:	Τιμή κύρωσης προστίμου (μέρες/cents)
+	// p:	Post string (ημέρες/€)
+	// c:	Αν είναι false θεωρείται δευτερεύον στοιχείο (default true)
+
+	let klist = [
+		{
+			'k': 'Ειδ. κατ. οχήματος',
+			'v': this.oximaTipos,
+			'c': false,
+		},
+		{
+			'k': 'Αφαίρεση πινακίδων',
+			'v': this.pinakides,
+			'p': 'ημέρες',
+		},
+		{
+			'k': 'Αφαίρεση αδείας',
+			'v': this.adia,
+			'p': 'ημέρες',
+		},
+		{
+			'k': 'Αφαίρεση διπλώματος',
+			'v': this.diploma,
+			'p': 'ημέρες',
+		},
+		{
+			'k': 'Πρόστιμο',
+			'v': pd.centsToEuros(this.prostimo, {
+				'cents': ',',
+				'triad': '.',
+			}),
+			'p': '&euro;',
+		},
+	];
+
+	pd.arrayWalk(klist, (x) => {
+		if (!x.v)
+		return;
+
+		if (!x.hasOwnProperty('c'))
+		x.c = true;
+
+		if (x.c)
+		count++;
 	});
 
-	if (this.pinakides)
-	cols.push({
-		'k': 'Αφαίρεση πινακίδων',
-		'v': this.pinakides + post,
-	});
-
-	if (this.adia)
-	cols.push({
-		'k': 'Αφαίρεση αδείας',
-		'v': this.adia + post,
-	});
-
-	if (this.diploma)
-	cols.push({
-		'k': 'Αφαίρεση διπλώματος',
-		'v': this.diploma + post,
-	});
-
-	post = '<span style="font-weight: normal;">&nbsp;&euro;</span>';
-
-	if (this.prostimo)
-	cols.push({
-		'k': 'Πρόστιμο',
-		'v': pd.centsToEuros(this.prostimo, {
-			'cents': ',',
-			'triad': '.',
-			'post': post,
-		}),
-	});
-
-	if (!cols.length)
-	return this;
+	if (!count) {
+		errors.push('Κυρώσεις');
+		klisiDOM.data('errors', errors);
+		return this;
+	}
 
 	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΚΥΡΩΣΕΙΣ & ΠΡΟΣΤΙΜΑ'));
@@ -371,8 +385,18 @@ Proklisi.klisi.prototype.klisiKirosiDOM = function(klisiDOM) {
 	Proklisi.klisi.enotitaDOM().
 	appendTo(klisiDOM);
 
-	pd.arrayWalk(cols, (x) => enotitaDOM.
-	append(Proklisi.klisi.klisiPedioDOM(x.k, x.v)));
+	pd.arrayWalk(klist, (x) => {
+		if (!x.v)
+		return;
+
+		let val = x.v;
+
+		if (x.hasOwnProperty('p'))
+		val += '<span style="font-weight: normal;">&nbsp;' + x.p + '</span>';
+
+		enotitaDOM.
+		append(Proklisi.klisi.klisiPedioDOM(x.k, val));
+	});
 
 	return this;
 }

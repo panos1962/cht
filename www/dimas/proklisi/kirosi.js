@@ -93,7 +93,14 @@ Proklisi.kirosiExec = () => {
 Proklisi.kirosiFyiRefresh = () => {
 	let fyi = '';
 
-	let s = Proklisi.prostimoTabDOM.children('.proklisiMenuTabFyi').html();
+	let s = Proklisi.oximaTiposTabDOM.children('.proklisiMenuTabFyi').html();
+
+	if (s)
+	fyi = '<div><b>' + s + '</b></div>';
+
+	fyi += '<table>';
+
+	s = Proklisi.prostimoTabDOM.children('.proklisiMenuTabFyi').html();
 
 	if (s)
 	fyi += '<tr>' + s + '</tr>';
@@ -113,6 +120,8 @@ Proklisi.kirosiFyiRefresh = () => {
 	if (s)
 	fyi += '<tr>' + s + '</tr>';
 
+	fyi += '</table>';
+
 	Proklisi.menuTabFyi(Proklisi.kirosiTabDOM, fyi);
 	return Proklisi;
 };
@@ -129,11 +138,7 @@ Proklisi.pinakidesSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'submit': () => Proklisi.enotitaRise(Proklisi.kirosiDOM),
-		'change': (paletaDOM) => {
-			Proklisi.
-			pinakidesCheckData(paletaDOM).
-			kirosiFyiRefresh();
-		},
+		'change': Proklisi.pinakidesCheckData,
 	}));
 
 	return Proklisi;
@@ -167,13 +172,15 @@ Proklisi.pinakidesCheckData = (paletaDOM) => {
 			'<td class="proklisiKirosiFyiRight">' +
 			pinakides + '&nbsp;ημέρες' +
 			'</td>');
-		return Proklisi;
 	}
 
-	Proklisi.menuTabStatus(pinakidesDOM.
-	removeData('pinakidesData'), 'clear');
-	Proklisi.menuTabFyi(pinakidesDOM);
+	else {
+		Proklisi.menuTabStatus(pinakidesDOM.
+		removeData('pinakidesData'), 'clear');
+		Proklisi.menuTabFyi(pinakidesDOM);
+	}
 
+	Proklisi.kirosiFyiRefresh();
 	return Proklisi;
 };
 
@@ -189,11 +196,7 @@ Proklisi.adiaSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'submit': () => Proklisi.enotitaRise(Proklisi.kirosiDOM),
-		'change': (paletaDOM) => {
-			Proklisi.
-			adiaCheckData(paletaDOM).
-			kirosiFyiRefresh();
-		},
+		'change': Proklisi.adiaCheckData,
 	}));
 
 	return Proklisi;
@@ -227,13 +230,15 @@ Proklisi.adiaCheckData = (paletaDOM) => {
 			'<td class="proklisiKirosiFyiRight">' +
 			adia + '&nbsp;ημέρες' +
 			'</td>');
-		return Proklisi;
 	}
 
-	Proklisi.menuTabStatus(adiaDOM.
-	removeData('adiaData'), 'clear');
-	Proklisi.menuTabFyi(adiaDOM);
+	else {
+		Proklisi.menuTabStatus(adiaDOM.
+		removeData('adiaData'), 'clear');
+		Proklisi.menuTabFyi(adiaDOM);
+	}
 
+	Proklisi.kirosiFyiRefresh();
 	return Proklisi;
 };
 
@@ -249,11 +254,7 @@ Proklisi.diplomaSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'submit': () => Proklisi.enotitaRise(Proklisi.kirosiDOM),
-		'change': (paletaDOM) => {
-			Proklisi.
-			diplomaCheckData(paletaDOM).
-			kirosiFyiRefresh();
-		},
+		'change': Proklisi.diplomaCheckData,
 	}));
 
 	return Proklisi;
@@ -287,13 +288,15 @@ Proklisi.diplomaCheckData = (paletaDOM) => {
 			'<td class="proklisiKirosiFyiRight">' +
 			diploma + '&nbsp;ημέρες' +
 			'</td>');
-		return Proklisi;
 	}
 
-	Proklisi.menuTabStatus(diplomaDOM.
-	removeData('diplomaData'), 'clear');
-	Proklisi.menuTabFyi(diplomaDOM);
+	else {
+		Proklisi.menuTabStatus(diplomaDOM.
+		removeData('diplomaData'), 'clear');
+		Proklisi.menuTabFyi(diplomaDOM);
+	}
 
+	Proklisi.kirosiFyiRefresh();
 	return Proklisi;
 };
 
@@ -309,10 +312,7 @@ Proklisi.prostimoSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'submit': () => Proklisi.enotitaRise(Proklisi.kirosiDOM),
-		'change': (paletaDOM) => {
-			Proklisi.
-			paravidosCheckData(paletaDOM);
-		},
+		'change': Proklisi.prostimoCheckData,
 	}));
 
 	return Proklisi;
@@ -353,13 +353,15 @@ Proklisi.prostimoCheckData = (paletaDOM) => {
 				'post': '&nbsp;&euro;',
 			}) +
 			'</td>');
-		return Proklisi;
 	}
 
-	Proklisi.menuTabStatus(prostimoDOM.
-	removeData('prostimoData'), 'clear');
-	Proklisi.menuTabFyi(prostimoDOM);
+	else {
+		Proklisi.menuTabStatus(prostimoDOM.
+		removeData('prostimoData'), 'clear');
+		Proklisi.menuTabFyi(prostimoDOM);
+	}
 
+	Proklisi.kirosiFyiRefresh();
 	return Proklisi;
 };
 
@@ -373,11 +375,7 @@ Proklisi.oximaTiposSetup = () => {
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'zoom': true,
-		'submit': () => {
-			Proklisi.
-			oximaTiposCheckData(paletaDOM).
-			enotitaRise(Proklisi.kirosiDOM);
-		},
+		'submit': () => Proklisi.enotitaRise(Proklisi.kirosiDOM),
 		'change': Proklisi.oximaTiposCheckData,
 	}).data('match', Dimas.paravidos.oximaTipos);
 
@@ -420,7 +418,10 @@ Proklisi.oximaTiposCheckData = (paletaDOM) => {
 		Proklisi.menuTabFyi(Proklisi.oximaTiposTabDOM);
 	}
 
-	Proklisi.paravidosCheckData();
+	Proklisi.
+	paravidosCheckData().
+	kirosiFyiRefresh();
+
 	return Proklisi;
 };
 

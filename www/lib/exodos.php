@@ -56,6 +56,7 @@ require_once("../../local/conf.php");
 require_once(CHT_BASEDIR . "/lib/chtClient.php");
 
 session_start();
+cht::delete_ipografi();
 unset($_SESSION[CHT_SESSION_IDOS_XRISTI]);
 unset($_SESSION[PANDORA_SESSION_XRISTIS]);
 

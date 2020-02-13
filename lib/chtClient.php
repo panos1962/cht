@@ -21,6 +21,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-12
 // Updated: 2020-01-24
 // Updated: 2020-01-16
 // Created: 2020-01-12
@@ -79,6 +80,85 @@ class cht extends chtCore {
 
 	public static function xristis_is_user() {
 		return (cht::idos_xristi_get() === "user");
+	}
+
+	///////////////////////////////////////////////////////////////////////@
+	//
+	// Για λόγους ασφάλειας τα αρχεία εικόνας των υπογραφών δεν μπορούν να
+	// να βρίσκονται σε directories προσβάσιμα από το διαδίκτυο. Τα εν λόγω
+	// αρχεία εικόνας βρίσκονται αποθηκευμένα στα directories:
+	//
+	//	cht/local/[[idos]]/ipografi
+	//
+	// όπου "[[idos]]" είναι το είδος του χρήστη που κάνει επώνυμη χρήση
+	// της εφαρμογής, δηλαδή "dimas", "ipalilos" ή "xristis".
+	//
+	// Κατά την είσοδο του χρήστη στην εφαρμογή δημιουργούνται κάποια
+	// session items ένα εκ των οοποίων αφορά την υπογραφή τού χρήστη.
+	// Πιο συγκεκριμένα, αν υπάρχει αρχείο εικόνας το οποίο αφορά τον
+	// χρήστη (είδος χρήστη και κωδικός/login) τότε δημιουργείται link
+	// του εν λόγω αρχείου στο directory:
+	//
+	//	cht/www/tmp/ipografi
+	//
+	// με προσωρινή ονομασία η οποία κρατείται στο session item:
+	//
+	//	CHT_SESSION_IPOGRAFI_XRISTI
+	//
+	///////////////////////////////////////////////////////////////////////@
+
+	// Η function "delete_ipografi" διαγράφει τυχόν υπάρχον προσωρινό
+	// link αρχείου εικόνας υπογραφής χρήστη.
+
+	public static function delete_ipografi() {
+		$ipografi = pandora::session_get(CHT_SESSION_IPOGRAFI_XRISTI);
+
+		if (!isset($ipografi))
+		return __CLASS__;
+
+		unset($_SESSION[CHT_SESSION_IPOGRAFI_XRISTI]);
+		unlink(CHT_BASEDIR . "/www/tmp/ipografi/" . $ipografi . ".png");
+		unlink(CHT_BASEDIR . "/www/tmp/ipografi/" . $ipografi);
+
+		return __CLASS__;
+	}
+
+	// Η function "expose_ipografi" δημιουργεί link του αρχείου εικόνας
+	// υπογραφής του χρήστη στο directory "www/tmp/ipografi" προκειμένου
+	// να μπορεί να κοινοποιηθεί η υπογραφή στο διαδίκτυο.
+
+	public static function expose_ipografi() {
+		self::delete_ipografi();
+
+		$idos = pandora::session_get(CHT_SESSION_IDOS_XRISTI);
+
+		if (!isset($idos))
+		return __CLASS__;
+
+		$xristis = pandora::session_get(PANDORA_SESSION_XRISTIS);
+
+		if (!isset($xristis))
+		return __CLASS__;
+
+		$tmpdir = CHT_BASEDIR . "/www/tmp/ipografi";
+		$ipografi = tempnam($tmpdir, "ipografi");
+
+		if ($ipografi === FALSE)
+		return __CLASS__;
+
+		$ipografi = basename($ipografi);
+		$ifargopi = CHT_BASEDIR . "/local/" . $idos .
+			"/ipografi/" . $xristis . ".png";
+print ">>" . $ifargopi . "<<" . PHP_EOL;
+print ">>" . $tmpdir . "/" . $ipografi  . ".png<<" . PHP_EOL;
+
+		if (symlink($ifargopi, $tmpdir . "/" . $ipografi . ".png"))
+		$_SESSION[CHT_SESSION_IPOGRAFI_XRISTI] = $ipografi;
+
+		else
+		unlink($tmpdir . "/" . $ipografi);
+
+		return __CLASS__;
 	}
 }
 

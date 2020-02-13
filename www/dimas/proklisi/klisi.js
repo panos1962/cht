@@ -512,7 +512,8 @@ Proklisi.klisi.prototype.klisiFooterDOM = function(klisiDOM) {
 	append($('<div>').addClass('proklisiKlisiFooterArmodiosKodikos').text(kodikos)).
 	append($('<div>').addClass('proklisiKlisiFooterArmodiosOnoma').text(onoma)).
 	append($('<img>').addClass('proklisiKlisiFooterArmodiosIpografi').
-	attr('src', '../../tmp/ipografi/' + php.sessionGet(php.defs['CHT_SESSION_IPOGRAFI_XRISTI']) + '.png')));
+	attr('src', '../../tmp/ipografi/' + php.sessionGet
+	(php.defs['CHT_SESSION_IPOGRAFI_XRISTI']) + '.png')));
 
 	klisiDOM.
 	append(footerDOM.

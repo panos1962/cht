@@ -767,9 +767,16 @@ Proklisi.episkopisiSetup = () => {
 };
 
 Proklisi.episkopisiExec = () => {
+	let proklisi = new Proklisi.klisi();
+
 	Proklisi.episkopisiKlisiDOM.
 	empty().
-	append((new Proklisi.klisi()).klisiDOM());
+	append(proklisi.klisiDOM());
+
+proklisi.errors = [];
+	if (proklisi.noError())
+	Proklisi.episkopisiKlisiDOM.
+	append(proklisi.ipovoliDOM());
 
 	Proklisi.enotitaActivate(Proklisi.episkopisiDOM);
 	return Proklisi;

@@ -149,8 +149,6 @@ class cht extends chtCore {
 		$ipografi = basename($ipografi);
 		$ifargopi = CHT_BASEDIR . "/local/" . $idos .
 			"/ipografi/" . $xristis . ".png";
-print ">>" . $ifargopi . "<<" . PHP_EOL;
-print ">>" . $tmpdir . "/" . $ipografi  . ".png<<" . PHP_EOL;
 
 		if (symlink($ifargopi, $tmpdir . "/" . $ipografi . ".png"))
 		$_SESSION[CHT_SESSION_IPOGRAFI_XRISTI] = $ipografi;

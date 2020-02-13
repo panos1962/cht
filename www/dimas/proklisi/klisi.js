@@ -506,14 +506,19 @@ Proklisi.klisi.prototype.klisiFooterDOM = function(klisiDOM) {
 	let footerLeftDOM = $('<div>').addClass('proklisiKlisiFooterLeft');
 	let footerRightDOM = $('<div>').addClass('proklisiKlisiFooterRight');
 
-	footerRightDOM.
-	append($('<div>').addClass('proklisiKlisiFooterArmodios').
+	let armodiosDOM = $('<div>').addClass('proklisiKlisiFooterArmodios').
 	append($('<div>').addClass('proklisiKlisiFooterArmodiosTitlos').text(titlos)).
 	append($('<div>').addClass('proklisiKlisiFooterArmodiosKodikos').text(kodikos)).
-	append($('<div>').addClass('proklisiKlisiFooterArmodiosOnoma').text(onoma)).
-	append($('<img>').addClass('proklisiKlisiFooterArmodiosIpografi').
-	attr('src', '../../tmp/ipografi/' + php.sessionGet
-	(php.defs['CHT_SESSION_IPOGRAFI_XRISTI']) + '.png')));
+	append($('<div>').addClass('proklisiKlisiFooterArmodiosOnoma').text(onoma));
+
+	footerRightDOM.append(armodiosDOM);
+
+	let ipografi = php.sessionGet(php.defs['CHT_SESSION_IPOGRAFI_XRISTI']);
+
+	if (ipografi)
+	armodiosDOM.append($('<img>').
+	addClass('proklisiKlisiFooterArmodiosIpografi').
+	attr('src', '../../tmp/ipografi/' + ipografi + '.png'));
 
 	klisiDOM.
 	append(footerDOM.

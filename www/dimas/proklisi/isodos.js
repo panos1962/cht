@@ -243,17 +243,19 @@ Proklisi.isodosPasswordCheckData = (paletaDOM) => {
 	xristis.kodikos = paletaDOM.data('text');
 	$.post({
 		'url': '../../lib/prosvasi.php',
-		'dataType': 'text',
+		'dataType': 'json',
 		'data': xristis,
-
 		'success': (rsp) => {
-			if (!rsp)
-			return Proklisi.eponimiXrisi();
+			if (rsp.hasOwnProperty('error')) {
+				pd.fyiError(rsp.error);
+				Proklisi.menuIsodosDOM.data('errmsg', rsp.error);
+				return;
+			}
 
-			pd.fyiError(rsp);
-			Proklisi.menuIsodosDOM.data('errmsg', rsp);
+			php._SESSION[php.defs['CHT_SESSION_IPOGRAFI_XRISTI']] =
+			rsp.ipografi;
+			Proklisi.eponimiXrisi();
 		},
-
 		'error': (err) => {
 			Proklisi.toolbarXristisRefresh();
 			console.error(err);

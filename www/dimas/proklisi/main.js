@@ -575,8 +575,8 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 		'error': (err) => {
 			Proklisi.menuTabStatus(ipoxreosDOM.
 			data('ipoxreosError',
-			'Αποτυχημένη ανάκτηση στοιχείων υπόχεου'), 'error').
-			menuTabFyiError(ipoxreosDOM, ipoxreos);
+			'Αποτυχημένη ανάκτηση στοιχείων υπόχρεου'), 'error').
+			menuTabFyiError(ipoxreosDOM, afm);
 		},
 	});
 

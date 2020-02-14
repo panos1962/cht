@@ -99,6 +99,7 @@ Proklisi.klisi = function() {
 	// πρό-κλησης.
 
 	pd.arrayWalk([
+		'ipoxreos',
 		'topos',
 		'paravidos',
 		'oximaTipos',
@@ -172,6 +173,7 @@ Proklisi.klisi.prototype.klisiDOM = function() {
 	klisiHeaderDOM(klisiDOM).
 	klisiOximaDOM(klisiDOM).
 	klisiKatoxosDOM(klisiDOM).
+	klisiIpoxreosDOM(klisiDOM).
 	klisiParavasiDOM(klisiDOM).
 	klisiKirosiDOM(klisiDOM).
 	klisiFooterDOM(klisiDOM);
@@ -484,6 +486,47 @@ Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
 	return this;
 }
 
+Proklisi.klisi.prototype.klisiIpoxreosDOM = function(klisiDOM) {
+	if (!this.ipoxreos)
+	return this;
+
+	let enotitaDOM = $('<div>').
+	appendTo(klisiDOM);
+
+	enotitaDOM.
+	append(Proklisi.klisi.
+	enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ'));
+
+	let dataDOM = Proklisi.klisi.enotitaDOM().
+	appendTo(enotitaDOM);
+
+	let ipoxreos = new gh.prosopo(this.ipoxreos);
+
+	dataDOM.
+	append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', ipoxreos.afm));
+
+	dataDOM.
+	append(Proklisi.klisi.klisiPedioDOM((ipoxreos.isFisikoProsopo() ?
+		'Ονοματεπώνυμο' : 'Επωνυμία'), ipoxreos.onomasiaGet()));
+
+	if (ipoxreos.dief)
+	dataDOM.append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', ipoxreos.dief));
+
+	if (ipoxreos.perioxi && ipoxreos.tk)
+	dataDOM.append(Proklisi.klisi.
+	klisiPedioDOM('Πόλη/Περιοχή', ipoxreos.perioxi +
+	'<span style="font-weight: normal;">, </span>' + ipoxreos.tk));
+
+	else if (ipoxreos.perioxi)
+	dataDOM.append(Proklisi.klisi.
+	klisiPedioDOM('Πόλη/Περιοχή', ipoxreos.perioxi));
+
+	else if (ipoxreos.tk)
+	dataDOM.append(Proklisi.klisi.klisiPedioDOM('Ταχ. κωδικός', ipoxreos.tk));
+
+	return this;
+}
+
 Proklisi.klisi.prototype.klisiFooterDOM = function(klisiDOM) {
 	let xristis = Proklisi.xristis;
 	let titlos;
@@ -538,11 +581,9 @@ Proklisi.klisi.prototype.ipovoliDOM = function() {
 	let ipovoliDOM = $('<div>').
 	data('state', 0).
 	addClass('proklisiKlisiIpovoliSection').
-	append($('<input>').
-	attr({
-		'value': 'Υποβολή βεβαίωσης',
-		'type': 'button',
-	}).
+	append($('<div>').
+	addClass('proklisiButton').
+	text('Υποβολή βεβαίωσης').
 	on('click', function(e) {
 		e.stopPropagation();
 		proklisi.ipovoli($(this), ipovoliDOM);
@@ -564,17 +605,15 @@ console.log('>>IPOVOLI<<', this.kodikos);
 
 	ipovoliDOM.
 	data('state', state + 1).
-	prepend($('<input>').
-	attr({
-		'value': 'Ακύρωση υποβολής',
-		'type': 'button',
-	}).
+	prepend($('<div>').
+	addClass('proklisiButton').
+	text('Ακύρωση υποβολής').
 	on('click', function(e) {
 		e.stopPropagation();
 
 		$(this).remove();
 		ipovoliDOM.data('state', 0);
-		buttonDOM.attr('value', 'Υποβολή βεβαίωσης');
+		buttonDOM.text('Υποβολή βεβαίωσης');
 	}));
 };
 

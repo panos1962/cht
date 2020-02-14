@@ -453,30 +453,9 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			data('oximaError', rsp.error), 'error').
 			menuTabFyiError(oximaDOM, '<div>&#x2753;</div>' + oxima);
 
-			let fyi =
-			rsp.data.pinakida + ' ' +
-			rsp.data.marka + ' ' +
-			rsp.data.xroma;
-
-			switch (rsp.data.tipos) {
-			case 'ΕΠΙΒΑΤΙΚΟ':
-				break;
-			default:
-				fyi += ' <div class="proklisiOximaTiposNotice">' +
-				rsp.data.tipos + '</div>';
-			}
-
-			switch (rsp.data.katastasi) {
-			case 'ΚΙΝΗΣΗ':
-				break;
-			default:
-				fyi += ' <div class="proklisiOximaKatastasiNotice">' +
-				rsp.data.katastasi + '</div>';
-			}
-
 			Proklisi.menuTabStatus(oximaDOM.
 			data('oximaData', rsp.data), 'success').
-			menuTabFyi(oximaDOM, fyi);
+			menuTabFyi(oximaDOM, Proklisi.oximaFyi(rsp.data));
 
 			if (Dimas.paravidos.oximaTiposList.
 				hasOwnProperty(rsp.data.tipos)) {
@@ -506,6 +485,37 @@ Proklisi.oximaGetData = (paletaDOM) => {
 	});
 
 	return Proklisi;
+};
+
+Proklisi.oximaFyi = (oxima) => {
+	let fyi = '';
+
+	if (oxima.pinakida)
+	fyi += '<div><b>' + oxima.pinakida + '</b></div>';
+
+	if (oxima.marka)
+	fyi += '<div>' + oxima.marka + '</div>';
+
+	if (oxima.xroma)
+	fyi += '<div>' + oxima.xroma + '</div>';
+
+	switch (oxima.tipos) {
+	case 'ΕΠΙΒΑΤΙΚΟ':
+		break;
+	default:
+		fyi += ' <div class="proklisiOximaTiposNotice">' +
+		oxima.tipos + '</div>';
+	}
+
+	switch (oxima.katastasi) {
+	case 'ΚΙΝΗΣΗ':
+		break;
+	default:
+		fyi += ' <div class="proklisiOximaKatastasiNotice">' +
+		oxima.katastasi + '</div>';
+	}
+
+	return fyi;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@
@@ -565,12 +575,9 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 			data('ipoxreosError', rsp.error), 'error').
 			menuTabFyiError(ipoxreosDOM, '<div>&#x2753;</div>' + afm);
 
-			let fyi =
-			rsp.data.afm;
-
 			Proklisi.menuTabStatus(ipoxreosDOM.
 			data('ipoxreosData', rsp.data), 'success').
-			menuTabFyi(ipoxreosDOM, fyi);
+			menuTabFyi(ipoxreosDOM, Proklisi.ipoxreosFyi(rsp.data));
 		},
 		'error': (err) => {
 			Proklisi.menuTabStatus(ipoxreosDOM.
@@ -581,6 +588,44 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 	});
 
 	return Proklisi;
+};
+
+Proklisi.ipoxreosFyi = (ipoxreos) => {
+	let fyi = '';
+
+	fyi += '<div>ΑΦΜ&nbsp;<b>' + ipoxreos.afm + '</b></div>';
+
+	if (ipoxreos.eteria)
+	fyi += '<div>' + ipoxreos.eteria + '</div>';
+
+	else if (ipoxreos.eponimia)
+	fyi += '<div>' + ipoxreos.eponimia + '</div>';
+
+	else {
+		let s = '';
+
+		if (ipoxreos.eponimo)
+		s += ' ' + ipoxreos.eponimo;
+
+		if (ipoxreos.onoma)
+		s += ' ' + ipoxreos.onoma;
+
+		if (ipoxreos.patronimo)
+		s += ' (' + ipoxreos.patronimo.substr(0, 3) + ')';
+
+		s = s.trim();
+
+		if (s)
+		fyi += '<div>' + s.trim() + '</div>';
+	}
+
+	if (ipoxreos.dief)
+	fyi += '<div>' + ipoxreos.dief + '</div>';
+
+	if (ipoxreos.perioxi)
+	fyi += '<div>' + ipoxreos.perioxi + '</div>';
+
+	return fyi;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@

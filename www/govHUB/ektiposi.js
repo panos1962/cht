@@ -196,7 +196,6 @@ rpt.ektiposiOxima = () => {
 	append($('<th>').text('ΠΕΡΙΟΧΗ'));
 
 	w3gh.resultsDOM.children('.RSLT_oxima').each(function() {
-console.log('>>>');
 		try {
 			let t = main.$(this).data('reqData');
 			let x = main.$(this).data('resData');
@@ -261,7 +260,6 @@ rpt.oximaAsArray = function(ante) {
 
 	if (rpt.formatOxima === rpt.defs.formatParavasi) {
 		let a = ante.split(',');
-console.log(a);
 
 		if (a.length != 3)
 		a = [ '', '', '', ];
@@ -317,6 +315,7 @@ rpt.ektiposiProsopo = () => {
 	append($('<th>').addClass('aspasto').text('Α/Α')).
 	append($('<th>').text('ΑΦΜ')).
 	append($('<th>').text('ΕΠΩΝΥΜΙΑ')).
+	append($('<th>').text('ΤΙΤΛΟΣ')).
 	append($('<th>').text('ΜΟΡΦΗ')).
 	append($('<th>').text('ΕΠΩΝΥΜΟ')).
 	append($('<th>').text('ΟΝΟΜΑ')).
@@ -326,7 +325,7 @@ rpt.ektiposiProsopo = () => {
 	append($('<th>').text('ΔΙΕΥΘΥΝΣΗ')).
 	append($('<th>').text('ΤΚ')).
 	append($('<th>').text('ΠΕΡΙΟΧΗ')).
-	append($('<th>').text('ΤΗΛΕΦΩΝΟ'));
+	append($('<th>').text('ΚΡΑΤΟΣ'));
 
 	w3gh.resultsDOM.children('.RSLT_prosopo').each(function() {
 		try {
@@ -377,6 +376,7 @@ rpt.prosopoAsArray = function() {
 	return [
 		this.afm,
 		this.eponimia,
+		this.eteria,
 		this.morfi,
 		this.eponimo,
 		this.onoma,

@@ -59,8 +59,8 @@ require('../../../lib/dimasClient.js');
 const Proklisi = {};
 
 Proklisi.param = {
-	'oximaServerHost': 'http://' + php.serverGet('HTTP_HOST'),
-	'oximaServerPort': 8001,
+	'govHUBServerHost': 'http://' + php.serverGet('HTTP_HOST'),
+	'govHUBServerPort': 8001,
 	'dimas': {
 		'ota': 'ΔΗΜΟΣ ΘΕΣΣΑΛΟΝΙΚΗΣ',
 		'ipiresia': 'ΔΙΕΥΘΥΝΣΗ ΔΗΜΟΤΙΚΗΣ ΑΣΤΥΝΟΜΙΑΣ',
@@ -68,8 +68,8 @@ Proklisi.param = {
 	},
 };
 
-Proklisi.param.oximaServerUrl = Proklisi.param.oximaServerHost +
-	':' + Proklisi.param.oximaServerPort;
+Proklisi.param.govHUBServerUrl = Proklisi.param.govHUBServerHost +
+	':' + Proklisi.param.govHUBServerPort;
 
 require('./menu.js')(Proklisi);
 require('./isodos.js')(Proklisi);
@@ -101,6 +101,7 @@ Proklisi.eponimiXrisi = () => {
 	menuKlisiSetup().
 	bebeosiSetup().
 	oximaSetup().
+	ipoxreosSetup().
 	toposSetup().
 	paravidosSetup().
 	kirosiSetup().
@@ -289,14 +290,21 @@ Proklisi.menuKlisiSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Στοιχεία Οχήματος'))).
 
+	append(Proklisi.ipoxreosTabDOM = $('<div>').
+	data('exec', Proklisi.ipoxreosExec).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel').
+	html('Στοιχεία Υπόχρεου')))).
+
+	append($('<div>').addClass('proklisiMenuLine').
+
 	append(Proklisi.toposTabDOM = $('<div>').
 	data('exec', Proklisi.toposExec).
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Τοποθεσία Παράβασης')))).
-
-	append($('<div>').addClass('proklisiMenuLine').
+	html('Τοποθεσία Παράβασης'))).
 
 	append(Proklisi.paravidosTabDOM = $('<div>').
 	data('exec', Proklisi.paravidosExec).
@@ -310,12 +318,7 @@ Proklisi.menuKlisiSetup = () => {
 	addClass('proklisiMenuTab').
 	append($('<div>').addClass('proklisiMenuTabFyi')).
 	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Κυρώσεις &amp; Πρόστιμα'))).
-
-	append(Proklisi.moreTabDOM = $('<div>').
-	addClass('proklisiMenuTab').
-	append($('<div>').addClass('proklisiMenuTabLabel').
-	html('Περισσότερες επιλογές')))).
+	html('Κυρώσεις &amp; Πρόστιμα')))).
 
 	append($('<div>').addClass('proklisiMenuLine').
 
@@ -338,7 +341,6 @@ Proklisi.menuKlisiSetup = () => {
 	html('Επισκόπηση'))));
 
 	Proklisi.
-	menuTabStatus(Proklisi.moreTabDOM, 'inactive').
 	menuTabStatus(Proklisi.istorikoTabDOM, 'inactive');
 
 	Proklisi.menuKlisiDOM.
@@ -439,7 +441,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 	menuTabFyi(oximaDOM, oxima);
 
 	$.post({
-		'url': Proklisi.param.oximaServerUrl,
+		'url': Proklisi.param.govHUBServerUrl,
 		'dataType': 'json',
 		'data': {
 			'idos': 'oxima',
@@ -497,8 +499,84 @@ Proklisi.oximaGetData = (paletaDOM) => {
 		},
 		'error': (err) => {
 			Proklisi.menuTabStatus(oximaDOM.
-			data('oximaError', 'Αποτυχημένη ανάκτηση'), 'error').
+			data('oximaError',
+			'Αποτυχημένη ανάκτηση στοιχείων οχήματος'), 'error').
 			menuTabFyiError(oximaDOM, oxima);
+		},
+	});
+
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+Proklisi.ipoxreosSetup = () => {
+	Proklisi.ipoxreosPaletaDOM = pd.paleta({
+		'paleta': [
+			pd.paletaList['digit'],
+		],
+		'keyboard': php.requestIsYes('keyboard'),
+		'submit': () => Proklisi.enotitaRise(Proklisi.menuKlisiDOM),
+		'change': Proklisi.ipoxreosGetData,
+	});
+
+	Proklisi.ipoxreosDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
+	data('titlos', 'Στοιχεία υπόχρεου').
+	data('fyi', 'Πληκτρολογήστε το ΑΦΜ του υπόχρεου');
+
+	Proklisi.ipoxreosDOM.
+	append(Proklisi.ipoxreosPaletaDOM);
+
+	return Proklisi;
+};
+
+Proklisi.ipoxreosExec = () => {
+	Proklisi.enotitaActivate(Proklisi.ipoxreosDOM);
+	return Proklisi;
+};
+
+Proklisi.ipoxreosGetData = (paletaDOM) => {
+	let ipoxreosDOM = Proklisi.ipoxreosTabDOM;
+	let afm = paletaDOM.data('text');
+
+	Proklisi.
+	menuTabStatus(ipoxreosDOM.
+	removeData('ipoxreosData').
+	removeData('ipoxreosError')).
+	menuTabFyi(ipoxreosDOM);
+
+	if (!afm)
+	return Proklisi;
+
+	Proklisi.
+	menuTabStatus(ipoxreosDOM, 'busy').
+	menuTabFyi(ipoxreosDOM, afm);
+
+	$.post({
+		'url': Proklisi.param.govHUBServerUrl,
+		'dataType': 'json',
+		'data': {
+			'idos': 'prosopo',
+			'key': afm,
+		},
+		'success': (rsp) => {
+			if (rsp.hasOwnProperty('error'))
+			return Proklisi.menuTabStatus(ipoxreosDOM.
+			data('ipoxreosError', rsp.error), 'error').
+			menuTabFyiError(ipoxreosDOM, '<div>&#x2753;</div>' + afm);
+
+			let fyi =
+			rsp.data.afm;
+
+			Proklisi.menuTabStatus(ipoxreosDOM.
+			data('ipoxreosData', rsp.data), 'success').
+			menuTabFyi(ipoxreosDOM, fyi);
+		},
+		'error': (err) => {
+			Proklisi.menuTabStatus(ipoxreosDOM.
+			data('ipoxreosError',
+			'Αποτυχημένη ανάκτηση στοιχείων υπόχεου'), 'error').
+			menuTabFyiError(ipoxreosDOM, ipoxreos);
 		},
 	});
 

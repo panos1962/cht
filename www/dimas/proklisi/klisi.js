@@ -86,11 +86,6 @@ Proklisi.klisi = function() {
 		this.imerominia = data.date;
 	}
 
-	data = Proklisi.oximaTabDOM.data('oximaData');
-
-	if (data)
-	this.oxima = (new gh.oxima(data)).fixChildren();
-
 	// Σε κάθε menu tab (κουτάκι επιλογής από μενού) υπάρχει data
 	// item με όνομα σχετικό με το όνομα του menu tab, π.χ. στο
 	// menu tab "oximaMenuTab" υπάρχει data item "oximaData" με
@@ -100,6 +95,7 @@ Proklisi.klisi = function() {
 	// πρό-κλησης.
 
 	pd.arrayWalk([
+		'oxima',
 		'ipoxreos',
 		'topos',
 		'paravidos',
@@ -412,10 +408,10 @@ Proklisi.klisi.prototype.klisiKirosiDOM = function(klisiDOM) {
 }
 
 Proklisi.klisi.prototype.klisiOximaDOM = function(klisiDOM) {
-	let oxima = this.oxima;
-
-	if (!oxima)
+	if (!this.oxima)
 	return this.errorPush('Όχημα');
+
+	let oxima = this.oxima;
 
 	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ')).
@@ -491,39 +487,29 @@ Proklisi.klisi.prototype.klisiIpoxreosDOM = function(klisiDOM) {
 	if (!this.ipoxreos)
 	return this;
 
-	let enotitaDOM = $('<div>').
-	appendTo(klisiDOM);
+	let ipoxreos = this.ipoxreos;
 
-	enotitaDOM.
-	append(Proklisi.klisi.
-	enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ'));
-
-	let dataDOM = Proklisi.klisi.enotitaDOM().
-	appendTo(enotitaDOM);
-
-	let ipoxreos = new gh.prosopo(this.ipoxreos);
-
-	dataDOM.
-	append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', ipoxreos.afm));
-
-	dataDOM.
+	klisiDOM.
+	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ')).
+	append(Proklisi.klisi.enotitaDOM().
+	append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', ipoxreos.afm)).
 	append(Proklisi.klisi.klisiPedioDOM((ipoxreos.isFisikoProsopo() ?
-		'Ονοματεπώνυμο' : 'Επωνυμία'), ipoxreos.onomasiaGet()));
+		'Ονοματεπώνυμο' : 'Επωνυμία'), ipoxreos.onomasiaGet())));
 
 	if (ipoxreos.dief)
-	dataDOM.append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', ipoxreos.dief));
+	klisiDOM.append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', ipoxreos.dief));
 
 	if (ipoxreos.perioxi && ipoxreos.tk)
-	dataDOM.append(Proklisi.klisi.
+	klisiDOM.append(Proklisi.klisi.
 	klisiPedioDOM('Πόλη/Περιοχή', ipoxreos.perioxi +
 	'<span style="font-weight: normal;">, </span>' + ipoxreos.tk));
 
 	else if (ipoxreos.perioxi)
-	dataDOM.append(Proklisi.klisi.
+	klisiDOM.append(Proklisi.klisi.
 	klisiPedioDOM('Πόλη/Περιοχή', ipoxreos.perioxi));
 
 	else if (ipoxreos.tk)
-	dataDOM.append(Proklisi.klisi.klisiPedioDOM('Ταχ. κωδικός', ipoxreos.tk));
+	klisiDOM.append(Proklisi.klisi.klisiPedioDOM('Ταχ. κωδικός', ipoxreos.tk));
 
 	return this;
 }
@@ -615,20 +601,98 @@ Proklisi.klisi.prototype.ipovoli = function(buttonDOM, ipovoliDOM) {
 	}));
 };
 
-Proklisi.klisi.ipovoliExec = function() {
-	console.log(this);
+Proklisi.klisi.ipovoliExec = function(proklisi) {
+	console.log(proklisi.ipovoliFormat());
 };
 
 Proklisi.klisi.prototype.ipovoliFormat = function() {
-	let klisi = {};
+	let x = {};
 
 	if (!this.kodikos)
 	return this.ipovoliError('Ακαθόριστος κωδικός βεβαίωσης');
 
 	if (!this.imerominia)
-	return this.ipovoliError('Ακαθόριστος κωδικός βεβαίωσης');
-		
-	return this;
+	return this.ipovoliError('Ακαθόριστη ημερομηνία βεβαίωσης');
+
+	if (!this.paravidos)
+	return this.ipovoliError('Ακαθόριστο είδος παράβασης');
+
+	try {
+		if (!this.ipoxreos)
+		this.ipoxreos = this.oxima.katoxos
+		[this.oxima.kiriosKatoxosGet() - 1];
+	}
+
+	catch (e) {
+		return this.ipovoliError('Ακαθόριστα στοιχεία υπόχρεου');
+	}
+
+	x.proklidata = {};
+
+	///////////////////////////////////////////////////////////////////////@
+
+	let t = this.paravidos;
+
+	x.proklidata['ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ'] = {
+		'ΚΩΔΙΚΟΣ': t.kodikos,
+		'ΔΙΑΤΑΞΗ': t.diataxiGet(),
+		'ΠΑΡΑΒΑΣΗ': t.perigrafi,
+		'ΤΟΠΟΣ': this.topos,
+	};
+
+	///////////////////////////////////////////////////////////////////////@
+
+	if (this.oxima) {
+		t = this.oxima;
+
+		x.proklidata['ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ'] = {
+			'ΑΡ. ΚΥΚΛΟΦΟΡΙΑΣ': t.pinakida,
+			'ΜΑΡΚΑ': t.marka,
+			'ΧΡΩΜΑ': t.xroma,
+			'ΤΥΠΟΣ': this.oximaTipos,
+		};
+	}
+
+	///////////////////////////////////////////////////////////////////////@
+
+	t = this.ipoxreos;
+
+	x.proklidata['ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ'] = {
+		'ΑΦΜ': t.afm,
+		'ΕΠΩΝΥΜΙΑ': t.eponimia,
+		'ΜΟΡΦΗ': t.morfi,
+		'ΕΠΩΝΥΜΟ': t.eponimo,
+		'ΟΝΟΜΑ': t.onoma,
+		'ΠΑΤΡΩΝΥΜΟ': t.patronimo,
+		'ΔΙΕΥΘΥΝΣΗ': t.dief,
+		'ΤΚ': t.tk,
+		'ΠΕΡΙΟΧΗ/ΠΟΛΗ': t.perioxi,
+	};
+
+//XXX
+
+	pd.objectWalk(x.proklidata, (t, i) => {
+		let empty = true;
+
+		pd.objectWalk(t, (v, k) => {
+			if (v)
+			empty = false;
+
+			else
+			delete t[k];
+		});
+
+		if (empty)
+		delete x[i];
+	});
+
+	return x;
+};
+
+Proklisi.klisi.prototype.ipovoliError = function(msg) {
+	return {
+		'error': msg,
+	};
 };
 
 ///////////////////////////////////////////////////////////////////////////////@

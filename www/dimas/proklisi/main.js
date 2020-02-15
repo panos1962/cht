@@ -53,8 +53,8 @@ require('../../../mnt/pandora/lib/pandoraClient.js');
 require('../../../mnt/pandora/www/lib/pandoraPaleta.js')(pd);
 require('../../../mnt/pandora/www/lib/pandoraJQueryUI.js')(pd);
 
-const Dimas =
-require('../../../lib/dimasClient.js');
+const gh = require('../../../lib/govHUB/apiCore.js');
+const Dimas = require('../../../lib/dimasClient.js');
 
 const Proklisi = {};
 
@@ -453,8 +453,9 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			data('oximaError', rsp.error), 'error').
 			menuTabFyiError(oximaDOM, '<div>&#x2753;</div>' + oxima);
 
+			let oxima = new gh.oxima(rsp.data).fixChildren();
 			Proklisi.menuTabStatus(oximaDOM.
-			data('oximaData', rsp.data), 'success').
+			data('oximaData', oxima), 'success').
 			menuTabFyi(oximaDOM, Proklisi.oximaFyi(rsp.data));
 
 			if (Dimas.paravidos.oximaTiposList.
@@ -575,8 +576,9 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 			data('ipoxreosError', rsp.error), 'error').
 			menuTabFyiError(ipoxreosDOM, '<div>&#x2753;</div>' + afm);
 
+			let prosopo = new gh.prosopo(rsp.data);
 			Proklisi.menuTabStatus(ipoxreosDOM.
-			data('ipoxreosData', rsp.data), 'success').
+			data('ipoxreosData', prosopo), 'success').
 			menuTabFyi(ipoxreosDOM, Proklisi.ipoxreosFyi(rsp.data));
 		},
 		'error': (err) => {
@@ -832,6 +834,7 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 
 	let paravidosDOM = Proklisi.paravidosTabDOM;
 	let paravidos = paletaDOM.data('value');
+console.log(paravidos);
 
 	if (paravidos) {
 		let oxima = Proklisi.oximaTabDOM.data('oximaData');

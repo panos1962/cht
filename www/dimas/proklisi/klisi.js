@@ -37,6 +37,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-14
 // Updated: 2020-02-10
 // Updated: 2020-02-06
 // Updated: 2020-02-03
@@ -595,11 +596,8 @@ Proklisi.klisi.prototype.ipovoliDOM = function() {
 Proklisi.klisi.prototype.ipovoli = function(buttonDOM, ipovoliDOM) {
 	let state = ipovoliDOM.data('state');
 
-	if (state) {
-console.log('>>IPOVOLI<<', this.kodikos);
-		ipovoliDOM.remove();
-		return;
-	}
+	if (state)
+	return Proklisi.klisi.ipovoliExec(this);
 
 	buttonDOM.attr('value', 'Επικύρωση υποβολής');
 
@@ -615,6 +613,22 @@ console.log('>>IPOVOLI<<', this.kodikos);
 		ipovoliDOM.data('state', 0);
 		buttonDOM.text('Υποβολή βεβαίωσης');
 	}));
+};
+
+Proklisi.klisi.ipovoliExec = function() {
+	console.log(this);
+};
+
+Proklisi.klisi.prototype.ipovoliFormat = function() {
+	let klisi = {};
+
+	if (!this.kodikos)
+	return this.ipovoliError('Ακαθόριστος κωδικός βεβαίωσης');
+
+	if (!this.imerominia)
+	return this.ipovoliError('Ακαθόριστος κωδικός βεβαίωσης');
+		
+	return this;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@

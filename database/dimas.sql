@@ -306,6 +306,17 @@ COMMIT WORK
 
 -------------------------------------------------------------------------------@
 
+\! echo "Creating relations…"
+
+ALTER TABLE `proklidata` ADD FOREIGN KEY (
+	`proklisi`
+) REFERENCES `proklisi` (
+	`kodikos`
+) ON UPDATE CASCADE ON DELETE CASCADE
+;
+
+-------------------------------------------------------------------------------@
+
 \! echo "Granting permissions…" >[[MONITOR]]
 
 GRANT SELECT, INSERT, UPDATE, DELETE

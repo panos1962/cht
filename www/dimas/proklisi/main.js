@@ -908,6 +908,39 @@ proklisi.errors = [];
 	return Proklisi;
 };
 
+Proklisi.neaProklisi = () => {
+	pd.arrayWalk([
+		'bebeosi',
+		'oxima',
+		'ipoxreos',
+		'paravidos',
+		'oximaTipos',
+		'pinakides',
+		'adia',
+		'diploma',
+		'prostimo',
+	], (x) => {
+		let tabDOM = Proklisi[x + 'TabDOM'];
+
+console.log(tabDOM.find('.pandoraPaletaInput').length);
+console.log(tabDOM.find('.pandoraPaletaMonitor').length);
+
+		tabDOM.
+		find('.pandoraPaletaInput').
+		data('prev', '').
+		val('');
+
+		tabDOM.
+		find('.pandoraPaletaMonitor').
+		text('');
+
+		tabDOM.removeData(x + 'Data');
+	});
+
+	Proklisi.enotitaRise(Proklisi.menuKlisiDOM);
+	return Proklisi;
+};
+
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.exodosSetup = () => {

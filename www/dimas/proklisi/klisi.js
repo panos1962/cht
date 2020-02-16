@@ -602,6 +602,23 @@ Proklisi.klisi.prototype.ipovoli = function(buttonDOM, ipovoliDOM) {
 };
 
 Proklisi.klisi.ipovoliExec = function(proklisi) {
+	$.post({
+		'url': 'ipovoli.php',
+		'dataType': 'text',
+		'data': proklisi.ipovoliFormat(),
+		'success': (rsp) => {
+			if (!rsp)
+			return Proklisi.neaProklisi();
+
+			console.log(rsp);
+			return pd.fyiError('Αποτυχία καταχώρησης βεβαίωσης');
+		},
+		'error': (err) => {
+			console.error(err);
+			pd.fyiError('Αποτυχία καταχώρησης βεβαίωσης');
+		},
+	});
+
 	console.log(proklisi.ipovoliFormat());
 };
 
@@ -669,7 +686,15 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 		'ΠΕΡΙΟΧΗ/ΠΟΛΗ': t.perioxi,
 	};
 
-//XXX
+	///////////////////////////////////////////////////////////////////////@
+
+	x.proklidata['ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ'] = {
+		'ΠΙΝΑΚΙΔΕΣ': this.pinakides,
+		'ΑΔΕΙΑ': this.adia,
+		'ΔΙΠΛΩΜΑ': this.diploma,
+		'ΠΡΟΣΤΙΜΟ': this.prostimo,
+	};
+
 
 	pd.objectWalk(x.proklidata, (t, i) => {
 		let empty = true;
@@ -685,6 +710,9 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 		if (empty)
 		delete x[i];
 	});
+
+	x.kodikos = this.kodikos;
+	x.imerominia = pd.dateTime(this.imerominia);
 
 	return x;
 };

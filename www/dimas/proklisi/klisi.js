@@ -611,7 +611,7 @@ Proklisi.klisi.ipovoliExec = function(proklisi) {
 			return Proklisi.neaProklisi();
 
 			console.log(rsp);
-			return pd.fyiError('Αποτυχία καταχώρησης βεβαίωσης');
+			return pd.fyiError(rsp);
 		},
 		'error': (err) => {
 			console.error(err);
@@ -630,6 +630,11 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 
 	if (!this.imerominia)
 	return this.ipovoliError('Ακαθόριστη ημερομηνία βεβαίωσης');
+
+x.kodikos = this.kodikos;
+x.imerominia = pd.dateTime(this.imerominia);
+x.proklidata = {};
+return x;
 
 	if (!this.paravidos)
 	return this.ipovoliError('Ακαθόριστο είδος παράβασης');

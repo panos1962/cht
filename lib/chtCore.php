@@ -70,7 +70,7 @@ class Ipalilos {
 		if (!$row)
 		return $this;
 
-		$this->kodikos = (int)($row["kodikos"]);
+		$this->kodikos = $row["kodikos"];
 		$this->onomateponimo = $row["onomateponimo"];
 		$this->anenergos = $row["anenergos"];
 
@@ -84,6 +84,22 @@ class Ipalilos {
 		$this->klisilast = (int)($row["klisilast"]);
 
 		return $this;
+	}
+
+	public function is_ipalilos() {
+		return $this->kodikos;
+	}
+
+	public function no_ipalilos() {
+		return !$this->is_ipalilos();
+	}
+
+	public function is_anenergos() {
+		return $this->anenergos;
+	}
+
+	public function is_energos() {
+		return !$this->is_anenergos();
 	}
 
 	public function epomeni_klisi() {

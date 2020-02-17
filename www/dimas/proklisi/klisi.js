@@ -563,6 +563,9 @@ Proklisi.klisi.prototype.klisiFooterDOM = function(klisiDOM) {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.klisi.prototype.ipovoliDOM = function() {
+let showLocation = undefined;
+let errorHandler = $.noop;
+console.log(Proklisi.geodata.getCurrentPosition(showLocation, errorHandler));
 	let proklisi = this;
 
 	let ipovoliDOM = $('<div>').
@@ -602,6 +605,11 @@ Proklisi.klisi.prototype.ipovoli = function(buttonDOM, ipovoliDOM) {
 };
 
 Proklisi.klisi.ipovoliExec = function(proklisi) {
+	let data = proklisi.ipovoliFormat();
+
+	if (data.error)
+	return pd.fyiError(data.error);
+
 	$.post({
 		'url': 'ipovoli.php',
 		'dataType': 'text',
@@ -610,7 +618,7 @@ Proklisi.klisi.ipovoliExec = function(proklisi) {
 			if (!rsp)
 			return Proklisi.neaProklisi();
 
-			console.log(rsp);
+			console.error(rsp);
 			return pd.fyiError(rsp);
 		},
 		'error': (err) => {
@@ -618,8 +626,6 @@ Proklisi.klisi.ipovoliExec = function(proklisi) {
 			pd.fyiError('Αποτυχία καταχώρησης βεβαίωσης');
 		},
 	});
-
-	console.log(proklisi.ipovoliFormat());
 };
 
 Proklisi.klisi.prototype.ipovoliFormat = function() {
@@ -631,10 +637,12 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 	if (!this.imerominia)
 	return this.ipovoliError('Ακαθόριστη ημερομηνία βεβαίωσης');
 
+/*
 x.kodikos = this.kodikos;
 x.imerominia = pd.dateTime(this.imerominia);
 x.proklidata = {};
 return x;
+*/
 
 	if (!this.paravidos)
 	return this.ipovoliError('Ακαθόριστο είδος παράβασης');
@@ -648,6 +656,9 @@ return x;
 	catch (e) {
 		return this.ipovoliError('Ακαθόριστα στοιχεία υπόχρεου');
 	}
+
+	if (!this.topos)
+	return this.ipovoliError('Ακαθόριστος τόπος παράβασης');
 
 	x.proklidata = {};
 

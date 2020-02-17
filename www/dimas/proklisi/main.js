@@ -95,6 +95,7 @@ pd.domInit(() => {
 });
 
 Proklisi.eponimiXrisi = () => {
+Proklisi.geodata = navigator.geolocation;
 	Proklisi.
 	cleanup().
 	toolbarXristisRefresh().
@@ -453,7 +454,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			data('oximaError', rsp.error), 'error').
 			menuTabFyiError(oximaDOM, '<div>&#x2753;</div>' + oxima);
 
-			let oxima = new gh.oxima(rsp.data).fixChildren();
+			oxima = new gh.oxima(rsp.data).fixChildren();
 			Proklisi.menuTabStatus(oximaDOM.
 			data('oximaData', oxima), 'success').
 			menuTabFyi(oximaDOM, Proklisi.oximaFyi(rsp.data));
@@ -909,32 +910,59 @@ proklisi.errors = [];
 };
 
 Proklisi.neaProklisi = () => {
+	$('.pandoraPaleta').each(function() {
+		return true;
+	});
+
+	let defaultText = {
+		'paravidos': 'Α',
+	};
+
 	pd.arrayWalk([
 		'bebeosi',
 		'oxima',
 		'ipoxreos',
 		'paravidos',
 		'oximaTipos',
+		'kirosi',
 		'pinakides',
 		'adia',
 		'diploma',
 		'prostimo',
 	], (x) => {
+		let enotitaDOM = Proklisi[x + 'DOM'];
+		let paletaDOM = enotitaDOM.children('.pandoraPaleta');
+		let monitorDOM = paletaDOM.children('.pandoraPaletaMonitor');
+		let inputDOM = paletaDOM.children('.pandoraPaletaInput');
+		let text = defaultText[x];
+
+		if (!text)
+		text = '';
+
+		paletaDOM.
+		data('text', '').
+		data('value', '').
+		removeData('match').
+		removeData('matchPointer');
+
+		monitorDOM.
+		removeData('content').
+		removeData('text').
+		removeData('value').
+		text(text);
+
+		inputDOM.
+		removeData('prev').
+		val(text);
+
 		let tabDOM = Proklisi[x + 'TabDOM'];
 
-console.log(tabDOM.find('.pandoraPaletaInput').length);
-console.log(tabDOM.find('.pandoraPaletaMonitor').length);
-
 		tabDOM.
-		find('.pandoraPaletaInput').
-		data('prev', '').
-		val('');
+		removeData(x + 'Data');
 
-		tabDOM.
-		find('.pandoraPaletaMonitor').
-		text('');
-
-		tabDOM.removeData(x + 'Data');
+		Proklisi.
+		menuTabStatus(tabDOM, 'clear').
+		menuTabFyi(tabDOM);
 	});
 
 	Proklisi.enotitaRise(Proklisi.menuKlisiDOM);

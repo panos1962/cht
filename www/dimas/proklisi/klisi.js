@@ -37,6 +37,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-17
 // Updated: 2020-02-14
 // Updated: 2020-02-10
 // Updated: 2020-02-06
@@ -563,9 +564,6 @@ Proklisi.klisi.prototype.klisiFooterDOM = function(klisiDOM) {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.klisi.prototype.ipovoliDOM = function() {
-let showLocation = undefined;
-let errorHandler = $.noop;
-console.log(Proklisi.geodata.getCurrentPosition(showLocation, errorHandler));
 	let proklisi = this;
 
 	let ipovoliDOM = $('<div>').
@@ -637,12 +635,10 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 	if (!this.imerominia)
 	return this.ipovoliError('Ακαθόριστη ημερομηνία βεβαίωσης');
 
-/*
 x.kodikos = this.kodikos;
 x.imerominia = pd.dateTime(this.imerominia);
 x.proklidata = {};
 return x;
-*/
 
 	if (!this.paravidos)
 	return this.ipovoliError('Ακαθόριστο είδος παράβασης');

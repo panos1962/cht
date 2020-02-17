@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-17
 // Updated: 2020-02-10
 // Updated: 2020-02-07
 // Updated: 2020-02-05
@@ -95,11 +96,11 @@ pd.domInit(() => {
 });
 
 Proklisi.eponimiXrisi = () => {
-Proklisi.geodata = navigator.geolocation;
 	Proklisi.
 	cleanup().
 	toolbarXristisRefresh().
 	menuKlisiSetup().
+	geodataSetup().
 	bebeosiSetup().
 	oximaSetup().
 	ipoxreosSetup().
@@ -355,6 +356,19 @@ Proklisi.menuKlisiSetup = () => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
+Proklisi.geodataSetup = () => {
+	if (!navigator)
+	return Proklisi;
+
+	if (!navigator.hasOwnProperty('geolocation'))
+	return Proklisi;
+
+	Proklisi.geodata = navigator.geolocation;
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
 Proklisi.bebeosiSetup = () => {
 	Proklisi.bebeosiDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
 	data('titlos', 'Στοιχεία βεβαίωσης');
@@ -365,15 +379,22 @@ Proklisi.bebeosiSetup = () => {
 Proklisi.bebeosiExec = () => {
 	let bebeosiDOM = Proklisi.bebeosiTabDOM;
 
-
 	$.post({
 		'url': 'bebeosi.php',
 		'dataType': 'text',
 		'success': (rsp) => {
 			let bebnum = parseInt(rsp);
+			let geox;
+			let geoy;
 
 			if (bebnum != rsp)
 			return pd.fyiError('Λανθασμένος αρ. βεβαίωσης');
+
+			if (Proklisi.geodata)
+			Proklisi.geodata.getCurrentPosition((pos) => {
+				geox = pos.coords.latitude;
+				geoy = pos.coords.longitude;
+			});
 
 			let date = new Date();
 

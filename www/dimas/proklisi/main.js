@@ -357,13 +357,14 @@ Proklisi.menuKlisiSetup = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.geodataSetup = () => {
-	if (!navigator)
-	return Proklisi;
+	try {
+		Proklisi.geodata = navigator.geolocation;
+	}
 
-	if (!navigator.hasOwnProperty('geolocation'))
-	return Proklisi;
+	catch (e) {
+		delete Proklisi.geodata;
+	}
 
-	Proklisi.geodata = navigator.geolocation;
 	return Proklisi;
 };
 

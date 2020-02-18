@@ -398,10 +398,9 @@ Proklisi.bebeosiExec = () => {
 				return Proklisi;
 			}
 
-			let date = new Date();
 			let data = {
 				'bebnum': bebnum,
-				'date': date,
+				'date': new Date(),
 			};
 
 			if (!Proklisi.geodata)

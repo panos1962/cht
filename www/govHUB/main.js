@@ -585,9 +585,14 @@ w3gh.anazitisi = (data) => {
 	// αποτελεσμάτων της τρέχουσας αναζήτησης, ώστε να μπορούμε να
 	// ακυρώσουμε την αναζήτηση σε περίπτωση που το θελήσουμε.
 
+	let protocol = 'http';
+
+	if (php.serverGet('HTTPS'))
+	protocol += 's';
+
 	resDOM.
 	data('xhr', $.post({
-		'url': 'http://' + php.serverGet('HTTP_HOST') +
+		'url': protocol + '://' + php.serverGet('HTTP_HOST') +
 			':' + w3gh.opts.portNumber,
 		'header': {
 			'Access-Control-Allow-Origin': '*',

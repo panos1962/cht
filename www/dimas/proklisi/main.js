@@ -59,8 +59,13 @@ const Dimas = require('../../../lib/dimasClient.js');
 
 const Proklisi = {};
 
+Proklisi.protocol = 'http';
+
+if (php.serverGet('HTTPS'))
+Proklisi.protocol += 's';
+
 Proklisi.param = {
-	'govHUBServerHost': 'http://' + php.serverGet('HTTP_HOST'),
+	'govHUBServerHost': Proklisi.protocol + '://' + php.serverGet('HTTP_HOST'),
 	'govHUBServerPort': 8001,
 	'dimas': {
 		'ota': 'ΔΗΜΟΣ ΘΕΣΣΑΛΟΝΙΚΗΣ',

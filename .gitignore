@@ -14,4 +14,5 @@ www/govHUB/tmp
 www/govHUB/tmp/*
 www/mnt/*
 !www/mnt/README.txt
+www/tmp/*
 node_modules/*

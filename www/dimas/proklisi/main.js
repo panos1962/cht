@@ -357,13 +357,14 @@ Proklisi.menuKlisiSetup = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.geodataSetup = () => {
-	if (!navigator)
-	return Proklisi;
+	try {
+		Proklisi.geodata = navigator.geolocation;
+	}
 
-	if (!navigator.hasOwnProperty('geolocation'))
-	return Proklisi;
+	catch (e) {
+		delete Proklisi.geodata;
+	}
 
-	Proklisi.geodata = navigator.geolocation;
 	return Proklisi;
 };
 
@@ -379,33 +380,43 @@ Proklisi.bebeosiSetup = () => {
 Proklisi.bebeosiExec = () => {
 	let bebeosiDOM = Proklisi.bebeosiTabDOM;
 
+	Proklisi.
+	menuTabStatus(bebeosiDOM, 'busy').
+	menuTabFyi(bebeosiDOM);
+
 	$.post({
 		'url': 'bebeosi.php',
 		'dataType': 'text',
 		'success': (rsp) => {
 			let bebnum = parseInt(rsp);
-			let geox;
-			let geoy;
 
-			if (bebnum != rsp)
-			return pd.fyiError('Λανθασμένος αρ. βεβαίωσης');
-
-			if (Proklisi.geodata)
-			Proklisi.geodata.getCurrentPosition((pos) => {
-				geox = pos.coords.latitude;
-				geoy = pos.coords.longitude;
-			});
+			if (bebnum != rsp) {
+				pd.fyiError(rsp);
+				Proklisi.menuTabStatus(bebeosiDOM.
+				data('bebeosiError', rsp.error), 'error').
+				menuTabFyi(bebeosiDOM);
+				return Proklisi;
+			}
 
 			let date = new Date();
-
-			bebeosiDOM.data('bebeosiData', {
+			let data = {
 				'bebnum': bebnum,
 				'date': date,
+			};
+
+			if (!Proklisi.geodata)
+			Proklisi.bebeosiDataSet(bebeosiDOM, data);
+
+			Proklisi.geodata.getCurrentPosition((pos) => {
+				data.geox = pos.coords.longitude;
+				data.geoy = pos.coords.latitude;
+				Proklisi.bebeosiDataSet(bebeosiDOM, data);
+			}, (err) => {
+				Proklisi.bebeosiDataSet(bebeosiDOM, data);
+			}, {
+				'enableHighAccuracy': true,
+				'timeout': 2000,
 			});
-			Proklisi.menuTabFyi(bebeosiDOM,
-				'<b>' + bebnum + '</b><br>' +
-				pd.dateTime(date, '%D/%M/%Y, %h:%m'));
-				Proklisi.menuTabStatus(bebeosiDOM, 'success');
 		},
 		'error': (err) => {
 			pd.fyiError('ERROR');
@@ -413,6 +424,24 @@ Proklisi.bebeosiExec = () => {
 			console.error(err);
 		},
 	});
+
+	return Proklisi;
+};
+
+Proklisi.bebeosiDataSet = (bebeosiDOM, data) => {
+	bebeosiDOM.data('bebeosiData', data);
+
+	let fyi = '<div><b>' + data.bebnum + '</b></div>';
+	fyi += '<div>' + pd.dateTime(data.date, '%D/%M/%Y, %h:%m') + '</div>';
+
+	if (data.hasOwnProperty('geox'))
+	fyi += '<div>x&nbsp;=&nbsp;' + data.geox + '</div>';
+
+	if (data.hasOwnProperty('geoy'))
+	fyi += '<div>y&nbsp;=&nbsp;' + data.geoy + '</div>';
+
+	Proklisi.menuTabFyi(bebeosiDOM, fyi);
+	Proklisi.menuTabStatus(bebeosiDOM, 'success');
 
 	return Proklisi;
 };
@@ -856,7 +885,6 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 
 	let paravidosDOM = Proklisi.paravidosTabDOM;
 	let paravidos = paletaDOM.data('value');
-console.log(paravidos);
 
 	if (paravidos) {
 		let oxima = Proklisi.oximaTabDOM.data('oximaData');

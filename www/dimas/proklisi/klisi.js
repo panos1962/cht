@@ -85,6 +85,12 @@ Proklisi.klisi = function() {
 
 		if (data.hasOwnProperty('date'))
 		this.imerominia = data.date;
+
+		if (data.hasOwnProperty('geox') &&
+			data.hasOwnProperty('geoy')) {
+			this.geox = data.geox;
+			this.geoy = data.geoy;
+		}
 	}
 
 	// Σε κάθε menu tab (κουτάκι επιλογής από μενού) υπάρχει data
@@ -635,10 +641,12 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 	if (!this.imerominia)
 	return this.ipovoliError('Ακαθόριστη ημερομηνία βεβαίωσης');
 
+/*
 x.kodikos = this.kodikos;
 x.imerominia = pd.dateTime(this.imerominia);
 x.proklidata = {};
 return x;
+*/
 
 	if (!this.paravidos)
 	return this.ipovoliError('Ακαθόριστο είδος παράβασης');
@@ -667,6 +675,8 @@ return x;
 		'ΔΙΑΤΑΞΗ': t.diataxiGet(),
 		'ΠΑΡΑΒΑΣΗ': t.perigrafi,
 		'ΤΟΠΟΣ': this.topos,
+		'GEOX': this.geox,
+		'GEOY': this.geoy,
 	};
 
 	///////////////////////////////////////////////////////////////////////@

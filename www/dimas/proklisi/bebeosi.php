@@ -7,20 +7,20 @@ pandora::database();
 $xristis = pandora::xristis_get();
 
 if (!isset($xristis))
-exit(0);
+exit('Ακαθόριστος χρήστης');
 
 if (cht::xristis_no_dimas())
-exit(0);
+exit('Αναρμόδιος χρήστης');
 
 $ipalilos = new Ipalilos($xristis);
 
 if (!isset($ipalilos->kodikos))
-exit(0);
+exit('Άγνωστος χρήστης');
 
 $klisi = $ipalilos->epomeni_klisi();
 
 if (!isset($klisi))
-exit(0);
+exit('Μη διαθέσιμος αριθμός βεβαίωσης');
 
 print $klisi;
 exit(0);

@@ -635,10 +635,12 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 	if (!this.imerominia)
 	return this.ipovoliError('Ακαθόριστη ημερομηνία βεβαίωσης');
 
+/*
 x.kodikos = this.kodikos;
 x.imerominia = pd.dateTime(this.imerominia);
 x.proklidata = {};
 return x;
+*/
 
 	if (!this.paravidos)
 	return this.ipovoliError('Ακαθόριστο είδος παράβασης');

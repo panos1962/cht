@@ -1,0 +1,46 @@
+{
+	"connect": {
+		"tokenUrl": "https://auth.govhub.gr/connect/token",
+
+		"client": {
+			"oxima": {
+				"desc": "Αναζήτηση Οχημάτων με Αριθμό Κυκλοφορίας",
+				"url": "https://gsisvehicleinfo-api.govhub.gr/api/v1.0/VehicleInfo",
+				"id": "SBSNDJ28-cht-client-govhub",
+				"secret": "STW$#%@MSMMSI#*#*838",
+				"scope": "GovHub.GsisVehicle.Basic"
+			},
+
+			"prosopo": {
+				"desc": "Αναζήτηση Φυσικών και Νομικών Προσώπων με ΑΦΜ",
+				"url": "https://gsisregistry-api.govhub.gr/api/v1.0/retrieveInfoByAFM",
+				"id": "USUS9202-cht.gsisregistry",
+				"secret": "@^@&#D*2383**@kd0!82",
+				"scope": "GovHub.GsisRegistry.Full"
+			}
+		},
+
+		"w3srv": {
+			"protocol": "http",
+			"portNumber": 8123
+		}
+	},
+
+	"userPool": [
+		"panos",
+		"dorak",
+	],
+
+	"ipPool": [
+		"11.62.18.140",
+		"11.62.18.141",
+		"11.62.18.142",
+		"11.62.18.143",
+		"11.62.18.144",
+		"11.62.18.145",
+		"11.62.18.146",
+		"11.62.18.147",
+		"11.62.18.148",
+		"11.62.18.149"
+	]
+}

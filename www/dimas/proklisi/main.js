@@ -439,10 +439,10 @@ Proklisi.bebeosiDataSet = (bebeosiDOM, data) => {
 	fyi += '<div>' + pd.dateTime(data.date, '%D/%M/%Y, %h:%m') + '</div>';
 
 	if (data.hasOwnProperty('geox'))
-	fyi += '<div>x&nbsp;=&nbsp;' + data.geox + '</div>';
+	fyi += '<div>x&nbsp;=&nbsp;' + data.geox.toString().substr(0, 10) + '</div>';
 
 	if (data.hasOwnProperty('geoy'))
-	fyi += '<div>y&nbsp;=&nbsp;' + data.geoy + '</div>';
+	fyi += '<div>y&nbsp;=&nbsp;' + data.geoy.toString().substr(0, 10) + '</div>';
 
 	Proklisi.menuTabFyi(bebeosiDOM, fyi);
 	Proklisi.menuTabStatus(bebeosiDOM, 'success');
@@ -791,6 +791,10 @@ Proklisi.toposCheckData = (paletaDOM) => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
+Proklisi.paletaDefaultText = {
+	'paravidos': 'Ε1999Ν2696Α',
+};
+
 Proklisi.paravidosSetup = () => {
 	Proklisi.paravidosDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
 	data('titlos', 'Είδος παράβασης').
@@ -805,7 +809,7 @@ Proklisi.paravidosSetup = () => {
 		'submit': () => Proklisi.enotitaRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.paravidosCheckData,
 		'zoom': true,
-		'text': 'Α',
+		'text': Proklisi.paletaDefaultText.paravidos,
 	}));
 
 	return Proklisi;
@@ -967,10 +971,6 @@ Proklisi.neaProklisi = () => {
 		return true;
 	});
 
-	let defaultText = {
-		'paravidos': 'Α',
-	};
-
 	pd.arrayWalk([
 		'bebeosi',
 		'oxima',
@@ -987,7 +987,7 @@ Proklisi.neaProklisi = () => {
 		let paletaDOM = enotitaDOM.children('.pandoraPaleta');
 		let monitorDOM = paletaDOM.children('.pandoraPaletaMonitor');
 		let inputDOM = paletaDOM.children('.pandoraPaletaInput');
-		let text = defaultText[x];
+		let text = Proklisi.paletaDefaultText[x];
 
 		if (!text)
 		text = '';

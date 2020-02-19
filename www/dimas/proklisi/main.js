@@ -439,10 +439,10 @@ Proklisi.bebeosiDataSet = (bebeosiDOM, data) => {
 	fyi += '<div>' + pd.dateTime(data.date, '%D/%M/%Y, %h:%m') + '</div>';
 
 	if (data.hasOwnProperty('geox'))
-	fyi += '<div>x&nbsp;=&nbsp;' + data.geox + '</div>';
+	fyi += '<div>x&nbsp;=&nbsp;' + data.geox.toString().substr(0, 10) + '</div>';
 
 	if (data.hasOwnProperty('geoy'))
-	fyi += '<div>y&nbsp;=&nbsp;' + data.geoy + '</div>';
+	fyi += '<div>y&nbsp;=&nbsp;' + data.geoy.toString().substr(0, 10) + '</div>';
 
 	Proklisi.menuTabFyi(bebeosiDOM, fyi);
 	Proklisi.menuTabStatus(bebeosiDOM, 'success');

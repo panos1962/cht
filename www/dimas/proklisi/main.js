@@ -262,6 +262,10 @@ Proklisi.ribbonSetup = () => {
 		pd.ofelimoDOM.css('height', (h1 + h2) + 'px');
 	}));
 
+	pd.ribbonCenterDOM.
+	prepend($('<div>').
+	text(pd.windowDOM.width() + 'x' + pd.windowDOM.height()));
+
 	pd.ribbonRightDOM.
 	append($('<div>').
 	addClass('proklisiRibbonCopyright').

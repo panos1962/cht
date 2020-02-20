@@ -1016,6 +1016,8 @@ Proklisi.neaProklisi = () => {
 		Proklisi.
 		menuTabStatus(tabDOM, 'clear').
 		menuTabFyi(tabDOM);
+
+		pd.ofelimoDOM.scrollTop(0);
 	});
 
 	Proklisi.enotitaRise(Proklisi.menuKlisiDOM);

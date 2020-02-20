@@ -699,7 +699,7 @@ return x;
 	x.proklidata['ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ'] = {
 		'ΑΦΜ': t.afm,
 		'ΕΠΩΝΥΜΙΑ': t.eponimia,
-		'ΜΟΡΦΗ': t.morfi,
+		'ΝΟΜΙΚΗ ΜΟΡΦΗ': t.morfi,
 		'ΕΠΩΝΥΜΟ': t.eponimo,
 		'ΟΝΟΜΑ': t.onoma,
 		'ΠΑΤΡΩΝΥΜΟ': t.patronimo,

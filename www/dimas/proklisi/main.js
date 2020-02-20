@@ -254,7 +254,12 @@ Proklisi.ribbonSetup = () => {
 	text('Απόκρυψη').
 	on('click', (e) => {
 		e.stopPropagation();
+
+		let h1 = pd.ofelimoDOM.height();
+		let h2 = pd.ribbonDOM.height();
+
 		pd.ribbonDOM.css('display', 'none');
+		pd.ofelimoDOM.css('height', (h1 + h2) + 'px');
 	}));
 
 	pd.ribbonRightDOM.

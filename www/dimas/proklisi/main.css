@@ -16,6 +16,7 @@ www/dimas/proklisi/main.css —— Αρχείο προδιαγραφών CSS γ�
 @FILE END
 
 @HISTORY BEGIN
+Updated: 2020-02-20
 Updated: 2020-01-30
 Created: 2019-12-25
 @HISTORY END
@@ -38,11 +39,10 @@ body {
 	text-shadow: 1px 1px 1px #423522;
 }
 
-#proklisiToggleFullscreen {
+.proklisiTRButton {
 	display: inline-block;
 	padding: 0px 4px;
 
-	opacity: 0.4;
 	color: #d08562;
 	text-shadow: 1px 0px 0px #55055f;
 
@@ -53,6 +53,10 @@ body {
 	border-radius: 5px;
 
 	cursor: pointer;
+}
+
+#proklisiToggleFullscreen {
+	opacity: 0.4;
 }
 
 #proklisiToggleFullscreen:hover {

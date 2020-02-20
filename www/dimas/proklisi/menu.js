@@ -141,6 +141,7 @@ Proklisi.enotitaRise = (enotitaDOM) => {
 		$(this).css('height', '');
 	});
 
+	pd.ofelimoDOM.scrollTop(0);
 	return Proklisi;
 };
 

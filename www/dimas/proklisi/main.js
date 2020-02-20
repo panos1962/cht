@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-02-20
 // Updated: 2020-02-17
 // Updated: 2020-02-10
 // Updated: 2020-02-07
@@ -147,6 +148,7 @@ Proklisi.toolbarSetup = () => {
 	pd.toolbarLeftDOM.
 	empty().
 	append($('<div>').
+	addClass('proklisiTRButton').
 	attr('id', 'proklisiToggleFullscreen').
 	text('Toggle fullscreen').
 	on('click', () => Proklisi.toggleFullscreen()));
@@ -245,6 +247,16 @@ Proklisi.xristisGet = (callback) => {
 };
 
 Proklisi.ribbonSetup = () => {
+	pd.ribbonLeftDOM.
+	prepend($('<div>').
+	addClass('proklisiTRButton').
+	attr('id', 'proklisiHideRibbon').
+	text('Απόκρυψη').
+	on('click', (e) => {
+		e.stopPropagation();
+		pd.ribbonDOM.css('display', 'none');
+	}));
+
 	pd.ribbonRightDOM.
 	append($('<div>').
 	addClass('proklisiRibbonCopyright').
@@ -1016,8 +1028,6 @@ Proklisi.neaProklisi = () => {
 		Proklisi.
 		menuTabStatus(tabDOM, 'clear').
 		menuTabFyi(tabDOM);
-
-		pd.ofelimoDOM.scrollTop(0);
 	});
 
 	Proklisi.enotitaRise(Proklisi.menuKlisiDOM);

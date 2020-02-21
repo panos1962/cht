@@ -115,6 +115,7 @@ Proklisi.eponimiXrisi = () => {
 	kirosiSetup().
 	episkopisiSetup().
 	exodosSetup().
+	economySetup().
 	odosLoad([
 		Proklisi.paravidosLoad,
 		Proklisi.astinomikosLoad,
@@ -134,6 +135,7 @@ Proklisi.anonimiXrisi = () => {
 	menuIsodosSetup().
 	isodosAstinomikosSetup().
 	isodosPasswordSetup().
+	economySetup().
 	astinomikosLoad([
 		() => Proklisi.activate(Proklisi.menuIsodosDOM),
 	]);
@@ -246,20 +248,53 @@ Proklisi.xristisGet = (callback) => {
 	return Proklisi;
 };
 
+Proklisi.economyMode = false;
+
+Proklisi.economySetup = (economyMode) => {
+	if (economyMode !== undefined)
+	Proklisi.economyMode = economyMode;
+
+	if (Proklisi.economyMode) {
+		$('.proklisiMenuTab').
+		addClass('proklisiMenuTabEconomy');
+	}
+
+	else {
+		$('.proklisiMenuTab').
+		removeClass('proklisiMenuTabEconomy');
+	}
+
+	return Proklisi;
+};
+
 Proklisi.ribbonSetup = () => {
 	pd.ribbonLeftDOM.
 	prepend($('<div>').
 	addClass('proklisiTRButton').
 	attr('id', 'proklisiHideRibbon').
-	text('Απόκρυψη').
+	text('Economy').
 	on('click', (e) => {
 		e.stopPropagation();
 
-		let h1 = pd.ofelimoDOM.height();
-		let h2 = pd.ribbonDOM.height();
+		let dh = pd.ofelimoDOM.height();
+		dh += (pd.ofelimoDOM.innerHeight() - dh);
+		dh += pd.toolbarDOM.outerHeight();
+		dh += pd.ribbonDOM.outerHeight();
+
+		pd.toolbarDOM.addClass('proklisiToolbarEconomy');
+		$('.chtToolbarXristis').
+		addClass('proklisiToolbarXristisEconomy').
+		appendTo(pd.ofelimoDOM);
 
 		pd.ribbonDOM.css('display', 'none');
-		pd.ofelimoDOM.css('height', (h1 + h2) + 'px');
+		pd.ofelimoDOM.
+		css({
+			'background-color': 'coral',
+			'padding': '0px',
+			'height': dh + 'px',
+		});
+
+		Proklisi.economySetup(true);
 	}));
 
 	pd.ribbonCenterDOM.

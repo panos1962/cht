@@ -33,6 +33,18 @@ body {
 	background-color: ivory;
 }
 
+.proklisiToolbarEconomy {
+	height: 0px !important;
+	padding: 0px !important;
+	border-width: 0px !important;
+}
+
+.proklisiToolbarXristisEconomy {
+	position: absolute !important;
+	top: 30px !important;
+	right: 30px !important;
+}
+
 .proklisiToolbarTitlos {
 	font-weight: bold;
 	color: sienna;
@@ -121,6 +133,11 @@ body {
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
+}
+
+.proklisiMenuTabEconomy {
+	margin: 4px;
+	padding: 4px;
 }
 
 .proklisiMenuTabAtono {

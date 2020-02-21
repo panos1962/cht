@@ -289,7 +289,6 @@ Proklisi.ribbonSetup = () => {
 		pd.ribbonDOM.css('display', 'none');
 		pd.ofelimoDOM.
 		css({
-			'background-color': 'coral',
 			'padding': '0px',
 			'height': dh + 'px',
 		});

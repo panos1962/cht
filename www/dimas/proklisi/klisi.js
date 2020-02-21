@@ -572,31 +572,36 @@ Proklisi.klisi.prototype.klisiFooterDOM = function(klisiDOM) {
 Proklisi.klisi.prototype.ipovoliDOM = function() {
 	let proklisi = this;
 
-	let ipovoliDOM = $('<div>').
-	data('state', 0).
-	addClass('proklisiKlisiIpovoliSection').
-	append($('<div>').
+	let buttonDOM = $('<div>').
 	addClass('proklisiButton').
 	text('Υποβολή βεβαίωσης').
 	on('click', function(e) {
 		e.stopPropagation();
 		proklisi.ipovoli($(this), ipovoliDOM);
-	}));
+	});
+
+	let ipovoliDOM = $('<div>').
+	data('state', 0).
+	addClass('proklisiKlisiIpovoliSection').
+	append(buttonDOM);
+
+	if (Proklisi.economyMode) {
+		buttonDOM.addClass('proklisiButtonEconomy');
+		ipovoliDOM.addClass('proklisiKlisiIpovoliSectionEconomy');
+	}
 
 	return ipovoliDOM;
 }
 
-Proklisi.klisi.prototype.ipovoli = function(buttonDOM, ipovoliDOM) {
+Proklisi.klisi.prototype.ipovoli = function(epikirosiDOM, ipovoliDOM) {
 	let state = ipovoliDOM.data('state');
 
 	if (state)
 	return Proklisi.klisi.ipovoliExec(this);
 
-	buttonDOM.attr('value', 'Επικύρωση υποβολής');
+	epikirosiDOM.attr('value', 'Επικύρωση υποβολής');
 
-	ipovoliDOM.
-	data('state', state + 1).
-	prepend($('<div>').
+	let buttonDOM = $('<div>').
 	addClass('proklisiButton').
 	text('Ακύρωση υποβολής').
 	on('click', function(e) {
@@ -604,8 +609,15 @@ Proklisi.klisi.prototype.ipovoli = function(buttonDOM, ipovoliDOM) {
 
 		$(this).remove();
 		ipovoliDOM.data('state', 0);
-		buttonDOM.text('Υποβολή βεβαίωσης');
-	}));
+		epikirosiDOM.text('Υποβολή βεβαίωσης');
+	});
+
+	ipovoliDOM.
+	data('state', state + 1).
+	prepend(buttonDOM);
+
+	if (Proklisi.economyMode)
+	buttonDOM.addClass('proklisiButtonEconomy');
 };
 
 Proklisi.klisi.ipovoliExec = function(proklisi) {

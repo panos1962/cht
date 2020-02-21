@@ -137,7 +137,8 @@ body {
 
 .proklisiMenuTabEconomy {
 	margin: 4px;
-	padding: 4px;
+	padding: 2px;
+	border-width: 2px;
 }
 
 .proklisiMenuTabAtono {
@@ -254,6 +255,23 @@ body {
 	cursor: pointer;
 }
 
+.proklisiEpistrofiBarEconomy {
+	margin: 4px 2px;
+	padding: 1px 8px 1px 4px;
+	border-width: 1px;
+	border-radius: 2px;
+
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.proklisiPaletaEconomy {
+	margin: 2px;
+	padding: 2px;
+}
+
 .proklisiKirosiFyiLeft {
 	padding-right: 4px;
 	text-align: right;
@@ -313,4 +331,12 @@ body {
 	box-shadow: 2px 2px 6px #ababab;
 
 	cursor: pointer;
+}
+
+.proklisiButtonEconomy {
+	margin: 2px 4px;
+	padding: 2px 4px 2px 4px;
+
+	border-width: 2px;
+	border-radius: 4px;
 }

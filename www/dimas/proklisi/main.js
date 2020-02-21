@@ -255,13 +255,17 @@ Proklisi.economySetup = (economyMode) => {
 	Proklisi.economyMode = economyMode;
 
 	if (Proklisi.economyMode) {
-		$('.proklisiMenuTab').
-		addClass('proklisiMenuTabEconomy');
+		$('.proklisiMenuTab').addClass('proklisiMenuTabEconomy');
+		$('.proklisiEpistrofiBar').addClass('proklisiEpistrofiBarEconomy');
+		$('.proklisiButton').addClass('proklisiButtonEconomy');
+		$('.pandoraPaleta').addClass('proklisiPaletaEconomy');
 	}
 
 	else {
-		$('.proklisiMenuTab').
-		removeClass('proklisiMenuTabEconomy');
+		$('.proklisiMenuTab').removeClass('proklisiMenuTabEconomy');
+		$('.proklisiEpistrofiBar').removeClass('proklisiEpistrofiBarEconomy');
+		$('.proklisiButton').removeClass('proklisiButtonEconomy');
+		$('.pandoraPaleta').removeClass('proklisiPaletaEconomy');
 	}
 
 	return Proklisi;

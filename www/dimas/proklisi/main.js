@@ -207,8 +207,21 @@ Proklisi.xristisNoXristis = () => !Proklisi.xristisIsXristis();
 Proklisi.toolbarXristisRefresh = () => {
 	let dom = pd.toolbarRightDOM.children('.chtToolbarXristis');
 
+	// Αν δεν βρούμε το συγκεκριμένο element στο toolbar τότε μάλλον
+	// είμαστε σε economy mode, οπότε το αναζητούμε εκ νέου στην ωφέλιμη
+	// περιοχή.
+
 	if (!dom.length)
-	return Proklisi;
+	dom = pd.ofelimoDOM.children('.chtToolbarXristis');
+
+	// Αν και πάλι δεν εντοπίσουμε το συγκεκριμένο element στην ωφέλιμη
+	// περιοχή, τότε το προσθέτουμε σαν να βρισκόμαστε σε economy mode.
+
+	if (!dom.length)
+	dom = $('<div>').
+	addClass('chtToolbarXristis').
+	addClass('proklisiToolbarXristisEconomy').
+	appendTo(pd.ofelimoDOM);
 
 	dom.empty();
 	Proklisi.xristis = undefined;

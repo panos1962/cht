@@ -332,6 +332,16 @@ Proklisi.cleanup = () => {
 	return Proklisi;
 };
 
+Proklisi.fyiMessage = (msg) => {
+	pd.fyiMessage(msg);
+	return Proklisi;
+};
+
+Proklisi.fyiError = (msg) => {
+	pd.fyiError(msg);
+	return Proklisi;
+};
+
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.menuKlisiSetup = () => {
@@ -552,7 +562,8 @@ Proklisi.oximaGetData = (paletaDOM) => {
 
 	Proklisi.
 	menuTabStatus(oximaDOM, 'busy').
-	menuTabFyi(oximaDOM, oxima);
+	menuTabFyi(oximaDOM, oxima).
+	fyiMessage();
 
 	$.post({
 		'url': Proklisi.param.govHUBServerUrl,
@@ -563,33 +574,26 @@ Proklisi.oximaGetData = (paletaDOM) => {
 		},
 		'success': (rsp) => {
 			if (rsp.hasOwnProperty('error'))
-			return Proklisi.menuTabStatus(oximaDOM.
+			return Proklisi.fyiError(rsp.error).
+			menuTabStatus(oximaDOM.
 			data('oximaError', rsp.error), 'error').
-			menuTabFyiError(oximaDOM, '<div>&#x2753;</div>' + oxima);
+			menuTabFyiError(oximaDOM,
+			'<div>&#x2753;</div>' + oxima);
 
 			oxima = new gh.oxima(rsp.data).fixChildren();
-			Proklisi.menuTabStatus(oximaDOM.
+
+			let fyi = '';
+
+			if (oxima.noKinisi())
+			fyi = pd.strPush(fyi, oxima.katastasi);
+
+			if (oxima.noEpivatiko())
+			fyi = pd.strPush(fyi, oxima.tipos);
+
+			Proklisi.fyiError(fyi).
+			menuTabStatus(oximaDOM.
 			data('oximaData', oxima), 'success').
-			menuTabFyi(oximaDOM, Proklisi.oximaFyi(rsp.data));
-
-			if (Dimas.paravidos.oximaTiposList.
-				hasOwnProperty(rsp.data.tipos)) {
-				Proklisi.menuTabStatus(Proklisi.oximaTiposTabDOM.
-				data('oximaTiposData', rsp.data.tipos), 'success');
-				Proklisi.menuTabFyi(Proklisi.oximaTiposTabDOM,
-				rsp.data.tipos);
-			}
-
-			else {
-				Proklisi.menuTabStatus(Proklisi.oximaTiposTabDOM.
-				removeData('oximaTiposData'), 'clear');
-				Proklisi.menuTabFyi(Proklisi.oximaTiposTabDOM);
-			}
-
-			let oximaTiposPaletaDOM = Proklisi.oximaTiposDOM.
-			find('.pandoraPaleta').first();
-
-			Proklisi.paravidosCheckData();
+			menuTabFyi(oximaDOM, Proklisi.oximaFyi(oxima));
 		},
 		'error': (err) => {
 			Proklisi.menuTabStatus(oximaDOM.
@@ -614,21 +618,11 @@ Proklisi.oximaFyi = (oxima) => {
 	if (oxima.xroma)
 	fyi += '<div>' + oxima.xroma + '</div>';
 
-	switch (oxima.tipos) {
-	case 'ΕΠΙΒΑΤΙΚΟ':
-		break;
-	default:
-		fyi += ' <div class="proklisiOximaTiposNotice">' +
-		oxima.tipos + '</div>';
-	}
+	if (oxima.noEpivatiko())
+	fyi += ' <div class="proklisiOximaTiposNotice">' + oxima.tipos + '</div>';
 
-	switch (oxima.katastasi) {
-	case 'ΚΙΝΗΣΗ':
-		break;
-	default:
-		fyi += ' <div class="proklisiOximaKatastasiNotice">' +
-		oxima.katastasi + '</div>';
-	}
+	if (oxima.noKinisi())
+	fyi += ' <div class="proklisiOximaKatastasiNotice">' + oxima.katastasi + '</div>';
 
 	return fyi;
 };

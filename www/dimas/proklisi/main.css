@@ -223,6 +223,7 @@ body {
 	color: #b97c5f;
 	background-color: #d0cc95;
 
+	white-space: nowrap;
 	text-align: center;
 	text-shadow: 1px 1px 1px #423522;
 
@@ -256,6 +257,10 @@ body {
 }
 
 .proklisiEpistrofiBarEconomy {
+	position: absolute;
+	top: -4px;
+	opacity: 0;
+
 	margin: 4px 2px;
 	padding: 1px 8px 1px 4px;
 	border-width: 1px;
@@ -267,8 +272,12 @@ body {
 	user-select: none;
 }
 
+.proklisiMenuEconomy {
+	margin: 8px 2px 2px 2px;
+}
+
 .proklisiPaletaEconomy {
-	margin: 2px;
+	margin: 8px 2px 2px 2px;
 	padding: 2px;
 }
 

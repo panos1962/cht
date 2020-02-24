@@ -268,6 +268,7 @@ Proklisi.economySetup = (economyMode) => {
 	Proklisi.economyMode = economyMode;
 
 	if (Proklisi.economyMode) {
+		$('.proklisiMenu').addClass('proklisiMenuEconomy');
 		$('.proklisiMenuTab').addClass('proklisiMenuTabEconomy');
 		$('.proklisiEpistrofiBar').addClass('proklisiEpistrofiBarEconomy');
 		$('.proklisiButton').addClass('proklisiButtonEconomy');
@@ -275,10 +276,11 @@ Proklisi.economySetup = (economyMode) => {
 	}
 
 	else {
-		$('.proklisiMenuTab').removeClass('proklisiMenuTabEconomy');
-		$('.proklisiEpistrofiBar').removeClass('proklisiEpistrofiBarEconomy');
-		$('.proklisiButton').removeClass('proklisiButtonEconomy');
-		$('.pandoraPaleta').removeClass('proklisiPaletaEconomy');
+		$('.proklisiMenuEconomy').addClass('proklisiMenuEconomy');
+		$('.proklisiMenuTabEconomy').removeClass('proklisiMenuTabEconomy');
+		$('.proklisiEpistrofiBarEconomy').removeClass('proklisiEpistrofiBarEconomy');
+		$('.proklisiButtonEconomy').removeClass('proklisiButtonEconomy');
+		$('.pandoraPaletaEconomy').removeClass('proklisiPaletaEconomy');
 	}
 
 	return Proklisi;

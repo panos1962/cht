@@ -350,8 +350,12 @@ Proklisi.fyiMessage = (msg) => {
 	return Proklisi;
 };
 
-Proklisi.fyiError = (msg) => {
+Proklisi.fyiError = (msg, err) => {
 	pd.fyiError(msg);
+
+	if (err)
+	console.log(err);
+
 	return Proklisi;
 };
 
@@ -477,13 +481,12 @@ Proklisi.bebeosiExec = () => {
 		'success': (rsp) => {
 			let bebnum = parseInt(rsp);
 
-			if (bebnum != rsp) {
-				pd.fyiError(rsp);
-				Proklisi.menuTabStatus(bebeosiDOM.
-				data('bebeosiError', rsp.error), 'error').
-				menuTabFyi(bebeosiDOM);
-				return Proklisi;
-			}
+			if (bebnum != rsp)
+			return Proklisi.
+			fyiError(rsp).
+			menuTabStatus(bebeosiDOM.
+			data('bebeosiError', rsp.error), 'error').
+			menuTabFyi(bebeosiDOM);
 
 			let data = {
 				'bebnum': bebnum,
@@ -504,11 +507,9 @@ Proklisi.bebeosiExec = () => {
 				'timeout': 2000,
 			});
 		},
-		'error': (err) => {
-			pd.fyiError('ERROR');
-			Proklisi.menuTabStatus(bebeosiDOM, 'error');
-			console.error(err);
-		},
+		'error': (err) => Proklisi.
+		fyiError('Σφάλμα αιτήματος αριθμού βεβαίωσης', err).
+		menuTabStatus(bebeosiDOM, 'error'),
 	});
 
 	return Proklisi;
@@ -587,7 +588,8 @@ Proklisi.oximaGetData = (paletaDOM) => {
 		},
 		'success': (rsp) => {
 			if (rsp.hasOwnProperty('error'))
-			return Proklisi.fyiError(rsp.error).
+			return Proklisi.
+			fyiError(rsp.error).
 			menuTabStatus(oximaDOM.
 			data('oximaError', rsp.error), 'error').
 			menuTabFyiError(oximaDOM,
@@ -608,12 +610,11 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			data('oximaData', oxima), 'success').
 			menuTabFyi(oximaDOM, Proklisi.oximaFyi(oxima));
 		},
-		'error': (err) => {
-			Proklisi.menuTabStatus(oximaDOM.
-			data('oximaError',
-			'Αποτυχημένη ανάκτηση στοιχείων οχήματος'), 'error').
-			menuTabFyiError(oximaDOM, oxima);
-		},
+		'error': (err) => Proklisi.
+		fyiError('Σφάλμα ανάκτησης στοιχείων οχήματος', err).
+		menuTabStatus(oximaDOM.data('oximaError',
+		'Αποτυχημένη ανάκτηση στοιχείων οχήματος'), 'error').
+		menuTabFyiError(oximaDOM, oxima),
 	});
 
 	return Proklisi;
@@ -693,7 +694,9 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 		},
 		'success': (rsp) => {
 			if (rsp.hasOwnProperty('error'))
-			return Proklisi.menuTabStatus(ipoxreosDOM.
+			return Proklisi.
+			fyiError(rsp.error).
+			menuTabStatus(ipoxreosDOM.
 			data('ipoxreosError', rsp.error), 'error').
 			menuTabFyiError(ipoxreosDOM, '<div>&#x2753;</div>' + afm);
 
@@ -702,12 +705,11 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 			data('ipoxreosData', prosopo), 'success').
 			menuTabFyi(ipoxreosDOM, Proklisi.ipoxreosFyi(rsp.data));
 		},
-		'error': (err) => {
-			Proklisi.menuTabStatus(ipoxreosDOM.
-			data('ipoxreosError',
-			'Αποτυχημένη ανάκτηση στοιχείων υπόχρεου'), 'error').
-			menuTabFyiError(ipoxreosDOM, afm);
-		},
+		'error': (err) => Proklisi.
+		fyiError('Σφάλμα ανάκτησης στοιχείων υπόχρεου', err).
+		menuTabStatus(ipoxreosDOM.data('ipoxreosError',
+		'Αποτυχημένη ανάκτηση στοιχείων υπόχρεου'), 'error').
+		menuTabFyiError(ipoxreosDOM, afm),
 	});
 
 	return Proklisi;
@@ -1107,19 +1109,17 @@ Proklisi.exodosSetup = () => {
 	return Proklisi;
 };
 
-Proklisi.exodosExec = () => {
-	Proklisi.enotitaActivate(Proklisi.exodosDOM);
-	return Proklisi;
-};
+Proklisi.exodosExec = () => Proklisi.
+menuTabStatus(Proklisi.exodosTabDOM, 'clear').
+enotitaActivate(Proklisi.exodosDOM);
 
 Proklisi.exodosConfirmExec = () => {
 	$.post({
 		'url': '../../lib/exodos.php',
-		'success': () => Proklisi.anonimiXrisi(),
-		'error': (err) => {
-			console.error(err);
-			pd.fyiError('Αποτυχία εξόδου');
-		},
+		'success': () => window.location = self.location,
+		'error': (err) => Proklisi.
+		fyiError('Αποτυχία εξόδου', err).
+		menuTabStatus(Proklisi.exodosTabDOM, 'error'),
 	});
 
 	return Proklisi;

@@ -264,7 +264,14 @@ Proklisi.xristisGet = (callback) => {
 Proklisi.economyMode = false;
 
 Proklisi.economySetup = (economyMode) => {
-	if (economyMode !== undefined)
+	if (economyMode === undefined) {
+		if (php.isRequest('economy')) {
+			$('#proklisiEconomyButton').trigger('click');
+			return Proklisi;
+		}
+	}
+
+	else
 	Proklisi.economyMode = economyMode;
 
 	if (Proklisi.economyMode) {
@@ -290,7 +297,7 @@ Proklisi.ribbonSetup = () => {
 	pd.ribbonLeftDOM.
 	prepend($('<div>').
 	addClass('proklisiTRButton').
-	attr('id', 'proklisiHideRibbon').
+	attr('id', 'proklisiEconomyButton').
 	text('Economy').
 	on('click', (e) => {
 		e.stopPropagation();

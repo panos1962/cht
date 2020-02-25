@@ -40,8 +40,9 @@ body {
 	width: 800px;
 	padding: 32px;
 
-	text-align: justify;
+	font-size: 18px;
 	line-height: 150%;
+	text-align: justify;
 
 	font-family: "Georgia", serif;
 }

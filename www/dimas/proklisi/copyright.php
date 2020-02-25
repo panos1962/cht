@@ -37,10 +37,10 @@ document_head([
 ?>
 <style>
 body {
-	max-width: 700px;
+	max-width: 800px;
 	padding: 32px;
 
-	font-size: 16px;
+	font-size: 18px;
 	line-height: 150%;
 	text-align: justify;
 

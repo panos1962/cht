@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+###############################################################################@
+##
+## @BEGIN
+##
+## @COPYRIGHT BEGIN
+## Copyright (C) 2020 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+## @COPYRIGHT END
+##
+## @FILETYPE BEGIN
+## bash
+## @FILETYPE END
+##
+## @FILE BEGIN
+## bin/proklisi —— Πρόγραμμα γενικής διαχείρισης προ-κλήσεων.
+## @FILE END
+##
+## @DESCRIPTION BEGIN
+## Το παρόν πρόγραμμα κάνει γενική διαχείριση προ-κλήσεων. Η συνήθης διαδικασία
+## που επιτελείται μέσω του συγκεκριμένου προγράμματος είναι η μορφοποίηση των
+## προ-κλήσεων που διαβάζει από το standard input ή από αρχεία που καθορίζονται
+## στο command line.
+## @DESCRIPTION END
+##
+## @HISTORY BEGIN
+## Created: 2020-02-26
+## @HISTORY END
+##
+## @END
+##
+###############################################################################@
+
+pd_tmpmax=1
+
+. "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
+
+pd_usagemsg="[--help]"
+
+pd_seterrcode \
+	"usage"
+
+[ -z "${CHT_BASEDIR}" ] &&
+CHT_BASEDIR="/var/opt/cht"
+
+eval set -- "$(pd_parseopts "?s:k:" \
+"help,colsep:,sep:,separator:,kcol:" \
+"$@")"
+
+[ $1 -ne 0 ] &&
+pd_usage
+
+shift
+
+colsep=
+kcol=1
+error=
+
+for arg in "$@"
+do
+	case "${arg}" in
+	-\?|--help)
+		. "${CHT_BASEDIR}/lib/proklisi/help.sh" 2>/dev/null &&
+		pd_exit
+		;;
+	-s|--colsep|--sep|--separator)
+		colsep="$2"
+		shift 2
+		;;
+	-k|--kcol)
+		pd_isinteger "$2" 1 || error="yes"
+		shift 2
+		;;
+	--)
+		shift
+		;;
+	esac
+done
+unset arg
+
+[ -n "${error}" ] &&
+pd_usage
+
+awk \
+-i "${PANDORA_BASEDIR}/lib/pandora.awk" \
+-i "${CHT_BASEDIR}/lib/dimasdb.awk" \
+-v colsep="${colsep}" \
+-v kcol="${kcol}" \
+-f "${CHT_BASEDIR}/lib/proklisi/expand" $*

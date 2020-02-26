@@ -108,7 +108,7 @@ function print_proklisi(proklisi, proklidata) {
 
 function onomasia(data,			s) {
 	if (data["ΕΠΩΝΥΜΙΑ"])
-	return data["ΕΠΝΩΝΥΜΙΑ"]
+	return data["ΕΠΩΝΥΜΙΑ"]
 
 	s = data["ΕΠΩΝΥΜΟ"] " " data["ΟΝΟΜΑ"]
 

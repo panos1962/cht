@@ -102,7 +102,9 @@ function print_proklisi(proklisi, proklidata) {
 	onomasia(proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]),
 	proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΔΙΕΥΘΥΝΣΗ"], \
 	proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΤΚ"], \
-	proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΠΕΡΙΟΧΗ/ΠΟΛΗ"],
+	proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΠΕΡΙΟΧΗ/ΠΟΛΗ"], \
+	proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOX"], \
+	proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOY"], \
 	proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΠΡΟΣΤΙΜΟ"]
 }
 

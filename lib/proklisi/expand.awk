@@ -36,8 +36,16 @@ BEGIN {
 	if (colsep != "")
 	FS = colsep
 
+	if (ofs)
+	OFS = ofs
+
 	process_output_columns()
 	dimas_astinomikos_fetch()
+}
+
+{
+	print "asad", "asasdasd"
+next
 }
 
 blank_line() {

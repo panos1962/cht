@@ -58,7 +58,7 @@ colsep=
 kcol=1
 cols=
 post=
-ofs="\t"
+ofs=
 
 error=
 
@@ -108,5 +108,5 @@ eval awk \
 -v colsep="${colsep}" \
 -v kcol="${kcol}" \
 -v cols="${cols}" \
--v OFS="${ofs}" \
+-v ofs="${ofs}" \
 -f "${CHT_BASEDIR}/lib/proklisi/expand.awk" $* ${post}

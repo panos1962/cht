@@ -46,7 +46,7 @@ CHT_BASEDIR="/var/opt/cht"
 eval set -- "$(pd_parseopts "?s:k:o:x,g" \
 "help,colsep:,sep:,separator:,kcol:,\
 output:,cols:,columns:,ofs:,\
-excel,geo" \
+excel,geo,ante:" \
 "$@")"
 
 [ $1 -ne 0 ] &&
@@ -59,6 +59,7 @@ kcol=1
 cols=
 post=
 ofs=
+ante=
 
 error=
 
@@ -90,7 +91,11 @@ do
 		;;
 	-g|--geo)
 		cols="geoy,geox,kodikos,#FF7F50,"
+		ante="latitude,longitude,name,color"
 		ofs=","
+		;;
+	--ante)
+		ante="$2"
 		;;
 	--)
 		shift
@@ -109,4 +114,5 @@ eval awk \
 -v kcol="${kcol}" \
 -v cols="${cols}" \
 -v ofs="${ofs}" \
+-v ante="${ante}" \
 -f "${CHT_BASEDIR}/lib/proklisi/expand.awk" $* ${post}

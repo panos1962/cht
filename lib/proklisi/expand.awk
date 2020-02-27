@@ -134,6 +134,11 @@ function print_proklisi(proklisi, proklidata,		i, s) {
 	proklisi["diploma"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΔΙΠΛΩΜΑ"]
 	proklisi["prostimo"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΠΡΟΣΤΙΜΟ"]
 
+	if (ante) {
+		print ante
+		ante = ""
+	}
+
 	printf colval(proklisi, olist[0])
 
 	for (i = 1; i < ncols; i++)

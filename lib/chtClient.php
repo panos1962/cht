@@ -158,6 +158,40 @@ class cht extends chtCore {
 
 		return __CLASS__;
 	}
+
+	public static function set_govHUB_conf($varname = "govHUBConf") {
+		$ghcf = self::read_govHUB_conf();
+
+		if ($ghcf === FALSE)
+		$ghcf = '{"protocol":"http","portNumber":8001}';
+?>
+<script>
+<?php
+print $varname . "=" . $ghcf . ";\n";
+?>
+</script>
+<?php
+		return __CLASS__;
+	}
+
+	private static function read_govHUB_conf() {
+		$ghcf = file_get_contents(CHT_BASEDIR . "/private/govHUB.cf");
+
+		if ($ghcf === FALSE)
+		return FALSE;
+
+		$ghcf = json_decode($ghcf);
+
+		if ($ghcf === NULL)
+		return FALSE;
+
+		$ghcf = json_encode($ghcf->connect->w3srv);
+
+		if ($ghcf === FALSE)
+		return FALSE;
+
+		return $ghcf;
+	}
 }
 
 cht::init();

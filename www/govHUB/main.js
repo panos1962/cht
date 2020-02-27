@@ -49,7 +49,6 @@
 ///////////////////////////////////////////////////////////////////////////////@
 
 "use strict";
-console.log('>>>', 'www/govHUB/main.js');
 
 const pd = require('../../mnt/pandora/lib/pandoraClient.js');
 const gh = require('../../lib/govHUB/apiClient.js');
@@ -75,7 +74,7 @@ w3gh.opts.kimeno.mazikaPlaceHolder +=
 w3gh.opts.sepChar = ',';
 w3gh.opts.opsoiCountDefault = 10;
 w3gh.opts.opsoiCountMax = 500;
-w3gh.opts.portNumber = php.requestGet('port', 8001);
+w3gh.opts.portNumber = php.requestGet('port', govHUBConf.portNumber);
 
 w3gh.resultCount = 0;
 
@@ -590,6 +589,7 @@ w3gh.anazitisi = (data) => {
 	if (php.serverGet('HTTPS'))
 	protocol += 's';
 
+	x.sesami = govHUBConf.sesami;
 	resDOM.
 	data('xhr', $.post({
 		'url': protocol + '://' + php.serverGet('HTTP_HOST') +

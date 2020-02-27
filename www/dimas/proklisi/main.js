@@ -594,6 +594,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 		'data': {
 			'idos': 'oxima',
 			'key': oxima,
+			'sesami': govHUBConf.sesami,
 		},
 		'success': (rsp) => {
 			if (rsp.hasOwnProperty('error'))
@@ -700,6 +701,7 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 		'data': {
 			'idos': 'prosopo',
 			'key': afm,
+			'sesami': govHUBConf.sesami,
 		},
 		'success': (rsp) => {
 			if (rsp.hasOwnProperty('error'))

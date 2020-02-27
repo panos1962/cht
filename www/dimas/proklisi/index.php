@@ -37,6 +37,9 @@ document_head([
 		"../../lib/cht",
 	],
 ])::
-document_body()::
-document_close();
+document_body();
+
+cht::set_govHUB_conf();
+pandora::document_close();
+
 ?>

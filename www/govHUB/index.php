@@ -57,10 +57,12 @@ document_body();
 <tr>
 <td>
 <?php
-GovHUB::section_oxima();
-GovHUB::section_imerominia();
-GovHUB::section_opsoi();
-GovHUB::section_prosopo();
+GovHUB::
+section_oxima()::
+section_imerominia()::
+section_opsoi()::
+section_prosopo()::
+govHUB_conf();
 ?>
 </td>
 <td>
@@ -107,7 +109,7 @@ pandora::document_close();
 class GovHUB {
 	public static function section_oxima() {
 		if (!pandora::parameter_yes("oxima"))
-		return;
+		return __CLASS__;
 ?>
 <div class="pedio">
 <label class="prompt" for="pinakida">Αρ. Κυκλοφορίας</label>
@@ -115,6 +117,7 @@ class GovHUB {
 </div>
 <br>
 <?php
+		return __CLASS__;
 	}
 
 	public static function section_imerominia() {
@@ -125,11 +128,12 @@ class GovHUB {
 </div>
 <br>
 <?php
+		return __CLASS__;
 	}
 
 	public static function section_opsoi() {
 		if (!pandora::parameter_yes("opsoi"))
-		return;
+		return __CLASS__;
 ?>
 <div class="pedio">
 <label class="prompt" for="opsoi">Από ΟΠΣΟΥ</label>
@@ -139,11 +143,12 @@ class GovHUB {
 </div>
 <br>
 <?php
+		return __CLASS__;
 	}
 
 	public static function section_prosopo() {
 		if (!pandora::parameter_yes("prosopo"))
-		return;
+		return __CLASS__;
 ?>
 <div class="pedio">
 <label class="prompt" for="afm">ΑΦΜ</label>
@@ -151,5 +156,11 @@ class GovHUB {
 </div>
 <br>
 <?php
+		return __CLASS__;
+	}
+
+	public static function govHUB_conf() {
+		cht::set_govHUB_conf();
+		return __CLASS__;
 	}
 }

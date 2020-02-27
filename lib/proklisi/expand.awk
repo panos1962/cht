@@ -56,7 +56,7 @@ syntax_error() {
 
 {
 	if (process_proklisi(proklisi, $kcol))
-	print_proklisi(proklisi, proklisi["proklidata"])
+	print_proklisi(proklisi)
 }
 
 function process_output_columns(			n, a, i) {
@@ -107,35 +107,35 @@ function process_proklisi(proklisi, kodikos) {
 	return 1
 }
 
-function print_proklisi(proklisi, proklidata,		i, s) {
+function print_proklisi(proklisi,		i, s) {
 	if (ncols <= 0)
 	return
 
 	proklisi["onoma"] = dimas_astinomikos[proklisi["ipalilos"]]["onomateponimo"]
 	proklisi["filo"] = dimas_astinomikos[proklisi["ipalilos"]]["filo"]
 
-	proklisi["oxima"] = proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΑΡ. ΚΥΚΛΟΦΟΡΙΑΣ"]
-	proklisi["marka"] = proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΜΑΡΚΑ"]
-	proklisi["xroma"] = proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΧΡΩΜΑ"]
-	proklisi["tipos"] = proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΤΥΠΟΣ"]
+	proklisi["oxima"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΑΡ. ΚΥΚΛΟΦΟΡΙΑΣ"]
+	proklisi["marka"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΜΑΡΚΑ"]
+	proklisi["xroma"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΧΡΩΜΑ"]
+	proklisi["tipos"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΤΥΠΟΣ"]
 
-	proklisi["afm"] = proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΑΦΜ"]
-	proklisi["onomasia"] = onomasia(proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"])
-	proklisi["dief"] = proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΔΙΕΥΘΥΝΣΗ"]
-	proklisi["tk"] = proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΤΚ"]
-	proklisi["perioxi"] = proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΠΕΡΙΟΧΗ/ΠΟΛΗ"]
+	proklisi["afm"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΑΦΜ"]
+	proklisi["onomasia"] = onomasia(proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"])
+	proklisi["dief"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΔΙΕΥΘΥΝΣΗ"]
+	proklisi["tk"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΤΚ"]
+	proklisi["perioxi"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΠΕΡΙΟΧΗ/ΠΟΛΗ"]
 
-	proklisi["paravasi"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΚΩΔΙΚΟΣ"]
-	proklisi["diataxi"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΔΙΑΤΑΞΗ"]
-	proklisi["lektiko"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΠΑΡΑΒΑΣΗ"]
-	proklisi["topos"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΤΟΠΟΣ"]
-	proklisi["geox"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOX"]
-	proklisi["geoy"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOY"]
+	proklisi["paravasi"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΚΩΔΙΚΟΣ"]
+	proklisi["diataxi"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΔΙΑΤΑΞΗ"]
+	proklisi["lektiko"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΠΑΡΑΒΑΣΗ"]
+	proklisi["topos"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΤΟΠΟΣ"]
+	proklisi["geox"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOX"]
+	proklisi["geoy"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOY"]
 
-	proklisi["pinakides"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΠΙΝΑΚΙΔΕΣ"]
-	proklisi["adia"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΑΔΕΙΑ"]
-	proklisi["diploma"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΔΙΠΛΩΜΑ"]
-	proklisi["prostimo"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΠΡΟΣΤΙΜΟ"]
+	proklisi["pinakides"] = proklisi["proklidata"]["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΠΙΝΑΚΙΔΕΣ"]
+	proklisi["adia"] = proklisi["proklidata"]["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΑΔΕΙΑ"]
+	proklisi["diploma"] = proklisi["proklidata"]["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΔΙΠΛΩΜΑ"]
+	proklisi["prostimo"] = proklisi["proklidata"]["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΠΡΟΣΤΙΜΟ"]
 
 	if (ante) {
 		print ante
@@ -196,7 +196,7 @@ function apo_eos(		apoeos, query, cont, row, proklisi) {
 
 	while (spawk_fetchrow(row)) {
 		if (process_proklisi(proklisi, row[1]))
-		print_proklisi(proklisi, proklisi["proklidata"])
+		print_proklisi(proklisi)
 	}
 
 	return(1)

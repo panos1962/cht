@@ -143,7 +143,11 @@ function dimas_proklidata_fetch(proklisi,		query, row) {
 	if (spawk_submit(query, "ASSOC") != 3)
 	pd_fatal(kodikos ": cannot locate `dimas`.`proklidata`")
 
-	proklisi["proklidata"][""]
 	while (spawk_fetchrow(row))
 	proklisi["proklidata"][row["katigoria"]][row["idos"]] = row["timi"]
+
+	# Αν η πρό-κληση στερείται στοιχείων προσθέτουμε το array "proklidata"
+
+	if (!("proklidata" in proklisi))
+	proklisi["proklidata"][""]
 }

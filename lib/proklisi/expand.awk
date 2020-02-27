@@ -55,7 +55,7 @@ syntax_error() {
 }
 
 {
-	if (process_proklisi(proklisi))
+	if (process_proklisi(proklisi, $kcol))
 	print_proklisi(proklisi, proklisi["proklidata"])
 }
 
@@ -93,12 +93,12 @@ function syntax_error(		kodikos) {
 	return 0
 }
 
-function process_proklisi(proklisi) {
+function process_proklisi(proklisi, kodikos) {
 	delete proklisi
-	proklisi["kodikos"] = $kcol + 0
+	proklisi["kodikos"] = kodikos + 0
 
 	if(!dimas_proklisi_fetch(proklisi)) {
-		print $kcol ": δεν εντοπίστηκε πρό-κληση"
+		print kodikos ": δεν εντοπίστηκε πρό-κληση"
 		notfound++
 		return 0
 	}
@@ -166,7 +166,7 @@ function onomasia(data,			s) {
 	return s
 }
 
-function apo_eos(		apoeos, query, cont, row) {
+function apo_eos(		apoeos, query, cont, row, proklisi) {
 	if (apo)
 	apoeos = 1
 
@@ -190,15 +190,12 @@ function apo_eos(		apoeos, query, cont, row) {
 	}
 
 	query = query " ORDER BY `kodikos`"
-print query
 
 	if (spawk_submit(query, "NUM") != 3)
 	exit(3)
 
-	while (row = spawk_fetchrow()) {
-		proklisi["kodikos"] = row[0]
-
-		if (process_proklisi(proklisi))
+	while (spawk_fetchrow(row)) {
+		if (process_proklisi(proklisi, row[1]))
 		print_proklisi(proklisi, proklisi["proklidata"])
 	}
 

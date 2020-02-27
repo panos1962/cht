@@ -47,7 +47,7 @@ eval set -- "$(pd_parseopts "?s:k:o:x,g" \
 "help,colsep:,sep:,separator:,kcol:,\
 output:,cols:,columns:,ofs:,\
 excel,geo,ante:,\
-from:,to:" \
+from:,to:,today,date:" \
 "$@")"
 
 [ $1 -ne 0 ] &&
@@ -103,6 +103,11 @@ do
 	--from)
 		apo="$2"
 		shift 2
+		;;
+	--today)
+		apo="$(date '+%Y-%m-%d')"
+		eos="${apo}"
+		shift 1
 		;;
 	--to)
 		eos="$2"

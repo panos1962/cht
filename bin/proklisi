@@ -81,7 +81,7 @@ do
 		shift 2
 		;;
 	-x|--excel)
-		post="|ssconvert --export-type Gnumeric_Excel:xlsx fd://0 fd://1"
+		post="|ssconvert --export-type Gnumeric_Excel:xlsx fd://0 fd://1 2>/dev/null"
 		;;
 	-g|--geo)
 		cols="geoy,geox,kodikos,#FF7F50,"

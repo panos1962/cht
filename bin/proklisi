@@ -43,8 +43,10 @@ pd_seterrcode \
 [ -z "${CHT_BASEDIR}" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
-eval set -- "$(pd_parseopts "?s:k:" \
-"help,colsep:,sep:,separator:,kcol:" \
+eval set -- "$(pd_parseopts "?s:k:o:x,g" \
+"help,colsep:,sep:,separator:,kcol:,\
+output:,cols:,columns:,\
+excel,geo" \
 "$@")"
 
 [ $1 -ne 0 ] &&
@@ -54,6 +56,9 @@ shift
 
 colsep=
 kcol=1
+cols=
+post=
+
 error=
 
 for arg in "$@"
@@ -71,6 +76,16 @@ do
 		pd_isinteger "$2" 1 || error="yes"
 		shift 2
 		;;
+	-o|--output|--cols|--columns)
+		cols="${cols}${2},"
+		shift 2
+		;;
+	-x|--excel)
+		post="|ssconvert --export-type Gnumeric_Excel:xlsx fd://0 fd://1"
+		;;
+	-g|--geo)
+		cols="geoy,geox,kodikos,#FF7F50,"
+		;;
 	--)
 		shift
 		;;
@@ -81,9 +96,10 @@ unset arg
 [ -n "${error}" ] &&
 pd_usage
 
-awk \
+eval awk \
 -i "${PANDORA_BASEDIR}/lib/pandora.awk" \
--i "${CHT_BASEDIR}/lib/dimasdb.awk" \
+-i "${CHT_BASEDIR}/lib/dimas.awk" \
 -v colsep="${colsep}" \
 -v kcol="${kcol}" \
--f "${CHT_BASEDIR}/lib/proklisi/expand" $*
+-v cols="${cols}" \
+-f "${CHT_BASEDIR}/lib/proklisi/expand.awk" $* ${post}

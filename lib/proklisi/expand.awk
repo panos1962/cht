@@ -32,11 +32,11 @@
 ##
 ###############################################################################@
 
-
 BEGIN {
 	if (colsep != "")
 	FS = colsep
 
+	process_output_columns()
 	dimas_astinomikos_fetch()
 }
 
@@ -51,6 +51,18 @@ syntax_error() {
 {
 	if (process_proklisi(proklisi))
 	print_proklisi(proklisi, proklisi["proklidata"])
+}
+
+function process_output_columns(			n, a, i) {
+	if (!cols)
+	cols = "kodikos,imerominia,ipalilos,onoma,paravasi,topos," \
+		"oxima,marka,xroma,tipos,afm,onomasia,dief,tk,perioxi," \
+		"pinakides,adia,diploma,prostimo,"
+
+	n = split(cols, a, ",")
+
+	for (i = 1; i < n; i++)
+	olist[ncols++] = a[i]
 }
 
 function blank_line() {
@@ -89,23 +101,46 @@ function process_proklisi(proklisi) {
 	return 1
 }
 
-function print_proklisi(proklisi, proklidata) {
-	print \
-	proklisi["kodikos"], \
-	proklisi["imerominia"], \
-	proklisi["ipalilos"], \
-	dimas_astinomikos[proklisi["ipalilos"]]["onomateponimo"], \
-	proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΑΡ. ΚΥΚΛΟΦΟΡΙΑΣ"], \
-	proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΜΑΡΚΑ"], \
-	proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΧΡΩΜΑ"], \
-	proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΑΦΜ"], \
-	onomasia(proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]),
-	proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΔΙΕΥΘΥΝΣΗ"], \
-	proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΤΚ"], \
-	proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΠΕΡΙΟΧΗ/ΠΟΛΗ"], \
-	proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOX"], \
-	proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOY"], \
-	proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΠΡΟΣΤΙΜΟ"]
+function print_proklisi(proklisi, proklidata,		i, s) {
+	if (ncols <= 0)
+	return
+
+	proklisi["onoma"] = dimas_astinomikos[proklisi["ipalilos"]]["onomateponimo"]
+	proklisi["filo"] = dimas_astinomikos[proklisi["ipalilos"]]["filo"]
+
+	proklisi["oxima"] = proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΑΡ. ΚΥΚΛΟΦΟΡΙΑΣ"]
+	proklisi["marka"] = proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΜΑΡΚΑ"]
+	proklisi["xroma"] = proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΧΡΩΜΑ"]
+	proklisi["tipos"] = proklidata["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΤΥΠΟΣ"]
+
+	proklisi["afm"] = proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΑΦΜ"]
+	proklisi["onomasia"] = onomasia(proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"])
+	proklisi["dief"] = proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΔΙΕΥΘΥΝΣΗ"]
+	proklisi["tk"] = proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΤΚ"]
+	proklisi["perioxi"] = proklidata["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΠΕΡΙΟΧΗ/ΠΟΛΗ"]
+
+	proklisi["paravasi"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΚΩΔΙΚΟΣ"]
+	proklisi["diataxi"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΔΙΑΤΑΞΗ"]
+	proklisi["lektiko"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΠΑΡΑΒΑΣΗ"]
+	proklisi["topos"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["ΤΟΠΟΣ"]
+	proklisi["geox"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOX"]
+	proklisi["geoy"] = proklidata["ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ"]["GEOY"]
+
+	proklisi["pinakides"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΠΙΝΑΚΙΔΕΣ"]
+	proklisi["adia"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΑΔΕΙΑ"]
+	proklisi["diploma"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΔΙΠΛΩΜΑ"]
+	proklisi["prostimo"] = proklidata["ΚΥΡΩΣΕΙΣ ΚΑΙ ΠΡΟΣΤΙΜΑ"]["ΠΡΟΣΤΙΜΟ"]
+
+	printf colval(proklisi, olist[0])
+
+	for (i = 1; i < ncols; i++)
+	printf OFS colval(proklisi, olist[i])
+
+	print ""
+}
+
+function colval(proklisi, col) {
+	return (col in proklisi ? proklisi[col] : col)
 }
 
 function onomasia(data,			s) {

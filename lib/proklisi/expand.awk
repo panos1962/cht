@@ -41,6 +41,9 @@ BEGIN {
 
 	process_output_columns()
 	dimas_astinomikos_fetch()
+
+	if (apo_eos())
+	exit(0)
 }
 
 blank_line() {
@@ -161,4 +164,43 @@ function onomasia(data,			s) {
 	s = s " (" substr(data["ΠΑΤΡΩΝΥΜΟ"], 1, 3) ")"
 
 	return s
+}
+
+function apo_eos(		apoeos, query, cont, row) {
+	if (apo)
+	apoeos = 1
+
+	if (eos)
+	apoeos = 1
+
+	if (!apoeos)
+	return 0
+
+	query = "SELECT `kodikos` FROM `dimas`.`proklisi` "
+	cont = " WHERE "
+
+	if (apo) {
+		query = query cont "(`imerominia` >= " spawk_escape(apo " 00:00:00") ")"
+		cont = " AND "
+	}
+
+	if (eos) {
+		query = query cont "(`imerominia` <= " spawk_escape(eos " 23:59:59") ")"
+		cont = " AND "
+	}
+
+	query = query " ORDER BY `kodikos`"
+print query
+
+	if (spawk_submit(query, "NUM") != 3)
+	exit(3)
+
+	while (row = spawk_fetchrow()) {
+		proklisi["kodikos"] = row[0]
+
+		if (process_proklisi(proklisi))
+		print_proklisi(proklisi, proklisi["proklidata"])
+	}
+
+	return(1)
 }

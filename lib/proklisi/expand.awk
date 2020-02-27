@@ -43,11 +43,6 @@ BEGIN {
 	dimas_astinomikos_fetch()
 }
 
-{
-	print "asad", "asasdasd"
-next
-}
-
 blank_line() {
 	next
 }

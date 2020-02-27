@@ -90,6 +90,7 @@ do
 		;;
 	-g|--geo)
 		cols="geoy,geox,kodikos,#FF7F50,"
+		ofs=","
 		;;
 	--)
 		shift

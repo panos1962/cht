@@ -89,7 +89,7 @@ do
 	-x|--excel)
 		post="|ssconvert --export-type Gnumeric_Excel:xlsx fd://0 fd://1 2>/dev/null"
 		;;
-	-g|--geo)
+	-g|--geo)	# for https://maps.co
 		cols="geoy,geox,kodikos,#FF7F50,"
 		ante="latitude,longitude,name,color"
 		ofs=","

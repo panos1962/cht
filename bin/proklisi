@@ -43,6 +43,14 @@ pd_seterrcode \
 [ -z "${CHT_BASEDIR}" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
+# XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
+#
+# ⚫ Επιλογή με βάση τον αστυνομικό
+#
+# ⚫ Να προστεθεί option με την οποία να τυπώνεται το πλήρες output column list
+#
+# XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
+
 eval set -- "$(pd_parseopts "?s:k:o:x,g,r" \
 "help,colsep:,sep:,separator:,kcol:,\
 output:,cols:,columns:,ofs:,\

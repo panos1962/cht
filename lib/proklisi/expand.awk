@@ -39,10 +39,10 @@ BEGIN {
 	if (ofs)
 	OFS = ofs
 
-	process_output_columns()
 	dimas_astinomikos_fetch()
+	parse_output_columns()
 
-	if (apo_eos())
+	if (ikothen_epilogi())
 	exit(0)
 }
 
@@ -55,11 +55,10 @@ syntax_error() {
 }
 
 {
-	if (process_proklisi(proklisi, $kcol))
-	print_proklisi(proklisi)
+	process_proklisi(proklisi, $kcol)
 }
 
-function process_output_columns(			n, a, i) {
+function parse_output_columns(			n, a, i) {
 	if (!cols)
 	cols = "kodikos,imerominia,ipalilos,onoma,paravasi,topos," \
 		"oxima,marka,xroma,tipos,afm,onomasia,dief,tk,perioxi," \
@@ -93,23 +92,17 @@ function syntax_error(		kodikos) {
 	return 0
 }
 
-function process_proklisi(proklisi, kodikos) {
+function process_proklisi(proklisi, kodikos,		i, s) {
 	delete proklisi
 	proklisi["kodikos"] = kodikos + 0
 
 	if(!dimas_proklisi_fetch(proklisi)) {
 		print kodikos ": δεν εντοπίστηκε πρό-κληση"
 		notfound++
-		return 0
+		return
 	}
 
 	dimas_proklidata_fetch(proklisi)
-	return 1
-}
-
-function print_proklisi(proklisi,		i, s) {
-	if (ncols <= 0)
-	return
 
 	proklisi["onoma"] = dimas_astinomikos[proklisi["ipalilos"]]["onomateponimo"]
 	proklisi["filo"] = dimas_astinomikos[proklisi["ipalilos"]]["filo"]
@@ -166,38 +159,49 @@ function onomasia(data,			s) {
 	return s
 }
 
-function apo_eos(		apoeos, query, cont, row, proklisi) {
-	if (apo)
-	apoeos = 1
-
-	if (eos)
-	apoeos = 1
-
-	if (!apoeos)
-	return 0
-
-	query = "SELECT `kodikos` FROM `dimas`.`proklisi` "
-	cont = " WHERE "
+function ikothen_epilogi(		query, cont, n, a, i, row, proklisi) {
+	query = ""
+	cont = " WHERE"
 
 	if (apo) {
-		query = query cont "(`imerominia` >= " spawk_escape(apo " 00:00:00") ")"
-		cont = " AND "
+		if (apo !~ / /)
+		apo = apo " 00:00:00"
+
+		query = query cont " (`imerominia` >= " spawk_escape(apo) ")"
+		cont = " AND"
 	}
 
 	if (eos) {
-		query = query cont "(`imerominia` <= " spawk_escape(eos " 23:59:59") ")"
-		cont = " AND "
+		if (eos !~ / /)
+		eos = eos " 23:59:59"
+
+		query = query cont " (`imerominia` <= " spawk_escape(eos) ")"
+		cont = " AND"
 	}
 
-	query = query " ORDER BY `kodikos`"
+
+	if (imerominia) {
+		n = split(imerominia, a, "[, ]")
+
+		for (i = 1; i < n; i++) {
+			query = query cont " (`imerominia` BETWEEN " \
+				spawk_escape(a[i] " 00:00:00") " AND " \
+				spawk_escape(a[i] " 23:59:59") ")"
+			cont = " OR"
+		}
+	}
+
+	if (!query)
+	return 0
+
+	query = "SELECT `kodikos` FROM `dimas`.`proklisi`" \
+		query " ORDER BY `kodikos` " order
 
 	if (spawk_submit(query, "NUM") != 3)
-	exit(3)
+	pd_fatal("SPAWK: submit query failed")
 
-	while (spawk_fetchrow(row)) {
-		if (process_proklisi(proklisi, row[1]))
-		print_proklisi(proklisi)
-	}
+	while (spawk_fetchrow(row))
+	process_proklisi(proklisi, row[1])
 
 	return(1)
 }

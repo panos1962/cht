@@ -47,36 +47,48 @@ BEGIN {
 	spawk_sesami["dbpassword"] = dimas_dbconf["dbpass"]
 	spawk_sesami["dbcharset"] = "utf8"
 
-	dimas_proklicol["kodikos"] = "proklisi"
-	dimas_proklicol["imerominia"] = "proklisi"
-	dimas_proklicol["ipalilos"] = "proklisi"
-	dimas_proklicol["onoma"] = "proklisi"
-	dimas_proklicol["filo"] = "proklisi"
+	# Βασικά στοιχεία πρό-κλησης
 
-	dimas_proklicol["paravasi"] = "paravasi"
-	dimas_proklicol["diataxi"] = "paravasi"
-	dimas_proklicol["lektiko"] = "paravasi"
-	dimas_proklicol["topos"] = "paravasi"
-	dimas_proklicol["geox"] = "paravasi"
-	dimas_proklicol["geoy"] = "paravasi"
+	dimas_proklicol["kodikos"]
+	dimas_proklicol["imerominia"]
+	dimas_proklicol["ipalilos"]
+	dimas_proklicol["onoma"]
+	dimas_proklicol["filo"]
 
-	dimas_proklicol["oxima"] = "oxima"
-	dimas_proklicol["marka"] = "oxima"
-	dimas_proklicol["xroma"] = "oxima"
-	dimas_proklicol["tipos"] = "oxima"
+	# Στοιχεία οχήματος
 
-	dimas_proklicol["afm"] = "ipoxreos"
-	dimas_proklicol["onomasia"] = "ipoxreos"
-	dimas_proklicol["dief"] = "ipoxreos"
-	dimas_proklicol["tk"] = "ipoxreos"
-	dimas_proklicol["perioxi"] = "ipoxreos"
+	dimas_proklicol["oxima"]
+	dimas_proklicol["marka"]
+	dimas_proklicol["xroma"]
+	dimas_proklicol["tipos"]
 
-	dimas_proklicol["pinakides"] = "kirosi"
-	dimas_proklicol["adia"] = "kirosi"
-	dimas_proklicol["diploma"] = "kirosi"
-	dimas_proklicol["prostimo"] = "kirosi"
+	# Στοιχεία υπόχρεου
 
-	dimas_proklicol["info"] = "misc"
+	dimas_proklicol["afm"]
+	dimas_proklicol["onomasia"]
+	dimas_proklicol["dief"]
+	dimas_proklicol["tk"]
+	dimas_proklicol["perioxi"]
+
+	# Στοιχεία παράβασης
+
+	dimas_proklicol["paravasi"]
+	dimas_proklicol["diataxi"]
+	dimas_proklicol["lektiko"]
+	dimas_proklicol["topos"]
+	dimas_proklicol["geox"]
+	dimas_proklicol["geoy"]
+
+	# Κυρώσεις και πρόστιμα
+
+	dimas_proklicol["pinakides"]
+	dimas_proklicol["adia"]
+	dimas_proklicol["diploma"]
+	dimas_proklicol["prostimo"]
+
+	# Διάφορα άλλα στοιχεία
+
+	dimas_proklicol["info"]
 }
 
 function dimas_dbconf_fetch(		s, a, f) {

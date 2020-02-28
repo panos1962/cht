@@ -43,11 +43,12 @@ pd_seterrcode \
 [ -z "${CHT_BASEDIR}" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
-eval set -- "$(pd_parseopts "?s:k:o:x,g" \
+eval set -- "$(pd_parseopts "?s:k:o:x,g,r" \
 "help,colsep:,sep:,separator:,kcol:,\
 output:,cols:,columns:,ofs:,\
 excel,geo,ante:,\
-from:,to:,today,date:" \
+from:,to:,today,date:,\
+reverse" \
 "$@")"
 
 [ $1 -ne 0 ] &&
@@ -63,6 +64,8 @@ ofs=
 ante=
 apo=
 eos=
+imerominia=
+order="ASC"
 
 error=
 
@@ -101,17 +104,29 @@ do
 		ante="$2"
 		;;
 	--from)
+		imerominia=
 		apo="$2"
 		shift 2
 		;;
+	--to)
+		imerominia=
+		eos="$2"
+		shift 2
+		;;
 	--today)
+		imerominia=
 		apo="$(date '+%Y-%m-%d')"
 		eos="${apo}"
 		shift 1
 		;;
-	--to)
-		eos="$2"
+	--date)
+		apo=
+		eos=
+		imerominia="${imerominia}${2},"
 		shift 2
+		;;
+	-r|--reverse)
+		order="DESC"
 		;;
 	--)
 		shift
@@ -126,11 +141,13 @@ pd_usage
 eval awk \
 -i "${PANDORA_BASEDIR}/lib/pandora.awk" \
 -i "${CHT_BASEDIR}/lib/dimas.awk" \
--v colsep="${colsep}" \
+-v colsep="\"${colsep}\"" \
 -v kcol="${kcol}" \
 -v cols="${cols}" \
--v ofs="${ofs}" \
--v ante="${ante}" \
--v apo="${apo}" \
--v eos="${eos}" \
+-v ofs="\"${ofs}\"" \
+-v ante="\"${ante}\"" \
+-v apo="\"${apo}\"" \
+-v eos="\"${eos}\"" \
+-v imerominia="\"${imerominia}\"" \
+-v order="${order}" \
 -f "${CHT_BASEDIR}/lib/proklisi/expand.awk" $* ${post}

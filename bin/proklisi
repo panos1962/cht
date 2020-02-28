@@ -74,7 +74,7 @@ CHT_BASEDIR="/var/opt/cht"
 #
 # XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
 
-eval set -- "$(pd_parseopts "?hs:k:o:x,g,r" \
+eval set -- "$(pd_parseopts "?hs:k:o:xgrf:t:" \
 "help,colsep:,sep:,separator:,kcol:,\
 output:,cols:,columns:,ofs:,reverse,\
 excel,geo,ante:,\
@@ -140,12 +140,12 @@ do
 	--ante)
 		ante="$2"
 		;;
-	--from)
+	-f|--from)
 		imerominia=
 		apo="$2"
 		shift 2
 		;;
-	--to)
+	-t|--to)
 		imerominia=
 		eos="$2"
 		shift 2

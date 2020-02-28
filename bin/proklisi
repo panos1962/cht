@@ -56,7 +56,7 @@ eval set -- "$(pd_parseopts "?s:k:o:x,g,r" \
 output:,cols:,columns:,ofs:,\
 excel,geo,ante:,\
 from:,to:,today,date:,\
-reverse" \
+reverse,list,listList,listFull" \
 "$@")"
 
 [ $1 -ne 0 ] &&
@@ -74,6 +74,7 @@ apo=
 eos=
 imerominia=
 order="ASC"
+listcol=
 
 error=
 
@@ -135,6 +136,19 @@ do
 		;;
 	-r|--reverse)
 		order="DESC"
+		shift 1
+		;;
+	--list)
+		listcol="rep"
+		shift 1
+		;;
+	--listFull)
+		listcol="full"
+		shift 1
+		;;
+	--listList)
+		listcol="list"
+		shift 1
 		;;
 	--)
 		shift
@@ -158,4 +172,5 @@ eval awk \
 -v eos="\"${eos}\"" \
 -v imerominia="\"${imerominia}\"" \
 -v order="${order}" \
+-v listcol="${listcol}" \
 -f "${CHT_BASEDIR}/lib/proklisi/expand.awk" $* ${post}

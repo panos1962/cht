@@ -33,6 +33,9 @@
 ###############################################################################@
 
 BEGIN {
+	if (listcol)
+	exit(list_columns())
+
 	if (colsep != "")
 	FS = colsep
 
@@ -204,4 +207,137 @@ function ikothen_epilogi(		query, cont, n, a, i, row, proklisi) {
 	process_proklisi(proklisi, row[1])
 
 	return(1)
+}
+
+function list_columns(		nf, list, desc, sect, i, prev, l) {
+	list[nf++] = "kodikos"
+	list[nf++] = "imerominia"
+	list[nf++] = "ipalilos"
+	list[nf++] = "onoma"
+	list[nf++] = "filo"
+
+	list[nf++] = "oxima"
+	list[nf++] = "marka"
+	list[nf++] = "xroma"
+	list[nf++] = "tipos"
+
+	list[nf++] = "afm"
+	list[nf++] = "onomasia"
+	list[nf++] = "dief"
+	list[nf++] = "tk"
+	list[nf++] = "perioxi"
+
+	list[nf++] = "paravasi"
+	list[nf++] = "diataxi"
+	list[nf++] = "lektiko"
+	list[nf++] = "topos"
+	list[nf++] = "geox"
+	list[nf++] = "geoy"
+
+	list[nf++] = "pinakides"
+	list[nf++] = "adia"
+	list[nf++] = "diploma"
+	list[nf++] = "prostimo"
+
+	list[nf++] = "info"
+
+	#######################################################################@
+
+	desc["kodikos"] = "Αριθμός βεβαίωσης"
+	desc["imerominia"] = "Ημερομηνία βεβαίωσης"
+	desc["ipalilos"] = "Κωδικός υπαλλήλου"
+	desc["onoma"] = "Ονοματεπώνυμο υπαλλήλου"
+	desc["filo"] = "Φύλο υπαλληλου"
+
+	desc["oxima"] = "Αριθμός κυκλοφορίας"
+	desc["marka"] = "Μάρκα οχήματος"
+	desc["xroma"] = "Χρώμα οχήματος"
+	desc["tipos"] = "Τύπος οχήματος"
+
+	desc["afm"] = "ΑΦΜ υποχρέου"
+	desc["onomasia"] = "Ονοματεπώνυμο / Επωνυμία"
+	desc["dief"] = "Διεύθυνση υποχρέου"
+	desc["tk"] = "Ταχ. κωδικός υποχρέου"
+	desc["perioxi"] = "Πόλη / Περιοχή"
+
+	desc["paravasi"] = "Κωδικός παράβασης"
+	desc["diataxi"] = "Διάταξη παράβασης"
+	desc["lektiko"] = "Λεκτικό παράβασης"
+	desc["topos"] = "Τοποθεσία παράβασης"
+	desc["geox"] = "Γεωγραφικό πλάτος (latitude)"
+	desc["geoy"] = "Γεωγραφικό μήκος (longitude)"
+
+	desc["pinakides"] = "Αφαίρεση πινακίδων (ημέρες)"
+	desc["adia"] = "Αφαίρεση αδείας (ημέρες)"
+	desc["diploma"] = "Αφαίρεση διπλώματος (ημέρες)"
+	desc["prostimo"] = "Πρόστιμο (σε λεπτά του ευρώ)"
+
+	desc["info"] = "Παρατηρήσεις"
+
+	#######################################################################@
+
+	sect["kodikos"] = "Στοιχεία βεβαίωσης"
+	sect["imerominia"] = "Στοιχεία βεβαίωσης"
+	sect["ipalilos"] = "Στοιχεία βεβαίωσης"
+	sect["onoma"] = "Στοιχεία βεβαίωσης"
+	sect["filo"] = "Στοιχεία βεβαίωσης"
+
+	sect["oxima"] = "Στοιχεία οχήματος"
+	sect["marka"] = "Στοιχεία οχήματος"
+	sect["xroma"] = "Στοιχεία οχήματος"
+	sect["tipos"] = "Στοιχεία οχήματος"
+
+	sect["afm"] = "Στοιχεία υπόχρεου"
+	sect["onomasia"] = "Στοιχεία υπόχρεου"
+	sect["dief"] = "Στοιχεία υπόχρεου"
+	sect["tk"] = "Στοιχεία υπόχρεου"
+	sect["perioxi"] = "Στοιχεία υπόχρεου"
+
+	sect["paravasi"] = "Στοιχεία πράβασης"
+	sect["diataxi"] = "Στοιχεία πράβασης"
+	sect["lektiko"] = "Στοιχεία πράβασης"
+	sect["topos"] = "Στοιχεία πράβασης"
+	sect["geox"] = "Στοιχεία πράβασης"
+	sect["geoy"] = "Στοιχεία πράβασης"
+
+	sect["pinakides"] = "Κυρώσεις & πρόστιμα"
+	sect["adia"] = "Κυρώσεις & πρόστιμα"
+	sect["diploma"] = "Κυρώσεις & πρόστιμα"
+	sect["prostimo"] = "Κυρώσεις & πρόστιμα"
+
+	sect["info"] = "Άλλα στοιχεία"
+
+	if (listcol == "rep") {
+		for (i = 0; i < nf; i++)
+		printf("%-10s %-20s %s\n", list[i], sect[list[i]], desc[list[i]])
+
+		return
+	}
+
+	if (listcol == "list") {
+		printf list[0]
+
+		for (i = 1; i < nf; i++)
+		printf "," list[i]
+
+		print ""
+		return
+	}
+
+	for (i = 0; i < nf; i++) {
+		if (sect[list[i]] != prev) {
+			if (prev)
+			print ""
+
+			prev = sect[list[i]]
+			print prev
+
+			for (l = length(prev); l > 0; l--)
+			printf "*"
+
+			print ""
+		}
+
+		printf("%-10s %s\n", list[i], desc[list[i]])
+	}
 }

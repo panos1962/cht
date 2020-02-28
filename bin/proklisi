@@ -60,7 +60,7 @@ pd_tmpmax=1
 
 . "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
 
-pd_usagemsg="[--help] [--"
+pd_usagemsg="[--help]"
 
 pd_seterrcode \
 	"usage"
@@ -130,7 +130,12 @@ do
 		shift 1
 		;;
 	-x|--excel)
-		post="|ssconvert --export-type Gnumeric_Excel:xlsx fd://0 fd://1 2>/dev/null"
+		if [ -t 1 ]; then
+			pd_errmsg "output is not a file" &&
+			error="yes"
+		else
+			post="|ssconvert --export-type Gnumeric_Excel:xlsx fd://0 fd://1 2>/dev/null"
+		fi
 		;;
 	-g|--geo)	# for https://maps.co
 		cols="geoy,geox,kodikos,#FF7F50,"

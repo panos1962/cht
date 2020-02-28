@@ -75,8 +75,8 @@ CHT_BASEDIR="/var/opt/cht"
 # XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
 
 eval set -- "$(pd_parseopts "?hs:k:o:xgrf:t:" \
-"help,colsep:,sep:,separator:,kcol:,\
-output:,cols:,columns:,ofs:,reverse,\
+"help,colsep:,sep:,separator:,key:,keyColumn:,\
+output:,columns:,ofs:,reverse,\
 excel,geo,ante:,\
 from:,to:,today,date:,\
 list,listList,listFull" \
@@ -113,11 +113,11 @@ do
 		colsep="$2"
 		shift 2
 		;;
-	-k|--kcol)
+	-k|--key|--keyColumn)
 		pd_isinteger "$2" 1 || error="yes"
 		shift 2
 		;;
-	-o|--output|--cols|--columns)
+	-o|--output|--columns)
 		cols="${cols}${2},"
 		shift 2
 		;;

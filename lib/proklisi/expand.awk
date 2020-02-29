@@ -207,122 +207,123 @@ function ikothen_epilogi(		query, cont, n, a, i, row, proklisi) {
 	return(1)
 }
 
-function list_columns(		nf, list, desc, sect, i, prev, l) {
-	list[nf++] = "kodikos"
-	list[nf++] = "imerominia"
-	list[nf++] = "ipalilos"
-	list[nf++] = "onoma"
-	list[nf++] = "filo"
+function list_columns(		list, desc, sect, count) {
+	delete list
+	delete desc
+	delete sect
+	count = 0
 
-	list[nf++] = "oxima"
-	list[nf++] = "marka"
-	list[nf++] = "xroma"
-	list[nf++] = "tipos"
-
-	list[nf++] = "afm"
-	list[nf++] = "onomasia"
-	list[nf++] = "dief"
-	list[nf++] = "tk"
-	list[nf++] = "perioxi"
-
-	list[nf++] = "paravasi"
-	list[nf++] = "diataxi"
-	list[nf++] = "lektiko"
-	list[nf++] = "topos"
-	list[nf++] = "geox"
-	list[nf++] = "geoy"
-
-	list[nf++] = "pinakides"
-	list[nf++] = "adia"
-	list[nf++] = "diploma"
-	list[nf++] = "prostimo"
-
-	list[nf++] = "info"
-
-	#######################################################################@
-
+	list[count++] = "kodikos"
 	desc["kodikos"] = "Αριθμός βεβαίωσης"
-	desc["imerominia"] = "Ημερομηνία βεβαίωσης"
-	desc["ipalilos"] = "Κωδικός υπαλλήλου"
-	desc["onoma"] = "Ονοματεπώνυμο υπαλλήλου"
-	desc["filo"] = "Φύλο υπαλληλου"
-
-	desc["oxima"] = "Αριθμός κυκλοφορίας"
-	desc["marka"] = "Μάρκα οχήματος"
-	desc["xroma"] = "Χρώμα οχήματος"
-	desc["tipos"] = "Τύπος οχήματος"
-
-	desc["afm"] = "ΑΦΜ υποχρέου"
-	desc["onomasia"] = "Ονοματεπώνυμο / Επωνυμία"
-	desc["dief"] = "Διεύθυνση υποχρέου"
-	desc["tk"] = "Ταχ. κωδικός υποχρέου"
-	desc["perioxi"] = "Πόλη / Περιοχή"
-
-	desc["paravasi"] = "Κωδικός παράβασης"
-	desc["diataxi"] = "Διάταξη παράβασης"
-	desc["lektiko"] = "Λεκτικό παράβασης"
-	desc["topos"] = "Τοποθεσία παράβασης"
-	desc["geox"] = "Γεωγραφικό πλάτος (latitude)"
-	desc["geoy"] = "Γεωγραφικό μήκος (longitude)"
-
-	desc["pinakides"] = "Αφαίρεση πινακίδων (ημέρες)"
-	desc["adia"] = "Αφαίρεση αδείας (ημέρες)"
-	desc["diploma"] = "Αφαίρεση διπλώματος (ημέρες)"
-	desc["prostimo"] = "Πρόστιμο (σε λεπτά του ευρώ)"
-
-	desc["info"] = "Παρατηρήσεις"
-
-	#######################################################################@
-
 	sect["kodikos"] = "Στοιχεία βεβαίωσης"
+
+	list[count++] = "imerominia"
+	desc["imerominia"] = "Ημερομηνία βεβαίωσης"
 	sect["imerominia"] = "Στοιχεία βεβαίωσης"
+
+	list[count++] = "ipalilos"
+	desc["ipalilos"] = "Κωδικός υπαλλήλου"
 	sect["ipalilos"] = "Στοιχεία βεβαίωσης"
+
+	list[count++] = "onoma"
+	desc["onoma"] = "Ονοματεπώνυμο υπαλλήλου"
 	sect["onoma"] = "Στοιχεία βεβαίωσης"
+
+	list[count++] = "filo"
+	desc["filo"] = "Φύλο υπαλληλου"
 	sect["filo"] = "Στοιχεία βεβαίωσης"
 
+	list[count++] = "oxima"
+	desc["oxima"] = "Αριθμός κυκλοφορίας"
 	sect["oxima"] = "Στοιχεία οχήματος"
+
+	list[count++] = "marka"
+	desc["marka"] = "Μάρκα οχήματος"
 	sect["marka"] = "Στοιχεία οχήματος"
+
+	list[count++] = "xroma"
+	desc["xroma"] = "Χρώμα οχήματος"
 	sect["xroma"] = "Στοιχεία οχήματος"
+
+	list[count++] = "tipos"
+	desc["tipos"] = "Τύπος οχήματος"
 	sect["tipos"] = "Στοιχεία οχήματος"
 
+	list[count++] = "afm"
+	desc["afm"] = "ΑΦΜ υποχρέου"
 	sect["afm"] = "Στοιχεία υπόχρεου"
+
+	list[count++] = "onomasia"
+	desc["onomasia"] = "Ονοματεπώνυμο / Επωνυμία"
 	sect["onomasia"] = "Στοιχεία υπόχρεου"
+
+	list[count++] = "dief"
+	desc["dief"] = "Διεύθυνση υποχρέου"
 	sect["dief"] = "Στοιχεία υπόχρεου"
+
+	list[count++] = "tk"
+	desc["tk"] = "Ταχ. κωδικός υποχρέου"
 	sect["tk"] = "Στοιχεία υπόχρεου"
+
+	list[count++] = "perioxi"
+	desc["perioxi"] = "Πόλη / Περιοχή"
 	sect["perioxi"] = "Στοιχεία υπόχρεου"
 
+	list[count++] = "paravasi"
+	desc["paravasi"] = "Κωδικός παράβασης"
 	sect["paravasi"] = "Στοιχεία πράβασης"
+
+	list[count++] = "diataxi"
+	desc["diataxi"] = "Διάταξη παράβασης"
 	sect["diataxi"] = "Στοιχεία πράβασης"
+
+	list[count++] = "lektiko"
+	desc["lektiko"] = "Λεκτικό παράβασης"
 	sect["lektiko"] = "Στοιχεία πράβασης"
+
+	list[count++] = "topos"
+	desc["topos"] = "Τοποθεσία παράβασης"
 	sect["topos"] = "Στοιχεία πράβασης"
+
+	list[count++] = "geox"
+	desc["geox"] = "Γεωγραφικό πλάτος (latitude)"
 	sect["geox"] = "Στοιχεία πράβασης"
+
+	list[count++] = "geoy"
+	desc["geoy"] = "Γεωγραφικό μήκος (longitude)"
 	sect["geoy"] = "Στοιχεία πράβασης"
 
+	list[count++] = "pinakides"
+	desc["pinakides"] = "Αφαίρεση πινακίδων (ημέρες)"
 	sect["pinakides"] = "Κυρώσεις & πρόστιμα"
+
+	list[count++] = "adia"
+	desc["adia"] = "Αφαίρεση αδείας (ημέρες)"
 	sect["adia"] = "Κυρώσεις & πρόστιμα"
+
+	list[count++] = "diploma"
+	desc["diploma"] = "Αφαίρεση διπλώματος (ημέρες)"
 	sect["diploma"] = "Κυρώσεις & πρόστιμα"
+
+	list[count++] = "prostimo"
+	desc["prostimo"] = "Πρόστιμο (σε λεπτά του ευρώ)"
 	sect["prostimo"] = "Κυρώσεις & πρόστιμα"
 
+	list[count++] = "info"
+	desc["info"] = "Παρατηρήσεις"
 	sect["info"] = "Άλλα στοιχεία"
 
-	if (listcol == "rep") {
-		for (i = 0; i < nf; i++)
-		printf("%-10s %-20s %s\n", list[i], sect[list[i]], desc[list[i]])
+	if (listcol == "list")
+	return list_list(list, count)
 
-		return
-	}
+	if (listcol == "full")
+	return list_full(list, sect, desc, count)
 
-	if (listcol == "list") {
-		printf list[0]
+	list_light(list, sect, desc, count)
+}
 
-		for (i = 1; i < nf; i++)
-		printf "," list[i]
-
-		print ""
-		return
-	}
-
-	for (i = 0; i < nf; i++) {
+function list_full(list, sect, desc, count,		i, prev, l) {
+	for (i = 0; i < count; i++) {
 		if (sect[list[i]] != prev) {
 			if (prev)
 			print ""
@@ -338,4 +339,21 @@ function list_columns(		nf, list, desc, sect, i, prev, l) {
 
 		printf("%-10s %s\n", list[i], desc[list[i]])
 	}
+}
+
+function list_light(list, sect, desc, count,		i) {
+	for (i = 0; i < count; i++)
+	printf("%-10s %-20s %s\n", list[i], sect[list[i]], desc[list[i]])
+}
+
+function list_list(list, count,		i) {
+	if (count < 1)
+	return
+
+	printf list[0]
+
+	for (i = 1; i < count; i++)
+	printf "," list[i]
+
+	print ""
 }

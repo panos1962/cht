@@ -47,6 +47,7 @@
 ## @DESCRIPTION END
 ##
 ## @HISTORY BEGIN
+## Updated: 2020-02-29
 ## Updated: 2020-02-28
 ## Updated: 2020-02-27
 ## Created: 2020-02-26
@@ -56,14 +57,10 @@
 ##
 ###############################################################################@
 
-pd_tmpmax=1
-
+pd_tmpmax=0
 . "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
-
+pd_errlevel=
 pd_usagemsg="[--help]"
-
-pd_seterrcode \
-	"usage"
 
 [ -z "${CHT_BASEDIR}" ] &&
 CHT_BASEDIR="/var/opt/cht"
@@ -74,7 +71,7 @@ CHT_BASEDIR="/var/opt/cht"
 #
 # XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
 
-eval set -- "$(pd_parseopts "?hs:k:o:xgrf:t:" \
+eval set -- "$(pd_parseopts "?hs:k:o:xgrf:t:d:" \
 "help,colsep:,sep:,separator:,key:,keyColumn:,\
 output:,columns:,ofs:,reverse,\
 excel,geo,ante:,\
@@ -147,12 +144,16 @@ do
 		;;
 	-f|--from)
 		imerominia=
-		apo="$2"
+		! apo="$(pd_isdate "$2")" &&
+		pd_errmsg "${2}: invalid date" &&
+		error="yes"
 		shift 2
 		;;
 	-t|--to)
 		imerominia=
-		eos="$2"
+		! eos="$(pd_isdate "$2")" &&
+		pd_errmsg "${2}: invalid date" &&
+		error="yes"
 		shift 2
 		;;
 	--today)
@@ -161,14 +162,16 @@ do
 		eos="${apo}"
 		shift 1
 		;;
-	--date)
+	-d|--date)
 		apo=
 		eos=
-		imerominia="${imerominia}${2},"
+		! imerominia="${imerominia}$(pd_isdate "$2")," &&
+		pd_errmsg "${2}: invalid date" &&
+		error="yes"
 		shift 2
 		;;
 	--list)
-		listcol="rep"
+		listcol="light"
 		shift 1
 		;;
 	--listFull)

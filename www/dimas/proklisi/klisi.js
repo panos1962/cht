@@ -670,7 +670,7 @@ return x;
 	}
 
 	catch (e) {
-		return this.ipovoliError('Ακαθόριστα στοιχεία υπόχρεου');
+		pd.fyiError('Ακαθόριστα στοιχεία υπόχρεου');
 	}
 
 	if (!this.topos)

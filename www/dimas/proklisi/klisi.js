@@ -37,6 +37,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-03-03
 // Updated: 2020-02-17
 // Updated: 2020-02-14
 // Updated: 2020-02-10
@@ -423,12 +424,27 @@ Proklisi.klisi.prototype.klisiOximaDOM = function(klisiDOM) {
 	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ')).
 	append(Proklisi.klisi.enotitaDOM().
-	append(Proklisi.klisi.klisiPedioDOM('Αρ. Κυκλοφορίας', oxima.pinakidaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Μάρκα', oxima.markaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Χρώμα', oxima.xromaGet())).
-	append(Proklisi.klisi.klisiPedioDOM('Τύπος', oxima.tiposGet())));
+	append(Proklisi.klisi.klisiPedioDOM('Αρ. Κυκλοφορίας', oxima.pinakidaGet())));
 
-	let x = oxima.katastasiGet();
+	let x = oxima.markaGet();
+
+	if (x)
+	klisiDOM.
+	append(Proklisi.klisi.klisiPedioDOM('Μάρκα', x));
+
+	x = oxima.xromaGet();
+
+	if (x)
+	klisiDOM.
+	append(Proklisi.klisi.klisiPedioDOM('Χρώμα', x));
+
+	x = oxima.tiposGet();
+
+	if (x)
+	klisiDOM.
+	append(Proklisi.klisi.klisiPedioDOM('Τύπος', x));
+
+	x = oxima.katastasiGet();
 
 	if (x !== 'ΚΙΝΗΣΗ')
 	klisiDOM.
@@ -468,9 +484,12 @@ Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
 	dataDOM.
 	append(Proklisi.klisi.klisiPedioDOM('Ποσοστό', katoxos.pososto + '%'));
 
+	let onomasia = katoxos.onomasiaGet();
+
+	if (onomasia)
 	dataDOM.
 	append(Proklisi.klisi.klisiPedioDOM((katoxos.isFisikoProsopo() ?
-		'Ονοματεπώνυμο' : 'Επωνυμία'), katoxos.onomasiaGet()));
+		'Ονοματεπώνυμο' : 'Επωνυμία'), onomasia));
 
 	if (katoxos.dief)
 	dataDOM.append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', katoxos.dief));
@@ -499,9 +518,14 @@ Proklisi.klisi.prototype.klisiIpoxreosDOM = function(klisiDOM) {
 	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ')).
 	append(Proklisi.klisi.enotitaDOM().
-	append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', ipoxreos.afm)).
+	append(Proklisi.klisi.klisiPedioDOM('ΑΦΜ', ipoxreos.afm)));
+
+	let onomasia = ipoxreos.onomasiaGet();
+
+	if (onomasia)
+	klisiDOM.
 	append(Proklisi.klisi.klisiPedioDOM((ipoxreos.isFisikoProsopo() ?
-		'Ονοματεπώνυμο' : 'Επωνυμία'), ipoxreos.onomasiaGet())));
+		'Ονοματεπώνυμο' : 'Επωνυμία'), ipoxreos.onomasiaGet()));
 
 	if (ipoxreos.dief)
 	klisiDOM.append(Proklisi.klisi.klisiPedioDOM('Διεύθυνση', ipoxreos.dief));

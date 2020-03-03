@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-03-03
 // Updated: 2020-02-20
 // Updated: 2020-02-17
 // Updated: 2020-02-10
@@ -583,6 +584,10 @@ Proklisi.oximaGetData = (paletaDOM) => {
 	if (!pinakida)
 	return Proklisi;
 
+	let oxima = {
+		'pinakida': pinakida,
+	};
+
 	Proklisi.
 	menuTabStatus(oximaDOM, 'busy').
 	menuTabFyi(oximaDOM, pinakida).
@@ -597,24 +602,18 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			'sesami': govHUBConf.sesami,
 		},
 		'success': (rsp) => {
-			let oxima = {
-				'pinakida': pinakida,
-			};
-
 			if (rsp.hasOwnProperty('error')) {
 				Proklisi.fyiError(rsp.error).
 				menuTabStatus(oximaDOM.data('oximaError', rsp.error), 'error').
 				menuTabFyiError(oximaDOM, '<div>&#x2753;</div>' + pinakida);
 
-				oxima = new gh.oxima(oxima).fixChildren();
+				oxima = (new gh.oxima(oxima)).fixChildren();
 			}
 
 			else {
-				oxima = rsp.data;
+				oxima = (new gh.oxima(rsp.data)).fixChildren();
 				Proklisi.menuTabStatus(oximaDOM, 'success').
 				menuTabFyi(oximaDOM, Proklisi.oximaFyi(oxima));
-
-				oxima = new gh.oxima(oxima).fixChildren();
 
 				let fyi = '';
 
@@ -635,11 +634,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 			menuTabStatus(oximaDOM.data('oximaError',
 			'Αποτυχημένη ανάκτηση στοιχείων οχήματος'), 'error').
 			menuTabFyiError(oximaDOM, pinakida);
-
-			oximaDOM.data('oximaData', new gh.oxima({
-				'oxima': pinakida,
-			}).fixChildren());
-
+			oximaDOM.data('oximaData', (new gh.oxima(oxima)).fixChildren());
 		},
 	});
 
@@ -707,6 +702,10 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 	if (!afm)
 	return Proklisi;
 
+	let prosopo = {
+		'afm': afm,
+	};
+
 	Proklisi.
 	menuTabStatus(ipoxreosDOM, 'busy').
 	menuTabFyi(ipoxreosDOM, afm);
@@ -720,10 +719,6 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 			'sesami': govHUBConf.sesami,
 		},
 		'success': (rsp) => {
-			let prosopo = {
-				'afm': afm,
-			};
-
 			if (rsp.hasOwnProperty('error')) {
 				Proklisi.fyiError(rsp.error).
 				menuTabStatus(ipoxreosDOM.data('ipoxreosError', rsp.error), 'error').
@@ -736,7 +731,7 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 				menuTabFyi(ipoxreosDOM, Proklisi.ipoxreosFyi(prosopo));
 			}
 
-			prosopo = new gh.prosopo(data);
+			prosopo = new gh.prosopo(prosopo);
 			ipoxreosDOM.data('ipoxreosData', prosopo);
 		},
 		'error': (err) => {
@@ -745,9 +740,7 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 			menuTabStatus(ipoxreosDOM.data('ipoxreosError',
 			'Αποτυχημένη ανάκτηση στοιχείων υπόχρεου'), 'error').
 			menuTabFyiError(ipoxreosDOM, afm);
-			ipoxreosDOM.data('ipoxreosData', new gh.prosopo({
-				'afm': afm,
-			}));
+			ipoxreosDOM.data('ipoxreosData', new gh.prosopo(prosopo));
 		},
 	});
 

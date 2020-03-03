@@ -445,7 +445,7 @@ Proklisi.klisi.prototype.klisiKatoxosDOM = function(klisiDOM) {
 	let katoxos = this.oxima.kiriosKatoxosGet();
 
 	if (!katoxos)
-	return this.errorPush('Κάτοχος');
+	return this;
 
 	katoxos = this.oxima.katoxos[katoxos - 1];
 
@@ -653,13 +653,6 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 	if (!this.imerominia)
 	return this.ipovoliError('Ακαθόριστη ημερομηνία βεβαίωσης');
 
-/*
-x.kodikos = this.kodikos;
-x.imerominia = pd.dateTime(this.imerominia);
-x.proklidata = {};
-return x;
-*/
-
 	if (!this.paravidos)
 	return this.ipovoliError('Ακαθόριστο είδος παράβασης');
 
@@ -706,19 +699,21 @@ return x;
 
 	///////////////////////////////////////////////////////////////////////@
 
-	t = this.ipoxreos;
+	if (this.ipoxreos) {
+		t = this.ipoxreos;
 
-	x.proklidata['ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ'] = {
-		'ΑΦΜ': t.afm,
-		'ΕΠΩΝΥΜΙΑ': t.eponimia,
-		'ΝΟΜΙΚΗ ΜΟΡΦΗ': t.morfi,
-		'ΕΠΩΝΥΜΟ': t.eponimo,
-		'ΟΝΟΜΑ': t.onoma,
-		'ΠΑΤΡΩΝΥΜΟ': t.patronimo,
-		'ΔΙΕΥΘΥΝΣΗ': t.dief,
-		'ΤΚ': t.tk,
-		'ΠΕΡΙΟΧΗ/ΠΟΛΗ': t.perioxi,
-	};
+		x.proklidata['ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ'] = {
+			'ΑΦΜ': t.afm,
+			'ΕΠΩΝΥΜΙΑ': t.eponimia,
+			'ΝΟΜΙΚΗ ΜΟΡΦΗ': t.morfi,
+			'ΕΠΩΝΥΜΟ': t.eponimo,
+			'ΟΝΟΜΑ': t.onoma,
+			'ΠΑΤΡΩΝΥΜΟ': t.patronimo,
+			'ΔΙΕΥΘΥΝΣΗ': t.dief,
+			'ΤΚ': t.tk,
+			'ΠΕΡΙΟΧΗ/ΠΟΛΗ': t.perioxi,
+		};
+	}
 
 	///////////////////////////////////////////////////////////////////////@
 

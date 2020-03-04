@@ -71,10 +71,10 @@ CHT_BASEDIR="/var/opt/cht"
 #
 # XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
 
-eval set -- "$(pd_parseopts "?hs:k:o:xgrf:t:d:" \
+eval set -- "$(pd_parseopts "?hs:k:o:xgc:rf:t:d:" \
 "help,colsep:,sep:,separator:,key:,keyColumn:,\
 output:,columns:,ofs:,reverse,\
-excel,geo,ante:,\
+excel,geo,color:,ante:,\
 from:,to:,today,date:,\
 list,listList,listFull" \
 "$@")"
@@ -89,6 +89,7 @@ kcol=1
 cols=
 post=
 ofs=
+color="#FF7F50"
 ante=
 apo=
 eos=
@@ -135,12 +136,18 @@ do
 		fi
 		;;
 	-g|--geo)	# for https://maps.co
-		cols="geoy,geox,kodikos,#FF7F50,"
+		cols="geoy,geox,kodikos,__COLOR__,"
 		ante="latitude,longitude,name,color"
 		ofs=","
+		shift 1
+		;;
+	-c|--color)	# geo marks coor
+		color="$2"
+		shift 2
 		;;
 	--ante)
 		ante="$2"
+		shift 2
 		;;
 	-f|--from)
 		imerominia=
@@ -197,7 +204,7 @@ eval awk \
 -i "${CHT_BASEDIR}/lib/dimas.awk" \
 -v colsep="\"${colsep}\"" \
 -v kcol="${kcol}" \
--v cols="${cols}" \
+-v cols="${cols/__COLOR__/${color}}" \
 -v ofs="\"${ofs}\"" \
 -v ante="\"${ante}\"" \
 -v apo="\"${apo}\"" \

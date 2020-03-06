@@ -62,6 +62,56 @@ Proklisi.oximaMarkaSetup = () => {
 		'titlos': 'Μάρκα οχήματος',
 	});
 
+	pd.arrayWalk([
+		'HYUNDAI',
+		'NISSAN',
+		'TOYOTA',
+		'HONDA',
+		'MAZDA',
+		'MITSUBISHI',
+		'SUBARU',
+		'SUZUKI',
+		'DAIHATSU',
+		'KIA',
+		'YAMAHA',
+		'LEXUS',
+		'FIAT',
+		'ALFAROMEO',
+		'LANCIA',
+		'VW',
+		'AUDI',
+		'BMW',
+		'MERCEDES',
+		'SMART',
+		'PORSCHE',
+		'MINI',
+		'JAGUAR',
+		'LANDROVER',
+		'MG',
+		'FORD',
+		'CHEVROLET',
+		'CHRYSLER',
+		'DODGE',
+		'JEEP',
+		'CITROEN',
+		'RENAULT',
+		'PEUGEOT',
+		'SEAT',
+		'VOLVO',
+		'SAAB',
+		'SKODA',
+		'DACIA',
+		'KTM',
+	], (x) => {
+		rafiDOM.
+		append($('<div>').
+		addClass('proklisiMarkaContainer').
+		data('marka', x).
+		append($('<img>').
+		addClass('proklisiMarkaImage').
+		attr('src', '../../images/marka/' + x + '.jpg')));
+	});
+
 	rafiDOM.
 	appendTo(Proklisi.oximaPaletaDOM);
 
@@ -73,6 +123,30 @@ Proklisi.oximaXromaSetup = () => {
 		'titlos': 'Χρώμα οχήματος',
 	});
 
+	pd.arrayWalk([
+		{'c':'#000000','n':'ΜΑΥΡΟ'},
+		{'c':'#ffffff','n':'ΑΣΠΡΟ'},
+		{'c':'#808080','n':'ΜΟΛΥΒΙ'},
+		{'c':'#d4d4d4','n':'ΑΣΗΜΙ'},
+		{'c':'#ff0000','n':'ΚΟΚΚΙΝΟ'},
+		{'c':'#0000ff','n':'ΜΠΛΕ'},
+		{'c':'#00ffff','n':'ΓΑΛΑΖΙΟ'},
+		{'c':'#d6aa69','n':'ΜΠΕΖ'},
+		{'c':'#b22222','n':'ΜΠΟΡΝΤΟ'},
+		{'c':'#ffff00','n':'ΚΙΤΡΙΝΟ'},
+		{'c':'#8b4513','n':'ΚΑΦΕ'},
+		{'c':'#008000','n':'ΠΡΑΣΙΝΟ'},
+	], (x) => {
+		rafiDOM.
+		append($('<div>').
+		data('xroma', x.n).
+		attr('title', x.n).
+		addClass('proklisiXromaContainer').
+		append($('<div>').
+		addClass('proklisiXroma').
+		css('background-color', x.c)));
+	});
+
 	rafiDOM.
 	appendTo(Proklisi.oximaPaletaDOM);
 
@@ -81,7 +155,7 @@ Proklisi.oximaXromaSetup = () => {
 
 Proklisi.oximaTiposSetup = () => {
 	let rafiDOM = pd.paletaRafi({
-		'titlos': 'ssssΤύπος οχήματος',
+		'titlos': 'Τύπος οχήματος',
 	});
 
 	rafiDOM.

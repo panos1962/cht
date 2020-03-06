@@ -712,7 +712,17 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 
 	if (this.oxima) {
 		t = this.oxima;
-		let katastasi = (t.isKinisi() ? undefined : t.katastasi);
+
+		// Θα μεταφέρουμε την κατάσταση του οχήματος μόνον εάν
+		// το όχημα δεν είναι καταγεγραμμένο σε κατάσταση κίνησης.
+
+		let katastasi = t.katastasi;
+
+		if (!katastasi)
+		katastasi = 'ΑΚΑΘΟΡΙΣΤΗ';
+
+		else if (t.isKinisi())
+		katastasi = undefined;
 
 		x.proklidata['ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ'] = {
 			'ΑΡ. ΚΥΚΛΟΦΟΡΙΑΣ': t.pinakida,

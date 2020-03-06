@@ -477,8 +477,8 @@ body {
 
 .proklisiTiposCheck {
 	position: absolute;
-	top: -5px;
-	right: -10px;
+	top: -4px;
+	right: -4px;
 	width: 32px;
 	opacity: 0.9;
 }

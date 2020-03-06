@@ -62,7 +62,7 @@ syntax_error() {
 function parse_output_columns(			n, a, i) {
 	if (!cols)
 	cols = "kodikos,imerominia,ipalilos,onoma,paravasi,topos," \
-		"oxima,marka,xroma,tipos,katigoria,katastasi," \
+		"oxima,marka,xroma,katigoria,katastasi," \
 		"afm,onomasia,dief,tk,perioxi," \
 		"pinakides,adia,diploma,prostimo,"
 

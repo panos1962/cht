@@ -33,6 +33,7 @@ pandora::
 document_head([
 	"css" => [
 		"main",
+		"oxima",
 		"klisi",
 		"../../lib/cht",
 	],

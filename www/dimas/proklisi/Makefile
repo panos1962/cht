@@ -20,7 +20,7 @@ $(BUNDLEJS): \
 	$(PANDORA)/lib/pandoraCore.js \
 	$(PANDORA)/lib/pandoraClient.js \
 	$(PANDORA)/www/lib/pandoraPaleta.js \
-	main.js isodos.js kirosi.js klisi.js menu.js \
+	main.js isodos.js oxima.js kirosi.js klisi.js menu.js \
 	../../../lib/dimasClient.js \
 	../../../lib/dimasCore.js
 	browserify $(BROWSERIFY_OPTS) -o $@ main.js

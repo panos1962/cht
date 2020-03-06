@@ -1000,6 +1000,11 @@ Proklisi.neaProklisi = () => {
 		menuTabFyi(tabDOM);
 	});
 
+	Proklisi.
+	oximaMarkaRafiClear().
+	oximaXromaRafiClear().
+	oximaTiposRafiClear();
+
 	Proklisi.enotitaRise(Proklisi.menuKlisiDOM);
 	return Proklisi;
 };

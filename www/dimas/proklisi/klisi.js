@@ -712,6 +712,7 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 
 	if (this.oxima) {
 		t = this.oxima;
+		let katastasi = (t.isKinisi() ? undefined : t.katastasi);
 
 		x.proklidata['ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ'] = {
 			'ΑΡ. ΚΥΚΛΟΦΟΡΙΑΣ': t.pinakida,
@@ -719,6 +720,7 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 			'ΧΡΩΜΑ': t.xroma,
 			'ΤΥΠΟΣ': t.tipos,
 			'ΚΑΤΗΓΟΡΙΑ': this.oximaKatigoria,
+			'ΚΑΤΑΣΤΑΣΗ': katastasi,
 		};
 	}
 

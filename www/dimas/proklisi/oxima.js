@@ -25,8 +25,8 @@
 
 "use strict";
 
-const pd =
-require('../../../mnt/pandora/lib/pandoraClient.js');
+const pd = require('../../../mnt/pandora/lib/pandoraClient.js');
+const gh = require('../../../lib/govHUB/apiCore.js');
 
 module.exports = function(Proklisi) {
 ///////////////////////////////////////////////////////////////////////////////@
@@ -57,8 +57,10 @@ Proklisi.oximaSetup = () => {
 	return Proklisi;
 };
 
+///////////////////////////////////////////////////////////////////////////////@
+
 Proklisi.oximaMarkaSetup = () => {
-	let rafiDOM = pd.paletaRafi({
+	Proklisi.oximaMarkaRafiDOM = pd.paletaRafi({
 		'titlos': 'Μάρκα οχήματος',
 	});
 
@@ -103,7 +105,7 @@ Proklisi.oximaMarkaSetup = () => {
 		'DACIA',
 		'KTM',
 	], (x) => {
-		rafiDOM.
+		Proklisi.oximaMarkaRafiDOM.
 		append($('<div>').
 		addClass('proklisiMarkaContainer').
 		data('marka', x).
@@ -112,32 +114,79 @@ Proklisi.oximaMarkaSetup = () => {
 		attr('src', '../../images/marka/' + x + '.jpg')));
 	});
 
-	rafiDOM.
+	Proklisi.oximaMarkaRafiDOM.
 	appendTo(Proklisi.oximaPaletaDOM);
+
+	pd.bodyDOM.
+	on('click', '.proklisiMarkaContainer', function(e) {
+		e.stopPropagation();
+
+		let marka = $(this).data('marka');
+
+		if (!marka)
+		return;
+
+		let oxima = Proklisi.oximaTabDOM.data('oximaData');
+
+		if (!oxima)
+		return;
+
+		oxima.marka = marka;
+		Proklisi.oximaTabDOM.data('oximaData', oxima);
+
+		Proklisi.
+		menuTabFyi(Proklisi.oximaTabDOM, Proklisi.oximaFyi(oxima)).
+		oximaMarkaRafiClear().
+		oximaMarkaRafiEpilogi($(this));
+	});
 
 	return Proklisi;
 };
 
+Proklisi.oximaMarkaRafiClear = () => {
+	Proklisi.oximaMarkaRafiDOM.
+	children('.proklisiMarkaContainer').
+	removeClass('proklisiMarkaEpilogi').
+	children('.proklisiMarkaCheck').
+	remove();
+
+	return Proklisi;
+};
+
+Proklisi.oximaMarkaRafiEpilogi = (markaDOM) => {
+	markaDOM.
+	addClass('proklisiMarkaEpilogi').
+	append($('<img>').
+	attr('src', '../../images/success.png').
+	addClass('proklisiMarkaCheck'));
+
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
 Proklisi.oximaXromaSetup = () => {
-	let rafiDOM = pd.paletaRafi({
+	Proklisi.oximaXromaRafiDOM = pd.paletaRafi({
 		'titlos': 'Χρώμα οχήματος',
 	});
 
 	pd.arrayWalk([
+		{'c': null,'n':'ΑΚΑΘΟΡΙΣΤΟ'},
 		{'c':'#000000','n':'ΜΑΥΡΟ'},
 		{'c':'#ffffff','n':'ΑΣΠΡΟ'},
 		{'c':'#808080','n':'ΜΟΛΥΒΙ'},
+		{'c':'#00ffff','n':'ΓΑΛΑΖΙΟ'},
 		{'c':'#d4d4d4','n':'ΑΣΗΜΙ'},
 		{'c':'#ff0000','n':'ΚΟΚΚΙΝΟ'},
-		{'c':'#0000ff','n':'ΜΠΛΕ'},
-		{'c':'#00ffff','n':'ΓΑΛΑΖΙΟ'},
 		{'c':'#d6aa69','n':'ΜΠΕΖ'},
-		{'c':'#b22222','n':'ΜΠΟΡΝΤΟ'},
+		{'c':'#0f2861','n':'ΜΠΛΕ'},
+		{'c':'#c3630a','n':'ΧΑΛΚΟΚΟΚΚΙΝΟ'},
+		{'c':'#981d1d','n':'ΜΠΟΡΝΤΟ'},
 		{'c':'#ffff00','n':'ΚΙΤΡΙΝΟ'},
 		{'c':'#8b4513','n':'ΚΑΦΕ'},
 		{'c':'#008000','n':'ΠΡΑΣΙΝΟ'},
 	], (x) => {
-		rafiDOM.
+		Proklisi.oximaXromaRafiDOM.
 		append($('<div>').
 		data('xroma', x.n).
 		attr('title', x.n).
@@ -147,22 +196,150 @@ Proklisi.oximaXromaSetup = () => {
 		css('background-color', x.c)));
 	});
 
-	rafiDOM.
+	Proklisi.oximaXromaRafiDOM.
 	appendTo(Proklisi.oximaPaletaDOM);
+
+	pd.bodyDOM.
+	on('click', '.proklisiXromaContainer', function(e) {
+		e.stopPropagation();
+
+		let xroma = $(this).data('xroma');
+
+		if (!xroma)
+		return;
+
+		let oxima = Proklisi.oximaTabDOM.data('oximaData');
+
+		if (!oxima)
+		return;
+
+		oxima.xroma = xroma;
+		Proklisi.oximaTabDOM.data('oximaData', oxima);
+
+		Proklisi.
+		menuTabFyi(Proklisi.oximaTabDOM, Proklisi.oximaFyi(oxima)).
+		oximaXromaRafiClear().
+		oximaXromaRafiEpilogi($(this));
+	});
 
 	return Proklisi;
 };
 
+Proklisi.oximaXromaRafiClear = () => {
+	Proklisi.oximaXromaRafiDOM.
+	children('.proklisiXromaContainer').
+	removeClass('proklisiXromaEpilogi').
+	children('.proklisiXromaCheck').
+	remove();
+
+	return Proklisi;
+};
+
+Proklisi.oximaXromaRafiEpilogi = (xromaDOM) => {
+	xromaDOM.
+	addClass('proklisiXromaEpilogi').
+	append($('<img>').
+	attr('src', '../../images/success.png').
+	addClass('proklisiXromaCheck'));
+
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
 Proklisi.oximaTiposSetup = () => {
-	let rafiDOM = pd.paletaRafi({
+	Proklisi.oximaTiposRafiDOM = pd.paletaRafi({
 		'titlos': 'Τύπος οχήματος',
 	});
 
-	rafiDOM.
+	pd.arrayWalk([
+		'ΕΠΙΒΑΤΙΚΟ',
+		'ΗΜΙΦΟΡΤΗΓΟ',
+		'ΤΖΙΠ',
+		'ΦΟΡΤΗΓΟ',
+		'ΒΑΝ',
+		'SUV',
+		'ΛΕΩΦΟΡΕΙΟ',
+		'ΦΟΡΤΗΓΟ',
+		'ΔΙΚΥΚΛΟ',
+		'ΤΡΙΚΥΚΛΟ',
+		'ΤΡΕΪΛΕΡ',
+		'ΤΑΞΙ',
+	], (x) => {
+		Proklisi.oximaTiposRafiDOM.
+		append($('<div>').
+		addClass('proklisiTiposContainer').
+		append($('<div>').
+		addClass('proklisiTipos').
+		text(x)));
+	});
+
+	Proklisi.oximaTiposRafiDOM.
 	appendTo(Proklisi.oximaPaletaDOM);
+
+	pd.bodyDOM.
+	on('mouseenter', '.proklisiTiposContainer', function(e) {
+		e.stopPropagation();
+
+		$(this).
+		addClass('proklisiTiposContainerCandi').
+		children('.proklisiTipos').
+		addClass('proklisiTiposCandi');
+	}).
+	on('mouseleave', '.proklisiTiposContainer', function(e) {
+		e.stopPropagation();
+
+		$(this).
+		removeClass('proklisiTiposContainerCandi').
+		children('.proklisiTipos').
+		removeClass('proklisiTiposCandi');
+	}).
+	on('click', '.proklisiTiposContainer', function(e) {
+		e.stopPropagation();
+
+		let tipos = $(this).text();
+
+		if (!tipos)
+		return;
+
+		let oxima = Proklisi.oximaTabDOM.data('oximaData');
+
+		if (!oxima)
+		return;
+
+		oxima.tipos = tipos;
+		Proklisi.oximaTabDOM.data('oximaData', oxima);
+
+		Proklisi.
+		menuTabFyi(Proklisi.oximaTabDOM, Proklisi.oximaFyi(oxima)).
+		oximaTiposRafiClear().
+		oximaTiposRafiEpilogi($(this));
+	});
 
 	return Proklisi;
 };
+
+Proklisi.oximaTiposRafiClear = () => {
+	Proklisi.oximaTiposRafiDOM.
+	children('.proklisiTiposContainer').
+	removeClass('proklisiTiposEpilogi').
+	children('.proklisiTiposCheck').
+	remove();
+
+	return Proklisi;
+};
+
+Proklisi.oximaTiposRafiEpilogi = (tiposDOM) => {
+	tiposDOM.
+	addClass('proklisiTiposEpilogi').
+	append($('<img>').
+	attr('src', '../../images/success.png').
+	addClass('proklisiTiposCheck'));
+
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.oximaExec = () => {
 	Proklisi.enotitaActivate(Proklisi.oximaDOM);
@@ -251,10 +428,10 @@ Proklisi.oximaFyi = (oxima) => {
 	if (oxima.xroma)
 	fyi += '<div>' + oxima.xroma + '</div>';
 
-	if (oxima.noEpivatiko())
+	if (oxima.tipos && oxima.noEpivatiko())
 	fyi += ' <div class="proklisiOximaTiposNotice">' + oxima.tipos + '</div>';
 
-	if (oxima.noKinisi())
+	if (oxima.katastasi && oxima.noKinisi())
 	fyi += ' <div class="proklisiOximaKatastasiNotice">' + oxima.katastasi + '</div>';
 
 	return fyi;

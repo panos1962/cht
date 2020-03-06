@@ -62,7 +62,8 @@ syntax_error() {
 function parse_output_columns(			n, a, i) {
 	if (!cols)
 	cols = "kodikos,imerominia,ipalilos,onoma,paravasi,topos," \
-		"oxima,marka,xroma,tipos,afm,onomasia,dief,tk,perioxi," \
+		"oxima,marka,xroma,tipos,katigoria,katastasi," \
+		"afm,onomasia,dief,tk,perioxi," \
 		"pinakides,adia,diploma,prostimo,"
 
 	n = split(cols, a, ",")
@@ -112,6 +113,8 @@ function process_proklisi(proklisi, kodikos,		i, s) {
 	proklisi["marka"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΜΑΡΚΑ"]
 	proklisi["xroma"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΧΡΩΜΑ"]
 	proklisi["tipos"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΤΥΠΟΣ"]
+	proklisi["katigoria"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΚΑΤΗΓΟΡΙΑ"]
+	proklisi["katastasi"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ"]["ΚΑΤΑΣΤΑΣΗ"]
 
 	proklisi["afm"] = proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"]["ΑΦΜ"]
 	proklisi["onomasia"] = onomasia(proklisi["proklidata"]["ΣΤΟΙΧΕΙΑ ΥΠΟΧΡΕΟΥ"])
@@ -248,6 +251,14 @@ function list_columns(		list, desc, sect, count) {
 	list[count++] = "tipos"
 	desc["tipos"] = "Τύπος οχήματος"
 	sect["tipos"] = "Στοιχεία οχήματος"
+
+	list[count++] = "tipos"
+	desc["katigoria"] = "Κατηγορία οχήματος"
+	sect["katigoria"] = "Στοιχεία οχήματος"
+
+	list[count++] = "tipos"
+	desc["katastasi"] = "Κατάσταση οχήματος"
+	sect["katastasi"] = "Στοιχεία οχήματος"
 
 	list[count++] = "afm"
 	desc["afm"] = "ΑΦΜ υποχρέου"

@@ -560,8 +560,46 @@ Proklisi.oximaSetup = () => {
 	data('titlos', 'Στοιχεία οχήματος').
 	data('fyi', 'Πληκτρολογήστε τον αρ. κυκλοφορίας οχήματος');
 
+	Proklisi.
+	oximaMarkaSetup().
+	oximaXromaSetup().
+	oximaTiposSetup();
+
 	Proklisi.oximaDOM.
 	append(Proklisi.oximaPaletaDOM);
+
+	return Proklisi;
+};
+
+Proklisi.oximaMarkaSetup = () => {
+	let rafiDOM = pd.paletaRafi({
+		'titlos': 'Μάρκα οχήματος',
+	});
+
+	rafiDOM.
+	appendTo(Proklisi.oximaPaletaDOM);
+
+	return Proklisi;
+};
+
+Proklisi.oximaXromaSetup = () => {
+	let rafiDOM = pd.paletaRafi({
+		'titlos': 'Χρώμα οχήματος',
+	});
+
+	rafiDOM.
+	appendTo(Proklisi.oximaPaletaDOM);
+
+	return Proklisi;
+};
+
+Proklisi.oximaTiposSetup = () => {
+	let rafiDOM = pd.paletaRafi({
+		'titlos': 'ssssΤύπος οχήματος',
+	});
+
+	rafiDOM.
+	appendTo(Proklisi.oximaPaletaDOM);
 
 	return Proklisi;
 };
@@ -996,10 +1034,10 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 
 	if (paravidos) {
 		let oxima = Proklisi.oximaTabDOM.data('oximaData');
-		let tipos = Proklisi.oximaTiposTabDOM.data('oximaTiposData');
+		let katigoria = Proklisi.oximaKatigoriaTabDOM.data('oximaKatigoriaData');
 
-		if (!tipos)
-		tipos = (oxima ? oxima.tipos : undefined);
+		if (!katigoria)
+		katigoria = (oxima ? oxima.tipos : undefined);
 
 		Proklisi.menuTabStatus(paravidosDOM.
 		data('paravidosData', paravidos), 'success');
@@ -1011,7 +1049,7 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 			'diploma',
 			'prostimo',
 		], (x) => {
-			let val = paravidos.kirosiGet(x, tipos);
+			let val = paravidos.kirosiGet(x, katigoria);
 			let kirosiDOM = Proklisi[x + 'DOM'];
 			let paletaDOM = kirosiDOM.
 			children('.pandoraPaleta');
@@ -1076,7 +1114,7 @@ Proklisi.neaProklisi = () => {
 		'oxima',
 		'ipoxreos',
 		'paravidos',
-		'oximaTipos',
+		'oximaKatigoria',
 		'kirosi',
 		'pinakides',
 		'adia',

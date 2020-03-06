@@ -107,7 +107,7 @@ Proklisi.klisi = function() {
 		'ipoxreos',
 		'topos',
 		'paravidos',
-		'oximaTipos',
+		'oximaKatigoria',
 		'pinakides',
 		'adia',
 		'diploma',
@@ -352,7 +352,7 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 Proklisi.klisi.kirosiList = [
 	{
 		'k': 'Ειδ. κατ. οχήματος',
-		'v': 'oximaTipos',
+		'v': 'oximaKatigoria',
 		'p': '',
 		'c': false,
 	},
@@ -717,7 +717,8 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 			'ΑΡ. ΚΥΚΛΟΦΟΡΙΑΣ': t.pinakida,
 			'ΜΑΡΚΑ': t.marka,
 			'ΧΡΩΜΑ': t.xroma,
-			'ΤΥΠΟΣ': this.oximaTipos,
+			'ΤΥΠΟΣ': t.tipos,
+			'ΚΑΤΗΓΟΡΙΑ': this.oximaKatigoria,
 		};
 	}
 

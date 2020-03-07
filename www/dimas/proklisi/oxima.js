@@ -60,9 +60,7 @@ Proklisi.oximaSetup = () => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.oximaMarkaSetup = () => {
-	Proklisi.oximaMarkaRafiDOM = pd.paletaRafi({
-		'titlos': 'Μάρκα οχήματος',
-	});
+	let markesDOM = $('<div>');
 
 	pd.arrayWalk([
 		'HYUNDAI',
@@ -105,7 +103,7 @@ Proklisi.oximaMarkaSetup = () => {
 		'DACIA',
 		'KTM',
 	], (x) => {
-		Proklisi.oximaMarkaRafiDOM.
+		markesDOM.
 		append($('<div>').
 		addClass('proklisiMarkaContainer').
 		data('marka', x).
@@ -114,8 +112,41 @@ Proklisi.oximaMarkaSetup = () => {
 		attr('src', '../../images/marka/' + x + '.jpg')));
 	});
 
-	Proklisi.oximaMarkaRafiDOM.
+	Proklisi.oximaMarkaRafiDOM = pd.paletaRafi({
+		'titlos': 'Μάρκα οχήματος',
+		'titlosClick': () => {
+			let markesDOM = Proklisi.oximaMarkaRafiDOM.data('markes');
+			let markesHeight = Proklisi.oximaMarkaRafiDOM.data('markesHeight');
+
+			if (markesDOM.data('emfanes'))
+			markesDOM.
+			finish().
+			animate({
+				'opacity': 0,
+				'height': 0,
+			}, 200, () => markesDOM.data('emfanes', false));
+
+			else
+			markesDOM.
+			finish().
+			animate({
+				'opacity': 1,
+				'height': markesHeight,
+			}, 200, () => markesDOM.data('emfanes', true));
+		},
+	}).
+	append(markesDOM).
 	appendTo(Proklisi.oximaPaletaDOM);
+
+	Proklisi.oximaMarkaRafiDOM.
+	data('markes', markesDOM).
+	data('markesHeight', markesDOM.height());
+
+	markesDOM.
+	css({
+		'opacity': 0,
+		'height': 0,
+	});
 
 	pd.bodyDOM.
 	on('click', '.proklisiMarkaContainer', function(e) {
@@ -145,6 +176,7 @@ Proklisi.oximaMarkaSetup = () => {
 
 Proklisi.oximaMarkaRafiClear = () => {
 	Proklisi.oximaMarkaRafiDOM.
+	data('markes').
 	children('.proklisiMarkaContainer').
 	removeClass('proklisiMarkaEpilogi').
 	children('.proklisiMarkaCheck').
@@ -166,9 +198,7 @@ Proklisi.oximaMarkaRafiEpilogi = (markaDOM) => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.oximaXromaSetup = () => {
-	Proklisi.oximaXromaRafiDOM = pd.paletaRafi({
-		'titlos': 'Χρώμα οχήματος',
-	});
+	let xromataDOM = $('<div>');
 
 	pd.arrayWalk([
 		{'c': null,'n':'ΑΚΑΘΟΡΙΣΤΟ'},
@@ -188,7 +218,7 @@ Proklisi.oximaXromaSetup = () => {
 		{'c':'#8b4513','n':'ΚΑΦΕ'},
 		{'c':'#008000','n':'ΠΡΑΣΙΝΟ'},
 	], (x) => {
-		Proklisi.oximaXromaRafiDOM.
+		xromataDOM.
 		append($('<div>').
 		data('xroma', x.n).
 		attr('title', x.n).
@@ -198,8 +228,41 @@ Proklisi.oximaXromaSetup = () => {
 		css('background-color', x.c)));
 	});
 
-	Proklisi.oximaXromaRafiDOM.
+	Proklisi.oximaXromaRafiDOM = pd.paletaRafi({
+		'titlos': 'Χρώμα οχήματος',
+		'titlosClick': () => {
+			let xromataDOM = Proklisi.oximaXromaRafiDOM.data('xromata');
+			let xromataHeight = Proklisi.oximaXromaRafiDOM.data('xromataHeight');
+
+			if (xromataDOM.data('emfanes'))
+			xromataDOM.
+			finish().
+			animate({
+				'opacity': 0,
+				'height': 0,
+			}, 200, () => xromataDOM.data('emfanes', false));
+
+			else
+			xromataDOM.
+			finish().
+			animate({
+				'opacity': 1,
+				'height': xromataHeight,
+			}, 200, () => xromataDOM.data('emfanes', true));
+		},
+	}).
+	append(xromataDOM).
 	appendTo(Proklisi.oximaPaletaDOM);
+
+	Proklisi.oximaXromaRafiDOM.
+	data('xromata', xromataDOM).
+	data('xromataHeight', xromataDOM.height());
+
+	xromataDOM.
+	css({
+		'opacity': 0,
+		'height': 0,
+	});
 
 	pd.bodyDOM.
 	on('click', '.proklisiXromaContainer', function(e) {
@@ -229,6 +292,7 @@ Proklisi.oximaXromaSetup = () => {
 
 Proklisi.oximaXromaRafiClear = () => {
 	Proklisi.oximaXromaRafiDOM.
+	data('xromata').
 	children('.proklisiXromaContainer').
 	removeClass('proklisiXromaEpilogi').
 	children('.proklisiXromaCheck').

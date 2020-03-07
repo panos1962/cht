@@ -484,3 +484,39 @@ body {
 }
 
 /*////////////////////////////////////////////////////////////////////////////*/
+
+.proklisiToposimoContainer {
+	position:relative;
+	display: inline-block;
+	padding: 4px;
+}
+
+.proklisiToposimoContainerCandi {
+	padding: 2px;
+	cursor: pointer;
+}
+
+.proklisiToposimo {
+	display: inline-block;
+	border-radius: 2px;
+
+	padding: 2px 4px;
+
+	color: #3c3c3c;
+	background-color: ivory;
+
+	border-style: solid;
+	border-width: 1px;
+	border-color: gray;
+	border-radius: 4px;
+}
+
+.proklisiToposimoCandi {
+	text-shadow: 0px 1px 1px #000000;
+	color: #000000;
+	background-color: yellow;
+	border-width: 3px;
+	border-color: midnightblue;
+}
+
+/*////////////////////////////////////////////////////////////////////////////*/

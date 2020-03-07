@@ -670,10 +670,7 @@ Proklisi.ipoxreosFyi = (ipoxreos) => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.toposSetup = () => {
-	Proklisi.toposDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
-	data('titlos', 'Τόπος παράβασης').
-	data('fyi', 'Πληκτρολογήστε το όνομα της οδού').
-	append(pd.paleta({
+	let paletaDOM = pd.paleta({
 		'paleta': [
 			pd.paletaList['greek'],
 			pd.paletaList['latin'],
@@ -684,7 +681,71 @@ Proklisi.toposSetup = () => {
 		'submit': () => Proklisi.enotitaRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.toposCheckData,
 		'helper': 'Πληκτρολογήστε τον αριθμό',
-	}));
+	});
+
+	Proklisi.toposimoRafiDOM = pd.paletaRafi({
+		'titlos': 'Pantry',
+	});
+
+	pd.arrayWalk([
+		'ΕΝΑΝΤΙ',
+	], (x) => {
+		Proklisi.toposimoRafiDOM.
+		append($('<div>').
+		addClass('proklisiToposimoContainer').
+		append($('<div>').
+		addClass('proklisiToposimo').
+		text(x)));
+	});
+
+	Proklisi.toposimoRafiDOM.
+	appendTo(paletaDOM);
+
+	pd.bodyDOM.
+	on('mouseenter', '.proklisiToposimoContainer', function(e) {
+		e.stopPropagation();
+
+		$(this).
+		addClass('proklisiToposimoContainerCandi').
+		children('.proklisiToposimo').
+		addClass('proklisiToposimoCandi');
+	}).
+	on('mouseleave', '.proklisiToposimoContainer', function(e) {
+		e.stopPropagation();
+
+		$(this).
+		removeClass('proklisiToposimoContainerCandi').
+		children('.proklisiToposimo').
+		removeClass('proklisiToposimoCandi');
+	}).
+	on('click', '.proklisiToposimoContainer', function(e) {
+		e.stopPropagation();
+
+		let toposimo = $(this).text();
+
+		if (!toposimo)
+		return;
+
+		let paletaDOM = Proklisi.toposDOM.children('.pandoraPaleta');
+		let monitorDOM = paletaDOM.children('.pandoraPaletaMonitor');
+		let inputDOM = paletaDOM.children('.pandoraPaletaInput');
+		let topos = monitorDOM.text().trim();
+
+		if (!topos)
+		return;
+
+		topos = toposimo + ' ' + topos;
+
+		monitorDOM.text(topos);
+		inputDOM.val(topos);
+		paletaDOM.data('text', topos);
+		Proklisi.toposCheckData(paletaDOM);
+	});
+
+	Proklisi.toposDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
+	data('titlos', 'Τόπος παράβασης').
+	data('fyi', 'Πληκτρολογήστε το όνομα της οδού').
+	append(paletaDOM);
 
 	return Proklisi;
 };

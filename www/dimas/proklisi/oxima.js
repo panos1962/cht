@@ -240,6 +240,7 @@ Proklisi.oximaXromaRafiClear = () => {
 	children('.pandoraPaletaRafiContent').
 	children('.proklisiXromaContainer').
 	removeClass('proklisiXromaEpilogi').
+	children('.proklisiXroma').
 	children('.proklisiXromaCheck').
 	remove();
 
@@ -249,6 +250,7 @@ Proklisi.oximaXromaRafiClear = () => {
 Proklisi.oximaXromaRafiEpilogi = (xromaDOM) => {
 	xromaDOM.
 	addClass('proklisiXromaEpilogi').
+	children('.proklisiXroma').
 	append($('<img>').
 	attr('src', '../../images/success.png').
 	addClass('proklisiXromaCheck'));

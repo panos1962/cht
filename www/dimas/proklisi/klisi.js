@@ -448,6 +448,9 @@ Proklisi.klisi.prototype.klisiOximaDOM = function(klisiDOM) {
 
 	x = oxima.katastasiGet();
 
+	if (!x)
+	x = 'ΑΚΑΘΟΡΙΣΤΗ';
+
 	if (x !== 'ΚΙΝΗΣΗ')
 	klisiDOM.
 	append(Proklisi.klisi.klisiPedioDOM('Κατάσταση', x).

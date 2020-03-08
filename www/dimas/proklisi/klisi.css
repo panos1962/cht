@@ -294,16 +294,12 @@ Created: 2019-12-25
 /*////////////////////////////////////////////////////////////////////////////*/
 
 .proklisiKlisiIpovoliSection {
-	padding: 8px;
+	padding: 8px 2px 16px 2px;
 }
 
 .proklisiKlisiIpovoliSection input {
 	margin: 8px;
 	cursor: pointer;
-}
-
-.proklisiKlisiIpovoliSectionEconomy {
-	padding: 2px;
 }
 
 /*////////////////////////////////////////////////////////////////////////////*/

@@ -684,14 +684,12 @@ Proklisi.toposSetup = () => {
 		'helper': 'Πληκτρολογήστε τον αριθμό',
 	});
 
-	Proklisi.toposimoRafiDOM = pd.paletaRafi({
-		'titlos': 'Pantry',
-	});
+	let toposimaDOM = $('<div>');
 
 	pd.arrayWalk([
 		'ΕΝΑΝΤΙ',
 	], (x) => {
-		Proklisi.toposimoRafiDOM.
+		toposimaDOM.
 		append($('<div>').
 		addClass('proklisiToposimoContainer').
 		append($('<div>').
@@ -699,10 +697,14 @@ Proklisi.toposSetup = () => {
 		text(x)));
 	});
 
+	Proklisi.toposimoRafiDOM = pd.paletaRafi({
+		'content': toposimaDOM,
+	});
+
 	Proklisi.toposimoRafiDOM.
 	appendTo(paletaDOM);
 
-	pd.bodyDOM.
+	toposimaDOM.
 	on('mouseenter', '.proklisiToposimoContainer', function(e) {
 		e.stopPropagation();
 
@@ -730,11 +732,17 @@ Proklisi.toposSetup = () => {
 		let paletaDOM = Proklisi.toposDOM.children('.pandoraPaleta');
 		let monitorDOM = paletaDOM.children('.pandoraPaletaMonitor');
 		let inputDOM = paletaDOM.children('.pandoraPaletaInput');
-		let topos = monitorDOM.text().trim();
+		let topos = monitorDOM.text();
 
 		if (!topos)
 		return;
 
+		let re = new RegExp('^' + toposimo + ' +');
+
+		if (topos.match(re))
+		topos = topos.replace(re, '');
+
+		else
 		topos = toposimo + ' ' + topos;
 
 		monitorDOM.text(topos);

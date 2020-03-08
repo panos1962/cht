@@ -114,41 +114,13 @@ Proklisi.oximaMarkaSetup = () => {
 
 	Proklisi.oximaMarkaRafiDOM = pd.paletaRafi({
 		'titlos': 'Μάρκα οχήματος',
-		'titlosClick': () => {
-			let markesDOM = Proklisi.oximaMarkaRafiDOM.data('markes');
-			let markesHeight = Proklisi.oximaMarkaRafiDOM.data('markesHeight');
-
-			if (markesDOM.data('emfanes'))
-			markesDOM.
-			finish().
-			animate({
-				'opacity': 0,
-				'height': 0,
-			}, 200, () => markesDOM.data('emfanes', false));
-
-			else
-			markesDOM.
-			finish().
-			animate({
-				'opacity': 1,
-				'height': markesHeight,
-			}, 200, () => markesDOM.data('emfanes', true));
-		},
+		'content': markesDOM,
+		'hidden': true,
+		'titlosClick': 'toggle',
 	}).
-	append(markesDOM).
 	appendTo(Proklisi.oximaPaletaDOM);
 
-	Proklisi.oximaMarkaRafiDOM.
-	data('markes', markesDOM).
-	data('markesHeight', markesDOM.height());
-
 	markesDOM.
-	css({
-		'opacity': 0,
-		'height': 0,
-	});
-
-	pd.bodyDOM.
 	on('click', '.proklisiMarkaContainer', function(e) {
 		e.stopPropagation();
 
@@ -176,7 +148,7 @@ Proklisi.oximaMarkaSetup = () => {
 
 Proklisi.oximaMarkaRafiClear = () => {
 	Proklisi.oximaMarkaRafiDOM.
-	data('markes').
+	children('.pandoraPaletaRafiContent').
 	children('.proklisiMarkaContainer').
 	removeClass('proklisiMarkaEpilogi').
 	children('.proklisiMarkaCheck').
@@ -204,7 +176,7 @@ Proklisi.oximaXromaSetup = () => {
 		{'c': null,'n':'ΑΚΑΘΟΡΙΣΤΟ'},
 		{'c':'#000000','n':'ΜΑΥΡΟ'},
 		{'c':'#ffffff','n':'ΑΣΠΡΟ'},
-		{'c':'#808080','n':'ΜΟΛΥΒΙ'},
+		{'c':'#5d5d5d','n':'ΜΟΛΥΒΙ'},
 		{'c':'#00ffff','n':'ΓΑΛΑΖΙΟ'},
 		{'c':'#d4d4d4','n':'ΑΣΗΜΙ'},
 		{'c':'#ff0000','n':'ΚΟΚΚΙΝΟ'},
@@ -230,41 +202,13 @@ Proklisi.oximaXromaSetup = () => {
 
 	Proklisi.oximaXromaRafiDOM = pd.paletaRafi({
 		'titlos': 'Χρώμα οχήματος',
-		'titlosClick': () => {
-			let xromataDOM = Proklisi.oximaXromaRafiDOM.data('xromata');
-			let xromataHeight = Proklisi.oximaXromaRafiDOM.data('xromataHeight');
-
-			if (xromataDOM.data('emfanes'))
-			xromataDOM.
-			finish().
-			animate({
-				'opacity': 0,
-				'height': 0,
-			}, 200, () => xromataDOM.data('emfanes', false));
-
-			else
-			xromataDOM.
-			finish().
-			animate({
-				'opacity': 1,
-				'height': xromataHeight,
-			}, 200, () => xromataDOM.data('emfanes', true));
-		},
+		'content': xromataDOM,
+		'hidden': true,
+		'titlosClick': 'toggle',
 	}).
-	append(xromataDOM).
 	appendTo(Proklisi.oximaPaletaDOM);
 
-	Proklisi.oximaXromaRafiDOM.
-	data('xromata', xromataDOM).
-	data('xromataHeight', xromataDOM.height());
-
 	xromataDOM.
-	css({
-		'opacity': 0,
-		'height': 0,
-	});
-
-	pd.bodyDOM.
 	on('click', '.proklisiXromaContainer', function(e) {
 		e.stopPropagation();
 
@@ -292,7 +236,7 @@ Proklisi.oximaXromaSetup = () => {
 
 Proklisi.oximaXromaRafiClear = () => {
 	Proklisi.oximaXromaRafiDOM.
-	data('xromata').
+	children('.pandoraPaletaRafiContent').
 	children('.proklisiXromaContainer').
 	removeClass('proklisiXromaEpilogi').
 	children('.proklisiXromaCheck').
@@ -314,9 +258,7 @@ Proklisi.oximaXromaRafiEpilogi = (xromaDOM) => {
 ///////////////////////////////////////////////////////////////////////////////@
 
 Proklisi.oximaTiposSetup = () => {
-	Proklisi.oximaTiposRafiDOM = pd.paletaRafi({
-		'titlos': 'Τύπος οχήματος',
-	});
+	let tipoiDOM = $('<div>');
 
 	pd.arrayWalk([
 		'ΕΠΙΒΑΤΙΚΟ',
@@ -333,7 +275,7 @@ Proklisi.oximaTiposSetup = () => {
 		'ΤΡΙΚΥΚΛΟ',
 		'ΤΡΕΪΛΕΡ',
 	], (x) => {
-		Proklisi.oximaTiposRafiDOM.
+		tipoiDOM.
 		append($('<div>').
 		addClass('proklisiTiposContainer').
 		append($('<div>').
@@ -341,10 +283,17 @@ Proklisi.oximaTiposSetup = () => {
 		text(x)));
 	});
 
+	Proklisi.oximaTiposRafiDOM = pd.paletaRafi({
+		'titlos': 'Τύπος οχήματος',
+		'content': tipoiDOM,
+		'hidden': true,
+		'titlosClick': 'toggle',
+	});
+
 	Proklisi.oximaTiposRafiDOM.
 	appendTo(Proklisi.oximaPaletaDOM);
 
-	pd.bodyDOM.
+	tipoiDOM.
 	on('mouseenter', '.proklisiTiposContainer', function(e) {
 		e.stopPropagation();
 
@@ -388,6 +337,7 @@ Proklisi.oximaTiposSetup = () => {
 
 Proklisi.oximaTiposRafiClear = () => {
 	Proklisi.oximaTiposRafiDOM.
+	children('.pandoraPaletaRafiContent').
 	children('.proklisiTiposContainer').
 	removeClass('proklisiTiposEpilogi').
 	children('.proklisiTiposCheck').

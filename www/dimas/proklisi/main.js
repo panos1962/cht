@@ -676,6 +676,7 @@ Proklisi.toposSetup = () => {
 		'paleta': [
 			pd.paletaList['greek'],
 			pd.paletaList['latin'],
+			pd.paletaList['symbol'],
 		],
 		'keyboard': php.requestIsYes('keyboard'),
 		'zoom': true,
@@ -768,7 +769,7 @@ Proklisi.toposExec = () => {
 Proklisi.toposScribe = (paletaDOM) => {
 	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
 	let text = inputDOM.val();
-	let list = text.split('');
+	let list = pd.gramata(text);
 	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
 
 	zoomDOM.empty();
@@ -878,7 +879,7 @@ Proklisi.paravidosExec = () => {
 Proklisi.paravidosScribe = (paletaDOM) => {
 	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
 	let text = inputDOM.val();
-	let list = text.split('');
+	let list = pd.gramata(text);
 	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
 
 	zoomDOM.empty();

@@ -113,7 +113,7 @@ Proklisi.isodosAstinomikosSetup = () => {
 Proklisi.isodosAstinomikosScribe = (paletaDOM) => {
 	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
 	let text = inputDOM.val();
-	let list = text.split('');
+	let list = pd.gramata(text);
 	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
 
 	zoomDOM.empty();

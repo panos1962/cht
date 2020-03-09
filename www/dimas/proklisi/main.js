@@ -671,6 +671,12 @@ Proklisi.ipoxreosFyi = (ipoxreos) => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
+Proklisi.toposimoList = [
+	'ΕΝΑΝΤΙ',
+	'ΚΑΙ',
+	'ΓΩΝΙΑ',
+];
+
 Proklisi.toposSetup = () => {
 	let paletaDOM = pd.paleta({
 		'paleta': [
@@ -688,9 +694,7 @@ Proklisi.toposSetup = () => {
 
 	let toposimaDOM = $('<div>');
 
-	pd.arrayWalk([
-		'ΕΝΑΝΤΙ',
-	], (x) => {
+	pd.arrayWalk(Proklisi.toposimoList, (x) => {
 		toposimaDOM.
 		append($('<div>').
 		addClass('proklisiToposimoContainer').
@@ -733,23 +737,15 @@ Proklisi.toposSetup = () => {
 
 		let paletaDOM = Proklisi.toposDOM.children('.pandoraPaleta');
 		let monitorDOM = paletaDOM.children('.pandoraPaletaMonitor');
-		let inputDOM = paletaDOM.children('.pandoraPaletaInput');
 		let topos = monitorDOM.text();
 
 		if (!topos)
 		return;
 
-		let re = new RegExp('^' + toposimo + ' +');
-
-		if (topos.match(re))
-		topos = topos.replace(re, '');
-
-		else
-		topos = toposimo + ' ' + topos;
-
+		topos = Proklisi.toposimoFix(topos, toposimo);
 		monitorDOM.text(topos);
-		inputDOM.val(topos);
 		paletaDOM.data('text', topos);
+		paletaDOM.children('.pandoraPaletaInput').val(topos);
 		Proklisi.toposCheckData(paletaDOM);
 	});
 
@@ -761,6 +757,33 @@ Proklisi.toposSetup = () => {
 	return Proklisi;
 };
 
+Proklisi.toposimoFix = (topos, toposimo) => {
+	let re = new RegExp('^' + toposimo + ' +');
+
+	if (topos.match(re)) {
+		topos = topos.replace(re, '');
+		return topos;
+	}
+
+	re = new RegExp(' +' + toposimo + ' .*');
+
+	if (topos.match(re)) {
+		topos = topos.replace(re, '');
+		return topos;
+	}
+
+	switch (toposimo) {
+	case 'ΕΝΑΝΤΙ':
+		topos = toposimo + ' ' + topos;
+		break;
+	default:
+		topos += ' ' + toposimo + ' ';
+		break;
+	}
+
+	return topos;
+};
+
 Proklisi.toposExec = () => {
 	Proklisi.enotitaActivate(Proklisi.toposDOM);
 	return Proklisi;
@@ -768,7 +791,7 @@ Proklisi.toposExec = () => {
 
 Proklisi.toposScribe = (paletaDOM) => {
 	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
-	let text = inputDOM.val();
+	let text = Proklisi.toposScribeText(inputDOM);
 	let list = pd.gramata(text);
 	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
 
@@ -790,25 +813,13 @@ Proklisi.toposScribe = (paletaDOM) => {
 		pd.arrayWalk(list, (c) => re += '.*' + c);
 	}
 
+	re = new RegExp(re, 'i');
 	let match = [];
 
-	// Υπάρχει περίπτωση ο χρήστης να πληκτρολογήσει
-	// διάφορα σύμβολα που δεν θα βγάζουν νόημα ως
-	// regular expression.
-
-	try {
-		re = new RegExp(re, 'i');
-
-		pd.arrayWalk(Proklisi.odosList, (x) => {
-			if (x.match(re)) 
-			match.push(x);
-		});
-	}
-
-	catch (e) {
-		console.error(e);
-		return pd;
-	}
+	pd.arrayWalk(Proklisi.odosList, (x) => {
+		if (x.match(re)) 
+		match.push(x);
+	});
 
 	paletaDOM.data('match', match);
 	paletaDOM.removeData('matchPointer');
@@ -825,6 +836,46 @@ Proklisi.toposScribe = (paletaDOM) => {
 	});
 
 	return pd;
+};
+
+Proklisi.toposScribeText = (inputDOM) => {
+	let s = inputDOM.removeData('ante').val();
+
+	if (s === undefined)
+	return '';
+
+	if (typeof(s) !== 'string')
+	return '';
+
+	let lexi = s.split(' ');
+
+	if (!lexi.length)
+	return '';
+
+	for (let i = lexi.length - 1; i >= 0; i--) {
+		for (let j = 0; j < Proklisi.toposimoList.length; j++) {
+			if (lexi[i] !== Proklisi.toposimoList[j])
+			continue;
+
+			s = '';
+
+			for (j = 0; j <= i; j++)
+			s = pd.strPush(s, lexi[j]);
+
+			if (s)
+			s += ' ';
+
+			inputDOM.data('ante', s);
+			s = '';
+
+			for (j = i + 1; j < lexi.length; j++)
+			s = pd.strPush(s, lexi[j]);
+
+			return s;
+		}
+	}
+
+	return s;
 };
 
 Proklisi.toposCheckData = (paletaDOM) => {
@@ -900,27 +951,15 @@ Proklisi.paravidosScribe = (paletaDOM) => {
 		pd.arrayWalk(list, (c) => re += '.*' + c);
 	}
 
+	re = new RegExp(re, 'i');
 	let match = [];
 
-	// Υπάρχει περίπτωση ο χρήστης να πληκτρολογήσει
-	// διάφορα σύμβολα που δεν θα βγάζουν νόημα ως
-	// regular expression.
+	pd.arrayWalk(Proklisi.paravidosList, (x) => {
+		let s = x.kodikos + x.perigrafi;
 
-	try {
-		re = new RegExp(re, 'i');
-
-		pd.arrayWalk(Proklisi.paravidosList, (x) => {
-			let s = x.kodikos + x.perigrafi;
-
-			if (s.match(re)) 
-			return match.push(x);
-		});
-	}
-
-	catch (e) {
-		console.error(e);
-		return pd;
-	}
+		if (s.match(re)) 
+		return match.push(x);
+	});
 
 	paletaDOM.data('match', match);
 	paletaDOM.removeData('matchPointer');

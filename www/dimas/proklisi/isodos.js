@@ -136,23 +136,15 @@ Proklisi.isodosAstinomikosScribe = (paletaDOM) => {
 		});
 	}
 
+	re = new RegExp(re, 'i');
 	let match = [];
 
-	try {
-		re = new RegExp(re, 'i');
+	pd.arrayWalk(Proklisi.astinomikosList, (x) => {
+		let s = x.kodikos + x.onomateponimo;
 
-		pd.arrayWalk(Proklisi.astinomikosList, (x) => {
-			let s = x.kodikos + x.onomateponimo;
-
-			if (s.match(re)) 
-			return match.push(x);
-		});
-	}
-
-	catch (e) {
-		console.error(e);
-		return pd;
-	}
+		if (s.match(re)) 
+		return match.push(x);
+	});
 
 	paletaDOM.data('match', match);
 	paletaDOM.removeData('matchPointer');

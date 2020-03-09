@@ -739,9 +739,6 @@ Proklisi.toposSetup = () => {
 		let monitorDOM = paletaDOM.children('.pandoraPaletaMonitor');
 		let topos = monitorDOM.text();
 
-		if (!topos)
-		return;
-
 		topos = Proklisi.toposimoFix(topos, toposimo);
 		monitorDOM.text(topos);
 		paletaDOM.data('text', topos);
@@ -757,29 +754,50 @@ Proklisi.toposSetup = () => {
 	return Proklisi;
 };
 
+// Η function "toposimoFix" δέχεται τον τρέχοντα τόπο και ένα τοπόσημο που έχει
+// επιλέξει ο χρήστης και επιχειρεί είτε να προσθέσει το συγκεκριμένο τοπόσημο
+// στον υφιστάμενο τόπο, είτε να διαγράψει το συγκεκριμένο τοπόσημο εφόσον αυτό
+// βρίσκεται ήδη ως τελευταία λέξη στον υφιστάμενο τόπο.
+//
+// Παράδειγμα
+// ‾‾‾‾‾‾‾‾‾‾
+//        Τόπος: ΦΑΙΑΚΩΝ 4
+//     Τοπόσημο: ΚΑΙ
+// Επιστρέφεται: ΦΑΙΑΚΩΝ 4 ΚΑΙ
+//
+// Παράδειγμα
+// ‾‾‾‾‾‾‾‾‾‾
+//        Τόπος: ΦΑΙΑΚΩΝ 4 ΚΑΙ
+//     Τοπόσημο: ΚΑΙ
+// Επιστρέφεται: ΦΑΙΑΚΩΝ 4
+
 Proklisi.toposimoFix = (topos, toposimo) => {
-	let re = new RegExp('^' + toposimo + ' +');
+	// Σε πρώτη φάση αφαιρούμε λευκούς χαρακτήρες που
+	// ίσως υπάρχουν στο τέλος του υφιστάμενου τόπου.
 
-	if (topos.match(re)) {
-		topos = topos.replace(re, '');
-		return topos;
-	}
+	topos = topos.replace(/\s+$/, '');
 
-	re = new RegExp(' +' + toposimo + ' .*');
+	// Κατόπιν σπάζουμε τον υφιστάμενο τόπο σε λέξεις.
 
-	if (topos.match(re)) {
-		topos = topos.replace(re, '');
-		return topos;
-	}
+	let lexi = topos.split(/\s+/);
 
-	switch (toposimo) {
-	case 'ΕΝΑΝΤΙ':
-		topos = toposimo + ' ' + topos;
-		break;
-	default:
-		topos += ' ' + toposimo + ' ';
-		break;
-	}
+	// Αν ο υφιστάμενος τόπος ήταν κενός, επιστρέφουμε
+	// το τοπόσημο.
+
+	if (!lexi.length)
+	return toposimo;
+
+	// Αν η τελευταία λέξη του υφιστάμενου τόπου δεν συμπίπτει με το
+	// τοπόσημο, τότε προσθέτουμε το τοπόσημο στον υφιστάμενο τόπο.
+
+	if (lexi.pop() !== toposimo)
+	return topos + ' ' + toposimo + ' ';
+
+	// Διαπιστώσαμε ότι η τελευταία λέξη του υφιστάμενου τόπου συμπίπτει
+	// με το τοπόσημο, επομένως το αφαιρούμε από τον υφιστάμενο τόπο.
+
+	topos = '';
+	pd.arrayWalk(lexi, (s) => topos = pd.strPush(topos, s));
 
 	return topos;
 };
@@ -839,7 +857,7 @@ Proklisi.toposScribe = (paletaDOM) => {
 };
 
 Proklisi.toposScribeText = (inputDOM) => {
-	let s = inputDOM.removeData('ante').val();
+	let s = inputDOM.removeData('ante').val().replace(/\s+$/, '');
 
 	if (s === undefined)
 	return '';
@@ -847,10 +865,15 @@ Proklisi.toposScribeText = (inputDOM) => {
 	if (typeof(s) !== 'string')
 	return '';
 
-	let lexi = s.split(' ');
+	let lexi = s.split(/\s+/);
 
 	if (!lexi.length)
 	return '';
+
+	// Εντοπίζουμε την τελευταία εμφάνιση τοποσήμου στον υφιαστάμενο
+	// τόπο και διαγράφουμε ότι υπάρχει από το τοπόσημο και μετά. Το
+	// αποτέλεσμα το κρατάμε ως πρόθεμα (ante) και επιστρέφουμε το
+	// μέρος του τόπου που θα χρησιμοποιηθεί στο lookup των οδών.
 
 	for (let i = lexi.length - 1; i >= 0; i--) {
 		for (let j = 0; j < Proklisi.toposimoList.length; j++) {

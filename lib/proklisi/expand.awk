@@ -253,11 +253,11 @@ function list_columns(		list, desc, sect, count) {
 	desc["tipos"] = "Τύπος οχήματος"
 	sect["tipos"] = "Στοιχεία οχήματος"
 
-	list[count++] = "tipos"
+	list[count++] = "katigoria"
 	desc["katigoria"] = "Κατηγορία οχήματος"
 	sect["katigoria"] = "Στοιχεία οχήματος"
 
-	list[count++] = "tipos"
+	list[count++] = "katastasi"
 	desc["katastasi"] = "Κατάσταση οχήματος"
 	sect["katastasi"] = "Στοιχεία οχήματος"
 
@@ -325,6 +325,8 @@ function list_columns(		list, desc, sect, count) {
 	desc["info"] = "Παρατηρήσεις"
 	sect["info"] = "Άλλα στοιχεία"
 
+	list_check(list, count)
+
 	if (listcol == "list")
 	return list_list(list, count)
 
@@ -332,6 +334,16 @@ function list_columns(		list, desc, sect, count) {
 	return list_full(list, sect, desc, count)
 
 	list_light(list, sect, desc, count)
+}
+
+function list_check(list, count,		i, n) {
+	delete n
+
+	for (i = 0; i < count; i++) {
+		if (n[list[i]]++ > 0)
+		print "WARNING: " list[i] \
+			": column already registered " >"/dev/stderr"
+	}
 }
 
 function list_full(list, sect, desc, count,		i, prev, l) {

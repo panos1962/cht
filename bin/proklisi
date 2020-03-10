@@ -134,6 +134,7 @@ do
 		else
 			post="|ssconvert --export-type Gnumeric_Excel:xlsx fd://0 fd://1 2>/dev/null"
 		fi
+		shift 1
 		;;
 	-g|--geo)	# for https://maps.co
 		cols="geoy,geox,kodikos,__COLOR__,"

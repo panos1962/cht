@@ -21,6 +21,7 @@
 ## @DESCRIPTION END
 ##
 ## @HISTORY BEGIN
+## Updated: 2020-03-10
 ## Updated: 2020-03-06
 ## Updated: 2020-02-28
 ## Updated: 2020-02-27
@@ -164,43 +165,80 @@ function onomasia(data,			s) {
 	return s
 }
 
-function ikothen_epilogi(		query, cont, n, a, i, row, proklisi) {
-	query = ""
-	cont = " WHERE"
+function ikothen_epilogi(		imerominia_clause, astinomikos_clause, \
+	cont, n, a, i, row, proklisi) {
+
+	imeromina_clause = ""
+	cont = ""
 
 	if (apo) {
 		if (apo !~ / /)
 		apo = apo " 00:00:00"
 
-		query = query cont " (`imerominia` >= " spawk_escape(apo) ")"
-		cont = " AND"
+		imerominia_clause = imerominia_clause cont \
+			"(`imerominia` >= " spawk_escape(apo) ")"
+		cont = " AND "
 	}
 
 	if (eos) {
 		if (eos !~ / /)
 		eos = eos " 23:59:59"
 
-		query = query cont " (`imerominia` <= " spawk_escape(eos) ")"
-		cont = " AND"
+		imerominia_clause = imerominia_clause cont \
+			"(`imerominia` <= " spawk_escape(eos) ")"
+		cont = " AND "
 	}
-
 
 	if (imerominia) {
 		n = split(imerominia, a, "[, ]")
 
 		for (i = 1; i < n; i++) {
-			query = query cont " (`imerominia` BETWEEN " \
+			imerominia_clause = imerominia_clause cont \
+				"(`imerominia` BETWEEN " \
 				spawk_escape(a[i] " 00:00:00") " AND " \
 				spawk_escape(a[i] " 23:59:59") ")"
-			cont = " OR"
+			cont = " OR "
 		}
+
+		cont = " AND "
+	}
+
+	astinomikos_clause = ""
+	cont = ""
+
+	if (astinomikos) {
+		astinomikos_clause = astinomikos_clause cont "`ipalilos` IN "
+		cont = "("
+
+		n = split(astinomikos, a, "[, ]")
+
+		for (i = 1; i < n; i++) {
+			astinomikos_clause = astinomikos_clause cont \
+				spawk_escape(a[i])
+			cont = ","
+		}
+
+		astinomikos_clause = astinomikos_clause ")"
+	}
+
+	
+	query = ""
+	cont = "SELECT `kodikos` FROM `dimas`.`proklisi` WHERE "
+
+	if (imerominia_clause) {
+		query = query cont "(" imerominia_clause ")"
+		cont = " AND "
+	}
+
+	if (astinomikos_clause) {
+		query = query cont "(" astinomikos_clause ")"
+		cont = " AND "
 	}
 
 	if (!query)
 	return 0
 
-	query = "SELECT `kodikos` FROM `dimas`.`proklisi`" \
-		query " ORDER BY `kodikos` " order
+	query = query " ORDER BY `kodikos` " order
 
 	if (spawk_submit(query, "NUM") != 3)
 	pd_fatal("SPAWK: submit query failed")

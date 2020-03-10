@@ -47,6 +47,7 @@
 ## @DESCRIPTION END
 ##
 ## @HISTORY BEGIN
+## Updated: 2020-03-10
 ## Updated: 2020-02-29
 ## Updated: 2020-02-28
 ## Updated: 2020-02-27
@@ -71,11 +72,12 @@ CHT_BASEDIR="/var/opt/cht"
 #
 # XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX XXX
 
-eval set -- "$(pd_parseopts "?hs:k:o:xgc:rf:t:d:" \
+eval set -- "$(pd_parseopts "?hs:k:o:xgc:rf:t:d:a:" \
 "help,colsep:,sep:,separator:,key:,keyColumn:,\
 output:,columns:,ofs:,reverse,\
 excel,geo,color:,ante:,\
 from:,to:,today,date:,\
+astinomikos:,\
 list,listList,listFull" \
 "$@")"
 
@@ -94,6 +96,7 @@ ante=
 apo=
 eos=
 imerominia=
+astinomikos=
 order="ASC"
 listcol=
 
@@ -178,6 +181,10 @@ do
 		error="yes"
 		shift 2
 		;;
+	-a|--astinomikos)
+		astinomikos="${astinomikos}${2},"
+		shift 2
+		;;
 	--list)
 		listcol="light"
 		shift 1
@@ -211,6 +218,7 @@ eval awk \
 -v apo="\"${apo}\"" \
 -v eos="\"${eos}\"" \
 -v imerominia="\"${imerominia}\"" \
+-v astinomikos="\"${astinomikos}\"" \
 -v order="${order}" \
 -v listcol="${listcol}" \
 -f "${CHT_BASEDIR}/lib/proklisi/expand.awk" $* ${post}

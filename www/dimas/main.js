@@ -61,12 +61,12 @@ Dimasmenu.eponimiXrisi = () => {
 	Dimasmenu.
 	cleanup().
 	toolbarXristisRefresh().
-	menuSetup().
+	menuMenuSetup().
 	exodosSetup().
 	activate(Dimasmenu.menuDOM);
 
-	pd.keepAlive('../../mnt/pandora');
-	return Dimasnmenu;
+	pd.keepAlive('../mnt/pandora');
+	return Dimasmenu;
 };
 
 Dimasmenu.anonimiXrisi = () => {
@@ -176,13 +176,6 @@ Dimasmenu.xristisGet = (callback) => {
 };
 
 Dimasmenu.ribbonSetup = () => {
-	pd.ribbonRightDOM.
-	append($('<div>').
-	addClass('dimasmenuRibbonCopyright').
-	html('<a href="copyright.php" target="copyright">' +
-		'&copy; Δήμος Θεσσαλονίκης 2019 - ' +
-		pd.dateTime(undefined, '%Y') + '</a>'));
-
 	return Dimasmenu;
 };
 
@@ -404,7 +397,7 @@ Dimasmenu.isodosPasswordCheckData = (paletaDOM) => {
 	Dimasmenu.menuIsodosDOM.removeData('errmsg');
 	xristis.kodikos = paletaDOM.data('text');
 	$.post({
-		'url': '../../lib/prosvasi.php',
+		'url': '../lib/prosvasi.php',
 		'dataType': 'json',
 		'data': xristis,
 		'success': (rsp) => {
@@ -460,7 +453,7 @@ Dimasmenu.isodosOnomataClear = () => {
 
 ///////////////////////////////////////////////////////////////////////////////@
 
-Dimasmenu.menuSetup = () => {
+Dimasmenu.menuMenuSetup = () => {
 	Dimasmenu.menuDOM = $('<div>').
 	data('titlos', 'Δημοτική Αστυνομία').
 	addClass('dimasmenuEnotita').
@@ -469,14 +462,14 @@ Dimasmenu.menuSetup = () => {
 	append($('<div>').addClass('dimasmenuMenuLine').
 
 	append(Dimasmenu.proklisiTabDOM = $('<div>').
-	data('exec', Dimasmenu.proklisiExec).
+	data('exec', () => self.location = '/cht/dimas/proklisi').
 	addClass('dimasmenuMenuTab').
 	append($('<div>').addClass('dimasmenuMenuTabFyi')).
 	append($('<div>').addClass('dimasmenuMenuTabLabel').
 	html('Βεβαίωση πραβάσεων ΚΟΚ'))).
 
 	append(Dimasmenu.blokakiTabDOM = $('<div>').
-	data('exec', Dimasmenu.blokakiExec).
+	data('exec', () => self.location = '/cht/dimas/blokaki').
 	addClass('dimasmenuMenuTab').
 	append($('<div>').addClass('dimasmenuMenuTabFyi')).
 	append($('<div>').addClass('dimasmenuMenuTabLabel').
@@ -495,62 +488,6 @@ Dimasmenu.menuSetup = () => {
 	appendTo(pd.ofelimoDOM);
 
 	return Dimasmenu;
-};
-
-///////////////////////////////////////////////////////////////////////////////@
-
-Dimasmenu.proklisiSetup = () => {
-	Dimasmenu.proklisiDOM = Dimasmenu.enotitaDOM(Dimasmenu.menuDOM).
-	data('titlos', 'Βεβαίωση παραβάσεων ΚΟΚ');
-
-	return Dimasmenu;
-};
-
-Dimasmenu.bebeosiExec = () => {
-	let bebeosiDOM = Proklisi.bebeosiTabDOM;
-
-	Proklisi.
-	menuTabStatus(bebeosiDOM, 'busy').
-	menuTabFyi(bebeosiDOM);
-
-	$.post({
-		'url': 'bebeosi.php',
-		'dataType': 'text',
-		'success': (rsp) => {
-			let bebnum = parseInt(rsp);
-
-			if (bebnum != rsp)
-			return Proklisi.
-			fyiError(rsp).
-			menuTabStatus(bebeosiDOM.
-			data('bebeosiError', rsp.error), 'error').
-			menuTabFyi(bebeosiDOM);
-
-			let data = {
-				'bebnum': bebnum,
-				'date': new Date(),
-			};
-
-			if (!Proklisi.geodata)
-			Proklisi.bebeosiDataSet(bebeosiDOM, data);
-
-			Proklisi.geodata.getCurrentPosition((pos) => {
-				data.geox = pos.coords.longitude;
-				data.geoy = pos.coords.latitude;
-				Proklisi.bebeosiDataSet(bebeosiDOM, data);
-			}, (err) => {
-				Proklisi.bebeosiDataSet(bebeosiDOM, data);
-			}, {
-				'enableHighAccuracy': true,
-				'timeout': 2000,
-			});
-		},
-		'error': (err) => Proklisi.
-		fyiError('Σφάλμα αιτήματος αριθμού βεβαίωσης', err).
-		menuTabStatus(bebeosiDOM, 'error'),
-	});
-
-	return Proklisi;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@
@@ -599,7 +536,7 @@ Dimasmenu.astinomikosLoad = () => {
 			pd.arrayWalk(Dimasmenu.astinomikosList, (x, i) =>
 				Dimasmenu.astinomikosList[i] = Dimas.ipalilos.
 					fromAstinomikosList(x));
-			Dimasmenu.activate(Dimasmenu.menuDOM);
+			Dimasmenu.activate(Dimasmenu.menuIsodosDOM);
 		},
 		'error': (err) => {
 			console.error(err);
@@ -624,7 +561,7 @@ Dimasmenu.menuSetup = () => {
 
 	Dimasmenu.menuSetupOk = true;
 
-	pd.bodyDOM.
+	pd.ofelimoDOM.
 	on('mouseenter', '.dimasmenuMenuTab', function(e) {
 		e.stopPropagation();
 

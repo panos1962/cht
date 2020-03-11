@@ -1029,6 +1029,11 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 		data('paravidosData', paravidos), 'success');
 		Proklisi.menuTabFyi(paravidosDOM, paravidos.diataxiGet());
 
+		// Λαμβάνουμε υπόψη την τρέχουσα κατάσταση επιβολής διοικητικών
+		// κυρώσεων.
+
+		let monopro = Proklisi.monoproTabDOM.data('monopro');
+
 		pd.arrayWalk([
 			'pinakides',
 			'adia',
@@ -1036,6 +1041,17 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 			'prostimo',
 		], (x) => {
 			let val = paravidos.kirosiGet(x, katigoria);
+
+			if (Proklisi.kirosiList.hasOwnProperty(x)) {
+				if (monopro)
+				Proklisi.kirosiList[x] = 0;
+
+				else {
+					Proklisi.kirosiList[x] = val;
+					val = 0;
+				}
+			}
+
 			let kirosiDOM = Proklisi[x + 'DOM'];
 			let paletaDOM = kirosiDOM.
 			children('.pandoraPaleta');

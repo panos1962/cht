@@ -70,6 +70,12 @@ Proklisi.kirosiSetup = () => {
 	append($('<div>').addClass('proklisiMenuTabLabel').
 	html('Πρόστιμο'))).
 
+	append(Proklisi.monoproTabDOM = $('<div>').
+	data('exec', Proklisi.monoproToggle).
+	addClass('proklisiMenuTab').
+	append($('<div>').addClass('proklisiMenuTabFyi')).
+	append($('<div>').addClass('proklisiMenuTabLabel'))).
+
 	append(Proklisi.oximaKatigoriaTabDOM = $('<div>').
 	data('exec', Proklisi.oximaKatigoriaExec).
 	addClass('proklisiMenuTab').
@@ -82,6 +88,7 @@ Proklisi.kirosiSetup = () => {
 	adiaSetup().
 	diplomaSetup().
 	prostimoSetup().
+	monoproSetup().
 	oximaKatigoriaSetup();
 
 	return Proklisi;
@@ -93,36 +100,50 @@ Proklisi.kirosiExec = () => {
 };
 
 Proklisi.kirosiFyiRefresh = () => {
+	let keno = true;
 	let fyi = '';
 
 	let s = Proklisi.oximaKatigoriaTabDOM.children('.proklisiMenuTabFyi').html();
 
-	if (s)
-	fyi = '<div><b>' + s + '</b></div>';
+	if (s) {
+		fyi = '<div><b>' + s + '</b></div>';
+		keno = false;
+	}
 
 	fyi += '<table>';
 
 	s = Proklisi.prostimoTabDOM.children('.proklisiMenuTabFyi').html();
 
-	if (s)
-	fyi += '<tr>' + s + '</tr>';
+	if (s) {
+		fyi += '<tr>' + s + '</tr>';
+		keno = false;
+	}
 
 	s = Proklisi.pinakidesTabDOM.children('.proklisiMenuTabFyi').html();
 
-	if (s)
-	fyi += '<tr>' + s + '</tr>';
+	if (s) {
+		fyi += '<tr>' + s + '</tr>';
+		keno = false;
+	}
 
 	s = Proklisi.adiaTabDOM.children('.proklisiMenuTabFyi').html();
 
-	if (s)
-	fyi += '<tr>' + s + '</tr>';
+	if (s) {
+		fyi += '<tr>' + s + '</tr>';
+		keno = false;
+	}
 
 	s = Proklisi.diplomaTabDOM.children('.proklisiMenuTabFyi').html();
 
-	if (s)
-	fyi += '<tr>' + s + '</tr>';
+	if (s) {
+		fyi += '<tr>' + s + '</tr>';
+		keno = false;
+	}
 
 	fyi += '</table>';
+
+	if (keno)
+	fyi = undefined;
 
 	Proklisi.menuTabFyi(Proklisi.kirosiTabDOM, fyi);
 	return Proklisi;
@@ -134,7 +155,7 @@ Proklisi.pinakidesSetup = () => {
 	Proklisi.pinakidesDOM = Proklisi.enotitaDOM(Proklisi.kirosiDOM).
 	data('titlos', 'Αφαίρεση πινακίδων').
 	data('fyi', 'Πληκτρολογήστε το διάστημα αφαίρεσης πινακίδων (σε ημέρες)').
-	append(pd.paleta({
+	append(Proklisi.pinakidesPaletaDOM = pd.paleta({
 		'paleta': [
 			pd.paletaList['digit'],
 		],
@@ -192,7 +213,7 @@ Proklisi.adiaSetup = () => {
 	Proklisi.adiaDOM = Proklisi.enotitaDOM(Proklisi.kirosiDOM).
 	data('titlos', 'Αφαίρεση αδείας').
 	data('fyi', 'Πληκτρολογήστε το διάστημα αφαίρεσης αδείας (σε ημέρες)').
-	append(pd.paleta({
+	append(Proklisi.adiaPaletaDOM = pd.paleta({
 		'paleta': [
 			pd.paletaList['digit'],
 		],
@@ -250,7 +271,7 @@ Proklisi.diplomaSetup = () => {
 	Proklisi.diplomaDOM = Proklisi.enotitaDOM(Proklisi.kirosiDOM).
 	data('titlos', 'Αφαίρεση διπλώματος οδήγησης').
 	data('fyi', 'Πληκτρολογήστε το διάστημα αφαίρεσης διπλώματος (σε ημέρες)').
-	append(pd.paleta({
+	append(Proklisi.diplomaPaletaDOM = pd.paleta({
 		'paleta': [
 			pd.paletaList['digit'],
 		],
@@ -364,6 +385,78 @@ Proklisi.prostimoCheckData = (paletaDOM) => {
 	}
 
 	Proklisi.kirosiFyiRefresh();
+	return Proklisi;
+};
+
+///////////////////////////////////////////////////////////////////////////////@
+
+// Υπάρχει περίπτωση ο φορέας να μην εφαρμόζει αυστηρά το νόμο με την έννοια
+// της μη επιβολής των προβλεπόμενων διοικητικών κυρώσεων και να προβαίνει
+// μόνο στη βεβαίωση προστίμου ακόμη και ο νόμος προβλέπει και διοικητικές
+// κυρώσεις. Το πρόγραμμα παρέχει αυτήν την ευκολία με το πάτημα σχετικού
+// πλήκτρου το οποίου επιγράφεται "Μόνο πρόστιμο" ή "Όλες οι κυρώσεις".
+
+Proklisi.monoproSetup = () => {
+	Proklisi.monoproToggle();
+	return Proklisi;
+};
+
+Proklisi.monoproToggle = () => {
+	let monopro = Proklisi.monoproTabDOM.data('monopro');
+
+	if (monopro)
+	Proklisi.monoproSet();
+
+	else
+	Proklisi.monoproUnset();
+
+	return Proklisi;
+};
+
+// Ακολουθεί λίστα των «χαλαρών» διοικητικών κυρώσεων, δηλαδή εκείνων των
+// κυρώσεων που επιβάλλονται κατά το δοκούν.
+
+Proklisi.kirosiList = {
+	'pinakides': 0,
+	'adia': 0,
+	'diploma': 0,
+};
+
+Proklisi.monoproSet = function() {
+	pd.objectWalk(Proklisi.kirosiList, function(x, i) {
+		let dom = Proklisi[i + 'TabDOM'];
+		let dat = i + 'Data';
+		let pal = Proklisi[i + 'PaletaDOM'];
+
+		Proklisi.kirosiList[i] = dom.data(dat);
+		dom.data(dat, 0);
+		pal.data('text', 0);
+		Proklisi[i + 'CheckData'](pal);
+	});
+
+	Proklisi.monoproTabDOM.
+	removeData('monopro').
+	html('Όλες οι κυρώσεις');
+
+	return Proklisi;
+};
+
+Proklisi.monoproUnset = function() {
+	pd.objectWalk(Proklisi.kirosiList, function(x, i) {
+		let dom = Proklisi[i + 'TabDOM'];
+		let dat = i + 'Data';
+		let pal = Proklisi[i + 'PaletaDOM'];
+
+		dom.data(dat, Proklisi.kirosiList[i]);
+		pal.data('text', Proklisi.kirosiList[i]);
+		Proklisi.kirosiList[i] = 0;
+		Proklisi[i + 'CheckData'](pal);
+	});
+
+	Proklisi.monoproTabDOM.
+	data('monopro', true).
+	html('Μόνο πρόστιμο');
+
 	return Proklisi;
 };
 

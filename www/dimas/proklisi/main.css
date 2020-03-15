@@ -1,526 +1,381 @@
-/*******************************************************************************
-
-@BEGIN
-
-@COPYRIGHT BEGIN
-Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
-@COPYRIGHT END
-
-@FILETYPE BEGIN
-css
-@FILETYPE END
-
-@FILE BEGIN
-www/dimas/proklisi/main.css —— Αρχείο προδιαγραφών CSS για το πρόγραμμα
-καταχώρησης και επεξεργασίας προ-κλήσεων.
-@FILE END
-
-@HISTORY BEGIN
-Updated: 2020-03-09
-Updated: 2020-03-07
-Updated: 2020-03-06
-Updated: 2020-02-20
-Updated: 2020-01-30
-Created: 2019-12-25
-@HISTORY END
-
-@END
-
-*******************************************************************************/
-
+@import '../../mnt/pandora/lib/pandora.css';
 html {
-	background-color: ivory;
+  background-color: #fffff0;
 }
-
 body {
-	background-color: ivory;
+  background-color: #fffff0;
 }
-
 .proklisiToolbarEconomy {
-	height: 0px !important;
-	padding: 0px !important;
-	border-width: 0px !important;
+  height: 0px !important;
+  padding: 0px !important;
+  border-width: 0px !important;
 }
-
 .proklisiToolbarXristisEconomy {
-	position: absolute !important;
-	top: 30px !important;
-	right: 30px !important;
+  position: absolute !important;
+  top: 30px !important;
+  right: 30px !important;
 }
-
 .proklisiToolbarTitlos {
-	font-weight: bold;
-	color: sienna;
-	text-shadow: 1px 1px 1px #423522;
+  font-weight: bold;
+  color: #a0522d;
+  text-shadow: 1px 1px 1px #423522;
 }
-
 .proklisiTRButton {
-	display: inline-block;
-	padding: 0px 4px;
-
-	color: #d08562;
-	text-shadow: 1px 0px 0px #55055f;
-
-	background-color: #fffbd1;
-	border-style: solid;
-	border-color: #e8dac7;
-	border-width: 1px;
-	border-radius: 5px;
-
-	cursor: pointer;
+  display: inline-block;
+  padding: 0px 4px;
+  color: #d08562;
+  text-shadow: 1px 0px 0px #55055f;
+  background-color: #fffbd1;
+  border-style: solid;
+  border-color: #e8dac7;
+  border-width: 1px;
+  border-radius: 5px;
+  cursor: pointer;
 }
-
 #proklisiToggleFullscreen {
-	opacity: 0.4;
+  opacity: 0.4;
 }
-
 #proklisiToggleFullscreen:hover {
-	opacity: 1;
-	box-shadow: 1px 1px 2px #888888;
+  opacity: 1;
+  box-shadow: 1px 1px 2px #888;
 }
-
 .proklisiRibbonCopyright {
-	display: inline-block;
-	padding-right: 4px;
-	cursor: pointer;
+  display: inline-block;
+  padding-right: 4px;
+  cursor: pointer;
 }
-
 .proklisiRibbonCopyright:hover {
-	text-shadow: 1px 1px 1px #423522;
+  text-shadow: 1px 1px 1px #423522;
 }
-
-/******************************************************************************/
-
 .proklisiEnotita {
-	display: none;
-	overflow: hidden;
+  display: none;
+  overflow: hidden;
 }
-
 .proklisiEnotitaActive {
-	display: block;
+  display: block;
 }
-
 .proklisiMenuLine {
-	display: block;
+  display: block;
 }
-
 .proklisiMenuTab {
-	position: relative;
-	display: inline-flex;
-
-	justify-content: center;
-	align-items: center; 
-	text-align: center;
-	vertical-align: top;
-
-	margin: 8px;
-	padding: 8px;
-
-	width: 160px;
-	height: 100px;
-
-	font-size: 20px;
-	font-weight: bold;
-
-	color: sienna;
-	background-color: #d0cc95;
-	text-shadow: 1px 1px 1px #423522;
-
-	border-style: solid;
-	border-color: khaki;
-	border-width: 4px;
-	border-radius: 4px;
-	box-shadow: 2px 2px 4px #cccccc;
-
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  vertical-align: top;
+  margin: 8px;
+  padding: 8px;
+  width: 160px;
+  height: 100px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #a0522d;
+  background-color: #d0cc95;
+  text-shadow: 1px 1px 1px #423522;
+  border-style: solid;
+  border-color: #f0e68c;
+  border-width: 4px;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px #ccc;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-
 .proklisiMenuTabEconomy {
-	margin: 4px;
-	padding: 2px;
-	border-width: 2px;
+  margin: 4px;
+  padding: 2px;
+  border-width: 2px;
 }
-
 .proklisiMenuTabAtono {
-	opacity: 80%;
+  opacity: 80%;
 }
-
 .proklisiMenuTabCandi {
-	opacity: 100%;
-	color: saddlebrown;
-	text-shadow: 1px 1px 1px #251b08;
-
-	box-shadow: 4px 4px 12px #ababab;
-
-	cursor: pointer;
+  opacity: 100%;
+  color: #8b4513;
+  text-shadow: 1px 1px 1px #251b08;
+  box-shadow: 4px 4px 12px #ababab;
+  cursor: pointer;
 }
-
 .proklisiMenuTabLabel {
-	display: block;
-	line-height: 140%;
-	vertical-align: middle;
+  display: block;
+  line-height: 140%;
+  vertical-align: middle;
 }
-
 .proklisiMenuTabFyi {
-	display: none;
-	padding: 2px;
-
-	max-height: 100%;
-	overflow-y: hidden;
-
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	font-weight: normal;
-	text-shadow: none;
-
-	color: midnightblue;
-	background-color: yellow;
-	border-radius: 2px;
+  display: none;
+  padding: 2px;
+  max-height: 100%;
+  overflow-y: hidden;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 14px;
+  font-weight: normal;
+  text-shadow: none;
+  color: #191970;
+  background-color: #ff0;
+  border-radius: 2px;
 }
-
 .proklisiMenuTabFyi tr {
-	line-height: 90%;
+  line-height: 90%;
 }
-
 .proklisiMenuTabFyiError {
-	color: firebrick;
+  color: #b22222;
 }
-
 .proklisiMenuTabStatusIcon {
-	position: absolute;
-	top: 4px;
-	right: 4px;
-	width: 30px;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 30px;
 }
-
 .proklisiMenuTabSuccess {
-	background-color: #bbe6bb;
+  background-color: #bbe6bb;
 }
-
 .proklisiMenuTabBusy {
-	background-color: gainsboro;
+  background-color: #dcdcdc;
 }
-
 .proklisiMenuTabInactive {
-	opacity: 0.5;
-	cursor: not-allowed;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
-
 .proklisiMenuTabError {
-	background-color: #e29090;
+  background-color: #e29090;
 }
-
 .proklisiEpistrofiBar {
-	display: table;
-	opacity: 0.8;
-
-	margin: 8px;
-	padding: 4px 8px 4px 4px;
-
-	font-size: 20px;
-	font-weight: bold;
-
-	color: #b97c5f;
-	background-color: #d0cc95;
-
-	white-space: nowrap;
-	text-align: center;
-	text-shadow: 1px 1px 1px #423522;
-
-	border-style: solid;
-	border-color: khaki;
-	border-width: 4px;
-	border-radius: 4px;
-
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  display: table;
+  opacity: 0.8;
+  margin: 8px;
+  padding: 4px 8px 4px 4px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #b97c5f;
+  background-color: #d0cc95;
+  white-space: nowrap;
+  text-align: center;
+  text-shadow: 1px 1px 1px #423522;
+  border-style: solid;
+  border-color: #f0e68c;
+  border-width: 4px;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-
 .proklisiEpistrofiBar::before {
-	content: '\21EA';
-	padding-right: 4px;
-
-	color: saddlebrown;
-	text-shadow: none;
+  content: '\21EA';
+  padding-right: 4px;
+  color: #8b4513;
+  text-shadow: none;
 }
-
 .proklisiEpistrofiBar:hover {
-	opacity: 1;
-	color: saddlebrown;
-	text-shadow: 1px 1px 1px #251b08;
-
-	box-shadow: 2px 2px 6px #ababab;
-
-	cursor: pointer;
+  opacity: 1;
+  color: #8b4513;
+  text-shadow: 1px 1px 1px #251b08;
+  box-shadow: 2px 2px 6px #ababab;
+  cursor: pointer;
 }
-
 .proklisiEpistrofiBarEconomy {
-	position: absolute;
-	top: -4px;
-	opacity: 0;
-
-	margin: 4px 2px;
-	padding: 1px 8px 1px 4px;
-	border-width: 1px;
-	border-radius: 2px;
-
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  position: absolute;
+  top: -4px;
+  opacity: 0;
+  margin: 4px 2px;
+  padding: 1px 8px 1px 4px;
+  border-width: 1px;
+  border-radius: 2px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-
 .proklisiMenuEconomy {
-	margin: 16px 2px 2px 2px;
+  margin: 16px 2px 2px 2px;
 }
-
 .proklisiPaletaEconomy {
-	margin: 16px 2px 2px 2px;
-	padding: 2px;
+  margin: 16px 2px 2px 2px;
+  padding: 2px;
 }
-
 .proklisiKirosiFyiLeft {
-	padding-right: 4px;
-	text-align: right;
+  padding-right: 4px;
+  text-align: right;
 }
-
 .proklisiKirosiFyiRight {
-	text-align: left;
+  text-align: left;
 }
-
 .proklisiOximaTiposNotice {
-	color: firebrick;
-	text-shadow: 1px 1px 1px black;
-	background-color: lightblue;
-	font-weight: bold;
+  color: #b22222;
+  text-shadow: 1px 1px 1px #000;
+  background-color: #add8e6;
+  font-weight: bold;
 }
-
 .proklisiOximaKatastasiNotice {
-	color: red;
-	text-shadow: 1px 1px 1px yellow;
-	background-color: black;
-	font-weight: bold;
+  color: #f00;
+  text-shadow: 1px 1px 1px #ff0;
+  background-color: #000;
+  font-weight: bold;
 }
-
 .proklisiButton {
-	display: inline-block;
-
-	margin: 8px;
-	padding: 4px 8px 4px 4px;
-
-	font-size: 20px;
-	font-weight: bold;
-
-	color: #906651;
-	background-color: #e8e8e8;
-
-	text-align: center;
-	text-shadow: 1px 1px 1px #2d6d6d;
-
-	border-style: solid;
-	border-color: #d2d0c2;
-	border-width: 4px;
-	border-radius: 4px;
-
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
+  display: inline-block;
+  margin: 8px;
+  padding: 4px 8px 4px 4px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #906651;
+  background-color: #e8e8e8;
+  text-align: center;
+  text-shadow: 1px 1px 1px #2d6d6d;
+  border-style: solid;
+  border-color: #d2d0c2;
+  border-width: 4px;
+  border-radius: 4px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
-
 .proklisiButton:hover {
-	opacity: 1;
-	color: #54450c;
-	background-color: #fffdb6;
-	text-shadow: 1px 1px 1px #845e19;
-
-	border-color: #ffd79a;
-	box-shadow: 2px 2px 6px #ababab;
-
-	cursor: pointer;
+  opacity: 1;
+  color: #54450c;
+  background-color: #fffdb6;
+  text-shadow: 1px 1px 1px #845e19;
+  border-color: #ffd79a;
+  box-shadow: 2px 2px 6px #ababab;
+  cursor: pointer;
 }
-
 .proklisiButtonEconomy {
-	margin: 2px 4px;
-	padding: 2px 4px 2px 4px;
-
-	border-width: 2px;
-	border-radius: 4px;
+  margin: 2px 4px;
+  padding: 2px 4px 2px 4px;
+  border-width: 2px;
+  border-radius: 4px;
 }
-
-/*////////////////////////////////////////////////////////////////////////////*/
-
 .proklisiMarkaContainer {
-	position: relative;
-	display: inline-block;
-	opacity: 0.7;
-
-	margin: 3.6px;
-	padding-top: 2px;
-	width: 50px;
-
-	background-color: #ffffff;
-
-	border-style: solid;
-	border-width: 1px;
-	border-color: gray;
-	border-radius: 4px;
+  position: relative;
+  display: inline-block;
+  opacity: 0.7;
+  margin: 3.6px;
+  padding-top: 2px;
+  width: 50px;
+  background-color: #fff;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #808080;
+  border-radius: 4px;
 }
-
 .proklisiMarkaContainer:hover {
-	opacity: 1.0;
-	border-color: #0400ff;
-	box-shadow: 2px 2px 4px #316954;
-	cursor: pointer;
+  opacity: 1;
+  border-color: #0400ff;
+  box-shadow: 2px 2px 4px #316954;
+  cursor: pointer;
 }
-
 .proklisiMarkaImage {
-	width: 100%;
+  width: 100%;
 }
-
 .proklisiMarkaEpilogi {
-	opacity: 1.0;
-	border-color: red;
+  opacity: 1;
+  border-color: #f00;
 }
-
 .proklisiMarkaCheck {
-	position: absolute;
-	top: -5px;
-	right: -10px;
-	width: 32px;
-	opacity: 0.9;
+  position: absolute;
+  top: -5px;
+  right: -10px;
+  width: 32px;
+  opacity: 0.9;
 }
-
-/*////////////////////////////////////////////////////////////////////////////*/
-
 .proklisiXromaContainer {
-	position:relative;
-	display: inline-block;
-
-	padding: 4px;
-	margin: 2px 4.6px;
-	width: 40px;
-	height: 40px;
-
-	border-style: solid;
-	border-width: 1px;
-	border-color: gray;
-	border-radius: 4px;
+  position: relative;
+  display: inline-block;
+  padding: 4px;
+  margin: 2px 4.6px;
+  width: 40px;
+  height: 40px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #808080;
+  border-radius: 4px;
 }
-
 .proklisiXromaContainer:hover {
-	padding: 2px;
-	border-width: 3px;
-	border-color: #ff4500;
-	cursor: pointer;
+  padding: 2px;
+  border-width: 3px;
+  border-color: #ff4500;
+  cursor: pointer;
 }
-
 .proklisiXroma {
-	position: relative;
-	width: 100%;
-	height: 100%;
-	border-radius: 2px;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 2px;
 }
-
 .proklisiXromaEpilogi {
-	border-color: red;
+  border-color: #f00;
 }
-
 .proklisiXromaCheck {
-	position: absolute;
-	top: -10px;
-	right: -12px;
-	width: 32px;
-	opacity: 0.9;
+  position: absolute;
+  top: -10px;
+  right: -12px;
+  width: 32px;
+  opacity: 0.9;
 }
-
-/*////////////////////////////////////////////////////////////////////////////*/
-
 .proklisiTiposContainer {
-	position:relative;
-	display: inline-block;
-	padding: 4px;
+  position: relative;
+  display: inline-block;
+  padding: 4px;
 }
-
 .proklisiTiposContainerCandi {
-	padding: 2px;
-	cursor: pointer;
+  padding: 2px;
+  cursor: pointer;
 }
-
 .proklisiTipos {
-	display: inline-block;
-	border-radius: 2px;
-
-	padding: 2px 4px;
-
-	color: #3c3c3c;
-	background-color: ivory;
-
-	border-style: solid;
-	border-width: 1px;
-	border-color: gray;
-	border-radius: 4px;
+  display: inline-block;
+  border-radius: 2px;
+  padding: 2px 4px;
+  color: #3c3c3c;
+  background-color: #fffff0;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #808080;
+  border-radius: 4px;
 }
-
 .proklisiTiposCandi {
-	text-shadow: 0px 1px 1px #000000;
-	color: #000000;
-	background-color: yellow;
-	border-width: 3px;
-	border-color: midnightblue;
+  text-shadow: 0px 1px 1px #000;
+  color: #000;
+  background-color: #ff0;
+  border-width: 3px;
+  border-color: #191970;
 }
-
 .proklisiTiposEpilogi {
-	border-color: red;
+  border-color: #f00;
 }
-
 .proklisiTiposCheck {
-	position: absolute;
-	top: -4px;
-	right: -2px;
-	width: 32px;
-	opacity: 0.9;
+  position: absolute;
+  top: -4px;
+  right: -2px;
+  width: 32px;
+  opacity: 0.9;
 }
-
-/*////////////////////////////////////////////////////////////////////////////*/
-
 .proklisiToposimoContainer {
-	position:relative;
-	display: inline-block;
-	padding: 4px;
+  position: relative;
+  display: inline-block;
+  padding: 4px;
 }
-
 .proklisiToposimoContainerCandi {
-	padding: 2px;
-	cursor: pointer;
+  padding: 2px;
+  cursor: pointer;
 }
-
 .proklisiToposimo {
-	display: inline-block;
-	border-radius: 2px;
-
-	padding: 2px 4px;
-
-	color: #3c3c3c;
-	background-color: ivory;
-
-	border-style: solid;
-	border-width: 1px;
-	border-color: gray;
-	border-radius: 4px;
+  display: inline-block;
+  border-radius: 2px;
+  padding: 2px 4px;
+  color: #3c3c3c;
+  background-color: #fffff0;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #808080;
+  border-radius: 4px;
 }
-
 .proklisiToposimoCandi {
-	text-shadow: 0px 1px 1px #000000;
-	color: #000000;
-	background-color: yellow;
-	border-width: 3px;
-	border-color: midnightblue;
+  text-shadow: 0px 1px 1px #000;
+  color: #000;
+  background-color: #ff0;
+  border-width: 3px;
+  border-color: #191970;
 }
-
-/*////////////////////////////////////////////////////////////////////////////*/

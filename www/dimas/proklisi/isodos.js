@@ -112,10 +112,10 @@ Proklisi.isodosAstinomikosSetup = () => {
 };
 
 Proklisi.isodosAstinomikosScribe = (paletaDOM) => {
-	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
+	let inputDOM = paletaDOM.children('.pnd-paletaInput');
 	let text = inputDOM.val();
 	let list = pd.gramata(text);
-	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	let zoomDOM = paletaDOM.children('.pnd-paletaZoom');
 
 	zoomDOM.empty();
 
@@ -153,10 +153,10 @@ Proklisi.isodosAstinomikosScribe = (paletaDOM) => {
 	if (!match.length)
 	return pd;
 
-	zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	zoomDOM = paletaDOM.children('.pnd-paletaZoom');
 	pd.arrayWalk(match, (x) => {
 		$('<div>').
-		addClass('pandoraPaletaZoomGrami').
+		addClass('pnd-paletaZoomGrami').
 		data('value', x).
 		text('[' + x.kodikos + '] ' + x.onomateponimo).
 		appendTo(zoomDOM);

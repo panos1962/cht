@@ -284,7 +284,7 @@ Proklisi.economySetup = (economyMode) => {
 		$('.proklisiMenuTab').addClass('proklisiMenuTabEconomy');
 		$('.proklisiEpistrofiBar').addClass('proklisiEpistrofiBarEconomy');
 		$('.proklisiButton').addClass('proklisiButtonEconomy');
-		$('.pandoraPaleta').addClass('proklisiPaletaEconomy');
+		$('.pnd-paleta').addClass('proklisiPaletaEconomy');
 	}
 
 	else {
@@ -292,7 +292,7 @@ Proklisi.economySetup = (economyMode) => {
 		$('.proklisiMenuTabEconomy').removeClass('proklisiMenuTabEconomy');
 		$('.proklisiEpistrofiBarEconomy').removeClass('proklisiEpistrofiBarEconomy');
 		$('.proklisiButtonEconomy').removeClass('proklisiButtonEconomy');
-		$('.pandoraPaletaEconomy').removeClass('proklisiPaletaEconomy');
+		$('.pnd-paletaEconomy').removeClass('proklisiPaletaEconomy');
 	}
 
 	return Proklisi;
@@ -742,14 +742,14 @@ Proklisi.toposSetup = () => {
 		if (!toposimo)
 		return;
 
-		let paletaDOM = Proklisi.toposDOM.children('.pandoraPaleta');
-		let monitorDOM = paletaDOM.children('.pandoraPaletaMonitor');
+		let paletaDOM = Proklisi.toposDOM.children('.pnd-paleta');
+		let monitorDOM = paletaDOM.children('.pnd-paletaMonitor');
 		let topos = monitorDOM.text();
 
 		topos = Proklisi.toposimoFix(topos, toposimo);
 		monitorDOM.text(topos);
 		paletaDOM.data('text', topos);
-		paletaDOM.children('.pandoraPaletaInput').val(topos);
+		paletaDOM.children('.pnd-paletaInput').val(topos);
 		Proklisi.toposCheckData(paletaDOM);
 	});
 
@@ -815,10 +815,10 @@ Proklisi.toposExec = () => {
 };
 
 Proklisi.toposScribe = (paletaDOM) => {
-	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
+	let inputDOM = paletaDOM.children('.pnd-paletaInput');
 	let text = Proklisi.toposScribeText(inputDOM);
 	let list = pd.gramata(text);
-	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	let zoomDOM = paletaDOM.children('.pnd-paletaZoom');
 
 	zoomDOM.empty();
 
@@ -852,10 +852,10 @@ Proklisi.toposScribe = (paletaDOM) => {
 	if (!match.length)
 	return pd;
 
-	zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	zoomDOM = paletaDOM.children('.pnd-paletaZoom');
 	pd.arrayWalk(match, (x) => {
 		$('<div>').
-		addClass('pandoraPaletaZoomGrami').
+		addClass('pnd-paletaZoomGrami').
 		text(x).
 		appendTo(zoomDOM);
 	});
@@ -954,15 +954,15 @@ Proklisi.paravidosSetup = () => {
 Proklisi.paravidosExec = () => {
 	Proklisi.enotitaActivate(Proklisi.paravidosDOM);
 	Proklisi.paravidosScribe(Proklisi.paravidosDOM.
-	find('.pandoraPaleta').first());
+	find('.pnd-paleta').first());
 	return Proklisi;
 };
 
 Proklisi.paravidosScribe = (paletaDOM) => {
-	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
+	let inputDOM = paletaDOM.children('.pnd-paletaInput');
 	let text = inputDOM.val();
 	let list = pd.gramata(text);
-	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	let zoomDOM = paletaDOM.children('.pnd-paletaZoom');
 
 	zoomDOM.empty();
 
@@ -998,10 +998,10 @@ Proklisi.paravidosScribe = (paletaDOM) => {
 	if (!match.length)
 	return pd;
 
-	zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	zoomDOM = paletaDOM.children('.pnd-paletaZoom');
 	pd.arrayWalk(match, (x) => {
 		$('<div>').
-		addClass('pandoraPaletaZoomGrami').
+		addClass('pnd-paletaZoomGrami').
 		data('value', x).
 		text(x.diataxiGet() + ' ' + x.perigrafi).
 		appendTo(zoomDOM);
@@ -1013,7 +1013,7 @@ Proklisi.paravidosScribe = (paletaDOM) => {
 Proklisi.paravidosCheckData = (paletaDOM) => {
 	if (paletaDOM === undefined)
 	paletaDOM = Proklisi.paravidosDOM.
-	find('.pandoraPaleta').first();
+	find('.pnd-paleta').first();
 
 	let paravidosDOM = Proklisi.paravidosTabDOM;
 	let paravidos = paletaDOM.data('value');
@@ -1054,7 +1054,7 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 
 			let kirosiDOM = Proklisi[x + 'DOM'];
 			let paletaDOM = kirosiDOM.
-			children('.pandoraPaleta');
+			children('.pnd-paleta');
 
 			if (val)
 			paletaDOM.
@@ -1107,7 +1107,7 @@ proklisi.errors = [];
 };
 
 Proklisi.neaProklisi = () => {
-	$('.pandoraPaleta').each(function() {
+	$('.pnd-paleta').each(function() {
 		return true;
 	});
 
@@ -1124,9 +1124,9 @@ Proklisi.neaProklisi = () => {
 		'prostimo',
 	], (x) => {
 		let enotitaDOM = Proklisi[x + 'DOM'];
-		let paletaDOM = enotitaDOM.children('.pandoraPaleta');
-		let monitorDOM = paletaDOM.children('.pandoraPaletaMonitor');
-		let inputDOM = paletaDOM.children('.pandoraPaletaInput');
+		let paletaDOM = enotitaDOM.children('.pnd-paleta');
+		let monitorDOM = paletaDOM.children('.pnd-paletaMonitor');
+		let inputDOM = paletaDOM.children('.pnd-paletaInput');
 		let text = Proklisi.paletaDefaultText[x];
 
 		if (!text)

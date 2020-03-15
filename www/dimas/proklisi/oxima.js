@@ -150,7 +150,7 @@ Proklisi.oximaMarkaSetup = () => {
 
 Proklisi.oximaMarkaRafiClear = () => {
 	Proklisi.oximaMarkaRafiDOM.
-	children('.pandoraPaletaRafiContent').
+	children('.pnd-paletaRafiContent').
 	children('.proklisiMarkaContainer').
 	removeClass('proklisiMarkaEpilogi').
 	children('.proklisiMarkaCheck').
@@ -238,7 +238,7 @@ Proklisi.oximaXromaSetup = () => {
 
 Proklisi.oximaXromaRafiClear = () => {
 	Proklisi.oximaXromaRafiDOM.
-	children('.pandoraPaletaRafiContent').
+	children('.pnd-paletaRafiContent').
 	children('.proklisiXromaContainer').
 	removeClass('proklisiXromaEpilogi').
 	children('.proklisiXroma').
@@ -341,7 +341,7 @@ Proklisi.oximaTiposSetup = () => {
 
 Proklisi.oximaTiposRafiClear = () => {
 	Proklisi.oximaTiposRafiDOM.
-	children('.pandoraPaletaRafiContent').
+	children('.pnd-paletaRafiContent').
 	children('.proklisiTiposContainer').
 	removeClass('proklisiTiposEpilogi').
 	children('.proklisiTiposCheck').

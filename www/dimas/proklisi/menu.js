@@ -286,7 +286,7 @@ Proklisi.enotitaActivate = (enotitaDOM) => {
 	// κυρίως για να έχουμε focus στο σχετικό input field, εφόσον
 	// αυτό εμφανίζεται.
 
-	pd.paletaActivate(enotitaDOM.find('.pandoraPaleta').first());
+	pd.paletaActivate(enotitaDOM.find('.pnd-paleta').first());
 
 	return Proklisi;
 };

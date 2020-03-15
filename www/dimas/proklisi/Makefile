@@ -10,12 +10,16 @@
 ###############################################################################@
 
 PANDORA = ../../../mnt/pandora
+CSS = main.css
 BUNDLEJS = bundle.js
 BROWSERIFY_OPTS = -t envify -p tinyify
 BROWSERIFY_OPTS = -t envify
 
 .PHONY: all
-all: $(BUNDLEJS)
+all: $(CSS) $(BUNDLEJS)
+
+$(CSS): main.styl
+	stylus --print main.styl >$@
 
 $(BUNDLEJS): \
 	$(PANDORA)/lib/pandoraCore.js \

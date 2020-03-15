@@ -474,10 +474,10 @@ Proklisi.oximaKatigoriaSetup = () => {
 		'change': Proklisi.oximaKatigoriaCheckData,
 	}).data('match', Dimas.paravidos.oximaKatigoria);
 
-	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom').empty();
+	let zoomDOM = paletaDOM.children('.pnd-paletaZoom').empty();
 
 	pd.arrayWalk(Dimas.paravidos.oximaKatigoria, (x) => $('<div>').
-	addClass('pandoraPaletaZoomGrami').
+	addClass('pnd-paletaZoomGrami').
 	text(x).
 	appendTo(zoomDOM));
 
@@ -497,7 +497,7 @@ Proklisi.oximaKatigoriaExec = () => {
 Proklisi.oximaKatigoriaCheckData = (paletaDOM) => {
 	if (paletaDOM === undefined)
 	paletaDOM = Proklisi.oximaKatigoriaDOM.
-	find('.pandoraPaleta').first();
+	find('.pnd-paleta').first();
 
 	let oximaKatigoria = paletaDOM.data('text');
 

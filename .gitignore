@@ -16,3 +16,5 @@ www/mnt/*
 !www/mnt/README.txt
 www/tmp/*
 node_modules/*
+
+www/dimas/main.css

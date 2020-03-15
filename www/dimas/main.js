@@ -274,10 +274,10 @@ Dimasmenu.isodosAstinomikosSetup = () => {
 };
 
 Dimasmenu.isodosAstinomikosScribe = (paletaDOM) => {
-	let inputDOM = paletaDOM.children('.pandoraPaletaInput');
+	let inputDOM = paletaDOM.children('.pnd-paletaInput');
 	let text = inputDOM.val();
 	let list = pd.gramata(text);
-	let zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	let zoomDOM = paletaDOM.children('.pnd-paletaZoom');
 
 	zoomDOM.empty();
 
@@ -315,10 +315,10 @@ Dimasmenu.isodosAstinomikosScribe = (paletaDOM) => {
 	if (!match.length)
 	return pd;
 
-	zoomDOM = paletaDOM.children('.pandoraPaletaZoom');
+	zoomDOM = paletaDOM.children('.pnd-paletaZoom');
 	pd.arrayWalk(match, (x) => {
 		$('<div>').
-		addClass('pandoraPaletaZoomGrami').
+		addClass('pnd-paletaZoomGrami').
 		data('value', x).
 		text('[' + x.kodikos + '] ' + x.onomateponimo).
 		appendTo(zoomDOM);
@@ -791,7 +791,7 @@ Dimasmenu.enotitaActivate = (enotitaDOM) => {
 	// κυρίως για να έχουμε focus στο σχετικό input field, εφόσον
 	// αυτό εμφανίζεται.
 
-	pd.paletaActivate(enotitaDOM.find('.pandoraPaleta').first());
+	pd.paletaActivate(enotitaDOM.find('.pnd-paleta').first());
 
 	return Dimasmenu;
 };

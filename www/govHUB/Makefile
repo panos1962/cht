@@ -20,19 +20,25 @@
 ##
 ###############################################################################@
 
+PANDORA = ../mnt/pandora
+PANDORA_CSS = $(PANDORA)/www/lib/pandora.css
+
+CSS = main.css
 BUNDLEJS = bundle.js
 BROWSERIFY_OPTS = -t envify -p tinyify
 BROWSERIFY_OPTS = -t envify
 
 .PHONY: all
-all:
-	@make $(BUNDLEJS)
+all: $(BUNDLEJS) $(CSS)
 
 .PHONY: test
 test:
 	@make cleanup
 	@make all
 	#@(google-chrome --new-window http://localhost/cht/govHUB/index.php)
+
+$(CSS): main.styl
+	stylus --print main.styl >$@
 
 $(BUNDLEJS): \
 	../../mnt/pandora/lib/pandoraClient.js \

@@ -123,6 +123,7 @@ Proklisi.eponimiXrisi = () => {
 	economySetup().
 	odosLoad([
 		Proklisi.paravidosLoad,
+		Proklisi.paralogosLoad,
 		Proklisi.astinomikosLoad,
 		() => Proklisi.activate(Proklisi.menuKlisiDOM),
 	]);
@@ -697,6 +698,7 @@ Proklisi.toposSetup = () => {
 		'submit': () => Proklisi.enotitaRise(Proklisi.menuKlisiDOM),
 		'change': Proklisi.toposCheckData,
 		'helper': 'Πληκτρολογήστε τον αριθμό',
+		'post': ' ',
 	});
 
 	let toposimaDOM = $('<div>');
@@ -816,7 +818,7 @@ Proklisi.toposExec = () => {
 
 Proklisi.toposScribe = (paletaDOM) => {
 	let inputDOM = paletaDOM.children('.pnd-paletaInput');
-	let text = Proklisi.toposScribeText(inputDOM);
+	let text = Proklisi.toposScribeText(paletaDOM, inputDOM);
 	let list = pd.gramata(text);
 	let zoomDOM = paletaDOM.children('.pnd-paletaZoom');
 
@@ -863,8 +865,9 @@ Proklisi.toposScribe = (paletaDOM) => {
 	return pd;
 };
 
-Proklisi.toposScribeText = (inputDOM) => {
-	let s = inputDOM.removeData('ante').val().replace(/\s+$/, '');
+Proklisi.toposScribeText = (paletaDOM, inputDOM) => {
+	paletaDOM.removeData('ante');
+	let s = inputDOM.val().replace(/\s+$/, '');
 
 	if (s === undefined)
 	return '';
@@ -896,7 +899,7 @@ Proklisi.toposScribeText = (inputDOM) => {
 			if (s)
 			s += ' ';
 
-			inputDOM.data('ante', s);
+			paletaDOM.data('ante', s);
 			s = '';
 
 			for (j = i + 1; j < lexi.length; j++)
@@ -946,6 +949,7 @@ Proklisi.paravidosSetup = () => {
 		'change': Proklisi.paravidosCheckData,
 		'zoom': true,
 		'text': Proklisi.paletaDefaultText.paravidos,
+		'helper': Proklisi.paravidosEpilogi,
 	}));
 
 	return Proklisi;
@@ -1076,6 +1080,11 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 	Proklisi.menuTabFyi(paravidosDOM);
 
 	return Proklisi;
+};
+
+Proklisi.paravidosEpilogi = (candiDOM, paletaDOM) => {
+	console.log(candiDOM.text());
+	return pd;
 };
 
 ///////////////////////////////////////////////////////////////////////////////@
@@ -1240,6 +1249,62 @@ Proklisi.paravidosLoad = (chain) => {
 			pd.arrayWalk(Proklisi.paravidosList, (x, i) =>
 				Proklisi.paravidosList[i] = Dimas.paravidos.
 					fromParavidosList(x));
+			next(chain);
+		},
+		'error': (err) => {
+			console.error(err);
+			next(chain);
+		},
+	});
+
+	return Proklisi;
+};
+
+Proklisi.paralogosLoad = (chain) => {
+	let next = chain.shift();
+
+	if (Proklisi.hasOwnProperty('paralogosList'))
+	return next(chain);
+
+	// Η λίστα "paralogosList" είναι associative αποτελεί παρακολούθημα
+	// του array "paravidosList" και είναι δεικτοδοτημένη με το είδος
+	// παράβασης. Κάθε στοιχείο της λίστας είναι array με τους λόγους
+	// του πατρικού είδους παράβασης.
+
+	Proklisi.paralogosList = {};
+
+	$.post({
+		'url': '../lib/paralogos_list.php',
+		'success': (rsp) => {
+			let list = rsp.split(/[\n\r]+/);
+			list.pop();
+			pd.arrayWalk(list, (x, i) => {
+				// Μετατρέπουμε σε "Dimas.paralogos" object
+				// τον λόγο παράβασης και αφού κρατήσουμε σε
+				// μεταβλητή το είδος παράβασης, διαγράφουμε
+				// το είδος από το νεόκοπο object, καθώς το
+				// είδος παράβασης βρίσκεται ήδη στο πατρικό
+				// στοιχείο της λίστας λόγων παράβασης.
+
+				let l = Dimas.paralogos.fromParalogosList(x);
+				let p = l.paravidos;
+				delete l.paravidos;
+
+				// Αν το είδος παράβασης του ανά χείρας λόγου
+				// παράβασης δεν βρίσκεται ήδη στην πατρική
+				// λίστα λόγων παράβασης, εισάγουμε το είδος
+				// παράβασης στη λίστα ως κενό array λόγων
+				// παράβασης του συγκεκριμένου είδους.
+
+				if (!Proklisi.paralogosList.hasOwnProperty(p))
+				Proklisi.paralogosList[p] = [];
+
+				// Τέλος, προσθέτουμε τον ανά χείρας λόγο
+				// παράβασης στο array λόγων παράβασης του
+				// συγκεκριμένου είδους παράβασης.
+
+				Proklisi.paralogosList[p].push(l);
+			});
 			next(chain);
 		},
 		'error': (err) => {

@@ -217,6 +217,30 @@ CREATE TABLE `paravidos` (
 COMMENT = 'Πίνακας ειδών παραβάσεων'
 ;
 
+-- Ο πίνακας "paralogos" περιλαμβάνει τους λόγους για τους οποίους βεβαιώνεται
+-- κάποια παράβαση ΚΟΚ. Πράγματι, πολλές από τις διατάξεις του ΚΟΚ αφορούν σε
+-- ομάδες παραβάσεων που αντιμετωπίζονται με παρόμοιο τρόπο, π.χ. η διάταξη
+-- Ρ-70 της παραγράφου 3 τυ άρθρου 4 του Ν.2696/1999 αφορά σε στάθμευση σε
+-- σε χώρο στάθμευσης ορισμένης κατηγορίας οχημάτων (μόνιμοι κάτοικοι, ΤΑΞΙ
+-- κλπ. Όταν βεβαιώνεται παράβαση τέτοιου είδους διατάξεων είναι απαραίτητο
+-- να αναγράφεται και ο λόγος της συγκεκριμένης παράβασης, π.χ. στάθμευση σε
+-- χώρο μονίμου κατοίκου κλπ.
+
+CREATE TABLE `paralogos` (
+	`paravidos`	VARCHAR(64) NOT NULL COMMENT 'Κωδικός παράβασης',
+	`logos`		TINYINT NOT NULL COMMENT 'Αύξω αριθμός λόγου παράβασης',
+	`perigrafi`	VARCHAR(1024) NOT NULL COMMENT 'Περιγραφή λόγου παράβασης',
+	`anenergos`	DATE NULL DEFAULT NULL COMMENT 'Ημερομηνία απενεργοποίησης',
+
+	PRIMARY KEY (
+		`paravidos`,
+		`logos`
+	) USING BTREE
+)
+
+COMMENT = 'Πίνακας επιμέρους λόγων παράβασης' 
+;
+
 -- Ο πίνακας "proklisi" περιέχει τις βεβαιώσεις παραβάσεων ΚΟΚ σε πρώιμο
 -- στάδιο, δηλαδή κατά τη στιγμή που τις βεβαιώνει και τις καταγράφει ο
 -- αρμόδιος υπάλληλος.
@@ -351,6 +375,16 @@ INTO TABLE `paravidos` (
 	`pinakides`,
 	`adia`,
 	`diploma`
+);
+
+\! echo 'Table `paralogos`…' >[[MONITOR]]
+
+LOAD DATA LOCAL INFILE 'local/database/dimas/paralogos.tsv'
+INTO TABLE `paravidos` (
+	`paravidos`,
+	`logos`,
+	`perigrafi`,
+	`anenergos`
 );
 
 \! echo 'Table `ipalilos`…' >[[MONITOR]]

@@ -33,6 +33,7 @@ session_start();
 pandora::
 document_head([
 	"css" => [
+		"../../mnt/pandora/lib/pandora",
 		"main",
 		"oxima",
 		"klisi",

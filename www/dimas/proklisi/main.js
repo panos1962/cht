@@ -1082,8 +1082,35 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 	return Proklisi;
 };
 
+// Η function "paravidosEpilogi" καλείται κατά το κλικ στη γραμμή είδους
+// παράβασης στην περιοχή του zoom ειδών παράβασης. Αν το είδος παράβασης
+// συνδεύεται από λόγους παράβασης, τότε ανοίγει βεντάλια με τους λόγους
+// παράβασης προκειμένου ο χρήστης να επιλέξει συγκεκριμένο λόγο παράβασης.
+
 Proklisi.paravidosEpilogi = (candiDOM, paletaDOM) => {
-	console.log(candiDOM.text());
+	let paravidos = candiDOM.data('value');
+	let ll = Proklisi.paralogosList[paravidos.kodikos];
+
+	if (!ll)
+	return console.log('EPILOGI ', paravidos.kodikos);
+
+	let anikto = candiDOM.data('anikto');
+
+	if (anikto) {
+		candiDOM.
+		removeData('anikto').
+		children().
+		remove();
+		return pd;
+	}
+
+	candiDOM.data('anikto', true);
+	pd.arrayWalk(ll, (x) => candiDOM.
+	append($('<div>').
+	data('value', x).
+	addClass('proklisiParalogos').
+	text(x.perigrafi)));
+
 	return pd;
 };
 

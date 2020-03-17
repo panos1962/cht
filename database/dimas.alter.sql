@@ -8,7 +8,7 @@ SET default_storage_engine = INNODB
 
 \! echo "Table paralogos…"
 
-DROP TABLE `paralogos`
+DROP TABLE IF EXISTS `paralogos`
 ;
 
 CREATE TABLE `paralogos` (

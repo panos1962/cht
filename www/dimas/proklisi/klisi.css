@@ -79,9 +79,10 @@ Created: 2019-12-25
 	background-color: yellow;
 }
 
-.proklisiKlisiAlert::after {
-	content: '\2753\2757';
+.proklisiKlisiAlert {
+	display: inline-block;
 	margin-left: 4px;
+	padding: 0px 4px;
 }
 
 /*////////////////////////////////////////////////////////////////////////////*/

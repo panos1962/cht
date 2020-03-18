@@ -122,10 +122,14 @@ Proklisi.klisi = function() {
 		this[x] = data;
 	});
 
-	// Εφόσον έχει καθοριστεί λόγος παράβασης, τον εντάσσουμε ως
-	// στοιχείο του είδους παράβασης.
+	// Εφόσον έχει καθοριστεί λόγος παράβασης, τον εντάσσουμε ως στοιχείο
+	// του είδους παράβασης και τον καταργούμε από αυτοτελές στοιχείο τής
+	// πρό-κλησης.
 
+	if (this.paralogos)
 	try {
+		let a = this.paravidos.kodikos.split('@');
+		this.paravidos.kodikos = a[0] + '@' + this.paralogos.logos;
 		this.paravidos.logos = this.paralogos.perigrafi;
 	} catch (e) {}
 
@@ -437,29 +441,33 @@ Proklisi.klisi.prototype.klisiOximaDOM = function(klisiDOM) {
 	if (!this.oxima)
 	return this.errorPush('Όχημα');
 
+	klisiDOM.
+	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ'));
+
+	let enotitaDOM = Proklisi.klisi.enotitaDOM().
+	appendTo(klisiDOM);
+
 	let oxima = this.oxima;
 
-	klisiDOM.
-	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΟΧΗΜΑΤΟΣ')).
-	append(Proklisi.klisi.enotitaDOM().
-	append(Proklisi.klisi.klisiPedioDOM('Αρ. Κυκλοφορίας', oxima.pinakidaGet())));
+	enotitaDOM.
+	append(Proklisi.klisi.klisiPedioDOM('Αρ. Κυκλοφορίας', oxima.pinakidaGet()));
 
 	let x = oxima.markaGet();
 
 	if (x)
-	klisiDOM.
+	enotitaDOM.
 	append(Proklisi.klisi.klisiPedioDOM('Μάρκα', x));
 
 	x = oxima.xromaGet();
 
 	if (x)
-	klisiDOM.
+	enotitaDOM.
 	append(Proklisi.klisi.klisiPedioDOM('Χρώμα', x));
 
 	x = oxima.tiposGet();
 
 	if (x)
-	klisiDOM.
+	enotitaDOM.
 	append(Proklisi.klisi.klisiPedioDOM('Τύπος', x));
 
 	x = oxima.katastasiGet();
@@ -468,9 +476,12 @@ Proklisi.klisi.prototype.klisiOximaDOM = function(klisiDOM) {
 	x = 'ΑΚΑΘΟΡΙΣΤΗ';
 
 	if (x !== 'ΚΙΝΗΣΗ')
+	enotitaDOM.
+	append(Proklisi.klisi.klisiPedioDOM('Κατάσταση',
+	x + '<div class="proklisiKlisiAlert">&#x2753;&#x2757;</div>'));
+
 	klisiDOM.
-	append(Proklisi.klisi.klisiPedioDOM('Κατάσταση', x).
-	addClass('proklisiKlisiAlert'));
+	append(enotitaDOM);
 
 	return this;
 };

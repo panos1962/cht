@@ -23,23 +23,6 @@ Created: 2019-02-10
 
 *******************************************************************************/
 
-.pnd-toolbar {
-	display: none;
-}
-
-.pnd-fyi {
-	display: none;
-}
-
-.pnd-ofelimo {
-	height: auto;
-	overflow-y: visible;
-}
-
-.pnd-ribbon {
-	display: none;
-}
-
 .proklisiEpistrofiBar {
 	display: none;
 }

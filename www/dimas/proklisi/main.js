@@ -1241,6 +1241,7 @@ Proklisi.neaProklisi = () => {
 		'oxima',
 		'ipoxreos',
 		'paravidos',
+		'paralogos',
 		'oximaKatigoria',
 		'kirosi',
 		'pinakides',
@@ -1248,7 +1249,20 @@ Proklisi.neaProklisi = () => {
 		'diploma',
 		'prostimo',
 	], (x) => {
+		let tabDOM = Proklisi[x + 'TabDOM'];
+
+		tabDOM.
+		removeData(x + 'Data');
+
+		Proklisi.
+		menuTabStatus(tabDOM, 'clear').
+		menuTabFyi(tabDOM);
+
 		let enotitaDOM = Proklisi[x + 'DOM'];
+
+		if (!enotitaDOM)
+		return;
+
 		let paletaDOM = enotitaDOM.children('.pnd-paleta');
 		let monitorDOM = paletaDOM.children('.pnd-paletaMonitor');
 		let inputDOM = paletaDOM.children('.pnd-paletaInput');
@@ -1272,15 +1286,6 @@ Proklisi.neaProklisi = () => {
 		inputDOM.
 		removeData('prev').
 		val(text);
-
-		let tabDOM = Proklisi[x + 'TabDOM'];
-
-		tabDOM.
-		removeData(x + 'Data');
-
-		Proklisi.
-		menuTabStatus(tabDOM, 'clear').
-		menuTabFyi(tabDOM);
 	});
 
 	Proklisi.

@@ -935,10 +935,7 @@ Proklisi.paletaDefaultText = {
 };
 
 Proklisi.paravidosSetup = () => {
-	Proklisi.paravidosDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
-	data('titlos', 'Είδος παράβασης').
-	data('fyi', 'Πληκτρολογήστε τη διάταξη ή την περιγραφή της παράβασης').
-	append(pd.paleta({
+	Proklisi.paravidosPaletaDOM = pd.paleta({
 		'paleta': [
 			pd.paletaList['greek'],
 			pd.paletaList['latin'],
@@ -949,8 +946,22 @@ Proklisi.paravidosSetup = () => {
 		'change': Proklisi.paravidosCheckData,
 		'zoom': true,
 		'text': Proklisi.paletaDefaultText.paravidos,
-		'helper': Proklisi.paravidosEpilogi,
-	}));
+		'helper': Proklisi.paravidosClick,
+	});
+
+	Proklisi.paravidosDOM = Proklisi.enotitaDOM(Proklisi.menuKlisiDOM).
+	data('titlos', 'Είδος παράβασης').
+	data('fyi', 'Πληκτρολογήστε τη διάταξη ή την περιγραφή της παράβασης').
+	append(Proklisi.paravidosPaletaDOM);
+
+	Proklisi.paravidosPaletaDOM.
+	on('click', '.proklisiParalogos', function(e) {
+		e.stopPropagation();
+		Proklisi.paravidosEpilogi(
+			$(this).parent().data('value'),
+			$(this).data('value'),
+		);
+	});
 
 	return Proklisi;
 };
@@ -1082,29 +1093,23 @@ Proklisi.paravidosCheckData = (paletaDOM) => {
 	return Proklisi;
 };
 
-// Η function "paravidosEpilogi" καλείται κατά το κλικ στη γραμμή είδους
+// Η function "paravidosClick" καλείται κατά το κλικ στη γραμμή είδους
 // παράβασης στην περιοχή του zoom ειδών παράβασης. Αν το είδος παράβασης
 // συνδεύεται από λόγους παράβασης, τότε ανοίγει βεντάλια με τους λόγους
 // παράβασης προκειμένου ο χρήστης να επιλέξει συγκεκριμένο λόγο παράβασης.
 
-Proklisi.paravidosEpilogi = (candiDOM, paletaDOM) => {
+Proklisi.paravidosClick = (candiDOM, paletaDOM) => {
 	let paravidos = candiDOM.data('value');
 	let ll = Proklisi.paralogosList[paravidos.kodikos];
 
 	if (!ll)
-	return console.log('EPILOGI ', paravidos.kodikos);
+	return Proklisi.paravidosEpilogi(paravidos);
 
-	let anikto = candiDOM.data('anikto');
-
-	if (anikto) {
-		candiDOM.
-		removeData('anikto').
-		children().
-		remove();
-		return pd;
-	}
+	if (candiDOM.data('anikto'))
+	return candiDOM.removeData('anikto').children().remove();
 
 	candiDOM.data('anikto', true);
+
 	pd.arrayWalk(ll, (x) => candiDOM.
 	append($('<div>').
 	data('value', x).
@@ -1112,6 +1117,33 @@ Proklisi.paravidosEpilogi = (candiDOM, paletaDOM) => {
 	text(x.perigrafi)));
 
 	return pd;
+};
+
+Proklisi.paravidosEpilogi = (paravidos, paralogos) => {
+	let paletaDOM = Proklisi.paravidosPaletaDOM;
+	let tabDOM = Proklisi.paravidosTabDOM;
+
+	Proklisi.paravidosCheckData(paletaDOM);
+
+	tabDOM.
+	data('paravidosData', paravidos).
+	data('paralogosData', paralogos);
+
+	Proklisi.menuTabStatus(tabDOM, paravidos ? 'success' : 'clear');
+
+	let fyi = '';
+
+	if (paravidos)
+	fyi = pd.strPush(fyi, paravidos.diataxiGet());
+
+	if (paralogos)
+	fyi = pd.strPush(fyi, paralogos.perigrafi, '<br>');
+
+	Proklisi.menuTabFyi(tabDOM, fyi);
+
+	Proklisi.paravidosPaletaDOM.
+	children('.pnd-paletaZoom').
+	empty();
 };
 
 ///////////////////////////////////////////////////////////////////////////////@

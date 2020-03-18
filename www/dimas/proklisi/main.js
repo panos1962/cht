@@ -29,6 +29,9 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-03-18
+// Updated: 2020-03-17
+// Updated: 2020-03-16
 // Updated: 2020-03-09
 // Updated: 2020-03-07
 // Updated: 2020-03-06
@@ -1140,10 +1143,8 @@ Proklisi.paravidosEpilogi = (paravidos, paralogos) => {
 	fyi = pd.strPush(fyi, paralogos.perigrafi, '<br>');
 
 	Proklisi.menuTabFyi(tabDOM, fyi);
-
-	Proklisi.paravidosPaletaDOM.
-	children('.pnd-paletaZoom').
-	empty();
+	Proklisi.paravidosPaletaDOM.children('.pnd-paletaZoom').empty();
+	Proklisi.enotitaRise(Proklisi.menuKlisiDOM);
 };
 
 ///////////////////////////////////////////////////////////////////////////////@

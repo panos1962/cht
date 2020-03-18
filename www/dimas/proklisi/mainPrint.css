@@ -23,17 +23,21 @@ Created: 2019-02-10
 
 *******************************************************************************/
 
-#pandoraToolbar {
+.pnd-toolbar {
 	display: none;
 }
 
-#pandoraFyi {
+.pnd-fyi {
 	display: none;
 }
 
-#pandoraOfelimo {
+.pnd-ofelimo {
 	height: auto;
 	overflow-y: visible;
+}
+
+.pnd-ribbon {
+	display: none;
 }
 
 .proklisiEpistrofiBar {
@@ -60,6 +64,6 @@ Created: 2019-02-10
 	display: none;
 }
 
-#pandoraRibbon {
+.proklisiKlisiIpovoliSection {
 	display: none;
 }

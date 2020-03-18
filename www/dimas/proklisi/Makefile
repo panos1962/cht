@@ -10,21 +10,22 @@
 ###############################################################################@
 
 PANDORA = ../../../mnt/pandora
-PANDORA_CSS = $(PANDORA)/www/lib/pandora.css
 
-CSS = main.css
+MAIN_CSS = main.css
+DEBUG_CSS = mainDebug.css
+
 BUNDLEJS = bundle.js
 BROWSERIFY_OPTS = -t envify -p tinyify
 BROWSERIFY_OPTS = -t envify
 
 .PHONY: all
-all: $(CSS) $(BUNDLEJS)
+all: $(MAIN_CSS) $(DEBUG_CSS) $(BUNDLEJS)
 
-$(CSS): main.styl $(PANDORA_CSS)
+$(MAIN_CSS): main.styl klisi.styl
 	stylus --print main.styl >$@
 
-$(PANDORA_CSS):
-	:
+$(DEBUG_CSS): mainDebug.styl klisiDebug.styl
+	stylus --print mainDebug.styl >$@
 
 $(BUNDLEJS): \
 	$(PANDORA)/lib/pandoraCore.js \

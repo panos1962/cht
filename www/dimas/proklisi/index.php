@@ -34,10 +34,8 @@ pandora::
 document_head([
 	"css" => [
 		"../../mnt/pandora/lib/pandora",
-		"main",
-		"oxima",
-		"klisi",
 		"../../lib/cht",
+		"main",
 	],
 ])::
 document_body();

@@ -966,6 +966,15 @@ Proklisi.paravidosSetup = () => {
 		);
 	});
 
+	// Για λόγους ομοιομρφίας δημιουργούμε ένα «ορφανό» div για τον λόγο
+	// παράβασης. Πράγματι, ο λόγος παράβασης λειτουργεί στα πλαίσια της
+	// ενότητας που αφορά στο είδος παράβασης επομένως δεν χρειάζεται να
+	// δημιουργήσουμε άλλη ενότητα, ωστόσο προτιμούμε να δημιουργήσουμε
+	// την εν λόγω ενότητα προκειμένου να υπάρχει ομοιομορφία σε άλλες
+	// λειτουργίες της εφαρμογής.
+
+	Proklisi.paralogosTabDOM = $('<div>');
+
 	return Proklisi;
 };
 
@@ -1124,15 +1133,16 @@ Proklisi.paravidosClick = (candiDOM, paletaDOM) => {
 
 Proklisi.paravidosEpilogi = (paravidos, paralogos) => {
 	let paletaDOM = Proklisi.paravidosPaletaDOM;
-	let tabDOM = Proklisi.paravidosTabDOM;
+	let paravidosDOM = Proklisi.paravidosTabDOM;
+	let paralogosDOM = Proklisi.paralogosTabDOM;
 
+	paletaDOM.data('value', paravidos);
 	Proklisi.paravidosCheckData(paletaDOM);
 
-	tabDOM.
-	data('paravidosData', paravidos).
-	data('paralogosData', paralogos);
+	paravidosDOM.data('paravidosData', paravidos);
+	paralogosDOM.data('paralogosData', paralogos);
 
-	Proklisi.menuTabStatus(tabDOM, paravidos ? 'success' : 'clear');
+	Proklisi.menuTabStatus(paravidosDOM, paravidos ? 'success' : 'clear');
 
 	let fyi = '';
 
@@ -1142,7 +1152,7 @@ Proklisi.paravidosEpilogi = (paravidos, paralogos) => {
 	if (paralogos)
 	fyi = pd.strPush(fyi, paralogos.perigrafi, '<br>');
 
-	Proklisi.menuTabFyi(tabDOM, fyi);
+	Proklisi.menuTabFyi(paravidosDOM, fyi);
 	Proklisi.paravidosPaletaDOM.children('.pnd-paletaZoom').empty();
 	Proklisi.enotitaRise(Proklisi.menuKlisiDOM);
 };

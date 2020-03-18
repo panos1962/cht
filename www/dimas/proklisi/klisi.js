@@ -109,6 +109,7 @@ Proklisi.klisi = function() {
 		'ipoxreos',
 		'topos',
 		'paravidos',
+		'paralogos',
 		'oximaKatigoria',
 		'pinakides',
 		'adia',
@@ -120,6 +121,15 @@ Proklisi.klisi = function() {
 		if (data)
 		this[x] = data;
 	});
+
+	// Εφόσον έχει καθοριστεί λόγος παράβασης, τον εντάσσουμε ως
+	// στοιχείο του είδους παράβασης.
+
+	try {
+		this.paravidos.logos = this.paralogos.perigrafi;
+	} catch (e) {}
+
+	delete this.paralogos;
 };
 
 Proklisi.klisi.prototype.kodikosGet = function() {
@@ -328,6 +338,12 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 
 	if (!cols.length)
 	return this;
+
+	if (this.paravidos.logos)
+	cols.push({
+		'k': 'Λόγος',
+		'v': this.paravidos.logos,
+	});
 
 	klisiDOM.
 	append(Proklisi.klisi.enotitaTitlosDOM('ΣΤΟΙΧΕΙΑ ΠΑΡΑΒΑΣΗΣ'));
@@ -708,6 +724,7 @@ Proklisi.klisi.prototype.ipovoliFormat = function() {
 		'ΚΩΔΙΚΟΣ': t.kodikos,
 		'ΔΙΑΤΑΞΗ': t.diataxiGet(),
 		'ΠΑΡΑΒΑΣΗ': t.perigrafi,
+		'ΛΟΓΟΣ': t.logos,
 		'ΤΟΠΟΣ': this.topos,
 		'GEOX': this.geox,
 		'GEOY': this.geoy,

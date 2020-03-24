@@ -1,0 +1,9 @@
+Name                                     Null?    Type
+---------------------------------------- -------- ---------------------------
+COM_ID                                   NOT NULL NUMBER(12)
+ID                                       NOT NULL NUMBER(12)
+KODIKOS                                  NOT NULL VARCHAR2(10)
+DESCRIPTION                              NOT NULL VARCHAR2(100)
+BATHMIDAFLAG                             NOT NULL NUMBER(1)
+THESS_T14KIND                                     VARCHAR2(52)
+

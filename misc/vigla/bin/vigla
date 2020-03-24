@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+pd_sqlplus -F ~/private/erpotadb.cf lib/vigla.sql |\
+sort -t "	" |\
+awk -f lib/vigla.awk lib/spoudes.tsv -

@@ -78,10 +78,15 @@ BEGIN {
 	titepip["6"] = "ΜΕΤΑΠΤΥΧΙΑΚΟ"
 	titepip["7"] = "ΔΙΔΑΚΤΟΡΙΚΟ"
 
-	ipalilos_reset()
-	ipalilos_skip_set()
+	cur_etos = strftime("%Y")
+	cur_minas = strftime("%m")
+	cur_mera = strftime("%d")
+	cur_date = cur_etos "-" cur_minas "-" cur_mera
 
 	errcnt = 0
+
+	ipalilos_reset()
+	ipalilos_skip_set()
 }
 
 # Οι κενές γραμμές αγνοούνται από το πρόγραμμα.
@@ -300,9 +305,9 @@ function parse_ipalilos(			val, nf, errs) {
 
 	# έτος γέννησης #######################################################@
 
-	val = pd_dt2dt($(++nf), "YMD", "Y")
+	val = pd_dt2dt($(++nf), "YMD", "Y-M-D")
 
-	if (val ~ /^[12][0-9][0-9][0-9]$/)
+	if (val == $nf)
 	ipalilos["genisi"] = val
 
 	else
@@ -356,12 +361,14 @@ function print_ipalilos() {
 	return
 
 	print \
+	cur_date, \
 	ipalilos["kodikos"], \
 	ipalilos["eponimo"], \
 	ipalilos["onoma"], \
 	ipalilos["patronimo"], \
 	ipalilos["filo"], \
 	ipalilos["genisi"], \
+	ilikia(ipalilos["genisi"]), \
 	ipalilos["prokat"], \
 	ipalilos["sxeser"], \
 	ipalilos["proslicnt"] + 0, \
@@ -380,6 +387,20 @@ function ipalilos_skip_set() {
 
 function ipalilos_is_skip() {
 	return ("skip" in ipalilos)
+}
+
+function ilikia(genisi,		ymd, dif) {
+	split(genisi, ymd, /[^0-9]/)
+
+	dif = cur_etos - ymd[1]
+
+	if (dif < 30)
+	return "<30"
+
+	if (dif > 50)
+	return ">50"
+
+	return "30-50"
 }
 
 function error(s) {

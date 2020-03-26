@@ -8,4 +8,5 @@ libdir="${CHT_BASEDIR}/lib/ekdda/paratiritirio"
 pd_sqlplus -F "${CHT_BASEDIR}/private/opsoidb.cf" \
 "${libdir}/prosopiko.sql" |\
 sort -t "	" |\
-awk -f "${libdir}/prosopiko.awk" "${libdir}/spoudes.tsv" -
+awk -f "${libdir}/prosopiko.awk" "${libdir}/spoudes.tsv" - |\
+sort -t "	"  -k3,5 -k2n

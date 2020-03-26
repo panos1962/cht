@@ -20,6 +20,13 @@ FROM "MISTERGAZ"
 
 WHERE "COM_ID" = 61
 AND "KATASTASHFLAG" <> 0
+
+ORDER BY
+"EPONYMO",
+"ONOMA",
+"PATRONYMO",
+"KODIKOS"
+
 ;
 
 -- Επιλογή όλων των επαναπροσλήψεων

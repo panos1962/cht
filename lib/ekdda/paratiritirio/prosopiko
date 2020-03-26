@@ -3,9 +3,9 @@
 [ -z "CHT_BASEDIR" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
-vigladir="${CHT_BASEDIR}/misc/vigla"
+libdir="${CHT_BASEDIR}/lib/ekdda/paratiritirio"
 
 pd_sqlplus -F "${CHT_BASEDIR}/private/opsoidb.cf" \
-"${vigladir}/lib/vigla.sql" |\
+"${libdir}/prosopiko.sql" |\
 sort -t "	" |\
-awk -f "${vigladir}/lib/vigla.awk" "${vigladir}/lib/spoudes.tsv" -
+awk -f "${libdir}/prosopiko.awk" "${libdir}/spoudes.tsv" -

@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+###############################################################################@
+#
+# @BEGIN
+# @COPYRIGHT BEGIN
+# Copyright (C) 2019 Panos I. Papadopoulos <panos1962_AT_gmail_DOT_com>
+# @COPYRIGHT END
+#
+# @FILE BEGIN
+# bin/ekdda —— Πρόγραμμα εκκίνησης προγραμμάτων της πλατφόρμας "εκδδα"
+# @FILE END
+#
+# @DESCRIPTION BEGIN
+# Το πρόγραμμα "ekdda" αποτελεί το σημείο εκκίνησης επιμέρους προγραμμάτων που
+# σχετίζονται με τον έναν ή τον άλλο τρόπο με την πλατφόρμα "εκδδα" , δηλαδή
+# με το "ΕΘνικό Κέντρο Δημόσιας Διοίκησης και Αυτοδιοίκησης".
+# @DESCRIPTION END
+#
+# @HISTORY BEGIN
+# Created: 2020-03-26
+# @HISTORY END
+# @END
+#
+###############################################################################@
+
+. "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
+
+usage_list="${pd_progname} prosopiko [ OPTIONS ] [ ARGS ]"
+
+pd_usagemsg="[--help]
+
+Or try one of the following:
+
+${usage_list}"
+
+[ -z "${CHT_BASEDIR}" ] &&
+CHT_BASEDIR="/var/opt/cht"
+
+[ $# -lt 1 ] &&
+set -- "--help"
+
+case "${1}" in
+-h|--help)
+	echo "${usage_list}"
+	exit 0
+	;;
+
+-*)
+	pd_usage
+	;;
+esac
+
+# Το πρώτο argument στο command line είναι το όνομα του (υπο)προγράμματος που
+# επιθυμούμε να τρέξουμε. Τυχόν επόμενα arguments θα περάσουν ως arguments στο
+# συγκεκριμένο πρόγραμμα.
+
+tag="${1}"
+shift
+
+program="${CHT_BASEDIR}/lib/ekdda/${tag}"
+
+[ ! -x "${program}" ] &&
+echo "${pd_progname}: ${tag}: unknown program" >&2 &&
+exit 1
+
+exec "${program}" "$@"

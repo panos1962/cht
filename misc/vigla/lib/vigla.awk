@@ -400,6 +400,32 @@ function ilikia(genisi,		ymd, dif) {
 	if (dif > 50)
 	return ">50"
 
+	if (dif == 30) {
+		if (ymd[2] < cur_minas)
+		return "<30"
+
+		if (ymd[2] > cur_minas)
+		return "30-50"
+
+		if (ymd[3] < cur_mera)
+		return "<30"
+
+		return "30-50"
+	}
+
+	if (dif == 50) {
+		if (ymd[2] < cur_minas)
+		return "30-50"
+
+		if (ymd[2] > cur_minas)
+		return ">50"
+
+		if (ymd[3] < cur_mera)
+		return "30-50"
+
+		return ">50"
+	}
+
 	return "30-50"
 }
 

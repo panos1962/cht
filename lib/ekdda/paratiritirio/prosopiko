@@ -1,18 +1,46 @@
 #!/usr/bin/env bash
 
+pd_tmpmax=2
 . "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
 
-pd_usagemsg="[ -f ] [ --full ] [ -x file ] [ --excel=file ]"
+pd_tmpname[1]="${pd_tmpname[1]}.xls"
+pd_tmpname[2]="${pd_tmpname[2]}.txt"
 
-eval set -- $(pd_parseopts "fx:" "full,excel:" $*)
+ofile="${pd_tmpname[1]}"
+efile="${pd_tmpname[2]}"
+
+pd_sigtrap
+
+pd_usagemsg="[ --full ] [ --excel=file ] [--mail=emails ]"
+
+eval set -- $(pd_parseopts "fx:m:" "full,excel:,mail:" $*)
 
 [ "$1" != "0" ] &&
 pd_usage
 
 shift
 
+mail_push() {
+	local i
+	local err=0
+
+	for i in $(echo "$@" | sed 's;,; ;g')
+	do
+		pd_isemail "${i}" &&
+		mail="${mail} ${i}" &&
+		continue
+
+		pd_errmsg "${i}: invalid email address" &&
+		err=1
+	done
+
+	return ${err}
+}
+
 fulldata=
-post=
+excel=
+mail=
+error=
 
 for opt in "$@"
 do
@@ -22,10 +50,11 @@ do
 		shift
 		;;
 	-x|--excel)
-		post="|ssconvert \
---import-type=Gnumeric_stf:stf_csvtab \
---export-type=Gnumeric_Excel:xlsx2 \
-fd://0 fd://1 >${2}.xls"
+		excel="${2}.xls"
+		shift 2
+		;;
+	-m|--mail)
+		mail_push "$2"
 		shift 2
 		;;
 	--)
@@ -38,10 +67,23 @@ done
 [ $# -ne 0 ] &&
 pd_usage
 
+[ -n "${mail}" ] &&
+[ -z "${excel}" ] &&
+excel="${ofile}"
+
+[ -n "${error}" ] &&
+exit 2
+
 [ -z "CHT_BASEDIR" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
 libdir="${CHT_BASEDIR}/lib/ekdda/paratiritirio"
+
+[ -n "${excel}" ] &&
+post="|ssconvert \
+--import-type=Gnumeric_stf:stf_csvtab \
+--export-type=Gnumeric_Excel:xlsx2 \
+fd://0 fd://1 >${excel}"
 
 pd_sqlplus -F "${CHT_BASEDIR}/private/opsoidb.cf" "${libdir}/prosopiko.sql" |\
 sort -t "	" |\
@@ -49,5 +91,26 @@ awk \
 -v "mode=${mode}" \
 -v "fulldata=${fulldata}" \
 -f "${libdir}/prosopiko.awk" \
-"${libdir}/spoudes.tsv" - |\
+"${libdir}/spoudes.tsv" - 2>"${efile}" |\
 eval sort -t "'$(echo -e "\t")'" -k2n ${post}
+
+[ -z "${mail}" ] &&
+cat "${efile}" >&2 &&
+pd_tmpcleanup &&
+exit 0
+
+mail \
+-r 'ΤΠΕ <tpe@thessaloniki.gr>' \
+-s 'Στοιχεία Προσωπικού Δ.Θ. για «Παρατηρητήριο» ΕΚΔΔΑ' \
+-a "${ofile}" \
+-a "${efile}" \
+-c "p.papadopoulos@thessaloniki.gr" \
+${mail} <<+++
+Αποστολή στοιχείων Προσωπικού Δήμου Θεσσαλονίκης για το «Παρατηρητήριο» \
+του Εθνικού Κέντρου Δημόσιας Διοίκησης και Αυτοδιοίκησης.
+Συνημμένα θα βρείτε α) αρχείο Excel με τα στοιχεία προσωπικού, \
+και β) αρχείο λαθών που εντοπίστηκαν κατά την αναζήτηση των στοιχείων.
++++
+
+pd_tmpcleanup
+exit 0

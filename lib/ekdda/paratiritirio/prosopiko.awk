@@ -81,7 +81,9 @@ BEGIN {
 	cur_etos = strftime("%Y")
 	cur_minas = strftime("%m")
 	cur_mera = strftime("%d")
-	cur_date = cur_etos "-" cur_minas "-" cur_mera
+
+	# Στην επόμενη γραμμή οι παύλες είναι utf-8 'U+2011'
+	cur_date = cur_etos "‑" cur_minas "‑" cur_mera
 
 	errcnt = 0
 
@@ -201,6 +203,8 @@ function parse_spoudes() {
 	if (NF != 6)
 	return error($0 ": syntax error (NF = " NF " <> 6)")
 
+if (ipalilos["kodikos"] == 95640)
+print ">>" $0 "<<"
 	spidos[$4] = $3
 	spepipedo[$4] = $6 + 0
 	next
@@ -307,8 +311,11 @@ function parse_ipalilos(			val, nf, errs) {
 
 	val = pd_dt2dt($(++nf), "YMD", "Y-M-D")
 
-	if (val == $nf)
-	ipalilos["genisi"] = val
+	if (val == $nf) {
+		# Στην επόμενη γραμμή η παύλα είναι utf-8 'U+2011'
+		gsub(/[^0-9]+/, "‑", val)
+		ipalilos["genisi"] = val
+	}
 
 	else
 	errs += error($0 ": " $nf ": απαράδεκτη ημερομηνία γέννησης υπαλλήλου")
@@ -360,21 +367,27 @@ function print_ipalilos() {
 	if (ipalilos_is_skip())
 	return
 
-	print \
-	cur_date, \
-	ipalilos["kodikos"], \
-	ipalilos["eponimo"], \
-	ipalilos["onoma"], \
-	ipalilos["patronimo"], \
-	ipalilos["filo"], \
-	ipalilos["genisi"], \
-	ilikia(ipalilos["genisi"]), \
-	ipalilos["prokat"], \
-	ipalilos["sxeser"], \
-	ipalilos["proslicnt"] + 0, \
-	ipalilos["epipekpe"], \
-	ipalilos["titlos"], \
-	ipalilos["spoudes"]
+	printf \
+	cur_date \
+	OFS ipalilos["kodikos"]
+
+	if (fulldata)
+	printf \
+	OFS ipalilos["eponimo"] \
+	OFS ipalilos["onoma"] \
+	OFS ipalilos["patronimo"]
+
+	printf \
+	OFS ipalilos["filo"] \
+	OFS ipalilos["genisi"] \
+	OFS ilikia(ipalilos["genisi"]) \
+	OFS ipalilos["prokat"] \
+	OFS ipalilos["sxeser"] \
+	OFS ipalilos["proslicnt"] + 0 \
+	OFS ipalilos["epipekpe"] \
+	OFS ipalilos["titlos"] \
+	OFS ipalilos["spoudes"] \
+	"\n"
 }
 
 function ipalilos_reset() {
@@ -390,7 +403,7 @@ function ipalilos_is_skip() {
 }
 
 function ilikia(genisi,		ymd, dif) {
-	split(genisi, ymd, /[^0-9]/)
+	split(genisi, ymd, /[^0-9]+/)
 
 	dif = cur_etos - ymd[1]
 

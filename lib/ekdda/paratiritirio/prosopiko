@@ -1,12 +1,53 @@
 #!/usr/bin/env bash
 
+. "${PANDORA_BASEDIR:=/var/opt/pandora}/lib/pandora.sh"
+
+pd_usagemsg="[ -f ] [ --full ] [ -x file ] [ --excel=file ]"
+
+eval set -- $(pd_parseopts "fx:" "full,excel:" $*)
+
+[ "$1" != "0" ] &&
+pd_usage
+
+shift
+
+fulldata=
+post=
+
+for opt in "$@"
+do
+	case "${opt}" in
+	-f|--full)
+		fulldata="yes"
+		shift
+		;;
+	-x|--excel)
+		post="|ssconvert \
+--import-type=Gnumeric_stf:stf_csvtab \
+--export-type=Gnumeric_Excel:xlsx2 \
+fd://0 fd://1 >${2}.xls"
+		shift 2
+		;;
+	--)
+		shift
+		break
+		;;
+	esac
+done
+
+[ $# -ne 0 ] &&
+pd_usage
+
 [ -z "CHT_BASEDIR" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
 libdir="${CHT_BASEDIR}/lib/ekdda/paratiritirio"
 
-pd_sqlplus -F "${CHT_BASEDIR}/private/opsoidb.cf" \
-"${libdir}/prosopiko.sql" |\
+pd_sqlplus -F "${CHT_BASEDIR}/private/opsoidb.cf" "${libdir}/prosopiko.sql" |\
 sort -t "	" |\
-awk -f "${libdir}/prosopiko.awk" "${libdir}/spoudes.tsv" - |\
-sort -t "	"  -k3,5 -k2n
+awk \
+-v "mode=${mode}" \
+-v "fulldata=${fulldata}" \
+-f "${libdir}/prosopiko.awk" \
+"${libdir}/spoudes.tsv" - |\
+eval sort -t "'$(echo -e "\t")'" -k2n ${post}

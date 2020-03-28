@@ -8,16 +8,18 @@
 # @COPYRIGHT END
 #
 # @FILE BEGIN
-# bin/ekdda —— Πρόγραμμα εκκίνησης προγραμμάτων της πλατφόρμας "εκδδα"
+# bin/paratiritirio —— Πρόγραμμα εκκίνησης προγραμμάτων του «Παρατηρητηρίου»
+# του Δήμου Θεσσαλονίκης
 # @FILE END
 #
 # @DESCRIPTION BEGIN
-# Το πρόγραμμα "ekdda" αποτελεί το σημείο εκκίνησης επιμέρους προγραμμάτων που
-# σχετίζονται με τον έναν ή τον άλλο τρόπο με την πλατφόρμα "εκδδα" , δηλαδή
-# με το "ΕΘνικό Κέντρο Δημόσιας Διοίκησης και Αυτοδιοίκησης".
+# Το πρόγραμμα "paratiritirio" (link "VG") αποτελεί το σημείο εκκίνησης
+# επιμέρους προγραμμάτων που σχετίζονται με τον έναν ή τον άλλο τρόπο με
+# το «Παρατηρητήριο» του Δήμου Θεσσαλονίκης.
 # @DESCRIPTION END
 #
 # @HISTORY BEGIN
+# Updated: 2020-03-28
 # Created: 2020-03-26
 # @HISTORY END
 # @END
@@ -58,7 +60,7 @@ esac
 tag="${1}"
 shift
 
-program="${CHT_BASEDIR}/lib/ekdda/${tag}"
+program="${CHT_BASEDIR}/lib/paratiritirio/${tag}"
 
 [ ! -x "${program}" ] &&
 echo "${pd_progname}: ${tag}: unknown program" >&2 &&

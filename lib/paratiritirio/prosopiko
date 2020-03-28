@@ -11,9 +11,9 @@ efile="${pd_tmpname[2]}"
 
 pd_sigtrap
 
-pd_usagemsg="[ --full ] [ --excel=file ] [--mail=emails ]"
+pd_usagemsg="[ --full ] [ --excel=file ] [--mail=emails ] [ --cc=emails ]"
 
-eval set -- $(pd_parseopts "fx:m:" "full,excel:,mail:" $*)
+eval set -- $(pd_parseopts "fx:m:c:" "full,excel:,mail:,cc:" $*)
 
 [ "$1" != "0" ] &&
 pd_usage
@@ -37,9 +37,27 @@ mail_push() {
 	return ${err}
 }
 
+cc_push() {
+	local i
+	local err=0
+
+	for i in $(echo "$@" | sed 's;,; ;g')
+	do
+		pd_isemail "${i}" &&
+		cc="${cc} -c ${i}" &&
+		continue
+
+		pd_errmsg "${i}: invalid cc email address" &&
+		err=1
+	done
+
+	return ${err}
+}
+
 fulldata=
 excel=
 mail=
+cc=
 error=
 
 for opt in "$@"
@@ -55,6 +73,10 @@ do
 		;;
 	-m|--mail)
 		mail_push "$2"
+		shift 2
+		;;
+	-c|--cc)
+		cc_push "$2"
 		shift 2
 		;;
 	--)
@@ -77,7 +99,7 @@ exit 2
 [ -z "CHT_BASEDIR" ] &&
 CHT_BASEDIR="/var/opt/cht"
 
-libdir="${CHT_BASEDIR}/lib/ekdda/paratiritirio"
+libdir="${CHT_BASEDIR}/lib/paratiritirio"
 
 [ -n "${excel}" ] &&
 post="|ssconvert \
@@ -91,7 +113,7 @@ awk \
 -v "mode=${mode}" \
 -v "fulldata=${fulldata}" \
 -f "${libdir}/prosopiko.awk" \
-"${libdir}/spoudes.tsv" - 2>"${efile}" |\
+"${libdir}/prosopiko_spoudes.tsv" - 2>"${efile}" |\
 eval sort -t "'$(echo -e "\t")'" -k2n ${post}
 
 [ -z "${mail}" ] &&
@@ -99,17 +121,16 @@ cat "${efile}" >&2 &&
 pd_tmpcleanup &&
 exit 0
 
-mail \
+echo mail \
 -r 'ΤΠΕ <tpe@thessaloniki.gr>' \
--s 'Στοιχεία Προσωπικού Δ.Θ. για «Παρατηρητήριο» ΕΚΔΔΑ' \
+-s 'Στοιχεία προσωπικού για το «Παρατηρητήριο» του Δήμου Θεσσαλονίκης' \
 -a "${ofile}" \
 -a "${efile}" \
--c "p.papadopoulos@thessaloniki.gr" \
-${mail} <<+++
-Αποστολή στοιχείων Προσωπικού Δήμου Θεσσαλονίκης για το «Παρατηρητήριο» \
-του Εθνικού Κέντρου Δημόσιας Διοίκησης και Αυτοδιοίκησης.
-Συνημμένα θα βρείτε α) αρχείο Excel με τα στοιχεία προσωπικού, \
-και β) αρχείο λαθών που εντοπίστηκαν κατά την αναζήτηση των στοιχείων.
+${cc} ${mail} <<+++
+Αποστολή στοιχείων Προσωπικού για το «Παρατηρητήριο» του Δήμου Θεσσαλονίκης.
+Συνημμένα θα βρείτε \
+α) αρχείο Excel με τα ζητούμενα στοιχεία προσωπικού, και \
+β) αρχείο λαθών που εντοπίστηκαν κατά την αναζήτηση των στοιχείων.
 +++
 
 pd_tmpcleanup

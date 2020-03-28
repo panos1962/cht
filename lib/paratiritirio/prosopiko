@@ -121,7 +121,7 @@ cat "${efile}" >&2 &&
 pd_tmpcleanup &&
 exit 0
 
-echo mail \
+mail \
 -r 'ΤΠΕ <tpe@thessaloniki.gr>' \
 -s 'Στοιχεία προσωπικού για το «Παρατηρητήριο» του Δήμου Θεσσαλονίκης' \
 -a "${ofile}" \

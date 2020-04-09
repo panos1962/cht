@@ -32,6 +32,7 @@ session_start();
 
 pandora::
 document_head([
+	"title" => "Παραβάσεις ΚΟΚ",
 	"css" => [
 		"../../mnt/pandora/lib/pandora",
 		"../../lib/cht",

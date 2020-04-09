@@ -29,6 +29,7 @@ session_start();
 
 pandora::
 document_head([
+	"title" => 'Δημοτική Αστυνομία',
 	"css" => [
 		"main",
 		"../lib/cht",

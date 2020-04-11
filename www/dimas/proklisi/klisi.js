@@ -343,7 +343,7 @@ Proklisi.klisi.prototype.klisiParavasiDOM = function(klisiDOM) {
 	if (!cols.length)
 	return this;
 
-	if (this.paravidos.logos)
+	if (this.paravidos && this.paravidos.logos)
 	cols.push({
 		'k': 'Λόγος',
 		'v': this.paravidos.logos,

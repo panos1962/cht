@@ -12,22 +12,32 @@
 PANDORA = ../../../mnt/pandora
 
 MAIN_CSS = main.css
+PRINT_CSS = mainPrint.css
 DEBUG_CSS = mainDebug.css
+BUNDLE_JS = bundle.js
 
-BUNDLEJS = bundle.js
+PARAGOGA = \
+$(MAIN_CSS) \
+$(PRINT_CSS) \
+$(DEBUG_CSS) \
+$(BUNDLE_JS)
+
 BROWSERIFY_OPTS = -t envify -p tinyify
 BROWSERIFY_OPTS = -t envify
 
 .PHONY: all
-all: $(MAIN_CSS) $(DEBUG_CSS) $(BUNDLEJS)
+all: $(PARAGOGA)
 
 $(MAIN_CSS): main.styl klisi.styl
 	stylus --print main.styl >$@
 
+$(PRINT_CSS): mainPrint.styl
+	stylus --print mainPrint.styl >$@
+
 $(DEBUG_CSS): mainDebug.styl klisiDebug.styl
 	stylus --print mainDebug.styl >$@
 
-$(BUNDLEJS): \
+$(BUNDLE_JS): \
 	$(PANDORA)/lib/pandoraCore.js \
 	$(PANDORA)/lib/pandoraClient.js \
 	$(PANDORA)/www/lib/pandoraPaleta.js \
@@ -38,4 +48,4 @@ $(BUNDLEJS): \
 
 .PHONY: cleanup
 cleanup:
-	@rm -f $(BUNDLE)
+	@rm -f $(PARAGOGA)

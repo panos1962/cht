@@ -203,8 +203,6 @@ function parse_spoudes() {
 	if (NF != 6)
 	return error($0 ": syntax error (NF = " NF " <> 6)")
 
-if (ipalilos["kodikos"] == 95640)
-print ">>" $0 "<<"
 	spidos[$4] = $3
 	spepipedo[$4] = $6 + 0
 	next

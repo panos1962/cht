@@ -231,9 +231,10 @@ Proklisi.klisi.prototype.klisiHeaderDOM = function(klisiDOM) {
 
 	append($('<div>').
 	addClass('proklisiKlisiKratos').
+	append($('<div>').
 	append($('<img>').
 	addClass('proklisiKlisiEthnosimo').
-	attr('src', '../../images/ethnosimoBlack.png')).
+	attr('src', '../../images/ethnosimoBlack.png'))).
 	append($('<div>').
 	addClass('proklisiKlisiKratosText').
 	text('ΕΛΛΗΝΙΚΗ ΔΗΜΟΚΡΑΤΙΑ'))).

@@ -609,6 +609,7 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 		},
 		'success': (rsp) => {
 			if (rsp.hasOwnProperty('error')) {
+				console.error(rsp);
 				Proklisi.fyiError(rsp.error).
 				menuTabStatus(ipoxreosDOM.data('ipoxreosError', rsp.error), 'error').
 				menuTabFyiError(ipoxreosDOM, '<div>&#x2753;</div>' + afm);

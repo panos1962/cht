@@ -82,7 +82,6 @@ Proklisi.param = {
 		'contact': 'Βασ. Γεωργίου 1, ΤΚ 54640, Τηλ. 231331-7930',
 	},
 };
-Proklisi.param.govHUBServerHost = Proklisi.protocol + '://thessaloniki.win';
 
 Proklisi.param.govHUBServerUrl = Proklisi.param.govHUBServerHost +
 	':' + Proklisi.param.govHUBServerPort;

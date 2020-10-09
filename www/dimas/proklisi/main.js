@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-10-09
 // Updated: 2020-03-18
 // Updated: 2020-03-17
 // Updated: 2020-03-16
@@ -81,6 +82,7 @@ Proklisi.param = {
 		'contact': 'Βασ. Γεωργίου 1, ΤΚ 54640, Τηλ. 231331-7930',
 	},
 };
+Proklisi.param.govHUBServerHost = '95.216.167.139';
 
 Proklisi.param.govHUBServerUrl = Proklisi.param.govHUBServerHost +
 	':' + Proklisi.param.govHUBServerPort;

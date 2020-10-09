@@ -369,10 +369,15 @@ Proklisi.fyiMessage = (msg) => {
 };
 
 Proklisi.fyiError = (msg, err) => {
-	pd.fyiError(msg);
+	if (msg && err) {
+		pd.fyiError(msg);
 
-	if (err)
-	console.log(err);
+		if (err)
+		console.log(err);
+	}
+
+	else
+	pd.fyiMessage();
 
 	return Proklisi;
 };
@@ -615,11 +620,9 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 			}
 
 			else {
-alert('xxx');
 				prosopo = rsp.data;
 				Proklisi.menuTabStatus(ipoxreosDOM, 'success').
 				menuTabFyi(ipoxreosDOM, Proklisi.ipoxreosFyi(prosopo));
-alert('xxx');
 			}
 
 			prosopo = new gh.prosopo(prosopo);

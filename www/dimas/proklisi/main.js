@@ -609,16 +609,17 @@ Proklisi.ipoxreosGetData = (paletaDOM) => {
 		},
 		'success': (rsp) => {
 			if (rsp.hasOwnProperty('error')) {
-				console.error(rsp);
 				Proklisi.fyiError(rsp.error).
 				menuTabStatus(ipoxreosDOM.data('ipoxreosError', rsp.error), 'error').
 				menuTabFyiError(ipoxreosDOM, '<div>&#x2753;</div>' + afm);
 			}
 
 			else {
+alert('xxx');
 				prosopo = rsp.data;
 				Proklisi.menuTabStatus(ipoxreosDOM, 'success').
 				menuTabFyi(ipoxreosDOM, Proklisi.ipoxreosFyi(prosopo));
+alert('xxx');
 			}
 
 			prosopo = new gh.prosopo(prosopo);

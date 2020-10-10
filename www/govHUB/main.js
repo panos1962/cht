@@ -74,7 +74,6 @@ w3gh.opts.kimeno.mazikaPlaceHolder +=
 w3gh.opts.sepChar = ',';
 w3gh.opts.opsoiCountDefault = 10;
 w3gh.opts.opsoiCountMax = 500;
-w3gh.opts.portNumber = php.requestGet('port', govHUBConf.portNumber);
 
 w3gh.resultCount = 0;
 
@@ -584,16 +583,9 @@ w3gh.anazitisi = (data) => {
 	// αποτελεσμάτων της τρέχουσας αναζήτησης, ώστε να μπορούμε να
 	// ακυρώσουμε την αναζήτηση σε περίπτωση που το θελήσουμε.
 
-	let protocol = 'http';
-
-	if (php.serverGet('HTTPS'))
-	protocol += 's';
-
 	x.sesami = govHUBConf.sesami;
-	resDOM.
-	data('xhr', $.post({
-		'url': protocol + '://' + php.serverGet('HTTP_HOST') +
-			':' + w3gh.opts.portNumber,
+	resDOM.data('xhr', $.post({
+		'url': govHUBConf.serverName + ':' + govHUBConf.portNumber,
 		'header': {
 			'Access-Control-Allow-Origin': '*',
 		},

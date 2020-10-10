@@ -68,15 +68,7 @@ const Dimas = require('../../../lib/dimasClient.js');
 
 const Proklisi = {};
 
-Proklisi.protocol = 'http';
-
-if (php.serverGet('HTTPS'))
-Proklisi.protocol += 's';
-
 Proklisi.param = {
-	//'govHUBServerHost': Proklisi.protocol + '://' + php.serverGet('HTTP_HOST'),
-	'govHUBServerHost': 'https://opasopa.net',
-	'govHUBServerPort': 8001,
 	'dimas': {
 		'ota': 'ΔΗΜΟΣ ΘΕΣΣΑΛΟΝΙΚΗΣ',
 		'ipiresia': 'ΔΙΕΥΘΥΝΣΗ ΔΗΜΟΤΙΚΗΣ ΑΣΤΥΝΟΜΙΑΣ',
@@ -84,8 +76,8 @@ Proklisi.param = {
 	},
 };
 
-Proklisi.param.govHUBServerUrl = Proklisi.param.govHUBServerHost +
-	':' + Proklisi.param.govHUBServerPort;
+Proklisi.param.govHUBServerUrl = govHUBConf.serverName +
+	':' + govHUBConf.portNumber;
 
 require('./menu.js')(Proklisi);
 require('./isodos.js')(Proklisi);

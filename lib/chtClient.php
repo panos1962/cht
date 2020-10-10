@@ -163,7 +163,7 @@ class cht extends chtCore {
 		$ghcf = self::read_govHUB_conf();
 
 		if ($ghcf === FALSE)
-		$ghcf = '{"protocol":"http","portNumber":8001}';
+		$ghcf = '{"serverName":"http://localhost","portNumber":8001}';
 ?>
 <script>
 <?php

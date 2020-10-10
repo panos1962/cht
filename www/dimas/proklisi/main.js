@@ -74,7 +74,8 @@ if (php.serverGet('HTTPS'))
 Proklisi.protocol += 's';
 
 Proklisi.param = {
-	'govHUBServerHost': Proklisi.protocol + '://' + php.serverGet('HTTP_HOST'),
+	//'govHUBServerHost': Proklisi.protocol + '://' + php.serverGet('HTTP_HOST'),
+	'govHUBServerHost': 'https://opasopa.net',
 	'govHUBServerPort': 8001,
 	'dimas': {
 		'ota': 'ΔΗΜΟΣ ΘΕΣΣΑΛΟΝΙΚΗΣ',

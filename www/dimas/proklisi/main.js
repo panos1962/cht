@@ -29,6 +29,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2020-12-09
 // Updated: 2020-10-09
 // Updated: 2020-03-18
 // Updated: 2020-03-17
@@ -151,7 +152,10 @@ Proklisi.toolbarSetup = () => {
 	addClass('proklisiToolbarTitlos');
 
 	pd.toolbarLeftDOM.
-	empty().
+	empty();
+
+	if (Proklisi.oxiPDA())
+	pd.toolbarLeftDOM.
 	append($('<div>').
 	addClass('proklisiTRButton').
 	attr('id', 'proklisiToggleFullscreen').
@@ -341,8 +345,12 @@ Proklisi.ribbonSetup = () => {
 
 Proklisi.fullscreen = false;
 
+Proklisi.isFullscreen = () => {
+	return Proklisi.fullscreen;
+};
+
 Proklisi.toggleFullscreen = () => {
-	if (Proklisi.fullscreen)
+	if (Proklisi.isFullscreen())
 	pd.exitFullscreen();
 
 	else
@@ -351,6 +359,14 @@ Proklisi.toggleFullscreen = () => {
 	Proklisi.fullscreen = !Proklisi.fullscreen;
 	return Proklisi;
 };
+
+Proklisi.isPDA = () => {
+	return php.getIsYes("PDA");
+}
+
+Proklisi.oxiPDA = () => {
+	return !Proklisi.isPDA();
+}
 
 Proklisi.cleanup = () => {
 	pd.ofelimoDOM.empty();

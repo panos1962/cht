@@ -16,7 +16,6 @@ www/mnt/*
 !www/mnt/README.txt
 www/tmp/*
 node_modules/*
-
 www/dimas/main.css
-
+www/dimas/proklisi/main.css
 www/govHUB/main.css

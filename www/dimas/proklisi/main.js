@@ -119,6 +119,7 @@ Proklisi.eponimiXrisi = () => {
 	episkopisiSetup().
 	exodosSetup().
 	economySetup().
+	pdaSetup().
 	odosLoad([
 		Proklisi.paravidosLoad,
 		Proklisi.paralogosLoad,
@@ -140,6 +141,7 @@ Proklisi.anonimiXrisi = () => {
 	isodosAstinomikosSetup().
 	isodosPasswordSetup().
 	economySetup().
+	pdaSetup().
 	astinomikosLoad([
 		() => Proklisi.activate(Proklisi.menuIsodosDOM),
 	]);
@@ -272,7 +274,7 @@ Proklisi.economyMode = false;
 
 Proklisi.economySetup = (economyMode) => {
 	if (economyMode === undefined) {
-		if (php.isRequest('economy')) {
+		if (php.isRequest('economy') || Proklisi.isPDA()) {
 			$('#proklisiEconomyButton').trigger('click');
 			return Proklisi;
 		}
@@ -300,11 +302,27 @@ Proklisi.economySetup = (economyMode) => {
 	return Proklisi;
 };
 
+Proklisi.pdaSetup = () => {
+	if (Proklisi.oxiPDA())
+	return Proklisi;
+
+	$('<div>').
+	addClass('proklisiPDA').
+	text('Full screen mode').
+	on('click', (e) => {
+		e.stopPropagation();
+		Proklisi.fullscreen = true;
+		pd.enterFullscreen();
+	}).
+	appendTo(pd.ofelimoDOM);
+
+	return Proklisi;
+};
+
 Proklisi.ribbonSetup = () => {
 	pd.ribbonLeftDOM.
 	empty();
 
-	if (Proklisi.oxiPDA())
 	pd.ribbonLeftDOM.
 	prepend($('<div>').
 	addClass('proklisiTRButton').

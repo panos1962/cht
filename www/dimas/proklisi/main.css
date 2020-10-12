@@ -4,6 +4,19 @@ html {
 body {
   background-color: #fffff0;
 }
+.proklisiPDA {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 60px;
+  color: #ff0;
+  background-color: #49b949;
+  border-radius: 6px;
+  opacity: 0.4;
+}
+.proklisiPDA:hover {
+  opacity: 1;
+  cursor: pointer;
+}
 .proklisiToolbarEconomy {
   height: 0px !important;
   padding: 0px !important;

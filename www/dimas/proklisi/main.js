@@ -311,7 +311,7 @@ Proklisi.pdaSetup = () => {
 	text('Full screen mode').
 	on('click', (e) => {
 		e.stopPropagation();
-		Proklisi.fullscreen = true;
+		Proklisi.fullscreen = false;
 		pd.enterFullscreen();
 	}).
 	appendTo(pd.ofelimoDOM);

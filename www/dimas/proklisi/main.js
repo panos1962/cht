@@ -302,6 +302,10 @@ Proklisi.economySetup = (economyMode) => {
 
 Proklisi.ribbonSetup = () => {
 	pd.ribbonLeftDOM.
+	empty();
+
+	if (Proklisi.oxiPDA())
+	pd.ribbonLeftDOM.
 	prepend($('<div>').
 	addClass('proklisiTRButton').
 	attr('id', 'proklisiEconomyButton').
@@ -359,6 +363,10 @@ Proklisi.toggleFullscreen = () => {
 	Proklisi.fullscreen = !Proklisi.fullscreen;
 	return Proklisi;
 };
+
+// Η παράμετρος "PDA" καθορίζει αν ο χρήστης επιθυμεί να τρέξει την εφαρμογή
+// σε fullscreen και economy mode, πράγμα που είναι μάλλον απαραίτητο όταν
+// η εφαρμογή εκτελείται σε συσκευές PDA.
 
 Proklisi.isPDA = () => {
 	return php.getIsYes("PDA");

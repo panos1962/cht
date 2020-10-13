@@ -340,8 +340,6 @@ Proklisi.ribbonSetup = () => {
 		$('.chtToolbarXristis').
 		addClass('proklisiToolbarXristisEconomy').
 		appendTo(pd.ofelimoDOM);
-
-		pd.ribbonDOM.css('display', 'none');
 		pd.ofelimoDOM.
 		css({
 			'padding': '0px',
@@ -349,6 +347,9 @@ Proklisi.ribbonSetup = () => {
 		});
 
 		Proklisi.economySetup(true);
+		setTimeout(() => {
+			pd.ribbonDOM.css('display', 'none');
+		}, 10);
 	}));
 
 	pd.ribbonCenterDOM.

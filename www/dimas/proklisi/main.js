@@ -275,7 +275,7 @@ Proklisi.economyMode = false;
 Proklisi.economySetup = (economyMode) => {
 	if (economyMode === undefined) {
 		if (php.isRequest('economy') || Proklisi.isPDA()) {
-			$('#proklisiEconomyButton').trigger('click');
+			Proklisi.economyButtonDOM.trigger('click');
 			return Proklisi;
 		}
 	}
@@ -316,20 +316,37 @@ Proklisi.pdaSetup = () => {
 	}).
 	appendTo(pd.ofelimoDOM);
 
+	pd.windowDOM.
+	on('resize', () => {
+		let h = 0;
+
+		h += pd.bodyDOM.outerHeight();
+		h -= pd.fyiDOM.outerHeight();
+
+		pd.ofelimoDOM.css({
+			'height': h + 'px',
+		});
+	});
+
 	return Proklisi;
 };
 
 Proklisi.ribbonSetup = () => {
+	let economyClicked = false;
+
 	pd.ribbonLeftDOM.
 	empty();
 
 	pd.ribbonLeftDOM.
-	prepend($('<div>').
+	prepend(Proklisi.economyButtonDOM = $('<div>').
 	addClass('proklisiTRButton').
 	attr('id', 'proklisiEconomyButton').
 	text('Economy').
 	on('click', (e) => {
 		e.stopPropagation();
+
+		if (economyClicked)
+		return;
 
 		let dh = pd.ofelimoDOM.height();
 		dh += (pd.ofelimoDOM.innerHeight() - dh);
@@ -340,6 +357,8 @@ Proklisi.ribbonSetup = () => {
 		$('.chtToolbarXristis').
 		addClass('proklisiToolbarXristisEconomy').
 		appendTo(pd.ofelimoDOM);
+
+		pd.ribbonDOM.css('display', 'none');
 		pd.ofelimoDOM.
 		css({
 			'padding': '0px',
@@ -347,9 +366,6 @@ Proklisi.ribbonSetup = () => {
 		});
 
 		Proklisi.economySetup(true);
-		setTimeout(() => {
-			pd.ribbonDOM.css('display', 'none');
-		}, 10);
 	}));
 
 	pd.ribbonCenterDOM.

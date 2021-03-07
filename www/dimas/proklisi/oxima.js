@@ -404,7 +404,6 @@ Proklisi.oximaGetData = (paletaDOM) => {
 	} catch (e) {
 		delete data.origin;
 	}
-console.log(data);
 
 	$.post({
 		'url': Proklisi.param.govHUBServerUrl,

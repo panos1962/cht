@@ -16,6 +16,7 @@
 // @FILE END
 //
 // @HISTORY BEGIN
+// Updated: 2021-03-07
 // Updated: 2020-03-09
 // Updated: 2020-03-07
 // Created: 2020-03-06
@@ -389,14 +390,19 @@ Proklisi.oximaGetData = (paletaDOM) => {
 	menuTabFyi(oximaDOM, pinakida).
 	fyiMessage();
 
+	let data = {
+		'idos': 'oxima',
+		'key': pinakida,
+		'sesami': govHUBConf.sesami,
+	};
+
+	if (Proklisi.xristis)
+	data.origin = Proklisi.xristis;
+
 	$.post({
 		'url': Proklisi.param.govHUBServerUrl,
 		'dataType': 'json',
-		'data': {
-			'idos': 'oxima',
-			'key': pinakida,
-			'sesami': govHUBConf.sesami,
-		},
+		'data': data,
 		'success': (rsp) => {
 			if (rsp.hasOwnProperty('error')) {
 				Proklisi.fyiError(rsp.error).

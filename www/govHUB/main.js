@@ -587,6 +587,7 @@ w3gh.anazitisi = (data) => {
 
 	x.sesami = w3gh.sesamiDOM.val();
 	//x.sesami = govHUBConf.sesami;
+
 	resDOM.data('xhr', $.post({
 		'url': govHUBConf.serverName + ':' + govHUBConf.portNumber,
 		'header': {

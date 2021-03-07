@@ -396,8 +396,9 @@ Proklisi.oximaGetData = (paletaDOM) => {
 		'sesami': govHUBConf.sesami,
 	};
 
-	if (Proklisi.xristis)
-	data.origin = Proklisi.xristis;
+	if (Dimas.hasOwnProperrty('ipalilos') &&
+	Dimas.ipalilos.hasOwnProperty('kodikos'))
+	data.origin = Dimas.ipalilos.kodikos;
 console.log(data);
 
 	$.post({

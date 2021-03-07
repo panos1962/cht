@@ -398,6 +398,7 @@ Proklisi.oximaGetData = (paletaDOM) => {
 
 	if (Proklisi.xristis)
 	data.origin = Proklisi.xristis;
+console.log(data);
 
 	$.post({
 		'url': Proklisi.param.govHUBServerUrl,

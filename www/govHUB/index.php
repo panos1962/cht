@@ -32,6 +32,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2021-03-07
 // Updated: 2020-01-31
 // Updated: 2020-01-16
 // Updated: 2020-01-11
@@ -62,6 +63,7 @@ section_oxima()::
 section_imerominia()::
 section_opsoi()::
 section_prosopo()::
+section_sesami()::
 govHUB_conf();
 ?>
 </td>
@@ -153,6 +155,17 @@ class GovHUB {
 <div class="pedio">
 <label class="prompt" for="afm">ΑΦΜ</label>
 <input id="afm" type="text">
+</div>
+<br>
+<?php
+		return __CLASS__;
+	}
+
+	public static function section_sesami() {
+?>
+<div class="pedio">
+<label class="prompt" for="sesami">Sesami</label>
+<input id="sesami" type="password">
 </div>
 <br>
 <?php

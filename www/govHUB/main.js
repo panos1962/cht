@@ -36,6 +36,7 @@
 // @DESCRIPTION END
 //
 // @HISTORY BEGIN
+// Updated: 2021-03-07
 // Updated: 2020-01-17
 // Updated: 2020-01-12
 // Updated: 2020-01-11
@@ -121,6 +122,7 @@ w3gh.formSetup = () => {
 	attr('placeholder', w3gh.opts.kimeno.mazikaPlaceHolder);
 	w3gh.trexonLabelDOM = $('#trexonLabel');
 	w3gh.trexonDOM = $('#trexon');
+	w3gh.sesamiDOM = $('#sesami');
 
 	w3gh.ipovoliDOM = $('#ipovoli');
 	w3gh.akirosiDOM = $('#akirosi');
@@ -583,7 +585,8 @@ w3gh.anazitisi = (data) => {
 	// αποτελεσμάτων της τρέχουσας αναζήτησης, ώστε να μπορούμε να
 	// ακυρώσουμε την αναζήτηση σε περίπτωση που το θελήσουμε.
 
-	x.sesami = govHUBConf.sesami;
+	x.sesami = w3gh.sesamiDOM.val();
+	//x.sesami = govHUBConf.sesami;
 	resDOM.data('xhr', $.post({
 		'url': govHUBConf.serverName + ':' + govHUBConf.portNumber,
 		'header': {

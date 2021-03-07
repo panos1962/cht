@@ -396,12 +396,15 @@ Proklisi.oximaGetData = (paletaDOM) => {
 		'sesami': govHUBConf.sesami,
 	};
 
-console.log(Proklisi);
-/*
-	if (Dimas.hasOwnProperrty('ipalilos') && Dimas.ipalilos.
-	data.origin = Proklisi.xristis;
+	try {
+		data.origin = Proklisi.xristis.kodikos;
+
+		if (!data.origin)
+		delete data.origin;
+	} catch (e) {
+		delete data.origin;
+	}
 console.log(data);
-*/
 
 	$.post({
 		'url': Proklisi.param.govHUBServerUrl,

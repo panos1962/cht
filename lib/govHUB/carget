@@ -90,4 +90,4 @@ pd_exit "fserr"
 echo "carget.init();" >>"${tmp1}"
 cat "$@" | node "${tmp1}"
 
-pd_exit
+pd_exit $?

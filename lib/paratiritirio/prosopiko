@@ -122,7 +122,7 @@ pd_tmpcleanup &&
 exit 0
 
 mail \
--r 'ΤΠΕ <tpe@thessaloniki.gr>' \
+-r '<no-reply@thessaloniki.gr>' \
 -s 'Στοιχεία προσωπικού για το «Παρατηρητήριο» του Δήμου Θεσσαλονίκης' \
 -a "${ofile}" \
 -a "${efile}" \
